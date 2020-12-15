@@ -15,6 +15,7 @@
 using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
+using Logic.UI.Aktie;
 
 namespace Logic.UI
 {
@@ -39,9 +40,11 @@ namespace Logic.UI
                 // Create run time view services and models                
             }
             SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<NeueAktieViewModel>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
+        public NeueAktieViewModel NeueAktie => ServiceLocator.Current.GetInstance<NeueAktieViewModel>();
 
         public static void Cleanup()
         {

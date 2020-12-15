@@ -7,10 +7,15 @@
              d1p1:Ignorable="d" 
              xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:UI="clr-namespace:Logic.UI;assembly=Logic.UI">
-  <Application.Resources>
-    <ResourceDictionary>
-            <UI:ViewModelLocator x:Key="Locator" 
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary >
+                    <UI:ViewModelLocator x:Key="Locator" 
                                 d:IsDataSource="True"  />
-    </ResourceDictionary>
-  </Application.Resources>
+                </ResourceDictionary>
+                <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/Generic.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary >
+    </Application.Resources>
 </Application>
