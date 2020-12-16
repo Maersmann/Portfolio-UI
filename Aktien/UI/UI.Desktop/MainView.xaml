@@ -3,16 +3,25 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:command="http://www.galasoft.ch/mvvmlight"
         xmlns:local="clr-namespace:UI.Desktop"
         xmlns:Fluent="urn:fluent-ribbon"
         xmlns:UI="clr-namespace:Logic.UI;assembly=Logic.UI"
-        x:Class="UI.Desktop.MainWindow"
-        mc:Ignorable="d"
-        Title="{Binding Main.Title, Mode=OneWay}" Height="450" Width="800">
+        x:Class="UI.Desktop.MainView"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen" WindowState="Maximized"
+        Title="{Binding Main.Title, Mode=OneWay}" Height="450" Width="800" >
 
-    <Window.DataContext>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="ContentRendered">
+            <command:EventToCommand Command="{Binding Main.OpenConnectionCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <Fluent:RibbonWindow.DataContext>
         <UI:ViewModelLocator/>
-    </Window.DataContext>
+    </Fluent:RibbonWindow.DataContext>
+
 
     <Grid>
         <Grid.RowDefinitions>
@@ -25,7 +34,7 @@
             <!--Tabs-->
             <Fluent:RibbonTabItem Header="Main">
                 <Fluent:RibbonGroupBox Header="Aktien">
-                    <Fluent:Button Header="Hinzufügen" Command="{Binding Main.Button1Command}" />
+                    <Fluent:Button Header="Hinzufügen" Command="{Binding Main.OpenNeueAktieCommand}" />
                     <Fluent:Button Header="Übersicht"/>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>

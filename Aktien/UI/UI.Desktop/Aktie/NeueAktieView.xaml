@@ -5,10 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UI.Desktop.Aktie"
         xmlns:UI="clr-namespace:Logic.UI;assembly=Logic.UI" x:Class="UI.Desktop.Aktie.NeueAktieView"
-        mc:Ignorable="d"
-        Title="{Binding NeueAktie.Title, Mode=OneWay}" Height="450" Width="800">
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        Title="{Binding NeueAktie.Title, Mode=OneWay}" Height="472.351" Width="353.725">
     <Window.DataContext>
         <UI:ViewModelLocator/>
     </Window.DataContext>
-    <Grid/>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25px" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="35px" />
+        </Grid.RowDefinitions>
+
+        <Button Grid.Row ="2" HorizontalAlignment="Right" Width="100" Margin="5" Command="{Binding NeueAktie.SaveNeueAktieCommand, Mode=OneWay}"> Speichern </Button>
+        <Label Content="Name" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="52,14,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="{Binding NeueAktie.Name}"/>
+    </Grid>
 </Window>

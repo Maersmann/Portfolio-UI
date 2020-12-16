@@ -21,29 +21,31 @@ namespace UI.Desktop
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
-    public partial class MainWindow
+    public partial class MainView
     {
-        public MainWindow()
+        public MainView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenNeueAktieViewMessage>(this, m => ReceiveOpenNeueAktieViewMessage(m));
+            Messenger.Default.Register<OpenNeueAktieViewMessage>(this, m => ReceiveOpenNeueAktieViewMessage());
         }
 
         private void Container_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
         {
-           // if (e.Content == _formMatch)
-           // {
-           //     ribboncontextMatch.Visibility = Visibility.Visible;
-           //     ribbonMatch.IsSelected = true;
-           // }
-           // else
-           //     ribboncontextMatch.Visibility = Visibility.Hidden;
+            // if (e.Content == _formMatch)
+            // {
+            //     ribboncontextMatch.Visibility = Visibility.Visible;
+            //     ribbonMatch.IsSelected = true;
+            // }
+            // else
+            //     ribboncontextMatch.Visibility = Visibility.Hidden;
         }
 
-        private void ReceiveOpenNeueAktieViewMessage(OpenNeueAktieViewMessage m)
+        private void ReceiveOpenNeueAktieViewMessage()
         {
             NeueAktieView view = new NeueAktieView();
             view.ShowDialog();
         }
+
     }
+
 }

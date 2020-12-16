@@ -13,15 +13,35 @@ namespace Logic.UI.Aktie
 {
     public class NeueAktieViewModel : ViewModelBase
     {
+        private string name;
         public NeueAktieViewModel()
         {
             Title = "Neue Aktie";
+            name = "";
+            SaveNeueAktieCommand = new RelayCommand(() => ExecuteSaveNeueAktieCommand());
+        }
+
+        private void ExecuteSaveNeueAktieCommand()
+        {
             
         }
 
         public string Title { get; private set; }
 
+        public string Name{
+            get { return this.name; }
+            set
+            {
+                
+                if (!string.Equals(this.name, value))
+                {
+                    this.name = value;
+                    this.RaisePropertyChanged();
+                }
+            }
+        }
 
+        public ICommand SaveNeueAktieCommand { get; private set; }
 
 
     }
