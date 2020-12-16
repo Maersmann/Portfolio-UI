@@ -15,7 +15,7 @@
 using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
-using Logic.UI.Aktie;
+using Logic.UI.AktieUI;
 
 namespace Logic.UI
 {
