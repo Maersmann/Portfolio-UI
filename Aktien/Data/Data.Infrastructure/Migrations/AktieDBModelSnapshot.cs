@@ -25,13 +25,14 @@ namespace Data.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int>("Anzahl")
-                        .HasColumnType("integer");
-
                     b.Property<string>("ISIN")
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("WKN")
                         .HasColumnType("text");
 
                     b.HasKey("ID");

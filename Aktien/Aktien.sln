@@ -24,7 +24,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{F56F2D4B-D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.Infrastructure", "Data\Data.Infrastructure\Data.Infrastructure.csproj", "{9742E7E0-E88E-4923-A778-18F432D1151E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.API", "Data\Data.API\Data.API.csproj", "{CBCFD503-DCF1-4381-8554-6088A886F59E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.API", "Data\Data.API\Data.API.csproj", "{CBCFD503-DCF1-4381-8554-6088A886F59E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

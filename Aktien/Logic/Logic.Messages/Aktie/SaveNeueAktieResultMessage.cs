@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Logic.Messages.Aktie
 {
-    public class SaveNeueAktieMessage
+    public class SaveNeueAktieResultMessage
     {
-        public String Name { get; set; }
+        public bool Erfolgreich { get; set; }
+
+        public string Fehlermessage { get; set; }
     }
 }

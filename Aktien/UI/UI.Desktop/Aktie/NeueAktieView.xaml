@@ -9,12 +9,19 @@
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
         xmlns:UI="clr-namespace:Logic.UI;assembly=Logic.UI" x:Class="UI.Desktop.Aktie.NeueAktieView"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
-        Title="{Binding NeueAktie.Title, Mode=OneWay}" Height="227.573" Width="353.725">
+        Title="{Binding NeueAktie.Title, Mode=OneWay}" Height="227.573" Width="326.354">
     <Window.DataContext>
         <UI:ViewModelLocator/>
     </Window.DataContext>
 
-    <Grid>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closed">
+            <command:EventToCommand Command="{Binding NeueAktie.ClosedCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+
+    <Grid Margin="0,0,2,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="25px" />
             <RowDefinition Height="*" />
@@ -23,16 +30,42 @@
 
         <Button Grid.Row ="2" HorizontalAlignment="Right" Width="100" Margin="5" Command="{Binding NeueAktie.SaveNeueAktieCommand, Mode=OneWay}"> Speichern </Button>
         <Label Content="Name" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="22" Margin="61,14,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="{Binding NeueAktie.Name}"/>
-        <Label Content="ISIN" HorizontalAlignment="Left" Margin="10,51,0,0" Grid.Row="1" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="26" Margin="61,51,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="{Binding NeueAktie.ISIN}"/>
-        <Label Content="Anzahl" HorizontalAlignment="Left" Margin="10,94,0,0" Grid.Row="1" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="26" Margin="61,94,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="{Binding NeueAktie.Anzahl}">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="PreviewTextInput" >
-                    <ei:CallMethodAction TargetObject="{Binding NeueAktie}" MethodName="OnlyNumbersCommand"  />
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
+        <TextBox HorizontalAlignment="Left" Height="22" Margin="61,14,0,0" Grid.Row="1" TextWrapping="NoWrap" VerticalAlignment="Top" Width="250" Text="{Binding NeueAktie.Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }">
+            <Validation.ErrorTemplate>
+                <ControlTemplate>
+                    <StackPanel>
+                        <AdornedElementPlaceholder x:Name="textBox"/>
+                        <ItemsControl ItemsSource="{Binding}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding ErrorContent}" Foreground="Red"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </ControlTemplate>
+            </Validation.ErrorTemplate>
         </TextBox>
+        <Label Content="ISIN" HorizontalAlignment="Left" Margin="10,51,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="26" Margin="61,51,0,0" Grid.Row="1" TextWrapping="NoWrap" VerticalAlignment="Top" Width="250" Text="{Binding NeueAktie.ISIN, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }">
+            <Validation.ErrorTemplate>
+                <ControlTemplate>
+                    <StackPanel>
+                        <AdornedElementPlaceholder x:Name="textBox"/>
+                        <ItemsControl ItemsSource="{Binding}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding ErrorContent}" Foreground="Red"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </ControlTemplate>
+            </Validation.ErrorTemplate>
+        </TextBox>
+        <Label Content="WKN" HorizontalAlignment="Left" Margin="10,94,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="26" Margin="61,94,0,0" Grid.Row="1" TextWrapping="NoWrap" VerticalAlignment="Top" Width="250" Text="{Binding NeueAktie.WKN}"/>
+
+
     </Grid>
 </Window>

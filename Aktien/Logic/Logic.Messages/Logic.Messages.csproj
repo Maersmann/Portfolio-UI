@@ -45,7 +45,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Aktie\OpenNeueAktieViewMessage.cs" />
-    <Compile Include="Aktie\SaveNeueAktieMessage.cs" />
+    <Compile Include="Aktie\SaveNeueAktieResultMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

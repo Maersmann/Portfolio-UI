@@ -1,0 +1,63 @@
+﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Windows.Input;
+
+namespace Logic.UI
+{
+    public class ViewModelBasis : ViewModelBase, INotifyDataErrorInfo
+    {
+        public ViewModelBasis()
+        {
+            ClosedCommand = new RelayCommand(() => ExecuteOpenCommand());
+        }
+
+        public string Title { get; protected set; }
+
+        public ICommand ClosedCommand { get; private set; }
+
+        public readonly Dictionary<string, ICollection<string>>
+            ValidationErrors = new Dictionary<string, ICollection<string>>();
+
+        protected virtual void ExecuteOpenCommand()
+        {
+            throw new NotImplementedException();   
+        }
+
+
+        public void OnlyNumbersCommand(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+
+        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+        public void RaiseErrorsChanged(string propertyName)
+        {
+            if (ErrorsChanged != null)
+                ErrorsChanged(this, new DataErrorsChangedEventArgs(propertyName));
+        }
+
+        public System.Collections.IEnumerable GetErrors(string propertyName)
+        {
+            if (string.IsNullOrEmpty(propertyName)
+                || !ValidationErrors.ContainsKey(propertyName))
+                return null;
+
+            return ValidationErrors[propertyName];
+        }
+
+        public bool HasErrors
+        {
+            get { return ValidationErrors.Count > 0; }
+        }
+
+
+    }
+}

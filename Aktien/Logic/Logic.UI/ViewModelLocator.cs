@@ -48,6 +48,13 @@ namespace Logic.UI
 
         public static void Cleanup()
         {
+
+        }
+
+        public static void CleanUpNeueAktieView()
+        {
+            SimpleIoc.Default.Unregister<NeueAktieViewModel>();
+            SimpleIoc.Default.Register<NeueAktieViewModel>();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
+using Logic.Messages.Aktie;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,21 @@ namespace UI.Desktop.Aktie
         public NeueAktieView()
         {
             InitializeComponent();
+            Messenger.Default.Register<SaveNeueAktieResultMessage>(this, m => ReceiveSaveNeueAktieResultMessage( m));
+        }
+
+        private void ReceiveSaveNeueAktieResultMessage( SaveNeueAktieResultMessage inSaveNeueAktieResultMessage )
+        {
+            if( inSaveNeueAktieResultMessage.Erfolgreich )
+            {
+                MessageBox.Show("Aktie gespeichert");
+                Close();
+            }
+            else
+            {
+                MessageBox.Show(inSaveNeueAktieResultMessage.Fehlermessage);
+            }
+
         }
     }
 }

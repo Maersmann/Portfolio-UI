@@ -13,10 +13,11 @@ namespace Data
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 
+        [Required]
         public string Name { get; set; }
 
         public string ISIN { get; set; }
 
-        public int Anzahl { get; set; }
+        public string WKN { get; set; }
     }
 }

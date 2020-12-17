@@ -42,7 +42,7 @@ namespace UI.Desktop
 
         private void ReceiveOpenNeueAktieViewMessage()
         {
-            NeueAktieView view = new NeueAktieView();
+            var view = new NeueAktieView();
             view.ShowDialog();
         }
 

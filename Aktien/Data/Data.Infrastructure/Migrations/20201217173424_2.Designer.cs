@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Data.Migrations
 {
     [DbContext(typeof(RepositoryBase))]
-    [Migration("20201216182637_2")]
+    [Migration("20201217173424_2")]
     partial class _2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,13 +27,14 @@ namespace Data.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int>("Anzahl")
-                        .HasColumnType("integer");
-
                     b.Property<string>("ISIN")
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("WKN")
                         .HasColumnType("text");
 
                     b.HasKey("ID");
