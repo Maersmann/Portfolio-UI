@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
 
-[assembly: AssemblyTitle("Aktien.Logic.UI")]
+[assembly: AssemblyTitle("Logic.UI")]
 [assembly: AssemblyDescription("")]
-
+[assembly: AssemblyVersion("1.0.0.0")]

@@ -12,9 +12,10 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary >
                     <UI:ViewModelLocator x:Key="Locator" 
-                                              d:IsDataSource="True"  />
+                                         d:IsDataSource="True"  />
                 </ResourceDictionary>
                 <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/Generic.xaml" />
+                <ResourceDictionary Source="Styles/ListViewItem.xaml"></ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary >
     </Application.Resources>

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Logic.Messages.Aktie
+namespace Logic.Messages.Base
 {
-    public class OpenNeueAktieViewMessage
+    public class AktualisiereViewMessage
     {
 
     }

@@ -32,6 +32,7 @@ namespace UI.Desktop.Aktie
             if( inSaveNeueAktieResultMessage.Erfolgreich )
             {
                 MessageBox.Show("Aktie gespeichert");
+                DialogResult = true;
                 Close();
             }
             else

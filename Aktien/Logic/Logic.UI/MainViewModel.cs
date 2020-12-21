@@ -15,11 +15,17 @@ namespace Logic.UI
             Title = "Aktienübersicht";
             OpenNeueAktieCommand = new RelayCommand(() => ExecuteOpenNeueAktieCommand());
             OpenConnectionCommand = new RelayCommand(() => ExecuteOpenConnectionCommand());
+            OpenAktienUebersichtCommand = new RelayCommand(() => ExecuteOpenAktienUebersichtCommand());
         }
 
         private void ExecuteOpenNeueAktieCommand()
         {
-            Messenger.Default.Send<OpenNeueAktieViewMessage>(new OpenNeueAktieViewMessage { });
+            Messenger.Default.Send<OpenNeueAktieMessage>(new OpenNeueAktieMessage { });
+        }
+
+        private void ExecuteOpenAktienUebersichtCommand()
+        {
+            Messenger.Default.Send<OpenAuswahlAktieMessage>(new OpenAuswahlAktieMessage { });
         }
 
         private void ExecuteOpenConnectionCommand()
@@ -33,6 +39,8 @@ namespace Logic.UI
         public string Title { get; private set; }
 
         public ICommand OpenNeueAktieCommand { get; private set; }
+
+        public ICommand OpenAktienUebersichtCommand { get; private set; }
 
         public ICommand OpenConnectionCommand { get; private set; }
     }

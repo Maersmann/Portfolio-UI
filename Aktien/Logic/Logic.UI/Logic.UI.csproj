@@ -152,6 +152,7 @@
     <Compile Include="..\..\_Shared\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="AktieUI\AktienUebersichtViewModel.cs" />
     <Compile Include="AktieUI\NeueAktieViewModel.cs" />
     <Compile Include="BaseModels\ViewModelStammdatan.cs" />
     <Compile Include="MainViewModel.cs" />

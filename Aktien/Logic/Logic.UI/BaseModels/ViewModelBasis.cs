@@ -1,5 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Messaging;
+using Logic.Messages.Base;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -40,8 +42,7 @@ namespace Logic.UI
         public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
         public void RaiseErrorsChanged(string propertyName)
         {
-            if (ErrorsChanged != null)
-                ErrorsChanged(this, new DataErrorsChangedEventArgs(propertyName));
+            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
         }
 
         public System.Collections.IEnumerable GetErrors(string propertyName)
@@ -57,6 +58,7 @@ namespace Logic.UI
         {
             get { return ValidationErrors.Count > 0; }
         }
+
 
 
     }

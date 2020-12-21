@@ -41,10 +41,13 @@ namespace Logic.UI
             }
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<NeueAktieViewModel>();
+            SimpleIoc.Default.Register<AktienUebersichtViewModel>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
         public NeueAktieViewModel NeueAktie => ServiceLocator.Current.GetInstance<NeueAktieViewModel>();
+
+        public AktienUebersichtViewModel AktienUebersicht => ServiceLocator.Current.GetInstance<AktienUebersichtViewModel>();
 
         public static void Cleanup()
         {

@@ -29,18 +29,18 @@ namespace Logic.UI.AktieUI
         {
             Title = "Neue Aktie";
             name = "";
-            SaveNeueAktieCommand = new DelegateCommand<string>(this.ExecuteSaveNeueAktieCommand, this.CanExecuteSaveNeueAktieCommand);
+            SaveCommand = new DelegateCommand<string>(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
 
             ValidateISIN("");
             ValidateName("");
         }
 
-        protected override void ExecuteSaveNeueAktieCommand(String arg)
+        protected override void ExecuteSaveCommand(String arg)
         {
             AktieAPI api = new AktieAPI();
             if (!api.IstAkieVorhanden( isin ))
             { 
-                api.Speichern(new Aktie() { ISIN = isin, Name = name });
+                api.Speichern(new Aktie() { ISIN = isin, Name = name, WKN = wkn });
                 Messenger.Default.Send<SaveNeueAktieResultMessage>(new SaveNeueAktieResultMessage { Erfolgreich = true });
             }
             else
@@ -65,7 +65,7 @@ namespace Logic.UI.AktieUI
                 {
                     this.isin = value;
                     this.RaisePropertyChanged();
-                    ((DelegateCommand<string>)SaveNeueAktieCommand).RaiseCanExecuteChanged();
+                    ((DelegateCommand<string>)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
@@ -79,7 +79,7 @@ namespace Logic.UI.AktieUI
                 {
                     this.name = value;
                     this.RaisePropertyChanged();
-                    ((DelegateCommand<string>)SaveNeueAktieCommand).RaiseCanExecuteChanged();
+                    ((DelegateCommand<string>)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
@@ -104,9 +104,8 @@ namespace Logic.UI.AktieUI
         {
             const string propertyKey = "Name";
             var Validierung = new NeueAktieValidierung();
-            ICollection<string> validationErrors = null;
 
-            bool isValid = Validierung.ValidateName(inName, out validationErrors);
+            bool isValid = Validierung.ValidateName(inName, out ICollection<string> validationErrors);
 
 
             if (!isValid)
@@ -130,9 +129,8 @@ namespace Logic.UI.AktieUI
         {
             const string propertyKey = "ISIN";
             var Validierung = new NeueAktieValidierung();
-            ICollection<string> validationErrors = null;
 
-            bool isValid = Validierung.ValidateISIN(inISIN, out validationErrors);
+            bool isValid = Validierung.ValidateISIN(inISIN, out ICollection<string> validationErrors);
 
 
             if (!isValid)

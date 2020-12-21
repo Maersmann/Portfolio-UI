@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
 using Logic.Messages.Aktie;
+using Logic.Messages.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,27 +24,41 @@ namespace UI.Desktop
     /// </summary>
     public partial class MainView
     {
+        private bool canAktualisieren = false;
         public MainView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenNeueAktieViewMessage>(this, m => ReceiveOpenNeueAktieViewMessage());
+            Messenger.Default.Register<OpenNeueAktieMessage>(this, m => ReceiveOpenNeueAktieViewMessage());
+            Messenger.Default.Register<OpenAuswahlAktieMessage>(this, m => ReceiveOpenAuswahlAktieMessage());
+
+            Container.NavigationService.Navigate( new AktienUebersichtView() );
         }
 
         private void Container_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
         {
-            // if (e.Content == _formMatch)
-            // {
-            //     ribboncontextMatch.Visibility = Visibility.Visible;
-            //     ribbonMatch.IsSelected = true;
-            // }
-            // else
-            //     ribboncontextMatch.Visibility = Visibility.Hidden;
+             if (e.Content == Container.NavigationService.Content)
+             {
+                if (canAktualisieren)
+                    Messenger.Default.Send(new AktualisiereViewMessage { });
+            }
+            canAktualisieren = false;
         }
 
         private void ReceiveOpenNeueAktieViewMessage()
         {
-            var view = new NeueAktieView();
-            view.ShowDialog();
+            
+            bool? Result = new NeueAktieView().ShowDialog();
+
+            if (Result.GetValueOrDefault(false))
+            {
+                canAktualisieren = true;
+                Container.NavigationService.Refresh();
+            }
+        }
+
+        private void ReceiveOpenAuswahlAktieMessage()
+        {
+           Container.NavigationService.Navigate(new AktienUebersichtView());
         }
 
     }

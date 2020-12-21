@@ -9,14 +9,14 @@ namespace Logic.UI.BaseModels
 {
     public class ViewModelStammdatan : ViewModelBasis
     {
-        public ICommand SaveNeueAktieCommand { get; protected set; }
+        public ICommand SaveCommand { get; protected set; }
 
-        protected bool CanExecuteSaveNeueAktieCommand(String arg)
+        protected bool CanExecuteSaveCommand(String arg)
         {
             return ValidationErrors.Count == 0;
         }
 
-        protected virtual void ExecuteSaveNeueAktieCommand(String arg)
+        protected virtual void ExecuteSaveCommand(String arg)
         {
             throw new NotImplementedException();
         }

@@ -28,7 +28,7 @@
             <RowDefinition Height="35px" />
         </Grid.RowDefinitions>
 
-        <Button Grid.Row ="2" HorizontalAlignment="Right" Width="100" Margin="5" Command="{Binding NeueAktie.SaveNeueAktieCommand, Mode=OneWay}"> Speichern </Button>
+        <Button Grid.Row ="2" HorizontalAlignment="Right" Width="100" Margin="5" Command="{Binding NeueAktie.SaveCommand, Mode=OneWay}"> Speichern </Button>
         <Label Content="Name" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top"/>
         <TextBox HorizontalAlignment="Left" Height="22" Margin="61,14,0,0" Grid.Row="1" TextWrapping="NoWrap" VerticalAlignment="Top" Width="250" Text="{Binding NeueAktie.Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }">
             <Validation.ErrorTemplate>
