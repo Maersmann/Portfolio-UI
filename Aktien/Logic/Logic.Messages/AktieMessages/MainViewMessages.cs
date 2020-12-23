@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Data.Types;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,8 +12,8 @@ namespace Logic.Messages.AktieMessages
     {
     }
 
-    public class OpenAuswahlAktieMessage
+    public class OpenViewMessage
     {
-
+        public ViewType ViewType;
     }
 }

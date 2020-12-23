@@ -29,6 +29,7 @@ namespace UI.Desktop
         {
             InitializeComponent();
             Messenger.Default.Register<OpenAktieStammdatenBearbeitenMessage>(this, m => ReceiveOpenAktieStammdatenBearbeitenMessage( m ));
+            Messenger.Default.Register<DeleteAktieErfolgreichMessage>(this, m => ReceiveDeleteAktieErfolgreich());
         }
 
         private void ReceiveOpenAktieStammdatenBearbeitenMessage( OpenAktieStammdatenBearbeitenMessage message )
@@ -44,6 +45,12 @@ namespace UI.Desktop
             {
                 Messenger.Default.Send(new AktualisiereViewMessage { });
             }
+        }
+    
+        private void ReceiveDeleteAktieErfolgreich()
+        {
+            MessageBox.Show("Aktie erfolgreich gelöscht.");
+            Messenger.Default.Send(new AktualisiereViewMessage { });
         }
     }
 }

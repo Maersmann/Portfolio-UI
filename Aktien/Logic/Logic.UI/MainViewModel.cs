@@ -1,4 +1,5 @@
 using Data.API;
+using Data.Types;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
@@ -32,7 +33,7 @@ namespace Logic.UI
 
         private void ExecuteOpenAktienUebersichtCommand()
         {
-            Messenger.Default.Send<OpenAuswahlAktieMessage>(new OpenAuswahlAktieMessage { });
+            Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = ViewType.viewAktienUebersicht  });
         }
 
         private void ExecuteOpenConnectionCommand()

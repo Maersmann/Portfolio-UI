@@ -44,5 +44,11 @@ namespace Data.API
             return repo.Aktien.Where(a => a.ID == inID).First();
         }
 
+        public void Entfernen( Aktie inAktie )
+        {
+            repo.Aktien.Remove( inAktie );
+            repo.SaveChanges();
+        }
+
     }
 }

@@ -17,4 +17,9 @@ namespace Logic.Messages.Aktie
     {
         public int AktieID { get; set; }
     }
+
+    public class DeleteAktieErfolgreichMessage
+    {
+
+    }
 }

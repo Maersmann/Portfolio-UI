@@ -17,6 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using UI.Desktop.Aktie;
+using Data.Types;
 
 namespace UI.Desktop
 {
@@ -26,13 +27,21 @@ namespace UI.Desktop
     public partial class MainView
     {
         private bool canAktualisieren = false;
+
+        private static AktienUebersichtView aktienUebersichtView;
+
         public MainView()
         {
             InitializeComponent();
             Messenger.Default.Register<OpenAktieStammdatenMessage>(this, m => ReceiveOpenNeueAktieViewMessage());
-            Messenger.Default.Register<OpenAuswahlAktieMessage>(this, m => ReceiveOpenAuswahlAktieMessage());
+            Messenger.Default.Register<OpenViewMessage>(this, m => ReceiveOpenViewMessage(m));
 
-            Container.NavigationService.Navigate( new AktienUebersichtView() );
+            Naviagtion(ViewType.viewAktienUebersicht);
+        }
+
+        private void ReceiveOpenViewMessage(OpenViewMessage m)
+        {
+            Naviagtion(m.ViewType);
         }
 
         private void Container_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
@@ -57,9 +66,17 @@ namespace UI.Desktop
             }
         }
 
-        private void ReceiveOpenAuswahlAktieMessage()
+        public void Naviagtion(ViewType inType)
         {
-           Container.NavigationService.Navigate(new AktienUebersichtView());
+            switch (inType)
+            {
+                case ViewType.viewAktienUebersicht:
+                    aktienUebersichtView = aktienUebersichtView ?? new AktienUebersichtView();
+                    Container.NavigationService.Navigate(aktienUebersichtView);
+                    break;
+                default:
+                    break;
+            }
         }
 
     }

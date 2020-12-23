@@ -11,12 +11,12 @@ namespace Logic.UI.BaseModels
     {
         public ICommand SaveCommand { get; protected set; }
 
-        protected bool CanExecuteSaveCommand(String arg)
+        protected bool CanExecuteSaveCommand()
         {
             return ValidationErrors.Count == 0;
         }
 
-        protected virtual void ExecuteSaveCommand(String arg)
+        protected virtual void ExecuteSaveCommand()
         {
             throw new NotImplementedException();
         }

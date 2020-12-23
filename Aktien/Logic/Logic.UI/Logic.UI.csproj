@@ -173,6 +173,10 @@
       <Project>{9742e7e0-e88e-4923-a778-18f432d1151e}</Project>
       <Name>Data.Infrastructure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Data\Data.Types\Data.Types.csproj">
+      <Project>{1efe202d-5483-4bf1-abd5-1e52a2412ef2}</Project>
+      <Name>Data.Types</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Logic.Core\Logic.Core.csproj">
       <Project>{7562e2cc-065b-41e1-996b-a82616620da8}</Project>
       <Name>Logic.Core</Name>

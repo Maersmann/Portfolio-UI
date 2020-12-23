@@ -35,7 +35,7 @@ namespace Logic.UI.AktieUI
         {
             Title = "Neue Aktie";
             name = "";
-            SaveCommand = new DelegateCommand<string>(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
+            SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
 
             ValidateISIN("");
             ValidateName("");
@@ -44,7 +44,7 @@ namespace Logic.UI.AktieUI
         }
 
 
-        protected override void ExecuteSaveCommand(String arg)
+        protected override void ExecuteSaveCommand()
         {
             var api = new AktieAPI();
             if (state.Equals( State.Neu ))
@@ -100,7 +100,7 @@ namespace Logic.UI.AktieUI
                 {
                     this.isin = value;
                     this.RaisePropertyChanged();
-                    ((DelegateCommand<string>)SaveCommand).RaiseCanExecuteChanged();
+                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
@@ -114,7 +114,7 @@ namespace Logic.UI.AktieUI
                 {
                     this.name = value;
                     this.RaisePropertyChanged();
-                    ((DelegateCommand<string>)SaveCommand).RaiseCanExecuteChanged();
+                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }

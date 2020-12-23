@@ -234,6 +234,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Data\Data.Types\Data.Types.csproj">
+      <Project>{1efe202d-5483-4bf1-abd5-1e52a2412ef2}</Project>
+      <Name>Data.Types</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Logic\Logic.Messages\Logic.Messages.csproj">
       <Project>{d8f93673-9e8e-4f2e-8b59-82d3abb3bb59}</Project>
       <Name>Logic.Messages</Name>
