@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
 using Logic.Messages.Aktie;
+using Logic.Messages.AktieMessages;
 using Logic.Messages.Base;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,7 @@ namespace UI.Desktop
         public MainView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenNeueAktieMessage>(this, m => ReceiveOpenNeueAktieViewMessage());
+            Messenger.Default.Register<OpenAktieStammdatenMessage>(this, m => ReceiveOpenNeueAktieViewMessage());
             Messenger.Default.Register<OpenAuswahlAktieMessage>(this, m => ReceiveOpenAuswahlAktieMessage());
 
             Container.NavigationService.Navigate( new AktienUebersichtView() );
@@ -47,7 +48,7 @@ namespace UI.Desktop
         private void ReceiveOpenNeueAktieViewMessage()
         {
             
-            bool? Result = new NeueAktieView().ShowDialog();
+            bool? Result = new AktieStammdatenView().ShowDialog();
 
             if (Result.GetValueOrDefault(false))
             {

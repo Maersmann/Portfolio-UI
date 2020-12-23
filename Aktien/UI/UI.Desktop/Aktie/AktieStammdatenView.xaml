@@ -7,30 +7,30 @@
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:command="http://www.galasoft.ch/mvvmlight"
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
-        xmlns:UI="clr-namespace:Logic.UI;assembly=Logic.UI" x:Class="UI.Desktop.Aktie.NeueAktieView"
+        xmlns:UI="clr-namespace:Logic.UI;assembly=Logic.UI" x:Class="UI.Desktop.Aktie.AktieStammdatenView"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
-        Title="{Binding NeueAktie.Title, Mode=OneWay}" Height="227.573" Width="326.354">
-    <Window.DataContext>
-        <UI:ViewModelLocator/>
-    </Window.DataContext>
+        Title="{Binding Title, Mode=OneWay}" Height="228.326" Width="348.584"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        ResizeMode="NoResize"
+        DataContext="{Binding AktieStammdaten ,Source={StaticResource Locator}}" Unloaded="Window_Unloaded">
+
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closed">
-            <command:EventToCommand Command="{Binding NeueAktie.ClosedCommand}"/>
+            <command:EventToCommand Command="{Binding CloseCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
 
-    <Grid Margin="0,0,2,0">
+    <Grid >
         <Grid.RowDefinitions>
-            <RowDefinition Height="25px" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="35px" />
+            <RowDefinition Height="45px" />
         </Grid.RowDefinitions>
 
-        <Button Grid.Row ="2" HorizontalAlignment="Right" Width="100" Margin="5" Command="{Binding NeueAktie.SaveCommand, Mode=OneWay}"> Speichern </Button>
-        <Label Content="Name" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="22" Margin="61,14,0,0" Grid.Row="1" TextWrapping="NoWrap" VerticalAlignment="Top" Width="250" Text="{Binding NeueAktie.Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }">
+        
+        <Label Content="Name" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="22" Margin="61,14,0,0" Grid.Row="0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="250" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }">
             <Validation.ErrorTemplate>
                 <ControlTemplate>
                     <StackPanel>
@@ -46,8 +46,8 @@
                 </ControlTemplate>
             </Validation.ErrorTemplate>
         </TextBox>
-        <Label Content="ISIN" HorizontalAlignment="Left" Margin="10,51,0,0" Grid.Row="1" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="26" Margin="61,51,0,0" Grid.Row="1" TextWrapping="NoWrap" VerticalAlignment="Top" Width="250" Text="{Binding NeueAktie.ISIN, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }">
+        <Label Content="ISIN" HorizontalAlignment="Left" Margin="10,51,0,0" Grid.Row="0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="26" Margin="61,51,0,0" Grid.Row="0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="250" Text="{Binding ISIN, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }" IsEnabled="{Binding ISIN_isEnabled, Mode=OneWay}">
             <Validation.ErrorTemplate>
                 <ControlTemplate>
                     <StackPanel>
@@ -63,9 +63,15 @@
                 </ControlTemplate>
             </Validation.ErrorTemplate>
         </TextBox>
-        <Label Content="WKN" HorizontalAlignment="Left" Margin="10,94,0,0" Grid.Row="1" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="26" Margin="61,94,0,0" Grid.Row="1" TextWrapping="NoWrap" VerticalAlignment="Top" Width="250" Text="{Binding NeueAktie.WKN}"/>
+        <Label Content="WKN" HorizontalAlignment="Left" Margin="10,94,0,0" Grid.Row="0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="26" Margin="61,94,0,0" Grid.Row="0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="250" Text="{Binding WKN}"/>
 
+        <materialDesign:Card Grid.Row="1"  >
+            <DockPanel  LastChildFill="False" >
+                <Button Grid.Row ="1" DockPanel.Dock="Right" Margin="5" HorizontalAlignment="Right" Width="100"  Command="{Binding SaveCommand, Mode=OneWay}"  Style="{DynamicResource MaterialDesignToolButton}" >Speichern</Button>
+            </DockPanel>
+        </materialDesign:Card>
+       
 
     </Grid>
 </Window>

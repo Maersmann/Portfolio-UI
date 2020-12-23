@@ -19,9 +19,9 @@ namespace UI.Desktop.Aktie
     /// <summary>
     /// Interaktionslogik für NeueAktieView.xaml
     /// </summary>
-    public partial class NeueAktieView : Window
+    public partial class AktieStammdatenView : Window
     {
-        public NeueAktieView()
+        public AktieStammdatenView()
         {
             InitializeComponent();
             Messenger.Default.Register<SaveNeueAktieResultMessage>(this, m => ReceiveSaveNeueAktieResultMessage( m));
@@ -31,15 +31,19 @@ namespace UI.Desktop.Aktie
         {
             if( inSaveNeueAktieResultMessage.Erfolgreich )
             {
-                MessageBox.Show("Aktie gespeichert");
+                MessageBox.Show(inSaveNeueAktieResultMessage.Message);
                 DialogResult = true;
-                Close();
             }
             else
             {
-                MessageBox.Show(inSaveNeueAktieResultMessage.Fehlermessage);
+                MessageBox.Show(inSaveNeueAktieResultMessage.Message);
             }
 
+        }
+
+        private void Window_Unloaded(object sender, RoutedEventArgs e)
+        {
+            Messenger.Default.Unregister<SaveNeueAktieResultMessage>(this);
         }
     }
 }

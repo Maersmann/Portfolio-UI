@@ -17,15 +17,21 @@ using Logic.UI.BaseModels;
 
 namespace Logic.UI.AktieUI
 {
-    public class NeueAktieViewModel : ViewModelStammdatan
+    enum State { Neu, Bearbeiten };
+
+    public class AktieStammdatenViewModel : ViewModelStammdatan
     {
+        private State state;
+
+        private Aktie updateAktie;
+
         private string name;
 
         private string isin;
 
         private string wkn;
 
-        public NeueAktieViewModel():base()
+        public AktieStammdatenViewModel():base()
         {
             Title = "Neue Aktie";
             name = "";
@@ -33,27 +39,56 @@ namespace Logic.UI.AktieUI
 
             ValidateISIN("");
             ValidateName("");
+
+            state = State.Neu;
         }
+
 
         protected override void ExecuteSaveCommand(String arg)
         {
-            AktieAPI api = new AktieAPI();
-            if (!api.IstAkieVorhanden( isin ))
-            { 
-                api.Speichern(new Aktie() { ISIN = isin, Name = name, WKN = wkn });
-                Messenger.Default.Send<SaveNeueAktieResultMessage>(new SaveNeueAktieResultMessage { Erfolgreich = true });
+            var api = new AktieAPI();
+            if (state.Equals( State.Neu ))
+            {            
+                if (!api.IstAkieVorhanden( isin ))
+                { 
+                    api.Speichern(new Aktie() { ISIN = isin, Name = name, WKN = wkn });
+                    Messenger.Default.Send<SaveNeueAktieResultMessage>(new SaveNeueAktieResultMessage { Erfolgreich = true, Message = "Aktie erfolgreich gespeichert." });
+                }
+                else
+                {
+                    Messenger.Default.Send<SaveNeueAktieResultMessage>(new SaveNeueAktieResultMessage { Erfolgreich = false, Message = "Aktie ist schon vorhanden." });
+                }
             }
             else
             {
-                Messenger.Default.Send<SaveNeueAktieResultMessage>(new SaveNeueAktieResultMessage { Erfolgreich = false, Fehlermessage = "Aktie ist schon vorhanden" });
-            }
+                updateAktie.Name = name;
+                updateAktie.WKN = wkn;
+                api.Update(updateAktie);
+                Messenger.Default.Send<SaveNeueAktieResultMessage>(new SaveNeueAktieResultMessage { Erfolgreich = true, Message = "Aktie erfolgreich aktualisiert." });
+            } 
         }
 
-        protected override void ExecuteOpenCommand()
+        protected override void ExecuteCloseCommand()
         {
-            ViewModelLocator.CleanUpNeueAktieView();
+            ViewModelLocator.CleanUpNeueAktieView();    
         }
 
+        public int AktieID 
+        { 
+            set 
+            { 
+                Title = "Aktie bearbeiten";
+                updateAktie = new AktieAPI().LadeAnhandID(value);
+                Name = updateAktie.Name;
+                ISIN = updateAktie.ISIN;
+                WKN = updateAktie.WKN;
+                state = State.Bearbeiten;
+                this.RaisePropertyChanged("ISIN_isEnabled");
+            } 
+        }
+
+
+        public bool ISIN_isEnabled { get{ return state == State.Neu; } }
 
         public string ISIN
         {
@@ -99,7 +134,7 @@ namespace Logic.UI.AktieUI
         }
 
 
-
+        #region Validate
         private bool ValidateName(String inName)
         {
             const string propertyKey = "Name";
@@ -149,8 +184,8 @@ namespace Logic.UI.AktieUI
             }
             return isValid;
         }
+        #endregion
 
-    
 
 
     }

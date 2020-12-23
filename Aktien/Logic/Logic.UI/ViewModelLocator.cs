@@ -15,6 +15,8 @@
 using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
+using GalaSoft.MvvmLight.Messaging;
+using Logic.Messages.Aktie;
 using Logic.UI.AktieUI;
 
 namespace Logic.UI
@@ -40,12 +42,12 @@ namespace Logic.UI
                 // Create run time view services and models                
             }
             SimpleIoc.Default.Register<MainViewModel>();
-            SimpleIoc.Default.Register<NeueAktieViewModel>();
+            SimpleIoc.Default.Register<AktieStammdatenViewModel>();
             SimpleIoc.Default.Register<AktienUebersichtViewModel>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
-        public NeueAktieViewModel NeueAktie => ServiceLocator.Current.GetInstance<NeueAktieViewModel>();
+        public AktieStammdatenViewModel AktieStammdaten => ServiceLocator.Current.GetInstance<AktieStammdatenViewModel>();
 
         public AktienUebersichtViewModel AktienUebersicht => ServiceLocator.Current.GetInstance<AktienUebersichtViewModel>();
 
@@ -56,8 +58,8 @@ namespace Logic.UI
 
         public static void CleanUpNeueAktieView()
         {
-            SimpleIoc.Default.Unregister<NeueAktieViewModel>();
-            SimpleIoc.Default.Register<NeueAktieViewModel>();
+            SimpleIoc.Default.Unregister<AktieStammdatenViewModel>();
+            SimpleIoc.Default.Register<AktieStammdatenViewModel>();
         }
     }
 }

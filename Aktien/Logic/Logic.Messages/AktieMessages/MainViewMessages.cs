@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Logic.Messages.Aktie
+namespace Logic.Messages.AktieMessages
 {
-    public class OpenNeueAktieMessage
-    {
 
+    public class OpenAktieStammdatenMessage
+    {
     }
 
     public class OpenAuswahlAktieMessage

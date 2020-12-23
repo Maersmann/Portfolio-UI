@@ -3,12 +3,13 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using Logic.Messages.Aktie;
+using Logic.Messages.AktieMessages;
 using System;
 using System.Windows.Input;
 
 namespace Logic.UI
 {
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBasis
     {
         public MainViewModel()
         {
@@ -18,9 +19,15 @@ namespace Logic.UI
             OpenAktienUebersichtCommand = new RelayCommand(() => ExecuteOpenAktienUebersichtCommand());
         }
 
+        public ICommand OpenNeueAktieCommand { get; private set; }
+
+        public ICommand OpenAktienUebersichtCommand { get; private set; }
+
+        public ICommand OpenConnectionCommand { get; private set; }
+
         private void ExecuteOpenNeueAktieCommand()
         {
-            Messenger.Default.Send<OpenNeueAktieMessage>(new OpenNeueAktieMessage { });
+            Messenger.Default.Send<OpenAktieStammdatenMessage>(new OpenAktieStammdatenMessage { });
         }
 
         private void ExecuteOpenAktienUebersichtCommand()
@@ -34,14 +41,5 @@ namespace Logic.UI
             dbAPI.OpenConnection();
         }
 
-
-
-        public string Title { get; private set; }
-
-        public ICommand OpenNeueAktieCommand { get; private set; }
-
-        public ICommand OpenAktienUebersichtCommand { get; private set; }
-
-        public ICommand OpenConnectionCommand { get; private set; }
     }
 }

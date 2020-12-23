@@ -44,8 +44,8 @@
     <Compile Include="..\..\_Shared\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Aktie\MainViewMessages.cs" />
-    <Compile Include="Aktie\NeueAktieMessages.cs" />
+    <Compile Include="AktieMessages\MainViewMessages.cs" />
+    <Compile Include="AktieMessages\AktieStammdatenMessages.cs" />
     <Compile Include="Base\BaseMessages.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -17,17 +17,17 @@ namespace Logic.UI
     {
         public ViewModelBasis()
         {
-            ClosedCommand = new RelayCommand(() => ExecuteOpenCommand());
+            CloseCommand = new RelayCommand(() => ExecuteCloseCommand());
         }
 
         public string Title { get; protected set; }
 
-        public ICommand ClosedCommand { get; private set; }
+        public ICommand CloseCommand { get; private set; }
 
         public readonly Dictionary<string, ICollection<string>>
             ValidationErrors = new Dictionary<string, ICollection<string>>();
 
-        protected virtual void ExecuteOpenCommand()
+        protected virtual void ExecuteCloseCommand()
         {
             throw new NotImplementedException();   
         }

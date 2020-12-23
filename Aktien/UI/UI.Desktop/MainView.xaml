@@ -10,7 +10,7 @@
         xmlns:UI="clr-namespace:Logic.UI;assembly=Logic.UI"
         x:Class="UI.Desktop.MainView"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen" WindowState="Maximized"
-        Title="{Binding Main.Title, Mode=OneWay}" Height="450" Width="800" 
+        Title="{Binding Title, Mode=OneWay}" Height="450" Width="800" 
         DataContext="{Binding Main ,Source={StaticResource Locator}}">
 
 

@@ -10,6 +10,11 @@ namespace Logic.Messages.Aktie
     {
         public bool Erfolgreich { get; set; }
 
-        public string Fehlermessage { get; set; }
+        public string Message { get; set; }
+    }
+
+    public class OpenAktieStammdatenBearbeitenMessage
+    {
+        public int AktieID { get; set; }
     }
 }

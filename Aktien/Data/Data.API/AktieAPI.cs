@@ -21,6 +21,12 @@ namespace Data.API
             repo.SaveChanges();
         }
 
+        public void Update(Aktie inAkite )
+        {
+            repo.Aktien.Update(inAkite);
+            repo.SaveChanges();
+        }
+
         public bool IstAkieVorhanden( String inISIN )
         {
             var Aktie = repo.Aktien.Where(a => a.ISIN.Equals(inISIN)).FirstOrDefault();
@@ -30,7 +36,12 @@ namespace Data.API
 
         public ObservableCollection<Aktie> LadeAlle()
         {
-            return new ObservableCollection<Aktie>(repo.Aktien.ToList());
+            return new ObservableCollection<Aktie>(repo.Aktien.OrderBy(o => o.ID).ToList());
+        }
+
+        public Aktie LadeAnhandID( int inID )
+        {
+            return repo.Aktien.Where(a => a.ID == inID).First();
         }
 
     }

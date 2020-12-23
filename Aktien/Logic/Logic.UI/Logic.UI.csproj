@@ -153,7 +153,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AktieUI\AktienUebersichtViewModel.cs" />
-    <Compile Include="AktieUI\NeueAktieViewModel.cs" />
+    <Compile Include="AktieUI\AktieStammdatenViewModel.cs" />
     <Compile Include="BaseModels\ViewModelStammdatan.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
