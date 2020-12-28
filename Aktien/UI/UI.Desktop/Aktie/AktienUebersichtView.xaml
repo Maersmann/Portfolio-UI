@@ -36,6 +36,7 @@
             <DockPanel  LastChildFill="False" >
                 <Button DockPanel.Dock="Left" Width="100" Margin="3"  Style="{DynamicResource MaterialDesignToolForegroundButton}" Command="{Binding BearbeitenCommand, Mode=OneWay}" Content="Bearbeiten" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <Button DockPanel.Dock="Left" Width="100" Margin="3"  Style="{DynamicResource MaterialDesignToolForegroundButton}" Command="{Binding EntfernenCommand, Mode=OneWay}" Content="Löschen" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Button DockPanel.Dock="Left" Width="100" Margin="3"  Style="{DynamicResource MaterialDesignToolForegroundButton}" Command="{Binding OpenNeueDividendeCommand, Mode=OneWay}" Content="Dividende" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </DockPanel>
         </materialDesign:Card>
         

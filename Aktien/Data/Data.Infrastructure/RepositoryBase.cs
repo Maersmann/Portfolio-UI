@@ -1,14 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Data.Entity.AktieEntitys;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data
+namespace Data.Infrastructure
 {
     public class RepositoryBase : DbContext
     {
 
         public DbSet<Aktie> Aktien { get; set; }
+
+        public DbSet<Dividende> Dividenden { get; set; }
 
         public RepositoryBase() : base() { this.Database.Migrate(); }
 

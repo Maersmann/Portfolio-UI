@@ -1,7 +1,9 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
 using Logic.Messages.Aktie;
 using Logic.Messages.Base;
-using Logic.UI.AktieUI;
+using Logic.Messages.DividendeMessages;
+using Logic.UI.AktieViewModels;
+using Logic.UI.DividendeModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +19,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using UI.Desktop.Aktie;
+using UI.Desktop.Dividende;
 
 namespace UI.Desktop
 {
@@ -30,6 +33,7 @@ namespace UI.Desktop
             InitializeComponent();
             Messenger.Default.Register<OpenAktieStammdatenBearbeitenMessage>(this, m => ReceiveOpenAktieStammdatenBearbeitenMessage( m ));
             Messenger.Default.Register<DeleteAktieErfolgreichMessage>(this, m => ReceiveDeleteAktieErfolgreich());
+            Messenger.Default.Register<OpenDividendeStammdatenNeuMessage>(this, m => ReceiveOpenDividendeStammdatenNeuMessage(m));
         }
 
         private void ReceiveOpenAktieStammdatenBearbeitenMessage( OpenAktieStammdatenBearbeitenMessage message )
@@ -51,6 +55,17 @@ namespace UI.Desktop
         {
             MessageBox.Show("Aktie erfolgreich gelöscht.");
             Messenger.Default.Send(new AktualisiereViewMessage { });
+        }
+
+        private void ReceiveOpenDividendeStammdatenNeuMessage( OpenDividendeStammdatenNeuMessage message )
+        {
+            var view = new DividendeStammdatenView();
+            if ( view.DataContext is DividendeStammdatenViewModel model )
+            {
+                model.Aktienname = message.Aktienname;
+                model.AktienID = message.AktienID;
+            }
+            view.ShowDialog();
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using Data;
-using Data.API;
+﻿using Data.API;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -14,8 +13,9 @@ using System.Runtime.CompilerServices;
 using Prism.Commands;
 using System.Windows.Input;
 using Logic.UI.BaseModels;
+using Data.Entity.AktieEntitys;
 
-namespace Logic.UI.AktieUI
+namespace Logic.UI.AktieViewModels
 {
     enum State { Neu, Bearbeiten };
 
@@ -34,7 +34,6 @@ namespace Logic.UI.AktieUI
         public AktieStammdatenViewModel():base()
         {
             Title = "Neue Aktie";
-            name = "";
             SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
 
             ValidateISIN("");
@@ -70,7 +69,7 @@ namespace Logic.UI.AktieUI
 
         protected override void ExecuteCloseCommand()
         {
-            ViewModelLocator.CleanUpNeueAktieView();    
+            ViewModelLocator.CleanUpAktieStammdatenView();    
         }
 
         public int AktieID 
@@ -108,8 +107,7 @@ namespace Logic.UI.AktieUI
         public string Name{
             get { return this.name; }
             set
-            {
-                
+            {               
                 if (ValidateName(value) || !string.Equals(this.name, value))
                 {
                     this.name = value;
@@ -138,7 +136,7 @@ namespace Logic.UI.AktieUI
         private bool ValidateName(String inName)
         {
             const string propertyKey = "Name";
-            var Validierung = new NeueAktieValidierung();
+            var Validierung = new AktieStammdatenValidierung();
 
             bool isValid = Validierung.ValidateName(inName, out ICollection<string> validationErrors);
 
@@ -163,7 +161,7 @@ namespace Logic.UI.AktieUI
         private bool ValidateISIN(String inISIN)
         {
             const string propertyKey = "ISIN";
-            var Validierung = new NeueAktieValidierung();
+            var Validierung = new AktieStammdatenValidierung();
 
             bool isValid = Validierung.ValidateISIN(inISIN, out ICollection<string> validationErrors);
 

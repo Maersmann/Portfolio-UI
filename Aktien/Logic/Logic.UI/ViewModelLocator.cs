@@ -17,7 +17,8 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
 using Logic.Messages.Aktie;
-using Logic.UI.AktieUI;
+using Logic.UI.AktieViewModels;
+using Logic.UI.DividendeModels;
 
 namespace Logic.UI
 {
@@ -44,22 +45,29 @@ namespace Logic.UI
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<AktieStammdatenViewModel>();
             SimpleIoc.Default.Register<AktienUebersichtViewModel>();
+            SimpleIoc.Default.Register<DividendeStammdatenViewModel>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
         public AktieStammdatenViewModel AktieStammdaten => ServiceLocator.Current.GetInstance<AktieStammdatenViewModel>();
-
         public AktienUebersichtViewModel AktienUebersicht => ServiceLocator.Current.GetInstance<AktienUebersichtViewModel>();
+        public DividendeStammdatenViewModel DividendeStammdaten => ServiceLocator.Current.GetInstance<DividendeStammdatenViewModel>();
 
         public static void Cleanup()
         {
 
         }
 
-        public static void CleanUpNeueAktieView()
+        public static void CleanUpAktieStammdatenView()
         {
             SimpleIoc.Default.Unregister<AktieStammdatenViewModel>();
             SimpleIoc.Default.Register<AktieStammdatenViewModel>();
+        }
+
+        public static void CleanUpDividendeStammdatenView()
+        {
+            SimpleIoc.Default.Unregister<DividendeStammdatenViewModel>();
+            SimpleIoc.Default.Register<DividendeStammdatenViewModel>();
         }
     }
 }

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D8F93673-9E8E-4F2E-8B59-82D3ABB3BB59}</ProjectGuid>
+    <ProjectGuid>{C57D4B4A-936C-49F4-BDAE-CB36093755E6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Logic.Messages</RootNamespace>
-    <AssemblyName>Logic.Messages</AssemblyName>
+    <RootNamespace>Logic.Models</RootNamespace>
+    <AssemblyName>Logic.Models</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -41,20 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\_Shared\SharedAssemblyInfo.cs">
-      <Link>Properties\SharedAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="AktieMessages\MainViewMessages.cs" />
-    <Compile Include="AktieMessages\AktieStammdatenMessages.cs" />
-    <Compile Include="Base\BaseMessages.cs" />
-    <Compile Include="DividendeMessages\DividendeStammdatenMessages.cs" />
+    <Compile Include="DividendeModels\Dividende.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Data\Data.Types\Data.Types.csproj">
-      <Project>{1efe202d-5483-4bf1-abd5-1e52a2412ef2}</Project>
-      <Name>Data.Types</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

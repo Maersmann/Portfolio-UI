@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Logic.Core.Validierung
 {
-    public class NeueAktieValidierung : IValidierung
+    public class AktieStammdatenValidierung : IValidierung
     {
         public bool ValidateName(String inName, out ICollection<string> validationErrors)
         {

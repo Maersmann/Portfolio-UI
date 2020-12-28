@@ -98,6 +98,7 @@
       <HintPath>..\..\packages\Npgsql.EntityFrameworkCore.PostgreSQL.3.1.4\lib\netstandard2.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="Prism, Version=8.0.0.1909, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Prism.Core.8.0.0.1909\lib\net47\Prism.dll</HintPath>
     </Reference>
@@ -152,9 +153,10 @@
     <Compile Include="..\..\_Shared\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="AktieUI\AktienUebersichtViewModel.cs" />
-    <Compile Include="AktieUI\AktieStammdatenViewModel.cs" />
+    <Compile Include="AktieViewModels\AktienUebersichtViewModel.cs" />
+    <Compile Include="AktieViewModels\AktieStammdatenViewModel.cs" />
     <Compile Include="BaseModels\ViewModelStammdatan.cs" />
+    <Compile Include="DividendeModels\DividendeStammdatenViewModel.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BaseModels\ViewModelBasis.cs" />
@@ -169,9 +171,9 @@
       <Project>{cbcfd503-dcf1-4381-8554-6088a886f59e}</Project>
       <Name>Data.API</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Data\Data.Infrastructure\Data.Infrastructure.csproj">
-      <Project>{9742e7e0-e88e-4923-a778-18f432d1151e}</Project>
-      <Name>Data.Infrastructure</Name>
+    <ProjectReference Include="..\..\Data\Data.Model\Data.Entity.csproj">
+      <Project>{96b5abf1-b481-4adc-b42e-49fc1839e15f}</Project>
+      <Name>Data.Entity</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Data\Data.Types\Data.Types.csproj">
       <Project>{1efe202d-5483-4bf1-abd5-1e52a2412ef2}</Project>
@@ -184,6 +186,10 @@
     <ProjectReference Include="..\Logic.Messages\Logic.Messages.csproj">
       <Project>{d8f93673-9e8e-4f2e-8b59-82d3abb3bb59}</Project>
       <Name>Logic.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Logic.Models\Logic.Models.csproj">
+      <Project>{c57d4b4a-936c-49f4-bdae-cb36093755e6}</Project>
+      <Name>Logic.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,10 +1,11 @@
-﻿using Data;
-using Data.API;
+﻿using Data.API;
+using Data.Entity.AktieEntitys;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Logic.Messages.Aktie;
 using Logic.Messages.AktieMessages;
 using Logic.Messages.Base;
+using Logic.Messages.DividendeMessages;
 using Logic.UI.BaseModels;
 using Prism.Commands;
 using System;
@@ -15,7 +16,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Logic.UI.AktieUI
+namespace Logic.UI.AktieViewModels
 {
     public class AktienUebersichtViewModel : ViewModelBasis
     {
@@ -31,6 +32,7 @@ namespace Logic.UI.AktieUI
             Messenger.Default.Register<AktualisiereViewMessage>(this, m => ReceiveAktualisiereViewMessage());
             BearbeitenCommand = new DelegateCommand(this.ExecuteBearbeitenCommand, this.CanExecuteCommand);
             EntfernenCommand = new DelegateCommand(this.ExecuteEntfernenCommand, this.CanExecuteCommand);
+            OpenNeueDividendeCommand = new DelegateCommand(this.ExecuteOpenNeueDividendeCommand, this.CanExecuteCommand);
         }
 
 
@@ -47,6 +49,7 @@ namespace Logic.UI.AktieUI
                 this.RaisePropertyChanged();
                 ((DelegateCommand)BearbeitenCommand).RaiseCanExecuteChanged();
                 ((DelegateCommand)EntfernenCommand).RaiseCanExecuteChanged();
+                ((DelegateCommand)OpenNeueDividendeCommand).RaiseCanExecuteChanged();
             } 
         }
 
@@ -62,6 +65,8 @@ namespace Logic.UI.AktieUI
 
         public ICommand EntfernenCommand { get; protected set; }
 
+        public ICommand OpenNeueDividendeCommand { get; set; }
+
 
         private bool CanExecuteCommand()
         {
@@ -71,6 +76,11 @@ namespace Logic.UI.AktieUI
         private void ExecuteBearbeitenCommand()
         {
             Messenger.Default.Send<OpenAktieStammdatenBearbeitenMessage>(new OpenAktieStammdatenBearbeitenMessage { AktieID = selectedAktie.ID });
+        }
+
+        private void ExecuteOpenNeueDividendeCommand()
+        {
+            Messenger.Default.Send<OpenDividendeStammdatenNeuMessage>(new OpenDividendeStammdatenNeuMessage { AktienID = selectedAktie.ID, Aktienname = selectedAktie.Name } );
         }
 
         private void ExecuteEntfernenCommand()
