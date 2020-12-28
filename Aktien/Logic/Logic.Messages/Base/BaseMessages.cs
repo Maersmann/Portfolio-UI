@@ -10,4 +10,10 @@ namespace Logic.Messages.Base
     {
 
     }
+
+    public class StammdatenGespeichertMessage
+    {
+        public bool Erfolgreich { get; set; }
+        public string Message { get; set; }
+    }
 }

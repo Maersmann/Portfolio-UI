@@ -6,12 +6,6 @@ using System.Threading.Tasks;
 
 namespace Logic.Messages.Aktie
 {
-    public class SaveNeueAktieResultMessage
-    {
-        public bool Erfolgreich { get; set; }
-
-        public string Message { get; set; }
-    }
 
     public class OpenAktieStammdatenBearbeitenMessage
     {

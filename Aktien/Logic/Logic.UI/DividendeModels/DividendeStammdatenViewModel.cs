@@ -1,6 +1,7 @@
 ﻿using Data.API;
 using GalaSoft.MvvmLight.Messaging;
 using Logic.Core.Validierung;
+using Logic.Messages.Base;
 using Logic.Messages.DividendeMessages;
 using Logic.Models.DividendeModels;
 using Logic.UI.BaseModels;
@@ -36,7 +37,7 @@ namespace Logic.UI.DividendeModels
         {
             var API = new DividendeAPI();
             API.SpeicherNeueDividende(dividende.Betrag.GetValueOrDefault(), dividende.Datum.GetValueOrDefault(), dividende.AktienID.GetValueOrDefault());
-            Messenger.Default.Send<NeueDividendeGespeichertMessage>(new NeueDividendeGespeichertMessage { Erfolgreich = true, Message = "Dividende erfolgreich gespeichert." });
+            Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Dividende erfolgreich gespeichert." });
         }
 
         public DateTime? Datum

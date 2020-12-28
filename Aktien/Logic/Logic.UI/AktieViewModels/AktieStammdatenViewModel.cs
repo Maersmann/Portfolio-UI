@@ -14,6 +14,7 @@ using Prism.Commands;
 using System.Windows.Input;
 using Logic.UI.BaseModels;
 using Data.Entity.AktieEntitys;
+using Logic.Messages.Base;
 
 namespace Logic.UI.AktieViewModels
 {
@@ -51,11 +52,11 @@ namespace Logic.UI.AktieViewModels
                 if (!api.IstAkieVorhanden( isin ))
                 { 
                     api.Speichern(new Aktie() { ISIN = isin, Name = name, WKN = wkn });
-                    Messenger.Default.Send<SaveNeueAktieResultMessage>(new SaveNeueAktieResultMessage { Erfolgreich = true, Message = "Aktie erfolgreich gespeichert." });
+                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Aktie erfolgreich gespeichert." });
                 }
                 else
                 {
-                    Messenger.Default.Send<SaveNeueAktieResultMessage>(new SaveNeueAktieResultMessage { Erfolgreich = false, Message = "Aktie ist schon vorhanden." });
+                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = false, Message = "Aktie ist schon vorhanden." });
                 }
             }
             else
@@ -63,7 +64,7 @@ namespace Logic.UI.AktieViewModels
                 updateAktie.Name = name;
                 updateAktie.WKN = wkn;
                 api.Update(updateAktie);
-                Messenger.Default.Send<SaveNeueAktieResultMessage>(new SaveNeueAktieResultMessage { Erfolgreich = true, Message = "Aktie erfolgreich aktualisiert." });
+                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Aktie erfolgreich aktualisiert." });
             } 
         }
 

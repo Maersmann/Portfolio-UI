@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
+using Logic.Messages.Base;
 using Logic.Messages.DividendeMessages;
 using System;
 using System.Collections.Generic;
@@ -13,36 +14,19 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using UI.Desktop.Base;
 
 namespace UI.Desktop.Dividende
 {
     /// <summary>
     /// Interaktionslogik für DividendeStammdatenView.xaml
     /// </summary>
-    public partial class DividendeStammdatenView : Window
+    public partial class DividendeStammdatenView : StammdatenView
     {
         public DividendeStammdatenView()
         {
             InitializeComponent();
-            Messenger.Default.Register<NeueDividendeGespeichertMessage>(this, m => ReceiveNeueDividendeGespeichertMessage(m));
         }
 
-        private void ReceiveNeueDividendeGespeichertMessage(NeueDividendeGespeichertMessage m)
-        {
-            if (m.Erfolgreich)
-            {
-                MessageBox.Show(m.Message);
-                DialogResult = true;
-            }
-            else
-            {
-                MessageBox.Show(m.Message);
-            }
-        }
-
-        private void Window_Unloaded(object sender, RoutedEventArgs e)
-        {
-            Messenger.Default.Unregister<NeueDividendeGespeichertMessage>(this);
-        }
     }
 }

@@ -13,37 +13,19 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using UI.Desktop.Base;
 
 namespace UI.Desktop.Aktie
 {
     /// <summary>
     /// Interaktionslogik für NeueAktieView.xaml
     /// </summary>
-    public partial class AktieStammdatenView : Window
+    public partial class AktieStammdatenView : StammdatenView
     {
         public AktieStammdatenView()
         {
             InitializeComponent();
-            Messenger.Default.Register<SaveNeueAktieResultMessage>(this, m => ReceiveSaveNeueAktieResultMessage( m));
         }
 
-        private void ReceiveSaveNeueAktieResultMessage( SaveNeueAktieResultMessage inSaveNeueAktieResultMessage )
-        {
-            if( inSaveNeueAktieResultMessage.Erfolgreich )
-            {
-                MessageBox.Show(inSaveNeueAktieResultMessage.Message);
-                DialogResult = true;
-            }
-            else
-            {
-                MessageBox.Show(inSaveNeueAktieResultMessage.Message);
-            }
-
-        }
-
-        private void Window_Unloaded(object sender, RoutedEventArgs e)
-        {
-            Messenger.Default.Unregister<SaveNeueAktieResultMessage>(this);
-        }
     }
 }

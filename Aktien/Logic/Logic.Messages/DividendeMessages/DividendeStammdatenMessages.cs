@@ -12,9 +12,4 @@ namespace Logic.Messages.DividendeMessages
         public int AktienID { get; set; }
     }
 
-    public class NeueDividendeGespeichertMessage
-    {
-        public bool Erfolgreich { get; set; }
-        public string Message { get; set; }
-    }
 }
