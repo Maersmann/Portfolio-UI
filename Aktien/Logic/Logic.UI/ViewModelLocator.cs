@@ -46,12 +46,14 @@ namespace Logic.UI
             SimpleIoc.Default.Register<AktieStammdatenViewModel>();
             SimpleIoc.Default.Register<AktienUebersichtViewModel>();
             SimpleIoc.Default.Register<DividendeStammdatenViewModel>();
+            SimpleIoc.Default.Register<DividendenUebersichtViewModel>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
         public AktieStammdatenViewModel AktieStammdaten => ServiceLocator.Current.GetInstance<AktieStammdatenViewModel>();
         public AktienUebersichtViewModel AktienUebersicht => ServiceLocator.Current.GetInstance<AktienUebersichtViewModel>();
         public DividendeStammdatenViewModel DividendeStammdaten => ServiceLocator.Current.GetInstance<DividendeStammdatenViewModel>();
+        public DividendenUebersichtViewModel DividendenUebersicht => ServiceLocator.Current.GetInstance<DividendenUebersichtViewModel>();
 
         public static void Cleanup()
         {

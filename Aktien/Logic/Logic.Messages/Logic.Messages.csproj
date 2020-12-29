@@ -48,6 +48,7 @@
     <Compile Include="AktieMessages\AktieStammdatenMessages.cs" />
     <Compile Include="Base\BaseMessages.cs" />
     <Compile Include="DividendeMessages\DividendeStammdatenMessages.cs" />
+    <Compile Include="DividendeMessages\DividendeUebersichtMessages.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

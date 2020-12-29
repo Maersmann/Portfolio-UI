@@ -2,6 +2,8 @@
 using Data.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 
 namespace Data.API
@@ -17,6 +19,11 @@ namespace Data.API
         {
             repo.Dividenden.Add(new Dividende { AktieID = inAktieID, Betrag = inBetrag, Datum = inDatum });
             repo.SaveChanges();
+        }
+
+        public ObservableCollection<Dividende> LadeAlleFuerAktie( int inAktieID )
+        {
+            return new ObservableCollection<Dividende>(repo.Dividenden.Where(d=>d.AktieID == inAktieID).OrderBy( d=>d.Datum ).ToList());
         }
     }
 }

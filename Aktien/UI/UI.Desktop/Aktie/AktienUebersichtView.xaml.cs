@@ -26,14 +26,27 @@ namespace UI.Desktop
     /// <summary>
     /// Interaktionslogik für AktienUebersichtView.xaml
     /// </summary>
-    public partial class AktienUebersichtView : Page
+    public partial class AktienUebersichtView : UserControl
     {
         public AktienUebersichtView()
         {
             InitializeComponent();
             Messenger.Default.Register<OpenAktieStammdatenBearbeitenMessage>(this, m => ReceiveOpenAktieStammdatenBearbeitenMessage( m ));
             Messenger.Default.Register<DeleteAktieErfolgreichMessage>(this, m => ReceiveDeleteAktieErfolgreich());
-            Messenger.Default.Register<OpenDividendeStammdatenNeuMessage>(this, m => ReceiveOpenDividendeStammdatenNeuMessage(m));
+            Messenger.Default.Register<OpenDividendeUebersichtMessage>(this, m => ReceiveOpenDividendeUebersichtMessage(m));
+        }
+
+        private void ReceiveOpenDividendeUebersichtMessage(OpenDividendeUebersichtMessage m)
+        {
+            Window window = new Window
+            {
+                Content = new DividendenUebersichtView(),
+                SizeToContent = SizeToContent.WidthAndHeight,
+                ResizeMode = ResizeMode.NoResize,
+                WindowStartupLocation = WindowStartupLocation.CenterScreen
+            };
+            Messenger.Default.Send<LoadDividendeFuerAktieMessage>(new LoadDividendeFuerAktieMessage { AktieID = m.AktieID });
+            window.ShowDialog();
         }
 
         private void ReceiveOpenAktieStammdatenBearbeitenMessage( OpenAktieStammdatenBearbeitenMessage message )
@@ -55,17 +68,6 @@ namespace UI.Desktop
         {
             MessageBox.Show("Aktie erfolgreich gelöscht.");
             Messenger.Default.Send(new AktualisiereViewMessage { });
-        }
-
-        private void ReceiveOpenDividendeStammdatenNeuMessage( OpenDividendeStammdatenNeuMessage message )
-        {
-            var view = new DividendeStammdatenView();
-            if ( view.DataContext is DividendeStammdatenViewModel model )
-            {
-                model.Aktienname = message.Aktienname;
-                model.AktienID = message.AktienID;
-            }
-            view.ShowDialog();
         }
     }
 }

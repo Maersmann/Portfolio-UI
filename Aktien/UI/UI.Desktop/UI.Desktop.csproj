@@ -184,6 +184,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Dividende\DividendenUebersichtView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Dividende\DividendeStammdatenView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -206,6 +210,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Base\StammdatenView.cs" />
+    <Compile Include="Dividende\DividendenUebersichtView.xaml.cs">
+      <DependentUpon>DividendenUebersichtView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dividende\DividendeStammdatenView.xaml.cs">
       <DependentUpon>DividendeStammdatenView.xaml</DependentUpon>
     </Compile>

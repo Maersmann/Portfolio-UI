@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=10.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\AutoMapper.10.1.1\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\..\packages\CommonServiceLocator.2.0.2\lib\net47\CommonServiceLocator.dll</HintPath>
     </Reference>
@@ -156,6 +159,7 @@
     <Compile Include="AktieViewModels\AktienUebersichtViewModel.cs" />
     <Compile Include="AktieViewModels\AktieStammdatenViewModel.cs" />
     <Compile Include="BaseModels\ViewModelStammdatan.cs" />
+    <Compile Include="DividendeModels\DividendenUebersichtViewModel.cs" />
     <Compile Include="DividendeModels\DividendeStammdatenViewModel.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

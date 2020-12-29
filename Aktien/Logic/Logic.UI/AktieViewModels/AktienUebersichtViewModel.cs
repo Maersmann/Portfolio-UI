@@ -80,7 +80,7 @@ namespace Logic.UI.AktieViewModels
 
         private void ExecuteOpenNeueDividendeCommand()
         {
-            Messenger.Default.Send<OpenDividendeStammdatenNeuMessage>(new OpenDividendeStammdatenNeuMessage { AktienID = selectedAktie.ID, Aktienname = selectedAktie.Name } );
+            Messenger.Default.Send<OpenDividendeUebersichtMessage>(new OpenDividendeUebersichtMessage {AktieID = selectedAktie.ID } );
         }
 
         private void ExecuteEntfernenCommand()

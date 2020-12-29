@@ -90,7 +90,7 @@ namespace Logic.UI.DividendeModels
             }
         }
 
-        public int AktienID
+        public int AktieID
         {
             set { dividende.AktienID = value; }
         }

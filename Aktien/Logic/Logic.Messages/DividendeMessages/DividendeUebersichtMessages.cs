@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace Logic.Messages.DividendeMessages
 {
-    public class OpenDividendeStammdatenNeuMessage
+    public class OpenDividendeUebersichtMessage
     {
-        public String Aktienname { get; set; }
         public int AktieID { get; set; }
     }
-
+    public class LoadDividendeFuerAktieMessage
+    {
+        public int AktieID { get; set; }
+    }
 }

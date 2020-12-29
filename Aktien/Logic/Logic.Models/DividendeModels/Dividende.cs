@@ -12,5 +12,6 @@ namespace Logic.Models.DividendeModels
         public Double? Betrag { get; set; }
         public String Aktienname { get; set; }
         public int? AktienID { get; set; }
+        public int ID { get; set; }
     }
 }
