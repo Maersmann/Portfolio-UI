@@ -28,6 +28,13 @@ namespace UI.Desktop.Dividende
         {
             InitializeComponent();
             Messenger.Default.Register<OpenDividendeStammdatenNeuMessage>(this, m => ReceiveOpenDividendeStammdatenNeuMessage(m));
+            Messenger.Default.Register<DeleteDividendeErfolgreichMessage>(this, m => ReceiveDeleteDividendeErfolgreichMessage());
+        }
+
+        private void ReceiveDeleteDividendeErfolgreichMessage()
+        {
+            MessageBox.Show("Dividende entfernt");
+            Messenger.Default.Send<AktualisiereDividendenMessage>(new AktualisiereDividendenMessage() );
         }
 
         private void ReceiveOpenDividendeStammdatenNeuMessage(OpenDividendeStammdatenNeuMessage m)

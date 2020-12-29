@@ -26,11 +26,30 @@ namespace Logic.UI.DividendeModels
         public DividendenUebersichtViewModel()
         {
             Messenger.Default.Register<LoadDividendeFuerAktieMessage>(this, m => ReceiveOLoadDividendeFuerAktieMessages(m));
+            Messenger.Default.Register<AktualisiereDividendenMessage>(this, m => ReceiveAktualisiereDividendenMessage());
             dividenden = new ObservableCollection<Dividende>();
             NeuCommand = new RelayCommand(() => ExecuteNeuCommand());
             BearbeitenCommand = new DelegateCommand(this.ExecuteBearbeitenCommand, this.CanExecuteCommand);
+            EntfernenCommand = new DelegateCommand(this.ExecuteEntfernenCommand, this.CanExecuteCommand);
         }
 
+        private void ReceiveAktualisiereDividendenMessage()
+        {
+            dividenden.Clear();
+            foreach (var item in new DividendeAPI().LadeAlleFuerAktie(aktieID))
+            {
+                var ModelItem = new Dividende
+                {
+                    AktienID = item.Aktie.ID,
+                    Aktienname = item.Aktie.Name,
+                    Betrag = item.Betrag,
+                    Datum = item.Datum,
+                    ID = item.ID
+                };
+                dividenden.Add(ModelItem);
+            }
+            this.RaisePropertyChanged();
+        }
         private void ReceiveOLoadDividendeFuerAktieMessages(LoadDividendeFuerAktieMessage m)
         {
             dividenden.Clear();
@@ -49,17 +68,21 @@ namespace Logic.UI.DividendeModels
             }
             this.RaisePropertyChanged();
         }
+       
 
         private void ExecuteNeuCommand()
         {
             Messenger.Default.Send<OpenDividendeStammdatenNeuMessage>(new OpenDividendeStammdatenNeuMessage { AktieID = aktieID, State = State.Neu });
         }
-
         private void ExecuteBearbeitenCommand()
         {
             Messenger.Default.Send<OpenDividendeStammdatenNeuMessage>(new OpenDividendeStammdatenNeuMessage { AktieID = aktieID, State = State.Bearbeiten, DividendeID = selectedDividende.ID });
         }
-
+        private void ExecuteEntfernenCommand()
+        {
+            new DividendeAPI().Entfernen(selectedDividende.ID);
+            Messenger.Default.Send<DeleteDividendeErfolgreichMessage>(new DeleteDividendeErfolgreichMessage() );
+        }
         private bool CanExecuteCommand()
         {
             return selectedDividende != null;
@@ -77,6 +100,7 @@ namespace Logic.UI.DividendeModels
                 selectedDividende = value;
                 this.RaisePropertyChanged();
                 ((DelegateCommand)BearbeitenCommand).RaiseCanExecuteChanged();
+                ((DelegateCommand)EntfernenCommand).RaiseCanExecuteChanged();
             }
         }
         public IEnumerable<Dividende> Dividenden
@@ -86,7 +110,8 @@ namespace Logic.UI.DividendeModels
                 return dividenden;
             }
         }
-        public ICommand NeuCommand { get; protected set; }
-        public ICommand BearbeitenCommand { get; protected set; }
+        public ICommand NeuCommand { get; private set; }
+        public ICommand BearbeitenCommand { get; private set; }
+        public ICommand EntfernenCommand { get; private set; }
     }
 }

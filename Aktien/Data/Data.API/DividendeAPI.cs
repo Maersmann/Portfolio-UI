@@ -37,5 +37,11 @@ namespace Data.API
         {
             return repo.Dividenden.Where(a => a.ID == inID).First();
         }
+
+        public void Entfernen(int inID)
+        {
+            repo.Dividenden.Remove( repo.Dividenden.Find( inID ) );
+            repo.SaveChanges();
+        }
     }
 }

@@ -14,4 +14,14 @@ namespace Logic.Messages.DividendeMessages
     {
         public int AktieID { get; set; }
     }
+
+    public class AktualisiereDividendenMessage
+    {
+
+    }
+
+    public class DeleteDividendeErfolgreichMessage
+    {
+
+    }
 }
