@@ -1,4 +1,5 @@
 ﻿using Data.API;
+using Data.Types;
 using GalaSoft.MvvmLight.Messaging;
 using Logic.Core.Validierung;
 using Logic.Messages.Base;
@@ -17,7 +18,8 @@ namespace Logic.UI.DividendeModels
     public class DividendeStammdatenViewModel : ViewModelStammdatan
     {
 
-        private readonly Dividende dividende;
+        private Dividende dividende;
+        private State state;
 
         public DividendeStammdatenViewModel()
         {
@@ -25,6 +27,7 @@ namespace Logic.UI.DividendeModels
             dividende = new Dividende();
             SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
             Datum = DateTime.Now;
+            state = State.Neu;
             Betrag = null;
         }
 
@@ -32,12 +35,19 @@ namespace Logic.UI.DividendeModels
         {
             ViewModelLocator.CleanUpDividendeStammdatenView();
         }
-
         protected override void ExecuteSaveCommand()
         {
             var API = new DividendeAPI();
-            API.SpeicherNeueDividende(dividende.Betrag.GetValueOrDefault(), dividende.Datum.GetValueOrDefault(), dividende.AktienID.GetValueOrDefault());
-            Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Dividende erfolgreich gespeichert." });
+            if (state == State.Neu)
+            {           
+                API.SpeicherNeueDividende(dividende.Betrag.GetValueOrDefault(), dividende.Datum.GetValueOrDefault(), dividende.AktienID.GetValueOrDefault());
+                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Dividende gespeichert." });
+            }
+            else
+            {
+                API.UpdateDividende(dividende.Betrag.GetValueOrDefault(), dividende.Datum.GetValueOrDefault(), dividende.ID);
+                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Dividende aktualisiert." });
+            }
         }
 
         public DateTime? Datum
@@ -56,7 +66,6 @@ namespace Logic.UI.DividendeModels
                 }
             }
         }
-
         public Double? Betrag
         {
             get
@@ -73,7 +82,6 @@ namespace Logic.UI.DividendeModels
                 }
             }
         }
-
         public String Aktienname
         {
             get
@@ -89,11 +97,28 @@ namespace Logic.UI.DividendeModels
                 }
             }
         }
-
         public int AktieID
         {
             set { dividende.AktienID = value; }
         }
+        public int ID
+        {
+            set
+            {
+                var _dividende = new DividendeAPI().LadeAnhandID(value);
+
+                dividende = new Dividende
+                {
+                    ID = _dividende.ID
+                };
+
+                AktieID = _dividende.AktieID;
+                Datum = _dividende.Datum;
+                Betrag = _dividende.Betrag;
+                state = State.Bearbeiten;
+            }
+        }
+
 
         #region Validate
         private bool ValidateDatum(DateTime? inDatum)

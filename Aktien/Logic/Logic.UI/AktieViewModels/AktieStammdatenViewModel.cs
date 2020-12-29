@@ -15,11 +15,10 @@ using System.Windows.Input;
 using Logic.UI.BaseModels;
 using Data.Entity.AktieEntitys;
 using Logic.Messages.Base;
+using Data.Types;
 
 namespace Logic.UI.AktieViewModels
 {
-    enum State { Neu, Bearbeiten };
-
     public class AktieStammdatenViewModel : ViewModelStammdatan
     {
         private State state;

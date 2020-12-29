@@ -1,8 +1,10 @@
 ﻿using Data.API;
+using Data.Types;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using Logic.Messages.DividendeMessages;
 using Logic.Models.DividendeModels;
+using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -26,6 +28,7 @@ namespace Logic.UI.DividendeModels
             Messenger.Default.Register<LoadDividendeFuerAktieMessage>(this, m => ReceiveOLoadDividendeFuerAktieMessages(m));
             dividenden = new ObservableCollection<Dividende>();
             NeuCommand = new RelayCommand(() => ExecuteNeuCommand());
+            BearbeitenCommand = new DelegateCommand(this.ExecuteBearbeitenCommand, this.CanExecuteCommand);
         }
 
         private void ReceiveOLoadDividendeFuerAktieMessages(LoadDividendeFuerAktieMessage m)
@@ -49,8 +52,19 @@ namespace Logic.UI.DividendeModels
 
         private void ExecuteNeuCommand()
         {
-            Messenger.Default.Send<OpenDividendeStammdatenNeuMessage>(new OpenDividendeStammdatenNeuMessage { AktieID = aktieID });
+            Messenger.Default.Send<OpenDividendeStammdatenNeuMessage>(new OpenDividendeStammdatenNeuMessage { AktieID = aktieID, State = State.Neu });
         }
+
+        private void ExecuteBearbeitenCommand()
+        {
+            Messenger.Default.Send<OpenDividendeStammdatenNeuMessage>(new OpenDividendeStammdatenNeuMessage { AktieID = aktieID, State = State.Bearbeiten, DividendeID = selectedDividende.ID });
+        }
+
+        private bool CanExecuteCommand()
+        {
+            return selectedDividende != null;
+        }
+
 
         public Dividende SelectedDividende
         {
@@ -62,9 +76,9 @@ namespace Logic.UI.DividendeModels
             {
                 selectedDividende = value;
                 this.RaisePropertyChanged();
+                ((DelegateCommand)BearbeitenCommand).RaiseCanExecuteChanged();
             }
         }
-
         public IEnumerable<Dividende> Dividenden
         {
             get
@@ -72,7 +86,7 @@ namespace Logic.UI.DividendeModels
                 return dividenden;
             }
         }
-
         public ICommand NeuCommand { get; protected set; }
+        public ICommand BearbeitenCommand { get; protected set; }
     }
 }

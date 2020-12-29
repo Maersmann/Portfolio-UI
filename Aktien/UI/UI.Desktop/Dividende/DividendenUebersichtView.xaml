@@ -27,6 +27,7 @@
         <materialDesign:Card  Grid.Row="1">
             <DockPanel  LastChildFill="False" >
                 <Button DockPanel.Dock="Left" Width="100" Margin="3"  Style="{DynamicResource MaterialDesignToolForegroundButton}" Command="{Binding NeuCommand, Mode=OneWay}" Content="Neu" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Button DockPanel.Dock="Left" Width="100" Margin="3"  Style="{DynamicResource MaterialDesignToolForegroundButton}" Command="{Binding BearbeitenCommand, Mode=OneWay}" Content="Bearbeiten" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </DockPanel>
         </materialDesign:Card>
     </Grid>

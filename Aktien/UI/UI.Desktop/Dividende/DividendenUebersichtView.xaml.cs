@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using Data.Types;
+using GalaSoft.MvvmLight.Messaging;
 using Logic.Messages.DividendeMessages;
 using Logic.UI.DividendeModels;
 using System;
@@ -35,6 +36,10 @@ namespace UI.Desktop.Dividende
             if (view.DataContext is DividendeStammdatenViewModel model)
             {
                 model.AktieID = m.AktieID;
+                if (m.State == State.Bearbeiten)
+                {
+                    model.ID = m.DividendeID.GetValueOrDefault();
+                }
             }
             bool? Result = view.ShowDialog();
 
