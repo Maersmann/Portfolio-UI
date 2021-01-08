@@ -4,18 +4,20 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Text;
 
-namespace Data
+namespace Aktien.Data.Infrastructure
 {
     public class VersionContextConnection
     {
         public static string GetDatabaseConnectionstring()
         {
-            NpgsqlConnectionStringBuilder npgsqlConnectionStringBuilder = new NpgsqlConnectionStringBuilder();
-            npgsqlConnectionStringBuilder.Host = "localhost";
-            npgsqlConnectionStringBuilder.Port = 5432;
-            npgsqlConnectionStringBuilder.Database = "databaseAKTIE";
-            npgsqlConnectionStringBuilder.Username = "postgres";
-            npgsqlConnectionStringBuilder.Password = "masterkey";
+            NpgsqlConnectionStringBuilder npgsqlConnectionStringBuilder = new NpgsqlConnectionStringBuilder
+            {
+                Host = "localhost",
+                Port = 5432,
+                Database = "db_a1",
+                Username = "postgres",
+                Password = "masterkey"
+            };
 
             return npgsqlConnectionStringBuilder.ConnectionString;
         }

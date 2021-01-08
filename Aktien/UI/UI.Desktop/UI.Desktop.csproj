@@ -7,7 +7,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{CF571FB9-DD5B-4C89-914B-D785FD4DFB38}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>UI.Desktop</RootNamespace>
+    <RootNamespace>Aktien.UI.Desktop</RootNamespace>
     <AssemblyName>UI.Desktop</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -184,6 +184,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Depot\BuyOrderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dividende\DividendenUebersichtView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -210,6 +214,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Base\StammdatenView.cs" />
+    <Compile Include="Depot\BuyOrderView.xaml.cs">
+      <DependentUpon>BuyOrderView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dividende\DividendenUebersichtView.xaml.cs">
       <DependentUpon>DividendenUebersichtView.xaml</DependentUpon>
     </Compile>

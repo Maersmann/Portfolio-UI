@@ -1,7 +1,7 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
-using Logic.Messages.Aktie;
-using Logic.Messages.AktieMessages;
-using Logic.Messages.Base;
+using Aktien.Logic.Messages.Aktie;
+using Aktien.Logic.Messages.AktieMessages;
+using Aktien.Logic.Messages.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,24 +16,23 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using UI.Desktop.Aktie;
-using Data.Types;
+using Aktien.UI.Desktop.Aktie;
+using Aktien.Data.Types;
+using Aktien.UI.Desktop.Depot;
 
-namespace UI.Desktop
+namespace Aktien.UI.Desktop
 {
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
     public partial class MainView
     {
-        private bool canAktualisieren = false;
 
         private static AktienUebersichtView aktienUebersichtView;
 
         public MainView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenAktieStammdatenMessage>(this, m => ReceiveOpenNeueAktieViewMessage());
             Messenger.Default.Register<OpenViewMessage>(this, m => ReceiveOpenViewMessage(m));
 
             Naviagtion(ViewType.viewAktienUebersicht);
@@ -44,28 +43,6 @@ namespace UI.Desktop
             Naviagtion(m.ViewType);
         }
 
-        private void Container_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
-        {
-             if (e.Content == Container.NavigationService.Content)
-             {
-                if (canAktualisieren)
-                    Messenger.Default.Send(new AktualisiereViewMessage { });
-            }
-            canAktualisieren = false;
-        }
-
-        private void ReceiveOpenNeueAktieViewMessage()
-        {
-            
-            bool? Result = new AktieStammdatenView().ShowDialog();
-
-            if (Result.GetValueOrDefault(false))
-            {
-                canAktualisieren = true;
-                Container.NavigationService.Refresh();
-            }
-        }
-
         public void Naviagtion(ViewType inType)
         {
             switch (inType)
@@ -73,6 +50,9 @@ namespace UI.Desktop
                 case ViewType.viewAktienUebersicht:
                     aktienUebersichtView = aktienUebersichtView ?? new AktienUebersichtView();
                     Container.NavigationService.Navigate(aktienUebersichtView);
+                    break;
+                case ViewType.viewAktieGekauft:
+                    new BuyOrderView().ShowDialog();
                     break;
                 default:
                     break;

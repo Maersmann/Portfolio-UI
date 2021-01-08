@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.Types
+namespace Aktien.Data.Types
 {
         public enum ViewType
         {
-            viewAktienUebersicht
+            viewAktienUebersicht,
+            viewAktieGekauft
         }
 
 }

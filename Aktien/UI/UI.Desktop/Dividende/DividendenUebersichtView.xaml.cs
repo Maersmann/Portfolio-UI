@@ -1,7 +1,7 @@
-﻿using Data.Types;
+﻿using Aktien.Data.Types;
 using GalaSoft.MvvmLight.Messaging;
-using Logic.Messages.DividendeMessages;
-using Logic.UI.DividendeModels;
+using Aktien.Logic.Messages.DividendeMessages;
+using Aktien.Logic.UI.DividendeViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace UI.Desktop.Dividende
+namespace Aktien.UI.Desktop.Dividende
 {
     /// <summary>
     /// Interaktionslogik für DividendenUebersicht.xaml

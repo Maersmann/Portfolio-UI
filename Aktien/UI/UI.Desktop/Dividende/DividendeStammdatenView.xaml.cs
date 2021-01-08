@@ -1,6 +1,6 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
-using Logic.Messages.Base;
-using Logic.Messages.DividendeMessages;
+using Aktien.Logic.Messages.Base;
+using Aktien.Logic.Messages.DividendeMessages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +14,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using UI.Desktop.Base;
+using Aktien.UI.Desktop.Base;
 
-namespace UI.Desktop.Dividende
+namespace Aktien.UI.Desktop.Dividende
 {
     /// <summary>
     /// Interaktionslogik für DividendeStammdatenView.xaml

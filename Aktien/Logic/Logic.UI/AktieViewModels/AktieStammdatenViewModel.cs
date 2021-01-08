@@ -1,27 +1,26 @@
-﻿using Data.API;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
-using Logic.Messages.Aktie;
+using Aktien.Logic.Messages.Aktie;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Logic.Core.Validierung;
+using Aktien.Logic.Core.Validierung;
 using System.Runtime.CompilerServices;
 using Prism.Commands;
 using System.Windows.Input;
-using Logic.UI.BaseModels;
-using Data.Entity.AktieEntitys;
-using Logic.Messages.Base;
-using Data.Types;
+using Aktien.Logic.Messages.Base;
+using Aktien.Data.Types;
+using Aktien.Logic.UI.BaseViewModels;
+using Aktien.Logic.Core.AktieLogic;
+using Aktien.Data.Model.AktieModels;
 
-namespace Logic.UI.AktieViewModels
+namespace Aktien.Logic.UI.AktieViewModels
 {
-    public class AktieStammdatenViewModel : ViewModelStammdatan
+    public class AktieStammdatenViewModel : ViewModelStammdaten
     {
-        private State state;
 
         private Aktie updateAktie;
 
@@ -48,12 +47,12 @@ namespace Logic.UI.AktieViewModels
             var api = new AktieAPI();
             if (state.Equals( State.Neu ))
             {            
-                if (!api.IstAkieVorhanden( isin ))
+                try
                 { 
                     api.Speichern(new Aktie() { ISIN = isin, Name = name, WKN = wkn });
                     Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Aktie erfolgreich gespeichert." });
                 }
-                else
+                catch( AktieSchonVorhandenException)
                 {
                     Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = false, Message = "Aktie ist schon vorhanden." });
                 }

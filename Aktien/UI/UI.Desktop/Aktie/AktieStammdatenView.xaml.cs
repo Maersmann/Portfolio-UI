@@ -1,5 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
-using Logic.Messages.Aktie;
+using Aktien.Logic.Messages.Aktie;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +13,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using UI.Desktop.Base;
+using Aktien.UI.Desktop.Base;
 
-namespace UI.Desktop.Aktie
+namespace Aktien.UI.Desktop.Aktie
 {
     /// <summary>
     /// Interaktionslogik für NeueAktieView.xaml

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Data.Migrations
+namespace Aktien.Data.Migrations
 {
     public partial class _2 : Migration
     {

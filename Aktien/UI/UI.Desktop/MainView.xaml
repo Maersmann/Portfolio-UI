@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:command="http://www.galasoft.ch/mvvmlight"
-        xmlns:local="clr-namespace:UI.Desktop"
+        xmlns:local="clr-namespace:Aktien.UI.Desktop"
         xmlns:Fluent="urn:fluent-ribbon"
-        xmlns:UI="clr-namespace:Logic.UI;assembly=Logic.UI"
-        x:Class="UI.Desktop.MainView"
+        xmlns:UI="clr-namespace:Aktien.Logic.UI;assembly=Logic.UI"
+        x:Class="Aktien.UI.Desktop.MainView"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen" WindowState="Maximized"
         Title="{Binding Title, Mode=OneWay}" Height="450" Width="800" 
         DataContext="{Binding Main ,Source={StaticResource Locator}}">
@@ -20,8 +20,6 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
-
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -31,16 +29,18 @@
         <Fluent:Ribbon Grid.Row="0">
 
             <!--Tabs-->
-            <Fluent:RibbonTabItem Header="Main">
-                <Fluent:RibbonGroupBox Header="Aktien">
-                    <Fluent:Button Header="Hinzufügen" Command="{Binding OpenNeueAktieCommand}" />
-                    <Fluent:Button Header="Übersicht"  Command="{Binding OpenAktienUebersichtCommand}"/>
+            <Fluent:RibbonTabItem Header="Allgemein">
+                <Fluent:RibbonGroupBox Header="" >
+                    <Fluent:Button Header="Aktien"  Command="{Binding OpenAktienUebersichtCommand}" Width="50" />
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="">
+                    <Fluent:Button Header="Depot" Width="50" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
         </Fluent:Ribbon>
 
         <Grid Grid.Row="1">
-            <Frame x:Name="Container"  NavigationUIVisibility="Hidden" Navigated="Container_Navigated" />
+            <Frame x:Name="Container"  NavigationUIVisibility="Hidden"  />
         </Grid>
     </Grid>
 

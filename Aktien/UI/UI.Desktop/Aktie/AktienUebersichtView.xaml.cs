@@ -1,9 +1,11 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
-using Logic.Messages.Aktie;
-using Logic.Messages.Base;
-using Logic.Messages.DividendeMessages;
-using Logic.UI.AktieViewModels;
-using Logic.UI.DividendeModels;
+using Aktien.Logic.Messages.Aktie;
+using Aktien.Logic.Messages.Base;
+using Aktien.Logic.Messages.DepotMessages;
+using Aktien.Logic.Messages.DividendeMessages;
+using Aktien.Logic.UI.AktieViewModels;
+using Aktien.Logic.UI.DepotViewModels;
+using Aktien.Logic.UI.DividendeViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,10 +20,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using UI.Desktop.Aktie;
-using UI.Desktop.Dividende;
+using Aktien.UI.Desktop.Aktie;
+using Aktien.UI.Desktop.Depot;
+using Aktien.UI.Desktop.Dividende;
 
-namespace UI.Desktop
+namespace Aktien.UI.Desktop
 {
     /// <summary>
     /// Interaktionslogik für AktienUebersichtView.xaml
@@ -31,9 +34,20 @@ namespace UI.Desktop
         public AktienUebersichtView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenAktieStammdatenBearbeitenMessage>(this, m => ReceiveOpenAktieStammdatenBearbeitenMessage( m ));
+            Messenger.Default.Register<OpenAktieStammdatenMessage>(this, m => ReceiveOpenAktieStammdatenMessage( m ));
             Messenger.Default.Register<DeleteAktieErfolgreichMessage>(this, m => ReceiveDeleteAktieErfolgreich());
             Messenger.Default.Register<OpenDividendeUebersichtMessage>(this, m => ReceiveOpenDividendeUebersichtMessage(m));
+            Messenger.Default.Register<OpenAktieGekauftViewMessage>(this, m => ReceiveOpenAktieGekauftViewMessage(m)); 
+        }
+
+        private void ReceiveOpenAktieGekauftViewMessage(OpenAktieGekauftViewMessage m)
+        {
+            var view = new BuyOrderView();
+            if (view.DataContext is BuyOrderViewModel model)
+            {
+                model.AktieID = m.AktieID;
+            }
+            view.ShowDialog();
         }
 
         private void ReceiveOpenDividendeUebersichtMessage(OpenDividendeUebersichtMessage m)
@@ -49,12 +63,16 @@ namespace UI.Desktop
             window.ShowDialog();
         }
 
-        private void ReceiveOpenAktieStammdatenBearbeitenMessage( OpenAktieStammdatenBearbeitenMessage message )
+        private void ReceiveOpenAktieStammdatenMessage( OpenAktieStammdatenMessage message )
         {
             var view = new AktieStammdatenView();
             if (view.DataContext is AktieStammdatenViewModel model)
             {
-                model.AktieID = message.AktieID;
+                if (message.State == Data.Types.State.Bearbeiten)
+                {
+                    model.AktieID = message.AktieID;
+                }
+                
             }
             bool? Result = view.ShowDialog();
 

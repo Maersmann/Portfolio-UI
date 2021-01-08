@@ -16,11 +16,12 @@ using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
-using Logic.Messages.Aktie;
-using Logic.UI.AktieViewModels;
-using Logic.UI.DividendeModels;
+using Aktien.Logic.Messages.Aktie;
+using Aktien.Logic.UI.AktieViewModels;
+using Aktien.Logic.UI.DepotViewModels;
+using Aktien.Logic.UI.DividendeViewModels;
 
-namespace Logic.UI
+namespace Aktien.Logic.UI
 {
     /// <summary>
     /// This class contains static references to all the view models in the
@@ -47,6 +48,7 @@ namespace Logic.UI
             SimpleIoc.Default.Register<AktienUebersichtViewModel>();
             SimpleIoc.Default.Register<DividendeStammdatenViewModel>();
             SimpleIoc.Default.Register<DividendenUebersichtViewModel>();
+            SimpleIoc.Default.Register<BuyOrderViewModel>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
@@ -54,6 +56,8 @@ namespace Logic.UI
         public AktienUebersichtViewModel AktienUebersicht => ServiceLocator.Current.GetInstance<AktienUebersichtViewModel>();
         public DividendeStammdatenViewModel DividendeStammdaten => ServiceLocator.Current.GetInstance<DividendeStammdatenViewModel>();
         public DividendenUebersichtViewModel DividendenUebersicht => ServiceLocator.Current.GetInstance<DividendenUebersichtViewModel>();
+        public BuyOrderViewModel BuyOrder => ServiceLocator.Current.GetInstance<BuyOrderViewModel>();
+
 
         public static void Cleanup()
         {
@@ -70,6 +74,12 @@ namespace Logic.UI
         {
             SimpleIoc.Default.Unregister<DividendeStammdatenViewModel>();
             SimpleIoc.Default.Register<DividendeStammdatenViewModel>();
+        }
+
+        public static void CleanUpBuyOrderView()
+        {
+            SimpleIoc.Default.Unregister<BuyOrderViewModel>();
+            SimpleIoc.Default.Register<BuyOrderViewModel>();
         }
     }
 }

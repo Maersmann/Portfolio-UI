@@ -1,15 +1,17 @@
-﻿using System;
+﻿using Aktien.Data.Types;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Logic.Messages.Aktie
+namespace Aktien.Logic.Messages.Aktie
 {
 
-    public class OpenAktieStammdatenBearbeitenMessage
+    public class OpenAktieStammdatenMessage
     {
         public int AktieID { get; set; }
+        public State State { get; set; }
     }
 
     public class DeleteAktieErfolgreichMessage

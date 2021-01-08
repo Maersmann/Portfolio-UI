@@ -1,45 +1,47 @@
-using Data.API;
-using Data.Types;
+using Aktien.Data.Types;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
-using Logic.Messages.Aktie;
-using Logic.Messages.AktieMessages;
+using Aktien.Logic.Core;
+using Aktien.Logic.Messages.Aktie;
+using Aktien.Logic.Messages.AktieMessages;
+using Aktien.Logic.UI.BaseViewModels;
 using System;
 using System.Windows.Input;
 
-namespace Logic.UI
+namespace Aktien.Logic.UI
 {
     public class MainViewModel : ViewModelBasis
     {
         public MainViewModel()
         {
             Title = "Aktienübersicht";
-            OpenNeueAktieCommand = new RelayCommand(() => ExecuteOpenNeueAktieCommand());
             OpenConnectionCommand = new RelayCommand(() => ExecuteOpenConnectionCommand());
             OpenAktienUebersichtCommand = new RelayCommand(() => ExecuteOpenAktienUebersichtCommand());
+            OpenAktieGekauftCommand = new RelayCommand(() => ExecuteOpenAktieGekauftCommand());
         }
-
-        public ICommand OpenNeueAktieCommand { get; private set; }
 
         public ICommand OpenAktienUebersichtCommand { get; private set; }
 
         public ICommand OpenConnectionCommand { get; private set; }
 
-        private void ExecuteOpenNeueAktieCommand()
-        {
-            Messenger.Default.Send<OpenAktieStammdatenMessage>(new OpenAktieStammdatenMessage { });
-        }
+        public ICommand OpenAktieGekauftCommand { get; private set; }
+
 
         private void ExecuteOpenAktienUebersichtCommand()
         {
             Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = ViewType.viewAktienUebersicht  });
         }
 
+        private void ExecuteOpenAktieGekauftCommand()
+        {
+            Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = ViewType.viewAktieGekauft });
+        }
+
         private void ExecuteOpenConnectionCommand()
         {
-            DatabaseAPI dbAPI = new DatabaseAPI();
-            dbAPI.OpenConnection();
+            var db = new DatabaseAPI();
+            db.AktualisereDatenbank();
         }
 
     }

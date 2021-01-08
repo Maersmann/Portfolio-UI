@@ -1,5 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
-using Logic.Messages.Base;
+using Aktien.Logic.Messages.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace UI.Desktop.Base
+namespace Aktien.UI.Desktop.Base
 {
     public class StammdatenView : Window
     {

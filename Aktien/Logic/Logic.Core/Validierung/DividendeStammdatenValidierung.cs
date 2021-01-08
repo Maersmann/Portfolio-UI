@@ -1,11 +1,11 @@
-﻿using Logic.Core.Interfaces;
+﻿using Aktien.Logic.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Logic.Core.Validierung
+namespace Aktien.Logic.Core.Validierung
 {
     public class DividendeStammdatenValidierung : IValidierung
     {

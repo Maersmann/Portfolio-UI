@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace Data.Migrations
+namespace Aktien.Data.Migrations
 {
 #pragma warning disable IDE1006 // Benennungsstile
     public partial class _3 : Migration

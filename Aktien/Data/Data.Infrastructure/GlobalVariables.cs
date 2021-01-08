@@ -2,21 +2,21 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Infrastructure
+namespace Aktien.Data.Infrastructure
 {
     public static class GlobalVariables
     {
-        private static RepositoryBase dbContext = null;
+        private static Repository dbContext = null;
 
-        public static RepositoryBase GetRepoBase()
+        public static Repository GetRepoBase()
         {
-            dbContext = dbContext ?? new RepositoryBase();
+            dbContext = dbContext ?? new Repository();
             return dbContext;
         }
 
         public static void CreateRepoBase()
         {
-            dbContext = dbContext ?? new RepositoryBase();
+            dbContext = dbContext ?? new Repository();
         }
     }
 }

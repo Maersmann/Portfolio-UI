@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:WPF_Vereinsverwaltung.Resources">
+                    xmlns:local="clr-namespace:Aktien.Resources">
 
 
     <Color R="111" G="126" B="149" A="255" x:Key="colorHeaderBG" />

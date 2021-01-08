@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Logic.Messages.Base
+namespace Aktien.Logic.Messages.Base
 {
     public class AktualisiereViewMessage
     {
