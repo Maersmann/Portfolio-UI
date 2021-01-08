@@ -188,6 +188,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Depot\DepotUebersichtView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dividende\DividendenUebersichtView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -216,6 +220,9 @@
     <Compile Include="Base\StammdatenView.cs" />
     <Compile Include="Depot\BuyOrderView.xaml.cs">
       <DependentUpon>BuyOrderView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Depot\DepotUebersichtView.xaml.cs">
+      <DependentUpon>DepotUebersichtView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dividende\DividendenUebersichtView.xaml.cs">
       <DependentUpon>DividendenUebersichtView.xaml</DependentUpon>

@@ -160,6 +160,7 @@
     <Compile Include="AktieViewModels\AktieStammdatenViewModel.cs" />
     <Compile Include="BaseViewModels\ViewModelStammdaten.cs" />
     <Compile Include="DepotViewModels\BuyOrderViewModel.cs" />
+    <Compile Include="DepotViewModels\DepotUebersichtViewModel.cs" />
     <Compile Include="DividendeViewModels\DividendenUebersichtViewModel.cs" />
     <Compile Include="DividendeViewModels\DividendeStammdatenViewModel.cs" />
     <Compile Include="MainViewModel.cs" />

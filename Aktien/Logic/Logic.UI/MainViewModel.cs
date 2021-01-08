@@ -18,14 +18,14 @@ namespace Aktien.Logic.UI
             Title = "Aktienübersicht";
             OpenConnectionCommand = new RelayCommand(() => ExecuteOpenConnectionCommand());
             OpenAktienUebersichtCommand = new RelayCommand(() => ExecuteOpenAktienUebersichtCommand());
-            OpenAktieGekauftCommand = new RelayCommand(() => ExecuteOpenAktieGekauftCommand());
+            OpenDepotUebersichtCommand = new RelayCommand(() => ExecuteOpenDepotUebersichtCommand());
         }
 
-        public ICommand OpenAktienUebersichtCommand { get; private set; }
 
+        public ICommand OpenAktienUebersichtCommand { get; private set; }
+        public ICommand OpenDepotUebersichtCommand { get; private set; }
         public ICommand OpenConnectionCommand { get; private set; }
 
-        public ICommand OpenAktieGekauftCommand { get; private set; }
 
 
         private void ExecuteOpenAktienUebersichtCommand()
@@ -33,9 +33,9 @@ namespace Aktien.Logic.UI
             Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = ViewType.viewAktienUebersicht  });
         }
 
-        private void ExecuteOpenAktieGekauftCommand()
+        private void ExecuteOpenDepotUebersichtCommand()
         {
-            Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = ViewType.viewAktieGekauft });
+            Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = ViewType.viewDepotUebersicht });
         }
 
         private void ExecuteOpenConnectionCommand()

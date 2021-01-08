@@ -29,6 +29,7 @@ namespace Aktien.UI.Desktop
     {
 
         private static AktienUebersichtView aktienUebersichtView;
+        private static DepotUebersichtView depotUebersichtView;
 
         public MainView()
         {
@@ -53,6 +54,10 @@ namespace Aktien.UI.Desktop
                     break;
                 case ViewType.viewAktieGekauft:
                     new BuyOrderView().ShowDialog();
+                    break;
+                case ViewType.viewDepotUebersicht:
+                    depotUebersichtView = depotUebersichtView ?? new DepotUebersichtView();
+                    Container.NavigationService.Navigate(depotUebersichtView);
                     break;
                 default:
                     break;

@@ -9,7 +9,8 @@ namespace Aktien.Data.Types
         public enum ViewType
         {
             viewAktienUebersicht,
-            viewAktieGekauft
+            viewAktieGekauft,
+            viewDepotUebersicht
         }
 
 }

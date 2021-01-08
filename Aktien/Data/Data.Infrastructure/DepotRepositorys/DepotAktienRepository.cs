@@ -5,6 +5,7 @@ using System.Text;
 using System.Linq;
 using Aktien.Data.Infrastructure.Base;
 using Aktien.Data.Model.DepotModels;
+using System.Collections.ObjectModel;
 
 namespace Aktien.Data.Infrastructure.Depots.Repository
 {
@@ -28,6 +29,11 @@ namespace Aktien.Data.Infrastructure.Depots.Repository
                 repo.AktienInDepots.Add(depotAktie);
 
             repo.SaveChanges();
+        }
+
+        public ObservableCollection<DepotAktie> LoadAll()
+        {
+            return new ObservableCollection<DepotAktie>(repo.AktienInDepots.OrderBy(o => o.ID).ToList());
         }
     }
 }

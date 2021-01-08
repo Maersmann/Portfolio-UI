@@ -34,7 +34,7 @@
                     <Fluent:Button Header="Aktien"  Command="{Binding OpenAktienUebersichtCommand}" Width="50" />
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="">
-                    <Fluent:Button Header="Depot" Width="50" />
+                    <Fluent:Button Header="Depot" Command="{Binding OpenDepotUebersichtCommand}" Width="50" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
         </Fluent:Ribbon>

@@ -49,6 +49,7 @@ namespace Aktien.Logic.UI
             SimpleIoc.Default.Register<DividendeStammdatenViewModel>();
             SimpleIoc.Default.Register<DividendenUebersichtViewModel>();
             SimpleIoc.Default.Register<BuyOrderViewModel>();
+            SimpleIoc.Default.Register<DepotUebersichtViewModel>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
@@ -57,6 +58,7 @@ namespace Aktien.Logic.UI
         public DividendeStammdatenViewModel DividendeStammdaten => ServiceLocator.Current.GetInstance<DividendeStammdatenViewModel>();
         public DividendenUebersichtViewModel DividendenUebersicht => ServiceLocator.Current.GetInstance<DividendenUebersichtViewModel>();
         public BuyOrderViewModel BuyOrder => ServiceLocator.Current.GetInstance<BuyOrderViewModel>();
+        public DepotUebersichtViewModel DepotUebersicht => ServiceLocator.Current.GetInstance<DepotUebersichtViewModel>();
 
 
         public static void Cleanup()

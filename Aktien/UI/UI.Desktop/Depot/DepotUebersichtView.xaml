@@ -1,0 +1,41 @@
+﻿<Page x:Class="Aktien.UI.Desktop.Depot.DepotUebersichtView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Aktien.UI.Desktop.Depot"
+     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+      Background="{DynamicResource MaterialDesignPaper}"
+      DataContext="{Binding DepotUebersicht, Source={StaticResource Locator}}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25px"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="45px" />
+        </Grid.RowDefinitions>
+
+        <materialDesign:Card  Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushHeaderBG}}">
+            <Label HorizontalAlignment="Center" Width="auto" >Übersicht der Aktien im Depot</Label>
+        </materialDesign:Card>
+
+        <DataGrid Grid.Row="1" Margin="5"  ItemsSource="{Binding DepotAktien}" SelectedItem="{Binding SelectedDepotAktie, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" SelectionUnit="FullRow" >
+            <DataGrid.Columns >
+                <DataGridTextColumn Header="Name" Binding="{Binding Aktie.Name}" Width="auto" FocusManager.IsFocusScope="False"/>
+                <DataGridTextColumn Header="Anzahl" Binding="{Binding Anzahl}" Width="auto"/>
+                <DataGridTextColumn Header="Buy-In" Binding="{Binding BuyIn}"   Width="auto"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Button Grid.Row="1" DockPanel.Dock="Right" Style="{DynamicResource MaterialDesignFloatingActionButton}" Command="{Binding AddAktieCommand, Mode=OneWay}" Content="+" FontSize="35" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" FontWeight="Bold" HorizontalContentAlignment="Center" />
+        <Button Grid.Row="1" DockPanel.Dock="Right" Style="{DynamicResource MaterialDesignFloatingActionButton}" Command="{Binding AddAktieCommand, Mode=OneWay}" Content="-" FontSize="35" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,71,10" FontWeight="Bold" HorizontalContentAlignment="Center" />
+
+        <materialDesign:Card  Grid.Row="2">
+            <DockPanel  LastChildFill="False" />
+        </materialDesign:Card>
+
+    </Grid>
+</Page>

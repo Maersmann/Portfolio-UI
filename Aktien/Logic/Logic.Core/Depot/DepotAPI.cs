@@ -2,6 +2,7 @@
 using Aktien.Data.Model.DepotModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,6 +29,11 @@ namespace Aktien.Logic.Core.Depot
 
             depotAktie.BuyIn = (( depotAktie.BuyIn * AlteAnzahl) + ((inPreis * inAnzahl) + inFremdkosten.GetValueOrDefault(0))) / depotAktie.Anzahl;
             DepotAktieRepo.Speichern(depotAktie);
+        }
+
+        public ObservableCollection<DepotAktie> LadeAlleVorhandeneImDepot()
+        {
+            return new DepotAktienRepository().LoadAll();
         }
     }
 
