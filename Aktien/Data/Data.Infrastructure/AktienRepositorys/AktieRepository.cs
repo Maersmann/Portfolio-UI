@@ -20,7 +20,6 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
 
         public void Update(Aktie inAktie)
         {
-            repo.Aktien.Attach(inAktie);
             repo.Aktien.Update(inAktie);
             repo.SaveChanges();
         }
