@@ -22,23 +22,22 @@ namespace Aktien.Logic.UI.AktieViewModels
     public class AktieStammdatenViewModel : ViewModelStammdaten
     {
 
-        private Aktie updateAktie;
+        private Aktie aktie;
 
-        private string name;
-
-        private string isin;
-
-        private string wkn;
+        private bool LoadAktie;
 
         public AktieStammdatenViewModel():base()
         {
-            Title = "Neue Aktie";
+            aktie = new Aktie();
             SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
 
-            ValidateISIN("");
-            ValidateName("");
+            ISIN = "";
+            Name = "";
+            WKN = "";
 
             state = State.Neu;
+
+            LoadAktie = false;
         }
 
 
@@ -49,7 +48,7 @@ namespace Aktien.Logic.UI.AktieViewModels
             {            
                 try
                 { 
-                    api.Speichern(new Aktie() { ISIN = isin, Name = name, WKN = wkn });
+                    api.Speichern(new Aktie() { ISIN = aktie.ISIN, Name = aktie.Name, WKN = aktie.WKN });
                     Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Aktie erfolgreich gespeichert." });
                 }
                 catch( AktieSchonVorhandenException)
@@ -59,9 +58,7 @@ namespace Aktien.Logic.UI.AktieViewModels
             }
             else
             {
-                updateAktie.Name = name;
-                updateAktie.WKN = wkn;
-                api.Update(updateAktie);
+                api.Update(aktie);
                 Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Aktie erfolgreich aktualisiert." });
             } 
         }
@@ -74,57 +71,59 @@ namespace Aktien.Logic.UI.AktieViewModels
         public int AktieID 
         { 
             set 
-            { 
-                Title = "Aktie bearbeiten";
-                updateAktie = new AktieAPI().LadeAnhandID(value);
-                Name = updateAktie.Name;
-                ISIN = updateAktie.ISIN;
-                WKN = updateAktie.WKN;
+            {
+                LoadAktie = true;
+                aktie = new AktieAPI().LadeAnhandID(value);
+                WKN = aktie.WKN;
+                Name = aktie.Name;
+                ISIN = aktie.ISIN;
+                LoadAktie = false;
                 state = State.Bearbeiten;
                 this.RaisePropertyChanged("ISIN_isEnabled");
+                
+
             } 
         }
 
 
         public bool ISIN_isEnabled { get{ return state == State.Neu; } }
-
         public string ISIN
         {
-            get { return this.isin; }
+            get { return this.aktie.ISIN; }
             set
             {
 
-                if (ValidateISIN(value) || !string.Equals(this.isin, value))
+                if (LoadAktie || !string.Equals(this.aktie.ISIN, value))
                 {
-                    this.isin = value;
+                    ValidateISIN(value);
+                    this.aktie.ISIN = value;
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
-
         public string Name{
-            get { return this.name; }
+            get { return this.aktie.Name; }
             set
             {               
-                if (ValidateName(value) || !string.Equals(this.name, value))
+                if (LoadAktie || !string.Equals(this.aktie.Name, value))
                 {
-                    this.name = value;
+                    ValidateName(value);
+                    this.aktie.Name = value;
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
-
         public string WKN
         {
-            get { return this.wkn; }
+            get { return this.aktie.WKN; }
             set
             {
 
-                if (!string.Equals(this.wkn, value))
+                if (LoadAktie || !string.Equals(this.aktie.WKN, value))
                 {
-                    this.wkn = value;
+                    this.aktie.WKN = value;
                     this.RaisePropertyChanged();
                 }
             }
@@ -134,56 +133,33 @@ namespace Aktien.Logic.UI.AktieViewModels
         #region Validate
         private bool ValidateName(String inName)
         {
-            const string propertyKey = "Name";
             var Validierung = new AktieStammdatenValidierung();
 
             bool isValid = Validierung.ValidateName(inName, out ICollection<string> validationErrors);
 
-
-            if (!isValid)
-            {
-
-                ValidationErrors[propertyKey] = validationErrors;
-
-                RaiseErrorsChanged(propertyKey);
-            }
-            else if (ValidationErrors.ContainsKey(propertyKey))
-            {
-
-                ValidationErrors.Remove(propertyKey);
-
-                RaiseErrorsChanged(propertyKey);
-            }
+            AddValidateInfo(isValid, "Name", validationErrors);
             return isValid;
         }
 
         private bool ValidateISIN(String inISIN)
         {
-            const string propertyKey = "ISIN";
             var Validierung = new AktieStammdatenValidierung();
 
             bool isValid = Validierung.ValidateISIN(inISIN, out ICollection<string> validationErrors);
 
-
-            if (!isValid)
-            {
-
-                ValidationErrors[propertyKey] = validationErrors;
-
-                RaiseErrorsChanged(propertyKey);
-            }
-            else if (ValidationErrors.ContainsKey(propertyKey))
-            {
-
-                ValidationErrors.Remove(propertyKey);
-
-                RaiseErrorsChanged(propertyKey);
-            }
+            AddValidateInfo(isValid, "ISIN", validationErrors);
             return isValid;
         }
         #endregion
 
-
+        public override void Cleanup()
+        {
+            state = State.Neu;
+            aktie = new Aktie();
+            ISIN = "";
+            Name = "";
+            WKN = "";
+        }
 
     }
 }

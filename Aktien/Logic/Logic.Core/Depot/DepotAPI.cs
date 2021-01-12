@@ -1,4 +1,5 @@
-﻿using Aktien.Data.Infrastructure.Depots.Repository;
+﻿using Aktien.Data.Infrastructure.AktienRepositorys;
+using Aktien.Data.Infrastructure.DepotRepositorys;
 using Aktien.Data.Model.DepotModels;
 using System;
 using System.Collections.Generic;

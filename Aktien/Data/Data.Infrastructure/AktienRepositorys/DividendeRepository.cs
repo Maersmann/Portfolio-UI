@@ -6,7 +6,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
-namespace Aktien.Data.Infrastructure.Aktien.Repository
+namespace Aktien.Data.Infrastructure.AktienRepositorys
 {
     public class DividendeRepository : BaseRepository
     {

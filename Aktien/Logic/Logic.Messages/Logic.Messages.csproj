@@ -44,12 +44,14 @@
     <Compile Include="..\..\_Shared\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="AktieMessages\MainViewMessages.cs" />
-    <Compile Include="AktieMessages\AktieStammdatenMessages.cs" />
+    <Compile Include="AktieMessages\AktieUebersichtPageMessages.cs" />
+    <Compile Include="MainViewMessages.cs" />
+    <Compile Include="AktieMessages\AktieStammdatenViewMessages.cs" />
+    <Compile Include="AktieMessages\AktieOrderViewMessages.cs" />
     <Compile Include="Base\BaseMessages.cs" />
-    <Compile Include="DepotMessages\AktieGekauftMessages.cs" />
-    <Compile Include="DividendeMessages\DividendeStammdatenMessages.cs" />
-    <Compile Include="DividendeMessages\DividendeUebersichtMessages.cs" />
+    <Compile Include="DepotMessages\BuyOrderViewMessages.cs" />
+    <Compile Include="DividendeMessages\DividendeStammdatenViewMessages.cs" />
+    <Compile Include="DividendeMessages\DividendeUebersichtViewMessages.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

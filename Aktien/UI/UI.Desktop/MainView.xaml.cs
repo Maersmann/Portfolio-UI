@@ -19,6 +19,7 @@ using System.Windows.Shapes;
 using Aktien.UI.Desktop.Aktie;
 using Aktien.Data.Types;
 using Aktien.UI.Desktop.Depot;
+using Aktien.Logic.Messages;
 
 namespace Aktien.UI.Desktop
 {
@@ -28,7 +29,7 @@ namespace Aktien.UI.Desktop
     public partial class MainView
     {
 
-        private static AktienUebersichtView aktienUebersichtView;
+        private static AktieUebersichtPage aktienUebersichtView;
         private static DepotUebersichtView depotUebersichtView;
 
         public MainView()
@@ -49,7 +50,7 @@ namespace Aktien.UI.Desktop
             switch (inType)
             {
                 case ViewType.viewAktienUebersicht:
-                    aktienUebersichtView = aktienUebersichtView ?? new AktienUebersichtView();
+                    aktienUebersichtView = aktienUebersichtView ?? new AktieUebersichtPage();
                     Container.NavigationService.Navigate(aktienUebersichtView);
                     break;
                 case ViewType.viewAktieGekauft:

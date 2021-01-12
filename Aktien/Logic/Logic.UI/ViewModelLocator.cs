@@ -20,6 +20,7 @@ using Aktien.Logic.Messages.Aktie;
 using Aktien.Logic.UI.AktieViewModels;
 using Aktien.Logic.UI.DepotViewModels;
 using Aktien.Logic.UI.DividendeViewModels;
+using Aktien.Logic.UI.AktieViewModels.Page;
 
 namespace Aktien.Logic.UI
 {
@@ -50,6 +51,8 @@ namespace Aktien.Logic.UI
             SimpleIoc.Default.Register<DividendenUebersichtViewModel>();
             SimpleIoc.Default.Register<BuyOrderViewModel>();
             SimpleIoc.Default.Register<DepotUebersichtViewModel>();
+            SimpleIoc.Default.Register<AktieOrderUebersichtViewModel>();
+            SimpleIoc.Default.Register<AktieUebersichtPageViewModel>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
@@ -59,6 +62,8 @@ namespace Aktien.Logic.UI
         public DividendenUebersichtViewModel DividendenUebersicht => ServiceLocator.Current.GetInstance<DividendenUebersichtViewModel>();
         public BuyOrderViewModel BuyOrder => ServiceLocator.Current.GetInstance<BuyOrderViewModel>();
         public DepotUebersichtViewModel DepotUebersicht => ServiceLocator.Current.GetInstance<DepotUebersichtViewModel>();
+        public AktieOrderUebersichtViewModel AktieOrderUebersicht => ServiceLocator.Current.GetInstance<AktieOrderUebersichtViewModel>();
+        public AktieUebersichtPageViewModel AktieUebersichtPage => ServiceLocator.Current.GetInstance<AktieUebersichtPageViewModel>();
 
 
         public static void Cleanup()
@@ -68,20 +73,17 @@ namespace Aktien.Logic.UI
 
         public static void CleanUpAktieStammdatenView()
         {
-            SimpleIoc.Default.Unregister<AktieStammdatenViewModel>();
-            SimpleIoc.Default.Register<AktieStammdatenViewModel>();
+            ServiceLocator.Current.GetInstance<AktieStammdatenViewModel>().Cleanup();
         }
 
         public static void CleanUpDividendeStammdatenView()
         {
-            SimpleIoc.Default.Unregister<DividendeStammdatenViewModel>();
-            SimpleIoc.Default.Register<DividendeStammdatenViewModel>();
+            ServiceLocator.Current.GetInstance<DividendeStammdatenViewModel>().Cleanup();
         }
 
         public static void CleanUpBuyOrderView()
         {
-            SimpleIoc.Default.Unregister<BuyOrderViewModel>();
-            SimpleIoc.Default.Register<BuyOrderViewModel>();
+            ServiceLocator.Current.GetInstance<BuyOrderViewModel>().Cleanup();
         }
     }
 }

@@ -22,7 +22,6 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         public DividendeStammdatenViewModel()
         {
-            Title = "Neue Dividende";
             dividende = new Dividende();
             SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
             Datum = DateTime.Now;
@@ -57,8 +56,9 @@ namespace Aktien.Logic.UI.DividendeViewModels
             }
             set
             {
-                if (ValidateDatum(value) || !DateTime.Equals(this.dividende.Datum, value))
+                if ( !DateTime.Equals(this.dividende.Datum, value))
                 {
+                    ValidateDatum(value);
                     this.dividende.Datum = value.GetValueOrDefault();
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
@@ -73,8 +73,9 @@ namespace Aktien.Logic.UI.DividendeViewModels
             }
             set
             {
-                if (ValidateBetrag(value) || (this.dividende.Betrag != value))
+                if (this.dividende.Betrag != value)
                 {
+                    ValidateBetrag(value);
                     this.dividende.Betrag = value.GetValueOrDefault();
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
@@ -122,53 +123,33 @@ namespace Aktien.Logic.UI.DividendeViewModels
         #region Validate
         private bool ValidateDatum(DateTime? inDatum)
         {
-            const string propertyKey = "Datum";
             var Validierung = new DividendeStammdatenValidierung();
 
             bool isValid = Validierung.ValidateDatum(inDatum, out ICollection<string> validationErrors);
 
-
-            if (!isValid)
-            {
-
-                ValidationErrors[propertyKey] = validationErrors;
-
-                RaiseErrorsChanged(propertyKey);
-            }
-            else if (ValidationErrors.ContainsKey(propertyKey))
-            {
-
-                ValidationErrors.Remove(propertyKey);
-
-                RaiseErrorsChanged(propertyKey);
-            }
+            AddValidateInfo(isValid, "Datum", validationErrors);
             return isValid;
         }
 
         private bool ValidateBetrag(Double? inBetrag)
         {
-            const string propertyKey = "Betrag";
             var Validierung = new DividendeStammdatenValidierung();
 
             bool isValid = Validierung.ValidateBetrag(inBetrag, out ICollection<string> validationErrors);
 
-
-            if (!isValid)
-            {
-
-                ValidationErrors[propertyKey] = validationErrors;
-
-                RaiseErrorsChanged(propertyKey);
-            }
-            else if (ValidationErrors.ContainsKey(propertyKey))
-            {
-
-                ValidationErrors.Remove(propertyKey);
-
-                RaiseErrorsChanged(propertyKey);
-            }
+            AddValidateInfo(isValid, "Betrag", validationErrors);
             return isValid;
         }
         #endregion
+
+        public override void Cleanup()
+        {
+            state = State.Neu;
+            dividende = new Dividende();
+            this.RaisePropertyChanged();
+            Datum = DateTime.Now;
+            Betrag = null;
+        }
+
     }
 }

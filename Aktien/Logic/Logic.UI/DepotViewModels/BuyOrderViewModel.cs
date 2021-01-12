@@ -11,12 +11,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Aktien.Data.Model.DepotModels;
+using Aktien.Data.Model.AktieModels;
 
 namespace Aktien.Logic.UI.DepotViewModels
 {
     public class BuyOrderViewModel : ViewModelStammdaten
     {
-        private readonly OrderHistory data;
+        private OrderHistory data;
         public BuyOrderViewModel()
         {
             SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
@@ -91,8 +92,9 @@ namespace Aktien.Logic.UI.DepotViewModels
             }
             set
             {
-                if ( ValidateAnzahl(value) || (this.data.Anzahl != value))
+                if (this.data.Anzahl != value)
                 {
+                    ValidateAnzahl(value);
                     this.data.Anzahl = value.GetValueOrDefault();
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
@@ -123,8 +125,9 @@ namespace Aktien.Logic.UI.DepotViewModels
             }
             set
             {
-                if (ValidateBetrag(value) || (this.data.Preis != value))
+                if (this.data.Preis != value)
                 {
+                    ValidateBetrag(value);
                     this.data.Preis = value.GetValueOrDefault();
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
@@ -139,8 +142,9 @@ namespace Aktien.Logic.UI.DepotViewModels
             }
             set
             {
-                if (ValidateDatum(value) || !DateTime.Equals(this.data.Kaufdatum, value))
+                if (!DateTime.Equals(this.data.Kaufdatum, value))
                 {
+                    ValidateDatum(value);
                     this.data.Kaufdatum = value.GetValueOrDefault();
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
@@ -151,85 +155,50 @@ namespace Aktien.Logic.UI.DepotViewModels
         public int AktieID { get; set; }
         #endregion
 
-
-
         #region Validierung
 
         private bool ValidateAnzahl(int? inAnzahl)
         {
-            const string propertyKey = "Anzahl";
             var Validierung = new AktieGekauftValidierung();
 
             bool isValid = Validierung.ValidateAnzahl(inAnzahl, out ICollection<string> validationErrors);
 
-
-            if (!isValid)
-            {
-
-                ValidationErrors[propertyKey] = validationErrors;
-
-                RaiseErrorsChanged(propertyKey);
-            }
-            else if (ValidationErrors.ContainsKey(propertyKey))
-            {
-
-                ValidationErrors.Remove(propertyKey);
-
-                RaiseErrorsChanged(propertyKey);
-            }
+            AddValidateInfo(isValid, "Anzahl", validationErrors);
             return isValid;
         }
 
         private bool ValidateBetrag(Double? inBetrag)
         {
-            const string propertyKey = "Preis";
             var Validierung = new AktieGekauftValidierung();
 
             bool isValid = Validierung.ValidateBetrag(inBetrag, out ICollection<string> validationErrors);
 
-
-            if (!isValid)
-            {
-
-                ValidationErrors[propertyKey] = validationErrors;
-
-                RaiseErrorsChanged(propertyKey);
-            }
-            else if (ValidationErrors.ContainsKey(propertyKey))
-            {
-
-                ValidationErrors.Remove(propertyKey);
-
-                RaiseErrorsChanged(propertyKey);
-            }
+            AddValidateInfo(isValid, "Preis", validationErrors);
             return isValid;
         }
 
         private bool ValidateDatum(DateTime? value)
         {
-            const string propertyKey = "Datum";
             var Validierung = new AktieGekauftValidierung();
 
             bool isValid = Validierung.ValidateDatum(value, out ICollection<string> validationErrors);
 
-
-            if (!isValid)
-            {
-
-                ValidationErrors[propertyKey] = validationErrors;
-
-                RaiseErrorsChanged(propertyKey);
-            }
-            else if (ValidationErrors.ContainsKey(propertyKey))
-            {
-
-                ValidationErrors.Remove(propertyKey);
-
-                RaiseErrorsChanged(propertyKey);
-            }
+            AddValidateInfo(isValid, "Datum", validationErrors);
             return isValid;
         }
 
         #endregion
+
+        public override void Cleanup()
+        {
+            state = State.Neu;
+            data = new OrderHistory();
+            KaufTyp = Data.Types.KaufTypes.Kauf;
+            OrderTyp = Data.Types.OrderTypes.Normal;
+            Anzahl = null;
+            Preis = null;
+            Datum = DateTime.Now;
+            Fremdkosten = null;
+        }
     }
 }

@@ -180,7 +180,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Aktie\AktieOrderUebersichtView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Aktie\AktieStammdatenView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Aktie\AktieUebersichtPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -210,8 +218,14 @@
     <Compile Include="Aktie\AktienUebersichtView.xaml.cs">
       <DependentUpon>AktienUebersichtView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Aktie\AktieOrderUebersichtView.xaml.cs">
+      <DependentUpon>AktieOrderUebersichtView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Aktie\AktieStammdatenView.xaml.cs">
       <DependentUpon>AktieStammdatenView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Aktie\AktieUebersichtPage.xaml.cs">
+      <DependentUpon>AktieUebersichtPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>

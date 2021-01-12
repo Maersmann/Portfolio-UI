@@ -7,7 +7,7 @@ using Aktien.Data.Infrastructure.Base;
 using Aktien.Data.Model.DepotModels;
 using System.Collections.ObjectModel;
 
-namespace Aktien.Data.Infrastructure.Depots.Repository
+namespace Aktien.Data.Infrastructure.DepotRepositorys
 {
     public class DepotAktienRepository : BaseRepository
     {

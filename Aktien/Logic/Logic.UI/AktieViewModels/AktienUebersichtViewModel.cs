@@ -27,14 +27,12 @@ namespace Aktien.Logic.UI.AktieViewModels
 
         public AktienUebersichtViewModel()
         {
-            Title = "Alle Aktien";
             var api = new AktieAPI();
             alleAktien = api.LadeAlle();
             Messenger.Default.Register<AktualisiereViewMessage>(this, m => ReceiveAktualisiereViewMessage());
             BearbeitenCommand = new DelegateCommand(this.ExecuteBearbeitenCommand, this.CanExecuteCommand);
             EntfernenCommand = new DelegateCommand(this.ExecuteEntfernenCommand, this.CanExecuteCommand);
             OpenNeueDividendeCommand = new DelegateCommand(this.ExecuteOpenNeueDividendeCommand, this.CanExecuteCommand);
-            NeueAktieGekauftCommand = new DelegateCommand(this.ExecuteNeueAktieGekauftCommand, this.CanExecuteCommand);
             AddAktieCommand = new RelayCommand(this.ExecuteAddAktieCommand);
         }
 
@@ -52,7 +50,10 @@ namespace Aktien.Logic.UI.AktieViewModels
                 ((DelegateCommand)BearbeitenCommand).RaiseCanExecuteChanged();
                 ((DelegateCommand)EntfernenCommand).RaiseCanExecuteChanged();
                 ((DelegateCommand)OpenNeueDividendeCommand).RaiseCanExecuteChanged();
-                ((DelegateCommand)NeueAktieGekauftCommand).RaiseCanExecuteChanged();
+                if (selectedAktie != null)
+                {
+                    Messenger.Default.Send<LoadAktieOrderMessage>(new LoadAktieOrderMessage { AktieID = selectedAktie.ID });
+                }
             } 
         }
         public IEnumerable<Aktie> AlleAktien 
@@ -65,7 +66,6 @@ namespace Aktien.Logic.UI.AktieViewModels
         public ICommand BearbeitenCommand { get; protected set; }
         public ICommand EntfernenCommand { get; protected set; }
         public ICommand OpenNeueDividendeCommand { get; set; }
-        public ICommand NeueAktieGekauftCommand { get; set; }
         public ICommand AddAktieCommand { get; set; }
         #endregion
 
@@ -88,10 +88,7 @@ namespace Aktien.Logic.UI.AktieViewModels
             new AktieAPI().Entfernen(selectedAktie);
             Messenger.Default.Send<DeleteAktieErfolgreichMessage>(new DeleteAktieErfolgreichMessage() );
         }
-        private void ExecuteNeueAktieGekauftCommand()
-        {
-            Messenger.Default.Send<OpenAktieGekauftViewMessage>(new OpenAktieGekauftViewMessage { AktieID = selectedAktie.ID });
-        }
+
         private void ExecuteAddAktieCommand()
         {
             Messenger.Default.Send<Messages.Aktie.OpenAktieStammdatenMessage>(new Messages.Aktie.OpenAktieStammdatenMessage { State = Data.Types.State.Neu });

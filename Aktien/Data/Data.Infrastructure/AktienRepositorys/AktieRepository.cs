@@ -7,7 +7,7 @@ using System.Text;
 using Aktien.Data.Infrastructure.Base;
 using Aktien.Data.Model.AktieModels;
 
-namespace Aktien.Data.Infrastructure.Aktien.Repository
+namespace Aktien.Data.Infrastructure.AktienRepositorys
 {
     public class AktieRepository: BaseRepository
     {
@@ -18,9 +18,10 @@ namespace Aktien.Data.Infrastructure.Aktien.Repository
             repo.SaveChanges();
         }
 
-        public void Update(Aktie inAkite )
+        public void Update(Aktie inAktie)
         {
-            repo.Aktien.Update(inAkite);
+            repo.Aktien.Attach(inAktie);
+            repo.Aktien.Update(inAktie);
             repo.SaveChanges();
         }
 

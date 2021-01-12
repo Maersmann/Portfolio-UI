@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aktien.Data.Model.DepotModels
+namespace Aktien.Data.Model.AktieModels
 {
     [Table("OrderHistory")]
     public class OrderHistory

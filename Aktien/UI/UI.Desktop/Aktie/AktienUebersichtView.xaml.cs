@@ -23,6 +23,7 @@ using System.Windows.Shapes;
 using Aktien.UI.Desktop.Aktie;
 using Aktien.UI.Desktop.Depot;
 using Aktien.UI.Desktop.Dividende;
+using Aktien.Logic.Messages.AktieMessages;
 
 namespace Aktien.UI.Desktop
 {
@@ -37,17 +38,7 @@ namespace Aktien.UI.Desktop
             Messenger.Default.Register<OpenAktieStammdatenMessage>(this, m => ReceiveOpenAktieStammdatenMessage( m ));
             Messenger.Default.Register<DeleteAktieErfolgreichMessage>(this, m => ReceiveDeleteAktieErfolgreich());
             Messenger.Default.Register<OpenDividendeUebersichtMessage>(this, m => ReceiveOpenDividendeUebersichtMessage(m));
-            Messenger.Default.Register<OpenAktieGekauftViewMessage>(this, m => ReceiveOpenAktieGekauftViewMessage(m)); 
-        }
-
-        private void ReceiveOpenAktieGekauftViewMessage(OpenAktieGekauftViewMessage m)
-        {
-            var view = new BuyOrderView();
-            if (view.DataContext is BuyOrderViewModel model)
-            {
-                model.AktieID = m.AktieID;
-            }
-            view.ShowDialog();
+           
         }
 
         private void ReceiveOpenDividendeUebersichtMessage(OpenDividendeUebersichtMessage m)

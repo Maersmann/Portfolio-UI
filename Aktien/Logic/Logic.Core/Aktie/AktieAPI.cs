@@ -1,5 +1,6 @@
-﻿using Aktien.Data.Infrastructure.Aktien.Repository;
+﻿using Aktien.Data.Infrastructure.AktienRepositorys;
 using Aktien.Data.Model.AktieModels;
+using Aktien.Data.Model.DepotModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -50,6 +51,11 @@ namespace Aktien.Logic.Core.AktieLogic
         {
             var Repo = new AktieRepository();
             Repo.Entfernen(inAktie);
+        }
+
+        public ObservableCollection<OrderHistory> LadeAlleOrdersDerAktie(int inAktieID)
+        {
+            return new OrderHistoryRepository().LadeAlleByAktieID(inAktieID);
         }
     }
 

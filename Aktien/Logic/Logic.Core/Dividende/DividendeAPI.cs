@@ -1,4 +1,4 @@
-﻿using Aktien.Data.Infrastructure.Aktien.Repository;
+﻿using Aktien.Data.Infrastructure.AktienRepositorys;
 using Aktien.Data.Model.AktieModels;
 using System;
 using System.Collections.Generic;

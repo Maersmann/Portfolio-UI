@@ -10,7 +10,9 @@ namespace Aktien.Data.Types
         {
             viewAktienUebersicht,
             viewAktieGekauft,
-            viewDepotUebersicht
+            viewDepotUebersicht,
+            viewAktieOrderUebersicht,
+            viewDividendeUebersicht
         }
 
 }

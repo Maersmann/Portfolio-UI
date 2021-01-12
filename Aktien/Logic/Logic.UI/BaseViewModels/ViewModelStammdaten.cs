@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace Aktien.Logic.UI.BaseViewModels
 {
-    public class ViewModelStammdaten : ViewModelBasis
+    public class ViewModelStammdaten : ViewModelValidate
     {
         protected State state;
         public ICommand SaveCommand { get; protected set; }

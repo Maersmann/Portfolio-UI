@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aktien.Logic.Messages.AktieMessages
+namespace Aktien.Logic.Messages
 {
 
     public class OpenAktieStammdatenMessage
