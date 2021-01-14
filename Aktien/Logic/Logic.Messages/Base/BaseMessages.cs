@@ -6,10 +6,6 @@ using System.Threading.Tasks;
 
 namespace Aktien.Logic.Messages.Base
 {
-    public class AktualisiereViewMessage
-    {
-
-    }
 
     public class StammdatenGespeichertMessage
     {

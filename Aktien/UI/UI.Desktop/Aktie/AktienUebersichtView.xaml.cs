@@ -43,14 +43,20 @@ namespace Aktien.UI.Desktop
 
         private void ReceiveOpenDividendeUebersichtMessage(OpenDividendeUebersichtMessage m)
         {
+            var view = new DividendenUebersichtView();
+
+            if (view.DataContext is DividendenUebersichtViewModel model)
+                model.LoadData(m.AktieID);
+
             Window window = new Window
             {
-                Content = new DividendenUebersichtView(),
+                Content = view,
                 SizeToContent = SizeToContent.WidthAndHeight,
                 ResizeMode = ResizeMode.NoResize,
                 WindowStartupLocation = WindowStartupLocation.CenterScreen
+                 
             };
-            Messenger.Default.Send<LoadDividendeFuerAktieMessage>(new LoadDividendeFuerAktieMessage { AktieID = m.AktieID });
+
             window.ShowDialog();
         }
 
@@ -67,16 +73,15 @@ namespace Aktien.UI.Desktop
             }
             bool? Result = view.ShowDialog();
 
-            if (Result.GetValueOrDefault(false))
+            if (Result.GetValueOrDefault(false) && (this.DataContext is AktienUebersichtViewModel modelUebersicht))
             {
-                Messenger.Default.Send(new AktualisiereViewMessage { });
+                modelUebersicht.LoadData();
             }
         }
     
         private void ReceiveDeleteAktieErfolgreich()
         {
             MessageBox.Show("Aktie erfolgreich gelöscht.");
-            Messenger.Default.Send(new AktualisiereViewMessage { });
         }
     }
 }

@@ -70,20 +70,5 @@ namespace Aktien.Logic.UI
         {
 
         }
-
-        public static void CleanUpAktieStammdatenView()
-        {
-            ServiceLocator.Current.GetInstance<AktieStammdatenViewModel>().Cleanup();
-        }
-
-        public static void CleanUpDividendeStammdatenView()
-        {
-            ServiceLocator.Current.GetInstance<DividendeStammdatenViewModel>().Cleanup();
-        }
-
-        public static void CleanUpBuyOrderView()
-        {
-            ServiceLocator.Current.GetInstance<BuyOrderViewModel>().Cleanup();
-        }
     }
 }

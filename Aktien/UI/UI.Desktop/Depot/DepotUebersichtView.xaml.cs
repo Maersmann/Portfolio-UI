@@ -18,7 +18,7 @@ namespace Aktien.UI.Desktop.Depot
     /// <summary>
     /// Interaktionslogik für DepotUebersichtView.xaml
     /// </summary>
-    public partial class DepotUebersichtView : Page
+    public partial class DepotUebersichtView : UserControl
     {
         public DepotUebersichtView()
         {

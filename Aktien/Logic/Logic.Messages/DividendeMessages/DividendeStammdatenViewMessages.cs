@@ -7,7 +7,7 @@ using Aktien.Data.Types;
 
 namespace Aktien.Logic.Messages.DividendeMessages
 {
-    public class OpenDividendeStammdatenNeuMessage
+    public class OpenDividendeStammdatenMessage
     {
         public String Aktienname { get; set; }
         public int AktieID { get; set; }

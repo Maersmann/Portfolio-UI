@@ -10,15 +10,6 @@ namespace Aktien.Logic.Messages.DividendeMessages
     {
         public int AktieID { get; set; }
     }
-    public class LoadDividendeFuerAktieMessage
-    {
-        public int AktieID { get; set; }
-    }
-
-    public class AktualisiereDividendenMessage
-    {
-
-    }
 
     public class DeleteDividendeErfolgreichMessage
     {

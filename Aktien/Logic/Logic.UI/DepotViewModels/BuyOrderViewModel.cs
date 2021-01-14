@@ -39,10 +39,6 @@ namespace Aktien.Logic.UI.DepotViewModels
             Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Buy-Order erfolgreich gespeichert." });
         }
 
-        protected override void ExecuteCloseCommand()
-        {
-            ViewModelLocator.CleanUpBuyOrderView();
-        }
 
         #region Bindings
 

@@ -30,25 +30,24 @@ namespace Aktien.Logic.UI.AktieViewModels
             AktieGekauftCommand = new DelegateCommand(this.ExecuteAktieGekauftCommand, this.CanExecuteCommand);
         }
 
-        private bool CanExecuteCommand()
-        {
-            return aktieID != 0;
-        }
-
         private void ReceiveLoadAktieMessage(LoadAktieOrderMessage m)
         {
-            aktieID = m.AktieID;
+            LoadData(m.AktieID);
+        }
+
+        public void LoadData(int inAktieID)
+        {
+            aktieID = inAktieID;
             orderHistories = new AktieAPI().LadeAlleOrdersDerAktie(aktieID);
             this.RaisePropertyChanged("OrderHistories");
             ((DelegateCommand)AktieGekauftCommand).RaiseCanExecuteChanged();
         }
 
-
-
-
         #region Bindings
 
         public ICommand AktieGekauftCommand { get; set; }
+
+
         public OrderHistory SelectedOrderHistory
         {
             get
@@ -75,6 +74,11 @@ namespace Aktien.Logic.UI.AktieViewModels
         private void ExecuteAktieGekauftCommand()
         {
             Messenger.Default.Send<OpenAktieGekauftViewMessage>(new OpenAktieGekauftViewMessage { AktieID = aktieID });
+        }
+
+        private bool CanExecuteCommand()
+        {
+            return aktieID != 0;
         }
         #endregion
     }

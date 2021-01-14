@@ -1,5 +1,6 @@
 ﻿using Aktien.Logic.Messages.AktieMessages;
 using Aktien.Logic.Messages.DepotMessages;
+using Aktien.Logic.UI.AktieViewModels;
 using Aktien.Logic.UI.DepotViewModels;
 using Aktien.UI.Desktop.Depot;
 using GalaSoft.MvvmLight.Messaging;
@@ -39,8 +40,12 @@ namespace Aktien.UI.Desktop.Aktie
             {
                 model.AktieID = m.AktieID;
             }
-            view.ShowDialog();
-            Messenger.Default.Send<LoadAktieOrderMessage>(new LoadAktieOrderMessage { AktieID = m.AktieID });
+            bool? Result = view.ShowDialog();
+
+            if ((Result.GetValueOrDefault(false)) && (this.DataContext is AktieOrderUebersichtViewModel modelUebersicht))
+            {
+                modelUebersicht.LoadData(m.AktieID);
+            }
 
         }
     }

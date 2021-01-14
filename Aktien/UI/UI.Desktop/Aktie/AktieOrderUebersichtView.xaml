@@ -24,11 +24,23 @@
 
         <DataGrid Grid.Row="1" Margin="5"  ItemsSource="{Binding OrderHistories}" SelectedItem="{Binding SelectedOrderHistory, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" SelectionUnit="FullRow" >
             <DataGrid.Columns >
-                <DataGridTextColumn Header="Datum" Binding="{Binding Kaufdatum, StringFormat=dd.MM.yyyy}"  Width="auto"/>
-                <DataGridTextColumn Header="Anzahl" Binding="{Binding Anzahl}" Width="auto"/>
-                <DataGridTextColumn Header="Preis" Binding="{Binding Preis, StringFormat=N3}"  Width="auto"/>
-                <DataGridTextColumn Header="Fremdkosten" Binding="{Binding Fremdkostenzuschlag, StringFormat=N2}"  Width="auto"/>
+                <materialDesign:DataGridTextColumn Header="Datum" Binding="{Binding Kaufdatum, StringFormat=dd.MM.yyyy}"  Width="auto"/>
+                <materialDesign:DataGridTextColumn Header="Anzahl" Binding="{Binding Anzahl}" Width="auto"/>
+                <materialDesign:DataGridTextColumn Header="Preis" Binding="{Binding Preis, StringFormat=N3}"  Width="auto"/>
+                <materialDesign:DataGridTextColumn Header="Fremdkosten" Binding="{Binding Fremdkostenzuschlag, StringFormat=N2}"  Width="auto"/>
             </DataGrid.Columns>
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding BuySell}" Value="Sell">
+                            <Setter Property="Background" Value="Red"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding BuySell}" Value="Buy">
+                            <Setter Property="Background" Value="Green"></Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
         </DataGrid>
 
         <Button Grid.Row="1" DockPanel.Dock="Right" Style="{DynamicResource MaterialDesignFloatingActionButton}" Command="{Binding AktieGekauftCommand, Mode=OneWay}" Content="Buy" FontSize="25" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" FontWeight="Bold" HorizontalContentAlignment="Center" />

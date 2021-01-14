@@ -27,13 +27,17 @@ namespace Aktien.Logic.UI.AktieViewModels
 
         public AktienUebersichtViewModel()
         {
-            var api = new AktieAPI();
-            alleAktien = api.LadeAlle();
-            Messenger.Default.Register<AktualisiereViewMessage>(this, m => ReceiveAktualisiereViewMessage());
+            LoadData();
             BearbeitenCommand = new DelegateCommand(this.ExecuteBearbeitenCommand, this.CanExecuteCommand);
             EntfernenCommand = new DelegateCommand(this.ExecuteEntfernenCommand, this.CanExecuteCommand);
             OpenNeueDividendeCommand = new DelegateCommand(this.ExecuteOpenNeueDividendeCommand, this.CanExecuteCommand);
             AddAktieCommand = new RelayCommand(this.ExecuteAddAktieCommand);
+        }
+
+        public void LoadData()
+        {
+            alleAktien = new AktieAPI().LadeAlle();
+            this.RaisePropertyChanged("AlleAktien");
         }
 
         #region Binding
@@ -79,6 +83,9 @@ namespace Aktien.Logic.UI.AktieViewModels
         {
             Messenger.Default.Send<Messages.Aktie.OpenAktieStammdatenMessage>(new Messages.Aktie.OpenAktieStammdatenMessage { AktieID = selectedAktie.ID, State = Data.Types.State.Bearbeiten });
         }
+
+
+
         private void ExecuteOpenNeueDividendeCommand()
         {
             Messenger.Default.Send<OpenDividendeUebersichtMessage>(new OpenDividendeUebersichtMessage {AktieID = selectedAktie.ID } );
@@ -86,6 +93,8 @@ namespace Aktien.Logic.UI.AktieViewModels
         private void ExecuteEntfernenCommand()
         {
             new AktieAPI().Entfernen(selectedAktie);
+            alleAktien.Remove(SelectedAktie);
+            this.RaisePropertyChanged("AlleAktien");
             Messenger.Default.Send<DeleteAktieErfolgreichMessage>(new DeleteAktieErfolgreichMessage() );
         }
 
@@ -94,12 +103,5 @@ namespace Aktien.Logic.UI.AktieViewModels
             Messenger.Default.Send<Messages.Aktie.OpenAktieStammdatenMessage>(new Messages.Aktie.OpenAktieStammdatenMessage { State = Data.Types.State.Neu });
         }
         #endregion
-
-        private void ReceiveAktualisiereViewMessage()
-        {
-            var api = new AktieAPI();
-            alleAktien = api.LadeAlle();
-            this.RaisePropertyChanged("AlleAktien");
-        }
     }
 }

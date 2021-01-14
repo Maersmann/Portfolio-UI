@@ -27,7 +27,7 @@ namespace Aktien.Logic.UI.BaseViewModels
 
         protected virtual void ExecuteCloseCommand()
         {
-            throw new NotImplementedException();   
+            Cleanup();
         }
 
 

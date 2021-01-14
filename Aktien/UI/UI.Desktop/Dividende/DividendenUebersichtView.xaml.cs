@@ -27,17 +27,16 @@ namespace Aktien.UI.Desktop.Dividende
         public DividendenUebersichtView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenDividendeStammdatenNeuMessage>(this, m => ReceiveOpenDividendeStammdatenNeuMessage(m));
+            Messenger.Default.Register<OpenDividendeStammdatenMessage>(this, m => ReceiveOpenDividendeStammdatenMessage(m));
             Messenger.Default.Register<DeleteDividendeErfolgreichMessage>(this, m => ReceiveDeleteDividendeErfolgreichMessage());
         }
 
         private void ReceiveDeleteDividendeErfolgreichMessage()
         {
-            MessageBox.Show("Dividende entfernt");
-            Messenger.Default.Send<AktualisiereDividendenMessage>(new AktualisiereDividendenMessage() );
+            MessageBox.Show("Dividende entfernt");          
         }
 
-        private void ReceiveOpenDividendeStammdatenNeuMessage(OpenDividendeStammdatenNeuMessage m)
+        private void ReceiveOpenDividendeStammdatenMessage(OpenDividendeStammdatenMessage m)
         {
             var view = new DividendeStammdatenView();
             if (view.DataContext is DividendeStammdatenViewModel model)
@@ -45,14 +44,14 @@ namespace Aktien.UI.Desktop.Dividende
                 model.AktieID = m.AktieID;
                 if (m.State == State.Bearbeiten)
                 {
-                    model.ID = m.DividendeID.GetValueOrDefault();
+                    model.ZeigeDividiende( m.DividendeID.GetValueOrDefault() );
                 }
             }
             bool? Result = view.ShowDialog();
 
             if ((Result.GetValueOrDefault(false)) && (this.DataContext is DividendenUebersichtViewModel modelUebersicht))
             {
-                Messenger.Default.Send<LoadDividendeFuerAktieMessage>(new LoadDividendeFuerAktieMessage { AktieID = m.AktieID });
+                modelUebersicht.LoadData( m.AktieID );
             }
         }
     }

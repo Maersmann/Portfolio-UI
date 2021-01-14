@@ -63,10 +63,6 @@ namespace Aktien.Logic.UI.AktieViewModels
             } 
         }
 
-        protected override void ExecuteCloseCommand()
-        {
-            ViewModelLocator.CleanUpAktieStammdatenView();    
-        }
 
         public int AktieID 
         { 

@@ -29,10 +29,6 @@ namespace Aktien.Logic.UI.DividendeViewModels
             Betrag = null;
         }
 
-        protected override void ExecuteCloseCommand()
-        {
-            ViewModelLocator.CleanUpDividendeStammdatenView();
-        }
         protected override void ExecuteSaveCommand()
         {
             var API = new DividendeAPI();
@@ -48,6 +44,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
             }
         }
 
+        #region Bindings
         public DateTime? Datum
         {
             get
@@ -82,41 +79,24 @@ namespace Aktien.Logic.UI.DividendeViewModels
                 }
             }
         }
-        public String Aktienname
-        {
-            get
-            {
-                return dividende.Aktie.Name;
-            }
-            set
-            {
-                if ( (this.dividende.Aktie.Name != value))
-                {
-                    this.dividende.Aktie.Name = value;
-                    this.RaisePropertyChanged();
-                }
-            }
-        }
+        #endregion
         public int AktieID
         {
             set { dividende.AktieID = value; }
         }
-        public int ID
+        public void ZeigeDividiende(int inID)
         {
-            set
+            var _dividende = new DividendeAPI().LadeAnhandID(inID);
+
+            dividende = new Dividende
             {
-                var _dividende = new DividendeAPI().LadeAnhandID(value);
+                ID = _dividende.ID
+             };
 
-                dividende = new Dividende
-                {
-                    ID = _dividende.ID
-                };
-
-                AktieID = _dividende.AktieID;
-                Datum = _dividende.Datum;
-                Betrag = _dividende.Betrag;
-                state = State.Bearbeiten;
-            }
+             AktieID = _dividende.AktieID;
+             Datum = _dividende.Datum;
+             Betrag = _dividende.Betrag;
+             state = State.Bearbeiten;
         }
 
 
