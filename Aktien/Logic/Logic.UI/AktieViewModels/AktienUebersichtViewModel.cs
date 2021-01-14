@@ -93,8 +93,9 @@ namespace Aktien.Logic.UI.AktieViewModels
         private void ExecuteEntfernenCommand()
         {
             new AktieAPI().Entfernen(selectedAktie);
+            Messenger.Default.Send<LoadAktieOrderMessage>(new LoadAktieOrderMessage { AktieID = 0 });
             alleAktien.Remove(SelectedAktie);
-            this.RaisePropertyChanged("AlleAktien");
+            this.RaisePropertyChanged("AlleAktien");     
             Messenger.Default.Send<DeleteAktieErfolgreichMessage>(new DeleteAktieErfolgreichMessage() );
         }
 

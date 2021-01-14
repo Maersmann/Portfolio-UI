@@ -11,7 +11,7 @@ namespace Aktien.Data.Types
     [TypeConverter(typeof(EnumDescriptionTypeConverter))]
     public enum KaufTypes
     {
-        [Description("Kauf")]
+        [Description("Normal")]
         Kauf = 0,
         [Description("Spin-Off")]
         SpinOff = 1,

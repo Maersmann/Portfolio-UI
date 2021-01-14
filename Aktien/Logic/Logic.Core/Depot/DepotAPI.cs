@@ -1,6 +1,7 @@
 ﻿using Aktien.Data.Infrastructure.AktienRepositorys;
 using Aktien.Data.Infrastructure.DepotRepositorys;
 using Aktien.Data.Model.DepotModels;
+using Aktien.Data.Types;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,7 +16,7 @@ namespace Aktien.Logic.Core.Depot
         public void NeuAktieGekauft(double inPreis, double? inFremdkosten, DateTime inDatum, int inAktieID, int inAnzahl, Data.Types.KaufTypes inKauftyp, Data.Types.OrderTypes inOrderTyp)
         {
             var orderHistoryRepo = new OrderHistoryRepository();
-            orderHistoryRepo.Speichern(inPreis, inFremdkosten, inDatum, inAktieID, inAnzahl, inKauftyp, inOrderTyp);
+            orderHistoryRepo.Speichern(inPreis, inFremdkosten, inDatum, inAktieID, inAnzahl, inKauftyp, inOrderTyp, BuySell.Buy);
 
             var DepotAktieRepo = new DepotAktienRepository();
             var depotAktie = DepotAktieRepo.LadeAnhandAktieID(inAktieID);
@@ -28,7 +29,7 @@ namespace Aktien.Logic.Core.Depot
 
             depotAktie.Anzahl +=inAnzahl;
 
-            depotAktie.BuyIn = (( depotAktie.BuyIn * AlteAnzahl) + ((inPreis * inAnzahl) + inFremdkosten.GetValueOrDefault(0))) / depotAktie.Anzahl;
+            //depotAktie.BuyIn = (( depotAktie.BuyIn * AlteAnzahl) + ((inPreis * inAnzahl) + inFremdkosten.GetValueOrDefault(0))) / depotAktie.Anzahl;
             DepotAktieRepo.Speichern(depotAktie);
         }
 
@@ -55,6 +56,45 @@ namespace Aktien.Logic.Core.Depot
             OrderRepo.Entfernen(Order);
         }
 
+        public void NeueAktieVerkauft(double inPreis, double? inFremdkosten, DateTime inDatum, int inAktieID, int inAnzahl, KaufTypes inKauftyp, OrderTypes inOrderTyp)
+        {
+            var orderHistoryRepo = new OrderHistoryRepository();
+            orderHistoryRepo.Speichern(inPreis, inFremdkosten, inDatum, inAktieID, inAnzahl, inKauftyp, inOrderTyp, BuySell.Sell);
+
+            var DepotAktieRepo = new DepotAktienRepository();
+            var DepotAktie = DepotAktieRepo.LadeAnhandAktieID(inAktieID);
+
+            var AlteAnzahl = DepotAktie.Anzahl;
+            DepotAktie.Anzahl -= inAnzahl;
+
+            if (DepotAktie.Anzahl == 0)
+            {
+                DepotAktieRepo.Entfernen(DepotAktie);
+            }
+            else
+            {
+                DepotAktie.BuyIn = ((DepotAktie.BuyIn * AlteAnzahl) - (inPreis * inAnzahl) - inFremdkosten.GetValueOrDefault(0)) / DepotAktie.Anzahl;
+                DepotAktieRepo.Speichern(DepotAktie);
+            }
+        }
+
+        public void EntferneVerkaufteAktie(int OrderID)
+        {
+            var OrderRepo = new OrderHistoryRepository();
+            var DepotAktieRepo = new DepotAktienRepository();
+
+            var Order = OrderRepo.LadeByID(OrderID);
+            var DepotAktie = DepotAktieRepo.LadeAnhandAktieID(Order.AktieID);
+
+            var AlteAnzahl = DepotAktie.Anzahl;
+            DepotAktie.Anzahl += Order.Anzahl;
+
+            //DepotAktie.BuyIn = ((DepotAktie.BuyIn * AlteAnzahl) + (Order.Preis * Order.Anzahl) + Order.Fremdkostenzuschlag.GetValueOrDefault(0)) / DepotAktie.Anzahl;
+            DepotAktieRepo.Speichern(DepotAktie);
+           
+            OrderRepo.Entfernen(Order);
+        }
+       
         public ObservableCollection<DepotAktie> LadeAlleVorhandeneImDepot()
         {
             return new DepotAktienRepository().LoadAll();

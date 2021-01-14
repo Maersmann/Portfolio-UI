@@ -19,6 +19,7 @@ namespace Aktien.Logic.UI.DepotViewModels
     public class BuyOrderViewModel : ViewModelStammdaten
     {
         private OrderHistory data;
+        private BuySell buySell;
         public BuyOrderViewModel()
         {
             SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
@@ -31,13 +32,28 @@ namespace Aktien.Logic.UI.DepotViewModels
             Anzahl = null;
             Preis = null;
             Datum = DateTime.Now;
+            buySell = BuySell.Buy;
         }
 
         protected override void ExecuteSaveCommand()
         {
             var Depot = new DepotAPI();
-            Depot.NeuAktieGekauft(data.Preis, data.Fremdkostenzuschlag, data.Orderdatum, AktieID , data.Anzahl, data.KaufartTyp, data.OrderartTyp);
+            if (buySell.Equals(BuySell.Buy))
+            {
+                Depot.NeuAktieGekauft(data.Preis, data.Fremdkostenzuschlag, data.Orderdatum, AktieID, data.Anzahl, data.KaufartTyp, data.OrderartTyp);
+            }
+            else
+            {
+                Depot.NeueAktieVerkauft(data.Preis, data.Fremdkostenzuschlag, data.Orderdatum, AktieID, data.Anzahl, data.KaufartTyp, data.OrderartTyp);
+            }
             Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Buy-Order erfolgreich gespeichert." });
+        }
+
+        public void SetBuySell(BuySell inBuySell)
+        {
+            buySell = inBuySell;
+            this.RaisePropertyChanged("KauftypBez");
+            this.RaisePropertyChanged("Titel");
         }
 
 
@@ -149,6 +165,34 @@ namespace Aktien.Logic.UI.DepotViewModels
             }
         }
 
+        public String KauftypBez 
+        { 
+            get 
+            {
+                if (buySell == BuySell.Buy)
+                {
+                    return "Kauf Art";
+                }
+                else
+                {
+                    return "Verkauf Art";
+                }
+            } 
+        }
+        public String Titel
+        {
+            get
+            {
+                if (buySell == BuySell.Buy)
+                {
+                    return "Aktie gekauft";
+                }
+                else
+                {
+                    return "Aktie verkauft";
+                }
+            }
+        }
         public int AktieID { get; set; }
 
         #endregion

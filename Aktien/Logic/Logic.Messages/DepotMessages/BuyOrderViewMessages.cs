@@ -10,6 +10,7 @@ namespace Aktien.Logic.Messages.DepotMessages
     public class OpenAktieGekauftViewMessage
     {
         public int AktieID { get; set; }
+        public BuySell BuySell { get; set; }
     }
 
 

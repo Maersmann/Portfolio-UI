@@ -40,6 +40,7 @@ namespace Aktien.UI.Desktop.Aktie
             if (view.DataContext is BuyOrderViewModel model)
             {
                 model.AktieID = m.AktieID;
+                model.SetBuySell(m.BuySell);
             }
             bool? Result = view.ShowDialog();
 

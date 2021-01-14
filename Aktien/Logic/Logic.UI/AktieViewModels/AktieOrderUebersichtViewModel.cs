@@ -1,4 +1,5 @@
 ﻿using Aktien.Data.Model.AktieModels;
+using Aktien.Data.Types;
 using Aktien.Logic.Core.AktieLogic;
 using Aktien.Logic.Core.Depot;
 using Aktien.Logic.Messages.AktieMessages;
@@ -30,8 +31,11 @@ namespace Aktien.Logic.UI.AktieViewModels
             aktieID = 0;
             Messenger.Default.Register<LoadAktieOrderMessage>(this, m => ReceiveLoadAktieMessage(m));
             AktieGekauftCommand = new DelegateCommand(this.ExecuteAktieGekauftCommand, this.CanExecuteCommand);
+            AktieVerkauftCommand = new DelegateCommand(this.ExecuteAktieVerkauftCommand, this.CanExecuteCommand);
             EntfernenCommand = new DelegateCommand(this.ExecuteEntfernenCommand, this.CanSelectedItemExecuteCommand);
         }
+
+
 
         private void ReceiveLoadAktieMessage(LoadAktieOrderMessage m)
         {
@@ -44,14 +48,15 @@ namespace Aktien.Logic.UI.AktieViewModels
             orderHistories = new AktieAPI().LadeAlleOrdersDerAktie(aktieID);
             this.RaisePropertyChanged("OrderHistories");
             ((DelegateCommand)AktieGekauftCommand).RaiseCanExecuteChanged();
+            ((DelegateCommand)AktieVerkauftCommand).RaiseCanExecuteChanged();
         }
 
         #region Bindings
 
         public ICommand AktieGekauftCommand { get; set; }
+        public ICommand AktieVerkauftCommand { get; set; }
         public ICommand BearbeitenCommand { get; set; }
         public ICommand EntfernenCommand{get;set;}
-
 
         public OrderHistory SelectedOrderHistory
         {
@@ -66,7 +71,6 @@ namespace Aktien.Logic.UI.AktieViewModels
                 this.RaisePropertyChanged();
             }
         }
-
         public IEnumerable<OrderHistory> OrderHistories
         {
             get
@@ -79,11 +83,23 @@ namespace Aktien.Logic.UI.AktieViewModels
         #region Commands
         private void ExecuteAktieGekauftCommand()
         {
-            Messenger.Default.Send<OpenAktieGekauftViewMessage>(new OpenAktieGekauftViewMessage { AktieID = aktieID });
+            Messenger.Default.Send<OpenAktieGekauftViewMessage>(new OpenAktieGekauftViewMessage { AktieID = aktieID, BuySell = BuySell.Buy });
+        }
+        private void ExecuteAktieVerkauftCommand()
+        {
+            Messenger.Default.Send<OpenAktieGekauftViewMessage>(new OpenAktieGekauftViewMessage { AktieID = aktieID, BuySell = BuySell.Sell });
         }
         private void ExecuteEntfernenCommand()
         {
-            new DepotAPI().EntferneGekaufteAktie(selectedOrderHistory.ID);
+            if (selectedOrderHistory.BuySell == BuySell.Buy)
+            {
+                new DepotAPI().EntferneGekaufteAktie(selectedOrderHistory.ID);
+            }
+            else
+            {
+                new DepotAPI().EntferneVerkaufteAktie(selectedOrderHistory.ID);
+            }
+            
             orderHistories.Remove(selectedOrderHistory);
             this.RaisePropertyChanged("SelectedOrderHistory");
         }
