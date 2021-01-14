@@ -34,12 +34,12 @@ namespace Aktien.Logic.UI.DividendeViewModels
             var API = new DividendeAPI();
             if (state == State.Neu)
             {           
-                API.SpeicherNeueDividende(dividende.Betrag, dividende.Datum, dividende.AktieID);
+                API.Speichern(dividende.Betrag, dividende.Datum, dividende.AktieID);
                 Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Dividende gespeichert." });
             }
             else
             {
-                API.UpdateDividende(dividende.Betrag, dividende.Datum, dividende.ID);
+                API.Aktualisiere(dividende.Betrag, dividende.Datum, dividende.ID);
                 Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Dividende aktualisiert." });
             }
         }

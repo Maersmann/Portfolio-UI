@@ -11,13 +11,13 @@ namespace Aktien.Logic.Core.DividendeLogic
 {
     public class DividendeAPI
     {
-        public void SpeicherNeueDividende(Double inBetrag, DateTime inDatum, int inAktieID)
+        public void Speichern(Double inBetrag, DateTime inDatum, int inAktieID)
         {
             var DividendeRepo = new DividendeRepository();
             DividendeRepo.Speichern(inBetrag, inDatum, inAktieID);
         }
 
-        public void UpdateDividende(Double inBetrag, DateTime inDatum, int inID)
+        public void Aktualisiere(Double inBetrag, DateTime inDatum, int inID)
         {
             var DividendeRepo = new DividendeRepository();
             DividendeRepo.Update(inBetrag,inDatum,inID);

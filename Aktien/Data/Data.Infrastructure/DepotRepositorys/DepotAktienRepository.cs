@@ -35,5 +35,11 @@ namespace Aktien.Data.Infrastructure.DepotRepositorys
         {
             return new ObservableCollection<DepotAktie>(repo.AktienInDepots.OrderBy(o => o.ID).ToList());
         }
+
+        public void Entfernen(DepotAktie depotAktie)
+        {
+            repo.AktienInDepots.Remove(depotAktie);
+            repo.SaveChanges();
+        }
     }
 }

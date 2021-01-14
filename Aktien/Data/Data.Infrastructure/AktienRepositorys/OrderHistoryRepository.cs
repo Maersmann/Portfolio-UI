@@ -14,13 +14,24 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
     {
         public void Speichern(Double inPreis, Double? inFremdkosten, DateTime inDatum, int inAktieID, int inAnzahl, KaufTypes inKauftyp, OrderTypes inOrderTyp)
         {
-            repo.OrderHistories.Add(new OrderHistory { AktieID = inAktieID, Preis = inPreis, Kaufdatum = inDatum, Anzahl = inAnzahl, Fremdkostenzuschlag = inFremdkosten, KaufartTyp = inKauftyp, OrderartTyp = inOrderTyp, BuySell = BuySell.Buy });
+            repo.OrderHistories.Add(new OrderHistory { AktieID = inAktieID, Preis = inPreis, Orderdatum = inDatum, Anzahl = inAnzahl, Fremdkostenzuschlag = inFremdkosten, KaufartTyp = inKauftyp, OrderartTyp = inOrderTyp, BuySell = BuySell.Buy });
             repo.SaveChanges();
         }
 
         public ObservableCollection<OrderHistory> LadeAlleByAktieID(int inAktieID)
         {
             return new ObservableCollection<OrderHistory>(repo.OrderHistories.Where(o => o.AktieID == inAktieID).OrderBy(o => o.ID).ToList());
+        }
+
+        public OrderHistory LadeByID(int inID)
+        {
+            return repo.OrderHistories.Where(o => o.ID.Equals(inID)).FirstOrDefault();
+        }
+
+        public void Entfernen(OrderHistory order)
+        {
+            repo.OrderHistories.Remove(order);
+            repo.SaveChanges();
         }
     }
 }

@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Aktien.Data.Model.DepotModels;
 using Aktien.Data.Model.AktieModels;
+using Aktien.Logic.Core.AktieLogic;
 
 namespace Aktien.Logic.UI.DepotViewModels
 {
@@ -35,7 +36,7 @@ namespace Aktien.Logic.UI.DepotViewModels
         protected override void ExecuteSaveCommand()
         {
             var Depot = new DepotAPI();
-            Depot.NeuAktieGekauft(data.Preis, data.Fremdkostenzuschlag, data.Kaufdatum, AktieID , data.Anzahl, data.KaufartTyp, data.OrderartTyp);
+            Depot.NeuAktieGekauft(data.Preis, data.Fremdkostenzuschlag, data.Orderdatum, AktieID , data.Anzahl, data.KaufartTyp, data.OrderartTyp);
             Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Buy-Order erfolgreich gespeichert." });
         }
 
@@ -61,7 +62,7 @@ namespace Aktien.Logic.UI.DepotViewModels
             get { return data.KaufartTyp; }
             set
             {
-                if ((this.data.KaufartTyp != value))
+                if (LoadAktie || (this.data.KaufartTyp != value))
                 {
                     this.data.KaufartTyp = value;
                     this.RaisePropertyChanged();
@@ -73,7 +74,7 @@ namespace Aktien.Logic.UI.DepotViewModels
             get { return data.OrderartTyp; }
             set
             {
-                if ((this.data.OrderartTyp != value))
+                if (LoadAktie || (this.data.OrderartTyp != value))
                 {
                     this.data.OrderartTyp = value;
                     this.RaisePropertyChanged();
@@ -88,7 +89,7 @@ namespace Aktien.Logic.UI.DepotViewModels
             }
             set
             {
-                if (this.data.Anzahl != value)
+                if (LoadAktie || (this.data.Anzahl != value))
                 {
                     ValidateAnzahl(value);
                     this.data.Anzahl = value.GetValueOrDefault();
@@ -105,7 +106,7 @@ namespace Aktien.Logic.UI.DepotViewModels
             }
             set
             {
-                if (this.data.Fremdkostenzuschlag != value)
+                if (LoadAktie || (this.data.Fremdkostenzuschlag != value))
                 {
                     this.data.Fremdkostenzuschlag = value;
                     this.RaisePropertyChanged();
@@ -121,7 +122,7 @@ namespace Aktien.Logic.UI.DepotViewModels
             }
             set
             {
-                if (this.data.Preis != value)
+                if (LoadAktie || (this.data.Preis != value))
                 {
                     ValidateBetrag(value);
                     this.data.Preis = value.GetValueOrDefault();
@@ -134,14 +135,14 @@ namespace Aktien.Logic.UI.DepotViewModels
         {
             get
             {
-                return data.Kaufdatum;
+                return data.Orderdatum;
             }
             set
             {
-                if (!DateTime.Equals(this.data.Kaufdatum, value))
+                if (LoadAktie || (!DateTime.Equals(this.data.Orderdatum, value)))
                 {
                     ValidateDatum(value);
-                    this.data.Kaufdatum = value.GetValueOrDefault();
+                    this.data.Orderdatum = value.GetValueOrDefault();
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
@@ -149,6 +150,7 @@ namespace Aktien.Logic.UI.DepotViewModels
         }
 
         public int AktieID { get; set; }
+
         #endregion
 
         #region Validierung

@@ -1,4 +1,5 @@
-﻿using Aktien.Logic.Messages.AktieMessages;
+﻿using Aktien.Data.Types;
+using Aktien.Logic.Messages.AktieMessages;
 using Aktien.Logic.Messages.DepotMessages;
 using Aktien.Logic.UI.AktieViewModels;
 using Aktien.Logic.UI.DepotViewModels;

@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Aktien.Data.Migrations
 {
-    [DbContext(typeof(Infrastructure.Repository))]
+    [DbContext(typeof(Repository))]
     partial class AktieDBModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -19,7 +19,7 @@ namespace Aktien.Data.Migrations
                 .HasAnnotation("ProductVersion", "3.1.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            modelBuilder.Entity("Data.Entity.AktieEntitys.Aktie", b =>
+            modelBuilder.Entity("Aktien.Data.Model.AktieModels.Aktie", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -41,7 +41,7 @@ namespace Aktien.Data.Migrations
                     b.ToTable("Aktie");
                 });
 
-            modelBuilder.Entity("Data.Entity.AktieEntitys.Dividende", b =>
+            modelBuilder.Entity("Aktien.Data.Model.AktieModels.Dividende", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -64,7 +64,45 @@ namespace Aktien.Data.Migrations
                     b.ToTable("Dividende");
                 });
 
-            modelBuilder.Entity("Data.Model.DepotEntitys.Depot", b =>
+            modelBuilder.Entity("Aktien.Data.Model.AktieModels.OrderHistory", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("AktieID")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Anzahl")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("BuySell")
+                        .HasColumnType("integer");
+
+                    b.Property<double?>("Fremdkostenzuschlag")
+                        .HasColumnType("double precision");
+
+                    b.Property<int>("KaufartTyp")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("OrderartTyp")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("Orderdatum")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<double>("Preis")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("AktieID");
+
+                    b.ToTable("OrderHistory");
+                });
+
+            modelBuilder.Entity("Aktien.Data.Model.DepotModels.Depot", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -79,7 +117,7 @@ namespace Aktien.Data.Migrations
                     b.ToTable("Depot");
                 });
 
-            modelBuilder.Entity("Data.Model.DepotEntitys.DepotAktien", b =>
+            modelBuilder.Entity("Aktien.Data.Model.DepotModels.DepotAktie", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -107,73 +145,35 @@ namespace Aktien.Data.Migrations
                     b.ToTable("DepotAktien");
                 });
 
-            modelBuilder.Entity("Data.Model.DepotEntitys.OrderHistory", b =>
+            modelBuilder.Entity("Aktien.Data.Model.AktieModels.Dividende", b =>
                 {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("AktieID")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Anzahl")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("BuySell")
-                        .HasColumnType("integer");
-
-                    b.Property<double?>("Fremdkostenzuschlag")
-                        .HasColumnType("double precision");
-
-                    b.Property<int>("KaufartTyp")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("Kaufdatum")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("OrderartTyp")
-                        .HasColumnType("integer");
-
-                    b.Property<double>("Preis")
-                        .HasColumnType("double precision");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("AktieID");
-
-                    b.ToTable("OrderHistory");
-                });
-
-            modelBuilder.Entity("Data.Entity.AktieEntitys.Dividende", b =>
-                {
-                    b.HasOne("Data.Entity.AktieEntitys.Aktie", "Aktie")
+                    b.HasOne("Aktien.Data.Model.AktieModels.Aktie", "Aktie")
                         .WithMany("Dividenden")
                         .HasForeignKey("AktieID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Data.Model.DepotEntitys.DepotAktien", b =>
+            modelBuilder.Entity("Aktien.Data.Model.AktieModels.OrderHistory", b =>
                 {
-                    b.HasOne("Data.Entity.AktieEntitys.Aktie", "Aktie")
+                    b.HasOne("Aktien.Data.Model.AktieModels.Aktie", "Aktie")
+                        .WithMany("OrderHistories")
+                        .HasForeignKey("AktieID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Aktien.Data.Model.DepotModels.DepotAktie", b =>
+                {
+                    b.HasOne("Aktien.Data.Model.AktieModels.Aktie", "Aktie")
                         .WithMany()
                         .HasForeignKey("AktieID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Data.Model.DepotEntitys.Depot", "Depot")
+                    b.HasOne("Aktien.Data.Model.DepotModels.Depot", "Depot")
                         .WithMany("DepotAktien")
                         .HasForeignKey("DepotID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Data.Model.DepotEntitys.OrderHistory", b =>
-                {
-                    b.HasOne("Data.Entity.AktieEntitys.Aktie", "Aktie")
-                        .WithMany("OrderHistories")
-                        .HasForeignKey("AktieID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

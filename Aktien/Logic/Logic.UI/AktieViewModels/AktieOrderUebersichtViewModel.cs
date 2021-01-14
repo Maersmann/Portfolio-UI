@@ -1,5 +1,6 @@
 ﻿using Aktien.Data.Model.AktieModels;
 using Aktien.Logic.Core.AktieLogic;
+using Aktien.Logic.Core.Depot;
 using Aktien.Logic.Messages.AktieMessages;
 using Aktien.Logic.Messages.DepotMessages;
 using Aktien.Logic.UI.BaseViewModels;
@@ -21,6 +22,7 @@ namespace Aktien.Logic.UI.AktieViewModels
         private ObservableCollection<OrderHistory> orderHistories;
 
         private OrderHistory selectedOrderHistory;
+
         private int aktieID;
 
         public AktieOrderUebersichtViewModel()
@@ -28,6 +30,7 @@ namespace Aktien.Logic.UI.AktieViewModels
             aktieID = 0;
             Messenger.Default.Register<LoadAktieOrderMessage>(this, m => ReceiveLoadAktieMessage(m));
             AktieGekauftCommand = new DelegateCommand(this.ExecuteAktieGekauftCommand, this.CanExecuteCommand);
+            EntfernenCommand = new DelegateCommand(this.ExecuteEntfernenCommand, this.CanSelectedItemExecuteCommand);
         }
 
         private void ReceiveLoadAktieMessage(LoadAktieOrderMessage m)
@@ -46,6 +49,8 @@ namespace Aktien.Logic.UI.AktieViewModels
         #region Bindings
 
         public ICommand AktieGekauftCommand { get; set; }
+        public ICommand BearbeitenCommand { get; set; }
+        public ICommand EntfernenCommand{get;set;}
 
 
         public OrderHistory SelectedOrderHistory
@@ -57,6 +62,7 @@ namespace Aktien.Logic.UI.AktieViewModels
             set
             {
                 selectedOrderHistory = value;
+                ((DelegateCommand)EntfernenCommand).RaiseCanExecuteChanged();
                 this.RaisePropertyChanged();
             }
         }
@@ -75,10 +81,20 @@ namespace Aktien.Logic.UI.AktieViewModels
         {
             Messenger.Default.Send<OpenAktieGekauftViewMessage>(new OpenAktieGekauftViewMessage { AktieID = aktieID });
         }
+        private void ExecuteEntfernenCommand()
+        {
+            new DepotAPI().EntferneGekaufteAktie(selectedOrderHistory.ID);
+            orderHistories.Remove(selectedOrderHistory);
+            this.RaisePropertyChanged("SelectedOrderHistory");
+        }
 
         private bool CanExecuteCommand()
         {
             return aktieID != 0;
+        }
+        private bool CanSelectedItemExecuteCommand()
+        {
+            return selectedOrderHistory != null;
         }
         #endregion
     }

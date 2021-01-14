@@ -19,7 +19,7 @@ namespace Aktien.Data.Model.AktieModels
         public int Anzahl { get; set; }
         public Double Preis { get; set; }
         public Double? Fremdkostenzuschlag { get; set; }
-        public DateTime Kaufdatum { get; set; }
+        public DateTime Orderdatum { get; set; }
         public int AktieID { get; set; }
         public Aktie Aktie { get; set; }
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Aktien.Data.Migrations
 {
@@ -8,6 +9,10 @@ namespace Aktien.Data.Migrations
         {
             migrationBuilder.DropColumn(
                 name: "Kaufart",
+                table: "OrderHistory");
+
+            migrationBuilder.DropColumn(
+                name: "Kaufdatum",
                 table: "OrderHistory");
 
             migrationBuilder.DropColumn(
@@ -38,6 +43,12 @@ namespace Aktien.Data.Migrations
                 table: "OrderHistory",
                 nullable: false,
                 defaultValue: 0);
+
+            migrationBuilder.AddColumn<DateTime>(
+                name: "Orderdatum",
+                table: "OrderHistory",
+                nullable: false,
+                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -54,6 +65,10 @@ namespace Aktien.Data.Migrations
                 name: "OrderartTyp",
                 table: "OrderHistory");
 
+            migrationBuilder.DropColumn(
+                name: "Orderdatum",
+                table: "OrderHistory");
+
             migrationBuilder.AlterColumn<double>(
                 name: "Fremdkostenzuschlag",
                 table: "OrderHistory",
@@ -68,6 +83,13 @@ namespace Aktien.Data.Migrations
                 type: "integer",
                 nullable: false,
                 defaultValue: 0);
+
+            migrationBuilder.AddColumn<DateTime>(
+                name: "Kaufdatum",
+                table: "OrderHistory",
+                type: "timestamp without time zone",
+                nullable: false,
+                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
             migrationBuilder.AddColumn<int>(
                 name: "Orderart",

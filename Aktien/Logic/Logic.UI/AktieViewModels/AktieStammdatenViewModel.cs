@@ -24,7 +24,7 @@ namespace Aktien.Logic.UI.AktieViewModels
 
         private Aktie aktie;
 
-        private bool LoadAktie;
+
 
         public AktieStammdatenViewModel():base()
         {
@@ -36,8 +36,6 @@ namespace Aktien.Logic.UI.AktieViewModels
             WKN = "";
 
             state = State.Neu;
-
-            LoadAktie = false;
         }
 
 
@@ -58,7 +56,7 @@ namespace Aktien.Logic.UI.AktieViewModels
             }
             else
             {
-                api.Update(aktie);
+                api.Aktualisieren(aktie);
                 Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Aktie erfolgreich aktualisiert." });
             } 
         }

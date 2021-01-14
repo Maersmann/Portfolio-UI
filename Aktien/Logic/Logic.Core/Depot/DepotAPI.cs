@@ -32,6 +32,29 @@ namespace Aktien.Logic.Core.Depot
             DepotAktieRepo.Speichern(depotAktie);
         }
 
+        public void EntferneGekaufteAktie(int OrderID)
+        {
+            var OrderRepo = new OrderHistoryRepository();
+            var DepotAktieRepo = new DepotAktienRepository();
+
+            var Order = OrderRepo.LadeByID(OrderID);
+            var DepotAktie = DepotAktieRepo.LadeAnhandAktieID(Order.AktieID);
+
+            var AlteAnzahl = DepotAktie.Anzahl;
+            DepotAktie.Anzahl -= Order.Anzahl;
+
+            if (DepotAktie.Anzahl == 0)
+            {
+                DepotAktieRepo.Entfernen(DepotAktie);
+            }
+            else
+            {
+                DepotAktie.BuyIn = ((DepotAktie.BuyIn * AlteAnzahl) - (Order.Preis * Order.Anzahl) - Order.Fremdkostenzuschlag.GetValueOrDefault(0)) / DepotAktie.Anzahl;
+                DepotAktieRepo.Speichern(DepotAktie);
+            }
+            OrderRepo.Entfernen(Order);
+        }
+
         public ObservableCollection<DepotAktie> LadeAlleVorhandeneImDepot()
         {
             return new DepotAktienRepository().LoadAll();

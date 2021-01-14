@@ -12,7 +12,7 @@ namespace Aktien.Logic.UI.DepotViewModels
 {
     public class DepotUebersichtViewModel: ViewModelBasis
     {
-        private ObservableCollection<DepotAktie> depotAktien;
+        private readonly ObservableCollection<DepotAktie> depotAktien;
 
         private DepotAktie selectedDepotAktie;
 

@@ -1,6 +1,7 @@
 ﻿using Aktien.Data.Infrastructure.AktienRepositorys;
 using Aktien.Data.Model.AktieModels;
 using Aktien.Data.Model.DepotModels;
+using Aktien.Logic.Core.DividendeLogic;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,43 +20,52 @@ namespace Aktien.Logic.Core.AktieLogic
                 throw new AktieSchonVorhandenException();
             }
 
-            var Repo = new AktieRepository();
-            Repo.Speichern(inAktie);
+            new AktieRepository().Speichern(inAktie);
         }
 
-        public void Update(Aktie inAktie)
+        public void Aktualisieren(Aktie inAktie)
         {
-            var Repo = new AktieRepository();
-            Repo.Update(inAktie);
+            new AktieRepository().Update(inAktie);
         }
 
         public bool IstAkieVorhanden(String inISIN)
         {
-            var Repo = new AktieRepository();
-            return Repo.IstVorhanden(inISIN);
+            return new AktieRepository().IstVorhanden(inISIN);
         }
 
         public ObservableCollection<Aktie> LadeAlle()
         {
-            var Repo = new AktieRepository();
-            return Repo.LadeAlle();
+            return new AktieRepository().LadeAlle();
         }
 
         public Aktie LadeAnhandID(int inID)
         {
-            var Repo = new AktieRepository();
-            return Repo.LadeAnhandID(inID);
+            return new AktieRepository().LadeAnhandID(inID);
         }
 
         public void Entfernen(Aktie inAktie)
         {
-            var Repo = new AktieRepository();
-            Repo.Entfernen(inAktie);
+            new AktieRepository().Entfernen(inAktie);
+        }
+
+        public ObservableCollection<Dividende> LadeAlleDividendenDerAktie(int inAktieID)
+        {
+            return new DividendeAPI().LadeAlleFuerAktie(inAktieID);
+        }
+
+        public Dividende LadeDividendeDerAktie(int inID)
+        {
+            return new DividendeAPI().LadeAnhandID(inID);
         }
 
         public ObservableCollection<OrderHistory> LadeAlleOrdersDerAktie(int inAktieID)
         {
             return new OrderHistoryRepository().LadeAlleByAktieID(inAktieID);
+        }
+
+        public OrderHistory LadeOrderDerAktie(int OrderID)
+        {
+            return new OrderHistoryRepository().LadeByID(OrderID);
         }
     }
 
