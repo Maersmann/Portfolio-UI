@@ -57,6 +57,7 @@ namespace Aktien.Logic.UI
             SimpleIoc.Default.Register<DividendeErhaltenViewModel>();
             SimpleIoc.Default.Register<DividendenUebersichtAuswahlViewModel>();
             SimpleIoc.Default.Register<DividendenAuswahlViewModel>();
+            SimpleIoc.Default.Register<DividendeErhaltenUebersichtViewModel>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
@@ -71,7 +72,7 @@ namespace Aktien.Logic.UI
         public DividendeErhaltenViewModel DividendeErhalten => ServiceLocator.Current.GetInstance<DividendeErhaltenViewModel>();
         public DividendenUebersichtAuswahlViewModel DividendenUebersichtAuswahl => ServiceLocator.Current.GetInstance<DividendenUebersichtAuswahlViewModel>();
         public DividendenAuswahlViewModel DividendenAuswahl => ServiceLocator.Current.GetInstance<DividendenAuswahlViewModel>();
-
+        public DividendeErhaltenUebersichtViewModel DividendeErhaltenUebersicht => ServiceLocator.Current.GetInstance<DividendeErhaltenUebersichtViewModel>();
         public static void Cleanup()
         {
 

@@ -36,8 +36,8 @@ namespace Aktien.UI.Desktop
         {
             InitializeComponent();
             Messenger.Default.Register<OpenAktieStammdatenMessage>(this, m => ReceiveOpenAktieStammdatenMessage( m ));
-            Messenger.Default.Register<DeleteAktieErfolgreichMessage>(this, m => ReceiveDeleteAktieErfolgreich());
-            Messenger.Default.Register<OpenDividendenUebersichtAuswahlMessage>(this, m => ReceiveOpenDividendeUebersichtMessage(m));
+            Messenger.Default.Register<DeleteAktieErfolgreichMessage>(this, m => ReceiveDeleteAktieErfolgreich() );
+            Messenger.Default.Register<OpenDividendenUebersichtAuswahlMessage>(this, "AktienUebersicht", m => ReceiveOpenDividendeUebersichtMessage(m));
            
         }
 

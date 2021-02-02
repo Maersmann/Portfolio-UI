@@ -47,8 +47,9 @@
     <Compile Include="AktieMessages\AktieUebersichtPageMessages.cs" />
     <Compile Include="AuswahlMessages\DividendeAusgewaehltMessage.cs" />
     <Compile Include="AuswahlMessages\OpenDividendenAuswahlMessage.cs" />
-    <Compile Include="DividendeMessages\OpenDividendeErhaltenViewMessage.cs" />
+    <Compile Include="DividendeMessages\OpenDividendeErhaltenUebersichtViewMessage.cs" />
     <Compile Include="DividendeMessages\OpenDividendenUebersichtAuswahlMessage.cs" />
+    <Compile Include="DividendeMessages\OpenErhaltendeDividendeStammdatenMessage.cs" />
     <Compile Include="MainViewMessages.cs" />
     <Compile Include="AktieMessages\AktieStammdatenViewMessages.cs" />
     <Compile Include="AktieMessages\AktieOrderViewMessages.cs" />

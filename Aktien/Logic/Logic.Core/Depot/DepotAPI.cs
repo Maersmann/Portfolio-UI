@@ -26,7 +26,7 @@ namespace Aktien.Logic.Core.Depot
             {
                 depotAktie = new DepotAktie { AktieID = inAktieID, DepotID = 1 };
             }
-            var AlteAnzahl = depotAktie.Anzahl;
+            //var AlteAnzahl = depotAktie.Anzahl;
 
             depotAktie.Anzahl +=inAnzahl;
 
@@ -87,7 +87,7 @@ namespace Aktien.Logic.Core.Depot
             var Order = OrderRepo.LadeByID(OrderID);
             var DepotAktie = DepotAktieRepo.LadeAnhandAktieID(Order.AktieID);
 
-            var AlteAnzahl = DepotAktie.Anzahl;
+            //var AlteAnzahl = DepotAktie.Anzahl;
             DepotAktie.Anzahl += Order.Anzahl;
 
             //DepotAktie.BuyIn = ((DepotAktie.BuyIn * AlteAnzahl) + (Order.Preis * Order.Anzahl) + Order.Fremdkostenzuschlag.GetValueOrDefault(0)) / DepotAktie.Anzahl;
@@ -103,7 +103,7 @@ namespace Aktien.Logic.Core.Depot
 
         public void NeueDividendenErhalten(int inAktieID, int inDividendeID, DateTime inDatum, Double? inQuellensteuer, Double? inUmrechnungskurs, int inBestand)
         {
-            var Erhaltenedividende = new DividendeErhalten { AktieID = inAktieID, Bestand = inBestand, Datum = inDatum, Quellensteuer = inQuellensteuer, Umrechnungskurs = inUmrechnungskurs };
+            var Erhaltenedividende = new DividendeErhalten { AktieID = inAktieID, DividendeID = inDividendeID, Bestand = inBestand, Datum = inDatum, Quellensteuer = inQuellensteuer, Umrechnungskurs = inUmrechnungskurs };
             NeueDividendenErhalten(Erhaltenedividende);
         }
 

@@ -26,18 +26,27 @@ namespace Aktien.UI.Desktop.Dividende
         {
             InitializeComponent();
             Messenger.Default.Register<OpenDividendeUebersichtMessage>(this, m => ReceiveOpenDividendeUebersichtMessage(m)); 
-            Messenger.Default.Register<OpenDividendeErhaltenViewMessage>(this, m => ReceiveOpenDividendeErhaltenViewMessage(m));
+            Messenger.Default.Register<OpenDividendeErhaltenUebersichtViewMessage>(this, m => ReceiveOpenDividendeErhaltenViewMessage(m));
         }
 
-        private void ReceiveOpenDividendeErhaltenViewMessage(OpenDividendeErhaltenViewMessage m)
+        private void ReceiveOpenDividendeErhaltenViewMessage(OpenDividendeErhaltenUebersichtViewMessage m)
         {
             this.Close();
-            var view = new DividendeErhaltenView();
+            var view = new DividendeErhaltenUebersichtView();
 
-            if (view.DataContext is DividendeErhaltenViewModel model)
-                model.AktieID(m.AktieID);
+            if (view.DataContext is DividendeErhaltenUebersichtViewModel model)
+                model.LoadData(m.AktieID);
 
-            view.ShowDialog();
+            Window window = new Window
+            {
+                Content = view,
+                SizeToContent = SizeToContent.WidthAndHeight,
+                ResizeMode = ResizeMode.NoResize,
+                WindowStartupLocation = WindowStartupLocation.CenterScreen
+
+            };
+
+            window.ShowDialog();
         }
 
         private void ReceiveOpenDividendeUebersichtMessage(OpenDividendeUebersichtMessage m)
@@ -63,7 +72,7 @@ namespace Aktien.UI.Desktop.Dividende
         private void Window_Unloaded(object sender, RoutedEventArgs e)
         {
             Messenger.Default.Unregister<OpenDividendeUebersichtMessage>(this);
-            Messenger.Default.Unregister<OpenDividendeErhaltenViewMessage>(this);
+            Messenger.Default.Unregister<OpenDividendeErhaltenUebersichtViewMessage>(this);
         }
     }
 }

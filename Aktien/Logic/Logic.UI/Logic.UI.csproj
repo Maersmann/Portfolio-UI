@@ -165,6 +165,7 @@
     <Compile Include="BaseViewModels\ViewModelValidate.cs" />
     <Compile Include="DepotViewModels\BuyOrderViewModel.cs" />
     <Compile Include="DepotViewModels\DepotUebersichtViewModel.cs" />
+    <Compile Include="DividendeViewModels\DividendeErhaltenUebersichtViewModel.cs" />
     <Compile Include="DividendeViewModels\DividendeErhaltenViewModel.cs" />
     <Compile Include="DividendeViewModels\DividendenUebersichtAuswahlViewModel.cs" />
     <Compile Include="DividendeViewModels\DividendenUebersichtViewModel.cs" />

@@ -19,9 +19,10 @@ namespace Aktien.Data.Model.AktienModels
         public Double GesamtNetto { get; set; }
         public Double GesamtBrutto { get; set; }
         public int Bestand { get; set; }
-        public int AktieID { get; set; }
-        public Aktie Aktie { get; set; }
         public int DividendeID { get; set; }
         public Dividende Dividende { get; set; }
+        public int AktieID { get; set; }
+        public Aktie Aktie { get; set; }
+
     }
 }

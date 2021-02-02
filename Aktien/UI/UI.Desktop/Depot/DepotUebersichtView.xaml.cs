@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Aktien.Logic.Messages.DividendeMessages;
+using Aktien.Logic.UI.DividendeViewModels;
+using Aktien.UI.Desktop.Dividende;
+using GalaSoft.MvvmLight.Messaging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +27,16 @@ namespace Aktien.UI.Desktop.Depot
         public DepotUebersichtView()
         {
             InitializeComponent();
+            Messenger.Default.Register<OpenDividendenUebersichtAuswahlMessage>(this, "DepotUebersicht", m => ReceiveOpenDividendeUebersichtMessage(m));
+        }
+
+        private void ReceiveOpenDividendeUebersichtMessage(OpenDividendenUebersichtAuswahlMessage m)
+        {
+            var view = new DividendenUebersichtAuswahlView();
+
+            if (view.DataContext is DividendenUebersichtAuswahlViewModel model)
+                model.AktieID = m.AktieID;
+            view.ShowDialog();
         }
     }
 }

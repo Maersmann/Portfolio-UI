@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Aktien.Logic.Messages.DividendeMessages
 {
-    public class OpenDividendeErhaltenViewMessage
+    public class OpenDividendeErhaltenUebersichtViewMessage
     {
         public int AktieID { get; set; }
     }

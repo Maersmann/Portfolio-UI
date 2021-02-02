@@ -20,7 +20,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         private void ExecuteOpenErhalteneDividendenViewCommand()
         {
-            Messenger.Default.Send<OpenDividendeErhaltenViewMessage>(new OpenDividendeErhaltenViewMessage { AktieID = AktieID });
+            Messenger.Default.Send<OpenDividendeErhaltenUebersichtViewMessage>(new OpenDividendeErhaltenUebersichtViewMessage { AktieID = AktieID });
         }
 
         private void ExecuteOpenAlleDividendenViewCommand()

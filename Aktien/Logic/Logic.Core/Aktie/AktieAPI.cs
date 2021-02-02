@@ -67,6 +67,12 @@ namespace Aktien.Logic.Core.AktieLogic
         {
             return new OrderHistoryRepository().LadeByID(OrderID);
         }
+
+        public ObservableCollection<DividendeErhalten> LadeAlleErhalteneDividenden(int inAktieID)
+        {
+            new DividendeRepository().LadeAlleFuerAktie(inAktieID);
+            return new DividendeErhaltenRepository().LadeAllByAktieID(inAktieID);
+        }
     }
 
     public class AktieSchonVorhandenException : Exception
