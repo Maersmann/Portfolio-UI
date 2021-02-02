@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Aktien.Data.Infrastructure</RootNamespace>
+    <Company>Märsmann</Company>
   </PropertyGroup>
 
   <ItemGroup>
