@@ -160,10 +160,13 @@
     <Compile Include="AktieViewModels\AktieOrderUebersichtViewModel.cs" />
     <Compile Include="AktieViewModels\AktieStammdatenViewModel.cs" />
     <Compile Include="AktieViewModels\Page\AktieUebersichtPageViewModel.cs" />
+    <Compile Include="AuswahlViewModels\DividendenAuswahlViewModel.cs" />
     <Compile Include="BaseViewModels\ViewModelStammdaten.cs" />
     <Compile Include="BaseViewModels\ViewModelValidate.cs" />
     <Compile Include="DepotViewModels\BuyOrderViewModel.cs" />
     <Compile Include="DepotViewModels\DepotUebersichtViewModel.cs" />
+    <Compile Include="DividendeViewModels\DividendeErhaltenViewModel.cs" />
+    <Compile Include="DividendeViewModels\DividendenUebersichtAuswahlViewModel.cs" />
     <Compile Include="DividendeViewModels\DividendenUebersichtViewModel.cs" />
     <Compile Include="DividendeViewModels\DividendeStammdatenViewModel.cs" />
     <Compile Include="MainViewModel.cs" />

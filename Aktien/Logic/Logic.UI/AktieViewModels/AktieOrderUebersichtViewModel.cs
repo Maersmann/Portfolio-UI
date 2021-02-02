@@ -1,4 +1,4 @@
-﻿using Aktien.Data.Model.AktieModels;
+﻿using Aktien.Data.Model.AktienModels;
 using Aktien.Data.Types;
 using Aktien.Logic.Core.AktieLogic;
 using Aktien.Logic.Core.Depot;

@@ -15,7 +15,7 @@ using Aktien.Logic.Messages.Base;
 using Aktien.Data.Types;
 using Aktien.Logic.UI.BaseViewModels;
 using Aktien.Logic.Core.AktieLogic;
-using Aktien.Data.Model.AktieModels;
+using Aktien.Data.Model.AktienModels;
 
 namespace Aktien.Logic.UI.AktieViewModels
 {
@@ -47,17 +47,17 @@ namespace Aktien.Logic.UI.AktieViewModels
                 try
                 { 
                     api.Speichern(new Aktie() { ISIN = aktie.ISIN, Name = aktie.Name, WKN = aktie.WKN });
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Aktie erfolgreich gespeichert." });
+                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Aktie erfolgreich gespeichert." }, "AktieStammdaten");
                 }
                 catch( AktieSchonVorhandenException)
                 {
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = false, Message = "Aktie ist schon vorhanden." });
+                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = false, Message = "Aktie ist schon vorhanden." }, "AktieStammdaten");
                 }
             }
             else
             {
                 api.Aktualisieren(aktie);
-                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Aktie erfolgreich aktualisiert." });
+                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Aktie erfolgreich aktualisiert." }, "AktieStammdaten");
             } 
         }
 

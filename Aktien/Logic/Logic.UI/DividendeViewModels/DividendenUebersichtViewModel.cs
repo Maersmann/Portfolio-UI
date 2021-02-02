@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Aktien.Data.Model.AktieModels;
+using Aktien.Data.Model.AktienModels;
 
 namespace Aktien.Logic.UI.DividendeViewModels
 {

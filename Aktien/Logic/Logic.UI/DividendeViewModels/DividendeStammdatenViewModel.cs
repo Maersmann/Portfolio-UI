@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Aktien.Data.Model.AktieModels;
+using Aktien.Data.Model.AktienModels;
 
 namespace Aktien.Logic.UI.DividendeViewModels
 {
@@ -27,6 +27,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
             Datum = DateTime.Now;
             state = State.Neu;
             Betrag = null;
+            Waehrung = Data.Types.Waehrungen.Euro;
         }
 
         protected override void ExecuteSaveCommand()
@@ -34,13 +35,13 @@ namespace Aktien.Logic.UI.DividendeViewModels
             var API = new DividendeAPI();
             if (state == State.Neu)
             {           
-                API.Speichern(dividende.Betrag, dividende.Datum, dividende.AktieID);
-                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Dividende gespeichert." });
+                API.Speichern(dividende.Betrag, dividende.Datum, dividende.AktieID, dividende.Waehrung, dividende.BetragUmgerechnet);
+                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Dividende gespeichert." }, "DividendenStammdaten");
             }
             else
             {
-                API.Aktualisiere(dividende.Betrag, dividende.Datum, dividende.ID);
-                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Dividende aktualisiert." });
+                API.Aktualisiere(dividende.Betrag, dividende.Datum, dividende.ID, dividende.Waehrung, dividende.BetragUmgerechnet);
+                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Dividende aktualisiert." }, "DividendenStammdaten");
             }
         }
 
@@ -79,6 +80,41 @@ namespace Aktien.Logic.UI.DividendeViewModels
                 }
             }
         }
+        public Double? BetragUmgerechnet
+        {
+            get
+            {
+                return dividende.BetragUmgerechnet;
+            }
+            set
+            {
+                if (this.dividende.BetragUmgerechnet != value)
+                {
+                    this.dividende.BetragUmgerechnet = value;
+                    this.RaisePropertyChanged();
+                }
+            }
+        }
+        public Waehrungen Waehrung
+        {
+            get { return dividende.Waehrung; }
+            set
+            {
+                if (LoadAktie || (this.dividende.Waehrung != value))
+                {
+                    this.dividende.Waehrung = value;
+                    this.RaisePropertyChanged();
+                }
+            }
+        }
+        public IEnumerable<Waehrungen> Waehrungen
+        {
+            get
+            {
+                return Enum.GetValues(typeof(Waehrungen)).Cast<Waehrungen>();
+            }
+        }
+
         #endregion
         public int AktieID
         {
@@ -93,11 +129,14 @@ namespace Aktien.Logic.UI.DividendeViewModels
                 ID = _dividende.ID
              };
 
-             AktieID = _dividende.AktieID;
-             Datum = _dividende.Datum;
-             Betrag = _dividende.Betrag;
-             state = State.Bearbeiten;
+            AktieID = _dividende.AktieID;
+            Datum = _dividende.Datum;
+            Betrag = _dividende.Betrag;
+            Waehrung = _dividende.Waehrung;
+            BetragUmgerechnet = _dividende.BetragUmgerechnet;
+            state = State.Bearbeiten;
         }
+
 
 
         #region Validate

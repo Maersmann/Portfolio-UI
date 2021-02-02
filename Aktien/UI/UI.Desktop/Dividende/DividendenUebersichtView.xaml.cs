@@ -54,5 +54,11 @@ namespace Aktien.UI.Desktop.Dividende
                 modelUebersicht.LoadData( m.AktieID );
             }
         }
+
+        private void DataGrid_Unloaded(object sender, RoutedEventArgs e)
+        {
+            Messenger.Default.Unregister<OpenDividendeStammdatenMessage>(this);
+            Messenger.Default.Unregister<DeleteDividendeErfolgreichMessage>(this);
+        }
     }
 }

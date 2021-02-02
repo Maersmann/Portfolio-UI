@@ -23,6 +23,7 @@ namespace Aktien.UI.Desktop.Depot
         public BuyOrderView()
         {
             InitializeComponent();
+            base.MessageWithToken("BuyOrder");
         }
     }
 }

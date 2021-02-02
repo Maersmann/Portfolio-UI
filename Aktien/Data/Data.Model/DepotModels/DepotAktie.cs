@@ -1,4 +1,4 @@
-﻿using Aktien.Data.Model.AktieModels;
+﻿using Aktien.Data.Model.AktienModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

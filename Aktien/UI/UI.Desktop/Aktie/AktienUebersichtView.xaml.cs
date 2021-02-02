@@ -37,27 +37,17 @@ namespace Aktien.UI.Desktop
             InitializeComponent();
             Messenger.Default.Register<OpenAktieStammdatenMessage>(this, m => ReceiveOpenAktieStammdatenMessage( m ));
             Messenger.Default.Register<DeleteAktieErfolgreichMessage>(this, m => ReceiveDeleteAktieErfolgreich());
-            Messenger.Default.Register<OpenDividendeUebersichtMessage>(this, m => ReceiveOpenDividendeUebersichtMessage(m));
+            Messenger.Default.Register<OpenDividendenUebersichtAuswahlMessage>(this, m => ReceiveOpenDividendeUebersichtMessage(m));
            
         }
 
-        private void ReceiveOpenDividendeUebersichtMessage(OpenDividendeUebersichtMessage m)
+        private void ReceiveOpenDividendeUebersichtMessage(OpenDividendenUebersichtAuswahlMessage m)
         {
-            var view = new DividendenUebersichtView();
+            var view = new DividendenUebersichtAuswahlView();
 
-            if (view.DataContext is DividendenUebersichtViewModel model)
-                model.LoadData(m.AktieID);
-
-            Window window = new Window
-            {
-                Content = view,
-                SizeToContent = SizeToContent.WidthAndHeight,
-                ResizeMode = ResizeMode.NoResize,
-                WindowStartupLocation = WindowStartupLocation.CenterScreen
-                 
-            };
-
-            window.ShowDialog();
+            if (view.DataContext is DividendenUebersichtAuswahlViewModel model)
+                model.AktieID = m.AktieID;
+            view.ShowDialog();
         }
 
         private void ReceiveOpenAktieStammdatenMessage( OpenAktieStammdatenMessage message )

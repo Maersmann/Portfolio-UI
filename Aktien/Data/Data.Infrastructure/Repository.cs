@@ -1,4 +1,4 @@
-﻿using Aktien.Data.Model.AktieModels;
+﻿using Aktien.Data.Model.AktienModels;
 using Aktien.Data.Model.DepotModels;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -15,6 +15,7 @@ namespace Aktien.Data.Infrastructure
         public DbSet<OrderHistory> OrderHistories { get; set; }
         public DbSet<Depot> Depots { get; set; }
         public DbSet<DepotAktie> AktienInDepots { get; set; }
+        public DbSet<DividendeErhalten> ErhaltendeDividenden { get; set; }
 
         public Repository() : base() { this.Database.Migrate(); }
 

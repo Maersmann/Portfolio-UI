@@ -51,6 +51,7 @@
     <Compile Include="Interfaces\IValidierung.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validierung\AktieGekauftValidierung.cs" />
+    <Compile Include="Validierung\DividendeErhaltenValidierung.cs" />
     <Compile Include="Validierung\DividendeStammdatenValidierung.cs" />
     <Compile Include="Validierung\AktieStammdatenValidierung.cs" />
   </ItemGroup>

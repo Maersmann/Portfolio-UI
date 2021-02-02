@@ -1,5 +1,6 @@
 ﻿using Aktien.Data.Infrastructure.AktienRepositorys;
 using Aktien.Data.Infrastructure.DepotRepositorys;
+using Aktien.Data.Model.AktienModels;
 using Aktien.Data.Model.DepotModels;
 using Aktien.Data.Types;
 using System;
@@ -98,6 +99,28 @@ namespace Aktien.Logic.Core.Depot
         public ObservableCollection<DepotAktie> LadeAlleVorhandeneImDepot()
         {
             return new DepotAktienRepository().LoadAll();
+        }
+
+        public void NeueDividendenErhalten(int inAktieID, int inDividendeID, DateTime inDatum, Double? inQuellensteuer, Double? inUmrechnungskurs, int inBestand)
+        {
+            var Erhaltenedividende = new DividendeErhalten { AktieID = inAktieID, Bestand = inBestand, Datum = inDatum, Quellensteuer = inQuellensteuer, Umrechnungskurs = inUmrechnungskurs };
+            NeueDividendenErhalten(Erhaltenedividende);
+        }
+
+        public void NeueDividendenErhalten(DividendeErhalten inDividendeErhalten)
+        {
+            var dividende = new DividendeRepository().LadeAnhandID(inDividendeErhalten.DividendeID);
+
+            inDividendeErhalten.GesamtBrutto = (dividende.Betrag * inDividendeErhalten.Bestand);
+            inDividendeErhalten.GesamtNetto = inDividendeErhalten.GesamtBrutto - inDividendeErhalten.Quellensteuer.GetValueOrDefault(0);
+
+            if( (!dividende.Waehrung.Equals(Waehrungen.Euro)) && ( !dividende.BetragUmgerechnet.HasValue ))
+            {
+                dividende.BetragUmgerechnet = dividende.Betrag / inDividendeErhalten.Umrechnungskurs.GetValueOrDefault(1);
+                new DividendeRepository().Update(dividende.Betrag, dividende.Datum, dividende.ID, dividende.Waehrung, dividende.BetragUmgerechnet);
+            }
+
+            new DividendeErhaltenRepository().Speichern(inDividendeErhalten);
         }
     }
 

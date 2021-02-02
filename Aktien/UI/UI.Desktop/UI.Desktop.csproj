@@ -192,11 +192,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Auswahl\DividendenAuswahlView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Depot\BuyOrderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Depot\DepotUebersichtView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dividende\DividendeErhaltenView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dividende\DividendenUebersichtAuswahlView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -231,12 +243,21 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Auswahl\DividendenAuswahlView.xaml.cs">
+      <DependentUpon>DividendenAuswahlView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Base\StammdatenView.cs" />
     <Compile Include="Depot\BuyOrderView.xaml.cs">
       <DependentUpon>BuyOrderView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Depot\DepotUebersichtView.xaml.cs">
       <DependentUpon>DepotUebersichtView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dividende\DividendeErhaltenView.xaml.cs">
+      <DependentUpon>DividendeErhaltenView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dividende\DividendenUebersichtAuswahlView.xaml.cs">
+      <DependentUpon>DividendenUebersichtAuswahlView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dividende\DividendenUebersichtView.xaml.cs">
       <DependentUpon>DividendenUebersichtView.xaml</DependentUpon>

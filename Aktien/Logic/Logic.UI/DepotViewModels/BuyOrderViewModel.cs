@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Aktien.Data.Model.DepotModels;
-using Aktien.Data.Model.AktieModels;
+using Aktien.Data.Model.AktienModels;
 using Aktien.Logic.Core.AktieLogic;
 
 namespace Aktien.Logic.UI.DepotViewModels
@@ -46,7 +46,7 @@ namespace Aktien.Logic.UI.DepotViewModels
             {
                 Depot.NeueAktieVerkauft(data.Preis, data.Fremdkostenzuschlag, data.Orderdatum, AktieID, data.Anzahl, data.KaufartTyp, data.OrderartTyp);
             }
-            Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Buy-Order erfolgreich gespeichert." });
+            Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Buy-Order erfolgreich gespeichert." }, "BuyOrder");
         }
 
         public void SetBuySell(BuySell inBuySell)

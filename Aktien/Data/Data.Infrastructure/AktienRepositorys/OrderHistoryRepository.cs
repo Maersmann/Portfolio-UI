@@ -1,5 +1,5 @@
 ﻿using Aktien.Data.Infrastructure.Base;
-using Aktien.Data.Model.AktieModels;
+using Aktien.Data.Model.AktienModels;
 using Aktien.Data.Model.DepotModels;
 using Aktien.Data.Types;
 using System;

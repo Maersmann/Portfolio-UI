@@ -1,5 +1,6 @@
 ﻿using Aktien.Data.Infrastructure.AktienRepositorys;
-using Aktien.Data.Model.AktieModels;
+using Aktien.Data.Model.AktienModels;
+using Aktien.Data.Types;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,16 +12,16 @@ namespace Aktien.Logic.Core.DividendeLogic
 {
     public class DividendeAPI
     {
-        public void Speichern(Double inBetrag, DateTime inDatum, int inAktieID)
+        public void Speichern(Double inBetrag, DateTime inDatum, int inAktieID, Waehrungen inWaehrung, Double? inBetragUmgerechnet)
         {
             var DividendeRepo = new DividendeRepository();
-            DividendeRepo.Speichern(inBetrag, inDatum, inAktieID);
+            DividendeRepo.Speichern(inBetrag, inDatum, inAktieID, inWaehrung, inBetragUmgerechnet);
         }
 
-        public void Aktualisiere(Double inBetrag, DateTime inDatum, int inID)
+        public void Aktualisiere(Double inBetrag, DateTime inDatum, int inID, Waehrungen inWaehrung, Double? inBetragUmgerechnet)
         {
             var DividendeRepo = new DividendeRepository();
-            DividendeRepo.Update(inBetrag,inDatum,inID);
+            DividendeRepo.Update(inBetrag,inDatum,inID, inWaehrung, inBetragUmgerechnet);
         }
 
         public void Entfernen(int inID)

@@ -13,7 +13,12 @@ namespace Aktien.UI.Desktop.Base
     {
         public StammdatenView()
         {
-            Messenger.Default.Register<StammdatenGespeichertMessage>(this, m => ReceiveNeueDividendeGespeichertMessage(m));
+            
+        }
+
+        public void MessageWithToken(string inToken)
+        {
+            Messenger.Default.Register<StammdatenGespeichertMessage>(this, inToken, m => ReceiveNeueDividendeGespeichertMessage(m));
         }
 
         private void ReceiveNeueDividendeGespeichertMessage(StammdatenGespeichertMessage m)
@@ -29,7 +34,7 @@ namespace Aktien.UI.Desktop.Base
             }
         }
 
-        private void Window_Unloaded(object sender, RoutedEventArgs e)
+        public virtual void Window_Unloaded(object sender, RoutedEventArgs e)
         {
             Messenger.Default.Unregister<StammdatenGespeichertMessage>(this);
         }

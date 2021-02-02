@@ -15,7 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Aktien.Data.Model.AktieModels;
+using Aktien.Data.Model.AktienModels;
 
 namespace Aktien.Logic.UI.AktieViewModels
 {
@@ -88,7 +88,7 @@ namespace Aktien.Logic.UI.AktieViewModels
 
         private void ExecuteOpenNeueDividendeCommand()
         {
-            Messenger.Default.Send<OpenDividendeUebersichtMessage>(new OpenDividendeUebersichtMessage {AktieID = selectedAktie.ID } );
+            Messenger.Default.Send<OpenDividendenUebersichtAuswahlMessage>(new OpenDividendenUebersichtAuswahlMessage { AktieID = selectedAktie.ID } );
         }
         private void ExecuteEntfernenCommand()
         {
