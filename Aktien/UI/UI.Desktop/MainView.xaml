@@ -11,7 +11,7 @@
         x:Class="Aktien.UI.Desktop.MainView"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen" WindowState="Maximized"
         Title="{Binding Title, Mode=OneWay}" Height="450" Width="800" 
-        DataContext="{Binding Main ,Source={StaticResource Locator}}">
+        DataContext="{Binding Main ,Source={StaticResource Locator}}" Icon="Resources/Bank.ico">
 
 
     <i:Interaction.Triggers>
@@ -31,10 +31,10 @@
             <!--Tabs-->
             <Fluent:RibbonTabItem Header="Allgemein">
                 <Fluent:RibbonGroupBox Header="" >
-                    <Fluent:Button Header="Aktien"  Command="{Binding OpenAktienUebersichtCommand}" Width="50" />
+                    <Fluent:Button Header="Aktien" LargeIcon="Resources/format-list-numbered.png"  Command="{Binding OpenAktienUebersichtCommand}" Width="50" />
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="">
-                    <Fluent:Button Header="Depot" Command="{Binding OpenDepotUebersichtCommand}" Width="50" />
+                    <Fluent:Button Header="Depot" LargeIcon="Resources/database.png" Command="{Binding OpenDepotUebersichtCommand}" Width="50" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
         </Fluent:Ribbon>

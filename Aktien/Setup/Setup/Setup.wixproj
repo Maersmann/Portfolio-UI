@@ -41,6 +41,7 @@
     <Folder Include="Image" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="icon.ico" />
     <Content Include="Image\installer_background.bmp" />
     <Content Include="Image\installer_top-banner.bmp" />
   </ItemGroup>
