@@ -18,7 +18,7 @@ namespace Aktien.Data.Model.AktienModels
         public Double? Umrechnungskurs { get; set; }
         public Double GesamtNetto { get; set; }
         public Double GesamtBrutto { get; set; }
-        public int Bestand { get; set; }
+        public Double Bestand { get; set; }
         public int DividendeID { get; set; }
         public Dividende Dividende { get; set; }
         public int AktieID { get; set; }

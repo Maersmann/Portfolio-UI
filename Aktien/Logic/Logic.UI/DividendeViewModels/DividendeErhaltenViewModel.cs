@@ -1,6 +1,7 @@
 ﻿using Aktien.Data.Model.AktienModels;
 using Aktien.Data.Types;
 using Aktien.Logic.Core.Depot;
+using Aktien.Logic.Core.DividendeLogic;
 using Aktien.Logic.Core.Validierung;
 using Aktien.Logic.Messages.AuswahlMessages;
 using Aktien.Logic.Messages.Base;
@@ -44,6 +45,27 @@ namespace Aktien.Logic.UI.DividendeViewModels
             DividendeID = inID;
         }
 
+        public void Bearbeiten(int inID)
+        {
+            var dividendeLoad = new DividendeErhaltenAPI().LadeAnhandID(inID);
+
+            dividendeErhalten = new DividendeErhalten
+            {
+                ID = dividendeLoad.ID,
+                AktieID = dividendeLoad.AktieID,
+                DividendeID = dividendeLoad.DividendeID,
+                GesamtBrutto = dividendeLoad.GesamtBrutto,
+                GesamtNetto = dividendeLoad.GesamtNetto, 
+            };
+
+            Bestand = dividendeLoad.Bestand;
+            Datum = dividendeLoad.Datum;
+            Quellensteuer = dividendeLoad.Quellensteuer;
+            Wechselkurs = dividendeLoad.Umrechnungskurs;
+            DividendeID = dividendeLoad.DividendeID;
+            state = State.Bearbeiten;
+        }
+
         private int DividendeID
         { 
             set 
@@ -64,15 +86,14 @@ namespace Aktien.Logic.UI.DividendeViewModels
             var API = new DepotAPI();
             if (state == State.Neu)
             {
-                API.NeueDividendenErhalten(dividendeErhalten);
+                API.NeueDividendeErhalten(dividendeErhalten);
                 Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Erhaltene Dividende gespeichert." }, "ErhalteneDividendeStammdaten");
 
             }
             else
             {
-                //API.Aktualisiere(dividende.Betrag, dividende.Datum, dividende.ID);
-                // Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Dividende aktualisiert." });
-
+                API.AktualisiereDividendeErhalten(dividendeErhalten);
+                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Erhaltene Dividende aktualisiert." }, "ErhalteneDividendeStammdaten");
             }
         }
 
@@ -83,7 +104,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         #region Bindings
         public ICommand OpenAuswahlCommand { get; set; }
-        public int? Bestand
+        public Double? Bestand
         {
             get 
             {
@@ -154,7 +175,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
         #endregion
 
         #region Validate
-        private bool ValidateBestand(int? inBestand)
+        private bool ValidateBestand(Double? inBestand)
         {
             var Validierung = new DividendeErhaltenValidierung();
 

@@ -7,9 +7,9 @@ using System.Windows;
 // Allgemeine Informationen über eine Assembly werden über die folgenden
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die einer Assembly zugeordnet sind.
-[assembly: AssemblyTitle("Aktienübersicht")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyVersion("1.0.2")]
+[assembly: AssemblyTitle("Aktien Übersicht")]
+[assembly: AssemblyDescription("Übersicht und Verwaltung von Aktien")]
+[assembly: AssemblyVersion("1.0.0")]
 
 
 // Durch Festlegen von ComVisible auf FALSE werden die Typen in dieser Assembly

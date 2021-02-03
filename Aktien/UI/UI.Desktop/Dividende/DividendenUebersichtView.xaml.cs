@@ -44,7 +44,7 @@ namespace Aktien.UI.Desktop.Dividende
                 model.AktieID = m.AktieID;
                 if (m.State == State.Bearbeiten)
                 {
-                    model.ZeigeDividiende( m.DividendeID.GetValueOrDefault() );
+                    model.Bearbeiten( m.DividendeID.GetValueOrDefault() );
                 }
             }
             bool? Result = view.ShowDialog();

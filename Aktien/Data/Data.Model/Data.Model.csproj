@@ -5,7 +5,7 @@
     <RootNamespace>Aktien.Data.Model</RootNamespace>
     <Product />
     <Company />
-    <Authors />
+    <Authors>Rene Märsmann</Authors>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 

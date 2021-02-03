@@ -20,12 +20,12 @@ namespace Aktien.Logic.Core.AktieLogic
                 throw new AktieSchonVorhandenException();
             }
 
-            new AktieRepository().Speichern(inAktie);
+            new AktieRepository().Speichern(null, inAktie.Name, inAktie.ISIN, inAktie.WKN);
         }
 
         public void Aktualisieren(Aktie inAktie)
         {
-            new AktieRepository().Update(inAktie);
+            new AktieRepository().Speichern(inAktie.ID, inAktie.Name, inAktie.ISIN, inAktie.WKN);
         }
 
         public bool IstAkieVorhanden(String inISIN)

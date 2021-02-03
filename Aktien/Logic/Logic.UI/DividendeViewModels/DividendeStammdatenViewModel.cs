@@ -120,7 +120,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
         {
             set { dividende.AktieID = value; }
         }
-        public void ZeigeDividiende(int inID)
+        public void Bearbeiten(int inID)
         {
             var _dividende = new DividendeAPI().LadeAnhandID(inID);
 

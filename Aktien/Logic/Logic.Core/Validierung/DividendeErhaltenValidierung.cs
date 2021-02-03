@@ -8,7 +8,7 @@ namespace Aktien.Logic.Core.Validierung
 {
     public class DividendeErhaltenValidierung
     {
-        public bool ValidateBestand(int? inBestand, out ICollection<string> validationErrors)
+        public bool ValidateBestand(Double? inBestand, out ICollection<string> validationErrors)
         {
             validationErrors = new List<String>();
 

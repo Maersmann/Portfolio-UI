@@ -57,7 +57,7 @@ namespace Aktien.UI.Desktop
             {
                 if (message.State == Data.Types.State.Bearbeiten)
                 {
-                    model.AktieID = message.AktieID;
+                    model.Bearbeiten( message.AktieID );
                 }
                 
             }

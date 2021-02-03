@@ -12,7 +12,7 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
 {
     public class OrderHistoryRepository : BaseRepository
     {
-        public void Speichern(Double inPreis, Double? inFremdkosten, DateTime inDatum, int inAktieID, int inAnzahl, KaufTypes inKauftyp, OrderTypes inOrderTyp, BuySell inBuySell)
+        public void Speichern(Double inPreis, Double? inFremdkosten, DateTime inDatum, int inAktieID, Double inAnzahl, KaufTypes inKauftyp, OrderTypes inOrderTyp, BuySell inBuySell)
         {
             repo.OrderHistories.Add(new OrderHistory { AktieID = inAktieID, Preis = inPreis, Orderdatum = inDatum, Anzahl = inAnzahl, Fremdkostenzuschlag = inFremdkosten, KaufartTyp = inKauftyp, OrderartTyp = inOrderTyp, BuySell = inBuySell });
             repo.SaveChanges();

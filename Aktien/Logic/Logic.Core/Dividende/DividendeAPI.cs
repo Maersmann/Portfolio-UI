@@ -15,13 +15,13 @@ namespace Aktien.Logic.Core.DividendeLogic
         public void Speichern(Double inBetrag, DateTime inDatum, int inAktieID, Waehrungen inWaehrung, Double? inBetragUmgerechnet)
         {
             var DividendeRepo = new DividendeRepository();
-            DividendeRepo.Speichern(inBetrag, inDatum, inAktieID, inWaehrung, inBetragUmgerechnet);
+            DividendeRepo.Speichern(null, inBetrag, inDatum, inAktieID, inWaehrung, inBetragUmgerechnet);
         }
 
         public void Aktualisiere(Double inBetrag, DateTime inDatum, int inID, Waehrungen inWaehrung, Double? inBetragUmgerechnet)
         {
             var DividendeRepo = new DividendeRepository();
-            DividendeRepo.Update(inBetrag,inDatum,inID, inWaehrung, inBetragUmgerechnet);
+            DividendeRepo.Speichern(inID, inBetrag, inDatum, null , inWaehrung, inBetragUmgerechnet);
         }
 
         public void Entfernen(int inID)

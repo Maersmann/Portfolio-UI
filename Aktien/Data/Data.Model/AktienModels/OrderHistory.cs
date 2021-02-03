@@ -16,7 +16,7 @@ namespace Aktien.Data.Model.AktienModels
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }   
-        public int Anzahl { get; set; }
+        public Double Anzahl { get; set; }
         public Double Preis { get; set; }
         public Double? Fremdkostenzuschlag { get; set; }
         public DateTime Orderdatum { get; set; }

@@ -15,7 +15,7 @@ namespace Aktien.Data.Model.DepotModels
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
-        public int Anzahl { get; set; }
+        public Double Anzahl { get; set; }
         public Double BuyIn { get; set; }
         public int AktieID { get; set; }
         public Aktie Aktie { get; set; }

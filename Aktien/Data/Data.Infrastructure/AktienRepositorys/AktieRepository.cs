@@ -12,15 +12,19 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
     public class AktieRepository: BaseRepository
     {
 
-        public void Speichern(Aktie inAktie)
+        public void Speichern(int? inID, String inName, String inISIN, String inWKN)
         {
-            repo.Aktien.Add(inAktie);
-            repo.SaveChanges();
-        }
+            var Entity = new Aktie();
+            if (inID.HasValue)
+                Entity = repo.Aktien.Find(inID.Value);
 
-        public void Update(Aktie inAktie)
-        {
-            repo.Aktien.Update(inAktie);
+            Entity.Name = inName;
+            Entity.ISIN = inISIN;
+            Entity.WKN = inWKN;
+
+            if (!inID.HasValue)
+                repo.Aktien.Add(Entity);
+
             repo.SaveChanges();
         }
 

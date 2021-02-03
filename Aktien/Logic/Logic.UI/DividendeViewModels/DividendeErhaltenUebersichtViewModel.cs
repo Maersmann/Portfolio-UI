@@ -6,6 +6,7 @@ using Aktien.Logic.UI.BaseViewModels;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -28,9 +29,11 @@ namespace Aktien.Logic.UI.DividendeViewModels
         {
             dividenden = new ObservableCollection<DividendeErhalten>();
             NeuCommand = new RelayCommand(() => ExecuteNeuCommand());
-            // BearbeitenCommand = new DelegateCommand(this.ExecuteBearbeitenCommand, this.CanExecuteCommand);
+            BearbeitenCommand = new DelegateCommand(this.ExecuteBearbeitenCommand, this.CanExecuteCommand);
             // EntfernenCommand = new DelegateCommand(this.ExecuteEntfernenCommand, this.CanExecuteCommand);
         }
+
+
 
         public void LoadData(int inAktieID)
         {
@@ -43,6 +46,16 @@ namespace Aktien.Logic.UI.DividendeViewModels
         private void ExecuteNeuCommand()
         {
             Messenger.Default.Send<OpenErhaltendeDividendeStammdatenMessage>(new OpenErhaltendeDividendeStammdatenMessage { AktieID = aktieID, State = State.Neu });
+        }
+
+        private bool CanExecuteCommand()
+        {
+            return selectedDividende != null;
+        }
+
+        private void ExecuteBearbeitenCommand()
+        {
+            Messenger.Default.Send<OpenErhaltendeDividendeStammdatenMessage>(new OpenErhaltendeDividendeStammdatenMessage { AktieID = aktieID, State = State.Bearbeiten, ID = selectedDividende.ID });
         }
         #endregion
 
@@ -58,7 +71,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
             {
                 selectedDividende = value;
                 this.RaisePropertyChanged();
-                //((DelegateCommand)BearbeitenCommand).RaiseCanExecuteChanged();
+                ((DelegateCommand)BearbeitenCommand).RaiseCanExecuteChanged();
                 //((DelegateCommand)EntfernenCommand).RaiseCanExecuteChanged();
             }
         }
@@ -70,6 +83,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
             }
         }
         public ICommand NeuCommand { get; private set; }
+        public ICommand BearbeitenCommand { get; set; }
         #endregion
     }
 }

@@ -11,18 +11,21 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
 {
     public class DividendeRepository : BaseRepository
     {
-        public void Speichern( Double inBetrag, DateTime inDatum, int inAktieID, Waehrungen inWaehrung, Double? inBetragUmgerechnet )
+        public void Speichern(int? inID, Double inBetrag, DateTime inDatum, int? inAktieID, Waehrungen inWaehrung, Double? inBetragUmgerechnet )
         {
-            repo.Dividenden.Add(new Dividende { AktieID = inAktieID, Betrag = inBetrag, Datum = inDatum, Waehrung = inWaehrung, BetragUmgerechnet = inBetragUmgerechnet });
-            repo.SaveChanges();
-        }
-        public void Update( Double inBetrag, DateTime inDatum, int inID, Waehrungen inWaehrung, Double? inBetragUmgerechnet)
-        {
-            var dividende = repo.Dividenden.Find(inID);
+            var dividende = new Dividende();
+
+            if (inID.HasValue)
+                dividende = repo.Dividenden.Find(inID);
+            else
+                repo.Dividenden.Add(dividende);
+
             dividende.Betrag = inBetrag;
             dividende.Datum = inDatum;
             dividende.Waehrung = inWaehrung;
             dividende.BetragUmgerechnet = inBetragUmgerechnet;
+            if (inAktieID.HasValue)
+                dividende.AktieID = inAktieID.Value;
             repo.SaveChanges();
         }
 

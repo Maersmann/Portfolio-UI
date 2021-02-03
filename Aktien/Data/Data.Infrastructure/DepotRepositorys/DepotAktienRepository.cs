@@ -21,12 +21,23 @@ namespace Aktien.Data.Infrastructure.DepotRepositorys
             return repo.AktienInDepots.Where(a => a.AktieID == AktieID).FirstOrDefault() != null;
         }
 
-        public void Speichern(DepotAktie depotAktie)
+        public void Speichern(int? inID, Double inAnzahl, Double inBuyIn, int inAktieID, int inDepotID)
         {
-            if (depotAktie.ID != 0)
-                repo.AktienInDepots.Update(depotAktie);
-            else
-                repo.AktienInDepots.Add(depotAktie);
+            var Entity = new DepotAktie();
+
+            if (inID.GetValueOrDefault(0).Equals(0))
+                inID = null;
+
+            if (inID.HasValue)
+                Entity = repo.AktienInDepots.Find(inID.Value);
+
+            Entity.BuyIn = inBuyIn;
+            Entity.Anzahl = inAnzahl;
+            Entity.AktieID = inAktieID;
+            Entity.DepotID = inDepotID;
+
+            if (!inID.HasValue)
+                repo.AktienInDepots.Add(Entity);
 
             repo.SaveChanges();
         }

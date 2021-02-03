@@ -40,7 +40,7 @@ namespace Aktien.Logic.UI.DepotViewModels
             var Depot = new DepotAPI();
             if (buySell.Equals(BuySell.Buy))
             {
-                Depot.NeuAktieGekauft(data.Preis, data.Fremdkostenzuschlag, data.Orderdatum, AktieID, data.Anzahl, data.KaufartTyp, data.OrderartTyp);
+                Depot.NeueAktieGekauft(data.Preis, data.Fremdkostenzuschlag, data.Orderdatum, AktieID, data.Anzahl, data.KaufartTyp, data.OrderartTyp);
             }
             else
             {
@@ -97,7 +97,7 @@ namespace Aktien.Logic.UI.DepotViewModels
                 }
             }
         }
-        public int? Anzahl
+        public double? Anzahl
         {
             get
             {
@@ -164,7 +164,6 @@ namespace Aktien.Logic.UI.DepotViewModels
                 }
             }
         }
-
         public String KauftypBez 
         { 
             get 
@@ -199,7 +198,7 @@ namespace Aktien.Logic.UI.DepotViewModels
 
         #region Validierung
 
-        private bool ValidateAnzahl(int? inAnzahl)
+        private bool ValidateAnzahl(double? inAnzahl)
         {
             var Validierung = new AktieGekauftValidierung();
 

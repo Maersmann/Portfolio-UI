@@ -9,7 +9,7 @@ namespace Aktien.Logic.Core.Validierung
 {
     public class AktieGekauftValidierung : IValidierung
     {
-        public bool ValidateAnzahl(int? inAnzahl, out ICollection<string> validationErrors)
+        public bool ValidateAnzahl(Double? inAnzahl, out ICollection<string> validationErrors)
         {
             validationErrors = new List<String>();
 

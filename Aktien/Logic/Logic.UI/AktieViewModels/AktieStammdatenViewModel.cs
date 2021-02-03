@@ -62,21 +62,23 @@ namespace Aktien.Logic.UI.AktieViewModels
         }
 
 
-        public int AktieID 
+        public void Bearbeiten(int inID) 
         { 
-            set 
+            LoadAktie = true;
+            var Loadaktie = new AktieAPI().LadeAnhandID(inID);
+            aktie = new Aktie
             {
-                LoadAktie = true;
-                aktie = new AktieAPI().LadeAnhandID(value);
-                WKN = aktie.WKN;
-                Name = aktie.Name;
-                ISIN = aktie.ISIN;
-                LoadAktie = false;
-                state = State.Bearbeiten;
-                this.RaisePropertyChanged("ISIN_isEnabled");
-                
+                ID = Loadaktie.ID
+            };
 
-            } 
+            WKN = Loadaktie.WKN;
+            Name = Loadaktie.Name;
+            ISIN = Loadaktie.ISIN;
+            LoadAktie = false;
+            state = State.Bearbeiten;
+            this.RaisePropertyChanged("ISIN_isEnabled");
+             
+
         }
 
 
