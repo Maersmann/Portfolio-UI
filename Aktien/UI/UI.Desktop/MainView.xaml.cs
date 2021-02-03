@@ -1,5 +1,7 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
-using Logic.Messages.Aktie;
+using Aktien.Logic.Messages.Aktie;
+using Aktien.Logic.Messages.AktieMessages;
+using Aktien.Logic.Messages.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,36 +16,53 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using UI.Desktop.Aktie;
+using Aktien.UI.Desktop.Aktie;
+using Aktien.Data.Types;
+using Aktien.UI.Desktop.Depot;
+using Aktien.Logic.Messages;
 
-namespace UI.Desktop
+namespace Aktien.UI.Desktop
 {
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
     public partial class MainView
     {
+
+        private static AktieUebersichtPage aktienUebersichtView;
+        private static DepotUebersichtView depotUebersichtView;
+
         public MainView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenNeueAktieViewMessage>(this, m => ReceiveOpenNeueAktieViewMessage());
+            Messenger.Default.Register<OpenViewMessage>(this, m => ReceiveOpenViewMessage(m));
+
+            Naviagtion(ViewType.viewAktienUebersicht);
         }
 
-        private void Container_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
+        private void ReceiveOpenViewMessage(OpenViewMessage m)
         {
-            // if (e.Content == _formMatch)
-            // {
-            //     ribboncontextMatch.Visibility = Visibility.Visible;
-            //     ribbonMatch.IsSelected = true;
-            // }
-            // else
-            //     ribboncontextMatch.Visibility = Visibility.Hidden;
+            Naviagtion(m.ViewType);
         }
 
-        private void ReceiveOpenNeueAktieViewMessage()
+        public void Naviagtion(ViewType inType)
         {
-            NeueAktieView view = new NeueAktieView();
-            view.ShowDialog();
+            switch (inType)
+            {
+                case ViewType.viewAktienUebersicht:
+                    aktienUebersichtView = aktienUebersichtView ?? new AktieUebersichtPage();
+                    Container.NavigationService.Navigate(aktienUebersichtView);
+                    break;
+                case ViewType.viewAktieGekauft:
+                    new BuyOrderView().ShowDialog();
+                    break;
+                case ViewType.viewDepotUebersicht:
+                    depotUebersichtView = depotUebersichtView ?? new DepotUebersichtView();
+                    Container.NavigationService.Navigate(depotUebersichtView);
+                    break;
+                default:
+                    break;
+            }
         }
 
     }

@@ -7,7 +7,7 @@
     <ProjectGuid>{D8F93673-9E8E-4F2E-8B59-82D3ABB3BB59}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Logic.Messages</RootNamespace>
+    <RootNamespace>Aktien.Logic.Messages</RootNamespace>
     <AssemblyName>Logic.Messages</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -44,9 +44,28 @@
     <Compile Include="..\..\_Shared\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Aktie\OpenNeueAktieViewMessage.cs" />
-    <Compile Include="Aktie\SaveNeueAktieMessage.cs" />
+    <Compile Include="AktieMessages\AktieUebersichtPageMessages.cs" />
+    <Compile Include="AuswahlMessages\DividendeAusgewaehltMessage.cs" />
+    <Compile Include="AuswahlMessages\OpenDividendenAuswahlMessage.cs" />
+    <Compile Include="DividendeMessages\DeleteErhalteneDividendenErfolgreichMessage.cs" />
+    <Compile Include="DividendeMessages\OpenDividendeErhaltenUebersichtViewMessage.cs" />
+    <Compile Include="DividendeMessages\OpenDividendenUebersichtAuswahlMessage.cs" />
+    <Compile Include="DividendeMessages\OpenErhaltendeDividendeStammdatenMessage.cs" />
+    <Compile Include="MainViewMessages.cs" />
+    <Compile Include="AktieMessages\AktieStammdatenViewMessages.cs" />
+    <Compile Include="AktieMessages\AktieOrderViewMessages.cs" />
+    <Compile Include="Base\BaseMessages.cs" />
+    <Compile Include="DepotMessages\BuyOrderViewMessages.cs" />
+    <Compile Include="DividendeMessages\DividendeStammdatenViewMessages.cs" />
+    <Compile Include="DividendeMessages\DividendeUebersichtViewMessages.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Data\Data.Types\Data.Types.csproj">
+      <Project>{1efe202d-5483-4bf1-abd5-1e52a2412ef2}</Project>
+      <Name>Data.Types</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

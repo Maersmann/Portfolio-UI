@@ -1,39 +1,49 @@
-using Data.API;
+using Aktien.Data.Types;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
-using Logic.Messages.Aktie;
+using Aktien.Logic.Core;
+using Aktien.Logic.Messages.Aktie;
+using Aktien.Logic.Messages.AktieMessages;
+using Aktien.Logic.UI.BaseViewModels;
 using System;
 using System.Windows.Input;
+using Aktien.Logic.Messages;
 
-namespace Logic.UI
+namespace Aktien.Logic.UI
 {
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBasis
     {
         public MainViewModel()
         {
             Title = "Aktienübersicht";
-            OpenNeueAktieCommand = new RelayCommand(() => ExecuteOpenNeueAktieCommand());
             OpenConnectionCommand = new RelayCommand(() => ExecuteOpenConnectionCommand());
+            OpenAktienUebersichtCommand = new RelayCommand(() => ExecuteOpenAktienUebersichtCommand());
+            OpenDepotUebersichtCommand = new RelayCommand(() => ExecuteOpenDepotUebersichtCommand());
         }
 
-        private void ExecuteOpenNeueAktieCommand()
+
+        public ICommand OpenAktienUebersichtCommand { get; private set; }
+        public ICommand OpenDepotUebersichtCommand { get; private set; }
+        public ICommand OpenConnectionCommand { get; private set; }
+
+
+
+        private void ExecuteOpenAktienUebersichtCommand()
         {
-            Messenger.Default.Send<OpenNeueAktieViewMessage>(new OpenNeueAktieViewMessage { });
+            Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = ViewType.viewAktienUebersicht  });
+        }
+
+        private void ExecuteOpenDepotUebersichtCommand()
+        {
+            Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = ViewType.viewDepotUebersicht });
         }
 
         private void ExecuteOpenConnectionCommand()
         {
-            DatabaseAPI dbAPI = new DatabaseAPI();
-            dbAPI.OpenConnection();
+            var db = new DatabaseAPI();
+            db.AktualisereDatenbank();
         }
 
-
-
-        public string Title { get; private set; }
-
-        public ICommand OpenNeueAktieCommand { get; private set; }
-
-        public ICommand OpenConnectionCommand { get; private set; }
     }
 }

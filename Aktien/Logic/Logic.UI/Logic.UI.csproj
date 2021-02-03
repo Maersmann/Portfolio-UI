@@ -7,7 +7,7 @@
     <ProjectGuid>{E521DA07-4C6C-4982-9BD6-82E744B5EE44}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Logic.UI</RootNamespace>
+    <RootNamespace>Aktien.Logic.UI</RootNamespace>
     <AssemblyName>Logic.UI</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=10.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\AutoMapper.10.1.1\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\..\packages\CommonServiceLocator.2.0.2\lib\net47\CommonServiceLocator.dll</HintPath>
     </Reference>
@@ -98,6 +101,10 @@
       <HintPath>..\..\packages\Npgsql.EntityFrameworkCore.PostgreSQL.3.1.4\lib\netstandard2.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="Prism, Version=8.0.0.1909, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Prism.Core.8.0.0.1909\lib\net47\Prism.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
@@ -149,10 +156,23 @@
     <Compile Include="..\..\_Shared\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="AktieUI\NeueAktieViewModel.cs" />
+    <Compile Include="AktieViewModels\AktienUebersichtViewModel.cs" />
+    <Compile Include="AktieViewModels\AktieOrderUebersichtViewModel.cs" />
+    <Compile Include="AktieViewModels\AktieStammdatenViewModel.cs" />
+    <Compile Include="AktieViewModels\Page\AktieUebersichtPageViewModel.cs" />
+    <Compile Include="AuswahlViewModels\DividendenAuswahlViewModel.cs" />
+    <Compile Include="BaseViewModels\ViewModelStammdaten.cs" />
+    <Compile Include="BaseViewModels\ViewModelValidate.cs" />
+    <Compile Include="DepotViewModels\BuyOrderViewModel.cs" />
+    <Compile Include="DepotViewModels\DepotUebersichtViewModel.cs" />
+    <Compile Include="DividendeViewModels\DividendeErhaltenUebersichtViewModel.cs" />
+    <Compile Include="DividendeViewModels\DividendeErhaltenViewModel.cs" />
+    <Compile Include="DividendeViewModels\DividendenUebersichtAuswahlViewModel.cs" />
+    <Compile Include="DividendeViewModels\DividendenUebersichtViewModel.cs" />
+    <Compile Include="DividendeViewModels\DividendeStammdatenViewModel.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModelBasis.cs" />
+    <Compile Include="BaseViewModels\ViewModelBasis.cs" />
     <Compile Include="ViewModelLocator.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -160,13 +180,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Data\Data.API\Data.API.csproj">
-      <Project>{cbcfd503-dcf1-4381-8554-6088a886f59e}</Project>
-      <Name>Data.API</Name>
+    <ProjectReference Include="..\..\Data\Data.Model\Data.Model.csproj">
+      <Project>{ac69d611-9f33-476e-9862-f3790c5a02c7}</Project>
+      <Name>Data.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Data\Data.Infrastructure\Data.Infrastructure.csproj">
-      <Project>{9742e7e0-e88e-4923-a778-18f432d1151e}</Project>
-      <Name>Data.Infrastructure</Name>
+    <ProjectReference Include="..\..\Data\Data.Types\Data.Types.csproj">
+      <Project>{1efe202d-5483-4bf1-abd5-1e52a2412ef2}</Project>
+      <Name>Data.Types</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Logic.Core\Logic.Core.csproj">
+      <Project>{7562e2cc-065b-41e1-996b-a82616620da8}</Project>
+      <Name>Logic.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Logic.Messages\Logic.Messages.csproj">
       <Project>{d8f93673-9e8e-4f2e-8b59-82d3abb3bb59}</Project>

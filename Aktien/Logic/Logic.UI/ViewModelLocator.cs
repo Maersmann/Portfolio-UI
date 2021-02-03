@@ -15,9 +15,15 @@
 using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
-using Logic.UI.AktieUI;
+using GalaSoft.MvvmLight.Messaging;
+using Aktien.Logic.Messages.Aktie;
+using Aktien.Logic.UI.AktieViewModels;
+using Aktien.Logic.UI.DepotViewModels;
+using Aktien.Logic.UI.DividendeViewModels;
+using Aktien.Logic.UI.AktieViewModels.Page;
+using Aktien.Logic.UI.AuswahlViewModels;
 
-namespace Logic.UI
+namespace Aktien.Logic.UI
 {
     /// <summary>
     /// This class contains static references to all the view models in the
@@ -40,14 +46,36 @@ namespace Logic.UI
                 // Create run time view services and models                
             }
             SimpleIoc.Default.Register<MainViewModel>();
-            SimpleIoc.Default.Register<NeueAktieViewModel>();
+            SimpleIoc.Default.Register<AktieStammdatenViewModel>();
+            SimpleIoc.Default.Register<AktienUebersichtViewModel>();
+            SimpleIoc.Default.Register<DividendeStammdatenViewModel>();
+            SimpleIoc.Default.Register<DividendenUebersichtViewModel>();
+            SimpleIoc.Default.Register<BuyOrderViewModel>();
+            SimpleIoc.Default.Register<DepotUebersichtViewModel>();
+            SimpleIoc.Default.Register<AktieOrderUebersichtViewModel>();
+            SimpleIoc.Default.Register<AktieUebersichtPageViewModel>();
+            SimpleIoc.Default.Register<DividendeErhaltenViewModel>();
+            SimpleIoc.Default.Register<DividendenUebersichtAuswahlViewModel>();
+            SimpleIoc.Default.Register<DividendenAuswahlViewModel>();
+            SimpleIoc.Default.Register<DividendeErhaltenUebersichtViewModel>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
-        public NeueAktieViewModel NeueAktie => ServiceLocator.Current.GetInstance<NeueAktieViewModel>();
-
+        public AktieStammdatenViewModel AktieStammdaten => ServiceLocator.Current.GetInstance<AktieStammdatenViewModel>();
+        public AktienUebersichtViewModel AktienUebersicht => ServiceLocator.Current.GetInstance<AktienUebersichtViewModel>();
+        public DividendeStammdatenViewModel DividendeStammdaten => ServiceLocator.Current.GetInstance<DividendeStammdatenViewModel>();
+        public DividendenUebersichtViewModel DividendenUebersicht => ServiceLocator.Current.GetInstance<DividendenUebersichtViewModel>();
+        public BuyOrderViewModel BuyOrder => ServiceLocator.Current.GetInstance<BuyOrderViewModel>();
+        public DepotUebersichtViewModel DepotUebersicht => ServiceLocator.Current.GetInstance<DepotUebersichtViewModel>();
+        public AktieOrderUebersichtViewModel AktieOrderUebersicht => ServiceLocator.Current.GetInstance<AktieOrderUebersichtViewModel>();
+        public AktieUebersichtPageViewModel AktieUebersichtPage => ServiceLocator.Current.GetInstance<AktieUebersichtPageViewModel>();
+        public DividendeErhaltenViewModel DividendeErhalten => ServiceLocator.Current.GetInstance<DividendeErhaltenViewModel>();
+        public DividendenUebersichtAuswahlViewModel DividendenUebersichtAuswahl => ServiceLocator.Current.GetInstance<DividendenUebersichtAuswahlViewModel>();
+        public DividendenAuswahlViewModel DividendenAuswahl => ServiceLocator.Current.GetInstance<DividendenAuswahlViewModel>();
+        public DividendeErhaltenUebersichtViewModel DividendeErhaltenUebersicht => ServiceLocator.Current.GetInstance<DividendeErhaltenUebersichtViewModel>();
         public static void Cleanup()
         {
+
         }
     }
 }

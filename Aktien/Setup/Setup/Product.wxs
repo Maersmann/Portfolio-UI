@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="*" Name="Aktie" Language="1033" Version="1.0.3" Manufacturer="Märsmann" UpgradeCode="127a1ee4-ee7d-4a65-9c41-3a6ec823378f">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." MigrateFeatures="yes" AllowSameVersionUpgrades="yes" />
+    <MediaTemplate EmbedCab="yes" />
+
+    <Icon Id="icon.ico" SourceFile="$(var.ProjectDir)icon.ico" />
+    <Property Id="ARPPRODUCTICON" Value="icon.ico" />
+
+    <WixVariable Id="WixUIBannerBmp" Value="Image\installer_top-banner.bmp" />
+    <WixVariable Id="WixUIDialogBmp" Value="Image\installer_background.bmp" />
+    <WixVariable Id="WixUILicenseRtf" Value="$(var.ProjectDir)\license.rtf" />
+
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+    <UIRef Id="WixUI_InstallDir" />
+    
+    <Property Id="INSTALLFOLDER">
+      <RegistrySearch Id='InstallPathRegistry' Type='raw'
+        Root='HKLM' Key='Software\Maersmann\Aktie' Name='InstallDir' Win64='no'/>
+    </Property>
+
+    <Feature Id="ProductFeature" Title="Aktie" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+      <ComponentRef Id="ApplicationShortcut" />
+      <ComponentRef Id="ApplicationShortcutDesktop" />
+      <ComponentRef Id="RegistryEntries" />
+      <ComponentGroupRef Id="RegistryGroup" />
+    </Feature>
+	</Product>
+
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="Aktie" />
+      </Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationProgramsFolder" Name="Aktie" />
+      </Directory>
+      <Directory Id="DesktopFolder" Name="Desktop" />
+    </Directory>
+  </Fragment>
+
+  <Fragment>
+    <DirectoryRef Id="ApplicationProgramsFolder">
+      <Component Id="ApplicationShortcut" Guid="9bd13330-6540-406f-a3a8-d7f7c69ae7f9">
+        <Shortcut Id="ApplicationStartMenuShortcut" Name="Aktie" Description="Aktie" Target="[INSTALLFOLDER]Aktien.exe" WorkingDirectory="INSTALLFOLDER" />
+        <RemoveFolder Id="RemoveApplicationProgramsFolder" Directory="ApplicationProgramsFolder" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\Maersmann\Aktie" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="DesktopFolder">
+      <Component Id="ApplicationShortcutDesktop" Guid="cde1e030-eb64-49a5-b7b8-400b379c2d1a">
+        <Shortcut Id="ApplicationDesktopShortcut" Name="Aktie" Description="Aktie" Target="[INSTALLFOLDER]Aktien.exe" WorkingDirectory="INSTALLFOLDER" />
+        <RemoveFolder Id="RemoveDesktopFolder" Directory="DesktopFolder" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\Maersmann\Aktie" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="TARGETDIR">
+      <Component Id="RegistryEntries" Guid="1e1b0de7-8273-41cf-ac78-d6ab99db4d87">
+        <RegistryValue Root="HKCU" Key="Software\Maersmann\Aktie" Type="string" Name="InstallDir" Value="[INSTALLFOLDER]" Action="write" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+
+    <ComponentGroup Id="RegistryGroup">
+      <Component Id="_69CB4E7B_273F_4510_B885_4633736280D0" Guid="2EC2BF60-997B-44BB-BA82-C5760FB48A19" Transitive="no" Directory="TARGETDIR">
+        <RegistryKey Root="HKLM" Key="Software" ForceCreateOnInstall="no" ForceDeleteOnUninstall="no" />
+      </Component>
+      <Component Id="_A159385C_39DE_404D_833B_6F83828512C0" Guid="1D85B1A4-ABDD-4EB5-8E70-82C609462AEB" Transitive="no" Directory="TARGETDIR">
+        <RegistryKey Root="HKLM" Key="Software\Maersmann\Aktie" ForceCreateOnInstall="no" ForceDeleteOnUninstall="no" />
+      </Component>
+      <Component Id="_AAF14A16_5774_4861_AD86_C21F01857F59" Guid="E5F8A3A2-209A-4297-8B01-F7BB4FC6603B" Transitive="no" Directory="TARGETDIR">
+        <RegistryValue Root="HKLM" Key="Software\Maersmann\Aktie" Type="string" Name="License" Value="Free" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <Component Id="Aktien.exe">
+        <File Source="$(var.UI.Desktop.TargetPath)" />
+      </Component>
+      <Component Id="CommonServiceLocator.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)CommonServiceLocator.dll" />
+      </Component>
+      <Component Id="ControlzEx.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)ControlzEx.dll" />
+      </Component>
+      <Component Id="Data.Infrastructure.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Data.Infrastructure.dll" />
+      </Component>
+      <Component Id="Data.Model.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Data.Model.dll" />
+      </Component>
+      <Component Id="Data.Types.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Data.Types.dll" />
+      </Component>
+      <Component Id="GalaSoft.MvvmLight.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)GalaSoft.MvvmLight.dll" />
+      </Component>
+      <Component Id="GalaSoft.MvvmLight.Extras.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)GalaSoft.MvvmLight.Extras.dll" />
+      </Component>
+      <Component Id="GalaSoft.MvvmLight.Platform.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)GalaSoft.MvvmLight.Platform.dll" />
+      </Component>
+      <Component Id="Logic.Core.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Logic.Core.dll" />
+      </Component>
+      <Component Id="Logic.Messages.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Logic.Messages.dll" />
+      </Component>
+      <Component Id="Logic.UI.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Logic.UI.dll" />
+      </Component>
+      <Component Id="MaterialDesignColors.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)MaterialDesignColors.dll" />
+      </Component>
+      <Component Id="MaterialDesignThemes.Wpf.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)MaterialDesignThemes.Wpf.dll" />
+      </Component>
+      <Component Id="Microsoft.Bcl.AsyncInterfaces.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.Bcl.AsyncInterfaces.dll" />
+      </Component>
+      <Component Id="Microsoft.Bcl.HashCode.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.Bcl.HashCode.dll" />
+      </Component>
+      <Component Id="Microsoft.EntityFrameworkCore.Design.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.EntityFrameworkCore.Design.dll" />
+      </Component>
+      <Component Id="Microsoft.EntityFrameworkCore.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.EntityFrameworkCore.dll" />
+      </Component>
+      <Component Id="Microsoft.EntityFrameworkCore.Relational.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.EntityFrameworkCore.Relational.dll" />
+      </Component>
+      <Component Id="Microsoft.Expression.Interactions.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.Expression.Interactions.dll" />
+      </Component>
+      <Component Id="Microsoft.Extensions.Caching.Abstractions.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.Extensions.Caching.Abstractions.dll" />
+      </Component>
+      <Component Id="Microsoft.Extensions.Caching.Memory.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.Extensions.Caching.Memory.dll" />
+      </Component>
+      <Component Id="Microsoft.Extensions.Configuration.Abstractions.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.Extensions.Configuration.Abstractions.dll" />
+      </Component>
+      <Component Id="Microsoft.Extensions.Configuration.Binder.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.Extensions.Configuration.Binder.dll" />
+      </Component>
+      <Component Id="Microsoft.Extensions.Configuration.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.Extensions.Configuration.dll" />
+      </Component>
+      <Component Id="Microsoft.Extensions.DependencyInjection.Abstractions.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.Extensions.DependencyInjection.Abstractions.dll" />
+      </Component>
+      <Component Id="Microsoft.Extensions.DependencyInjection.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.Extensions.DependencyInjection.dll" />
+      </Component>
+      <Component Id="Microsoft.Extensions.Logging.Abstractions.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.Extensions.Logging.Abstractions.dll" />
+      </Component>
+      <Component Id="Microsoft.Extensions.Logging.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.Extensions.Logging.dll" />
+      </Component>
+      <Component Id="Microsoft.Extensions.Options.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.Extensions.Options.dll" />
+      </Component>
+      <Component Id="Microsoft.Extensions.Primitives.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.Extensions.Primitives.dll" />
+      </Component>
+      <Component Id="Microsoft.Xaml.Behaviors.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.Xaml.Behaviors.dll" />
+      </Component>
+      <Component Id="Npgsql.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Npgsql.dll" />
+      </Component>
+      <Component Id="Npgsql.EntityFrameworkCore.PostgreSQL.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Npgsql.EntityFrameworkCore.PostgreSQL.dll" />
+      </Component>
+      <Component Id="Prism.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Prism.dll" />
+      </Component>
+      <Component Id="System.Buffers.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)System.Buffers.dll" />
+      </Component>
+      <Component Id="System.Collections.Immutable.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)System.Collections.Immutable.dll" />
+      </Component>
+      <Component Id="System.Diagnostics.DiagnosticSource.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)System.Diagnostics.DiagnosticSource.dll" />
+      </Component>
+      <Component Id="System.Memory.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)System.Memory.dll" />
+      </Component>
+      <Component Id="System.Numerics.Vectors.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)System.Numerics.Vectors.dll" />
+      </Component>
+      <Component Id="System.Runtime.CompilerServices.Unsafe.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)System.Runtime.CompilerServices.Unsafe.dll" />
+      </Component>
+      <Component Id="System.Text.Encodings.Web.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)System.Text.Encodings.Web.dll" />
+      </Component>
+      <Component Id="System.Text.Json.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)System.Text.Json.dll" />
+      </Component>
+      <Component Id="System.Threading.Tasks.Extensions.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)System.Threading.Tasks.Extensions.dll" />
+      </Component>
+      <Component Id="System.ValueTuple.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)System.ValueTuple.dll" />
+      </Component>
+      <Component Id="Aktien.exe.config">
+        <File Source="$(var.UI.Desktop.TargetDir)Aktien.exe.config" />
+      </Component>
+      <Component Id="Microsoft.EntityFrameworkCore.Abstractions.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.EntityFrameworkCore.Abstractions.dll" />
+      </Component>
+      <Component Id="System.Windows.Interactivity.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)System.Windows.Interactivity.dll" />
+      </Component>
+      <Component Id="System.ComponentModel.Annotations.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)System.ComponentModel.Annotations.dll" />
+      </Component>
+      <Component Id="Fluent.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Fluent.dll" />
+      </Component>
+
+    </ComponentGroup>
+	</Fragment>
+</Wix>
