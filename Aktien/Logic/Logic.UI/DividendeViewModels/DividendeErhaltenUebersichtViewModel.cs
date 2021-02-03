@@ -1,6 +1,7 @@
 ﻿using Aktien.Data.Model.AktienModels;
 using Aktien.Data.Types;
 using Aktien.Logic.Core.AktieLogic;
+using Aktien.Logic.Core.DividendeLogic;
 using Aktien.Logic.Messages.DividendeMessages;
 using Aktien.Logic.UI.BaseViewModels;
 using GalaSoft.MvvmLight;
@@ -30,10 +31,8 @@ namespace Aktien.Logic.UI.DividendeViewModels
             dividenden = new ObservableCollection<DividendeErhalten>();
             NeuCommand = new RelayCommand(() => ExecuteNeuCommand());
             BearbeitenCommand = new DelegateCommand(this.ExecuteBearbeitenCommand, this.CanExecuteCommand);
-            // EntfernenCommand = new DelegateCommand(this.ExecuteEntfernenCommand, this.CanExecuteCommand);
+            EntfernenCommand = new DelegateCommand(this.ExecuteEntfernenCommand, this.CanExecuteCommand);
         }
-
-
 
         public void LoadData(int inAktieID)
         {
@@ -57,6 +56,14 @@ namespace Aktien.Logic.UI.DividendeViewModels
         {
             Messenger.Default.Send<OpenErhaltendeDividendeStammdatenMessage>(new OpenErhaltendeDividendeStammdatenMessage { AktieID = aktieID, State = State.Bearbeiten, ID = selectedDividende.ID });
         }
+
+        private void ExecuteEntfernenCommand()
+        {
+            new DividendeErhaltenAPI().Entfernen(selectedDividende.ID);
+            dividenden.Remove(selectedDividende);
+            this.RaisePropertyChanged("Dividenden");
+            Messenger.Default.Send<DeleteErhalteneDividendenErfolgreichMessage>(new DeleteErhalteneDividendenErfolgreichMessage());
+        }
         #endregion
 
 
@@ -72,7 +79,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
                 selectedDividende = value;
                 this.RaisePropertyChanged();
                 ((DelegateCommand)BearbeitenCommand).RaiseCanExecuteChanged();
-                //((DelegateCommand)EntfernenCommand).RaiseCanExecuteChanged();
+                ((DelegateCommand)EntfernenCommand).RaiseCanExecuteChanged();
             }
         }
         public IEnumerable<DividendeErhalten> Dividenden
@@ -84,6 +91,8 @@ namespace Aktien.Logic.UI.DividendeViewModels
         }
         public ICommand NeuCommand { get; private set; }
         public ICommand BearbeitenCommand { get; set; }
+
+        public ICommand EntfernenCommand { get; set; }
         #endregion
     }
 }

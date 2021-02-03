@@ -41,5 +41,11 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
         {
             return repo.ErhaltendeDividenden.Where(d => d.ID == inID).First();
         }
+
+        public void Entfernen(int inID)
+        {
+            repo.ErhaltendeDividenden.Remove(repo.ErhaltendeDividenden.Find(inID));
+            repo.SaveChanges();
+        }
     }
 }

@@ -22,12 +22,6 @@ namespace Aktien.Logic.Core.DividendeLogic
             //DividendeRepo.Update(inBetrag, inDatum, inID, inWaehrung, inBetragUmgerechnet);
         }
 
-        public void Entfernen(int inID)
-        {
-            var DividendeRepo = new DividendeRepository();
-            DividendeRepo.Entfernen(inID);
-        }
-
         public ObservableCollection<DividendeErhalten> LadeAlleFuerAktie(int inAktieID)
         {
             new DividendeRepository().LadeAlleFuerAktie(inAktieID);
@@ -37,6 +31,11 @@ namespace Aktien.Logic.Core.DividendeLogic
         public DividendeErhalten LadeAnhandID(int inID)
         {
             return new DividendeErhaltenRepository().LadeByID(inID);
+        }
+
+        public void Entfernen(int inID)
+        {
+            new DividendeErhaltenRepository().Entfernen(inID);
         }
     }
 }
