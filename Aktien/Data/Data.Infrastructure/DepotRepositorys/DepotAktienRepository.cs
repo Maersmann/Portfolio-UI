@@ -11,19 +11,19 @@ namespace Aktien.Data.Infrastructure.DepotRepositorys
 {
     public class DepotAktienRepository : BaseRepository
     {
-        public DepotAktie LadeAnhandAktieID(int AktieID)
+        public DepotWertpapier LadeAllByWertpapierID(int inWertpapierID)
         {
-            return repo.AktienInDepots.Where(a => a.AktieID == AktieID).FirstOrDefault();
+            return repo.AktienInDepots.Where(a => a.WertpapierID == inWertpapierID).FirstOrDefault();
         }
 
-        public Boolean IstAktieinDepotVorhanden( int AktieID )
+        public Boolean IstAktieinDepotVorhanden( int inWertpapierID)
         {
-            return repo.AktienInDepots.Where(a => a.AktieID == AktieID).FirstOrDefault() != null;
+            return repo.AktienInDepots.Where(a => a.WertpapierID == inWertpapierID).FirstOrDefault() != null;
         }
 
-        public void Speichern(int? inID, Double inAnzahl, Double inBuyIn, int inAktieID, int inDepotID)
+        public void Speichern(int? inID, Double inAnzahl, Double inBuyIn, int inWertpapierID, int inDepotID)
         {
-            var Entity = new DepotAktie();
+            var Entity = new DepotWertpapier();
 
             if (inID.GetValueOrDefault(0).Equals(0))
                 inID = null;
@@ -33,7 +33,7 @@ namespace Aktien.Data.Infrastructure.DepotRepositorys
 
             Entity.BuyIn = inBuyIn;
             Entity.Anzahl = inAnzahl;
-            Entity.AktieID = inAktieID;
+            Entity.WertpapierID = inWertpapierID;
             Entity.DepotID = inDepotID;
 
             if (!inID.HasValue)
@@ -42,12 +42,12 @@ namespace Aktien.Data.Infrastructure.DepotRepositorys
             repo.SaveChanges();
         }
 
-        public ObservableCollection<DepotAktie> LoadAll()
+        public ObservableCollection<DepotWertpapier> LoadAll()
         {
-            return new ObservableCollection<DepotAktie>(repo.AktienInDepots.OrderBy(o => o.ID).ToList());
+            return new ObservableCollection<DepotWertpapier>(repo.AktienInDepots.OrderBy(o => o.ID).ToList());
         }
 
-        public void Entfernen(DepotAktie depotAktie)
+        public void Entfernen(DepotWertpapier depotAktie)
         {
             repo.AktienInDepots.Remove(depotAktie);
             repo.SaveChanges();

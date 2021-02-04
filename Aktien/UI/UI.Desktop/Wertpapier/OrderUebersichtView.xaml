@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Aktien.UI.Desktop.Aktie.AktieOrderUebersichtView"
+﻿<UserControl x:Class="Aktien.UI.Desktop.Wertpapier.OrderUebersichtView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -10,7 +10,7 @@
              MinWidth="400"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              Background="{DynamicResource MaterialDesignPaper}"
-             DataContext="{Binding AktieOrderUebersicht, Source={StaticResource Locator}}">
+             DataContext="{Binding OrderUebersicht, Source={StaticResource Locator}}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="25px"/>

@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace Aktien.Data.Migrations
+namespace Aktien.Data.Infrastructure.Migrations
 {
     [DbContext(typeof(Repository))]
-    [Migration("20210203164012_VW7")]
-    partial class VW7
+    [Migration("20210204144445_VW2")]
+    partial class VW2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,37 +21,55 @@ namespace Aktien.Data.Migrations
                 .HasAnnotation("ProductVersion", "3.1.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            modelBuilder.Entity("Aktien.Data.Model.AktienModels.Aktie", b =>
+            modelBuilder.Entity("Aktien.Data.Model.DepotModels.Depot", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("ISIN")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("WKN")
+                    b.Property<string>("Bezeichnung")
                         .HasColumnType("text");
 
                     b.HasKey("ID");
 
-                    b.ToTable("Aktie");
+                    b.ToTable("Depot");
                 });
 
-            modelBuilder.Entity("Aktien.Data.Model.AktienModels.Dividende", b =>
+            modelBuilder.Entity("Aktien.Data.Model.DepotModels.DepotWertpapier", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int>("AktieID")
+                    b.Property<double>("Anzahl")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("BuyIn")
+                        .HasColumnType("double precision");
+
+                    b.Property<int>("DepotID")
                         .HasColumnType("integer");
+
+                    b.Property<int>("WertpapierID")
+                        .HasColumnType("integer");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("DepotID");
+
+                    b.HasIndex("WertpapierID");
+
+                    b.ToTable("DepotWertpapier");
+                });
+
+            modelBuilder.Entity("Aktien.Data.Model.WertpapierModels.Dividende", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<double>("Betrag")
                         .HasColumnType("double precision");
@@ -65,22 +83,22 @@ namespace Aktien.Data.Migrations
                     b.Property<int>("Waehrung")
                         .HasColumnType("integer");
 
+                    b.Property<int>("WertpapierID")
+                        .HasColumnType("integer");
+
                     b.HasKey("ID");
 
-                    b.HasIndex("AktieID");
+                    b.HasIndex("WertpapierID");
 
                     b.ToTable("Dividende");
                 });
 
-            modelBuilder.Entity("Aktien.Data.Model.AktienModels.DividendeErhalten", b =>
+            modelBuilder.Entity("Aktien.Data.Model.WertpapierModels.DividendeErhalten", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("AktieID")
-                        .HasColumnType("integer");
 
                     b.Property<double>("Bestand")
                         .HasColumnType("double precision");
@@ -103,24 +121,24 @@ namespace Aktien.Data.Migrations
                     b.Property<double?>("Umrechnungskurs")
                         .HasColumnType("double precision");
 
+                    b.Property<int>("WertpapierID")
+                        .HasColumnType("integer");
+
                     b.HasKey("ID");
 
-                    b.HasIndex("AktieID");
-
                     b.HasIndex("DividendeID");
+
+                    b.HasIndex("WertpapierID");
 
                     b.ToTable("DividendeErhalten");
                 });
 
-            modelBuilder.Entity("Aktien.Data.Model.AktienModels.OrderHistory", b =>
+            modelBuilder.Entity("Aktien.Data.Model.WertpapierModels.OrderHistory", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("AktieID")
-                        .HasColumnType("integer");
 
                     b.Property<double>("Anzahl")
                         .HasColumnType("double precision");
@@ -143,100 +161,85 @@ namespace Aktien.Data.Migrations
                     b.Property<double>("Preis")
                         .HasColumnType("double precision");
 
+                    b.Property<int>("WertpapierID")
+                        .HasColumnType("integer");
+
                     b.HasKey("ID");
 
-                    b.HasIndex("AktieID");
+                    b.HasIndex("WertpapierID");
 
                     b.ToTable("OrderHistory");
                 });
 
-            modelBuilder.Entity("Aktien.Data.Model.DepotModels.Depot", b =>
+            modelBuilder.Entity("Aktien.Data.Model.WertpapierModels.Wertpapier", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("Bezeichnung")
+                    b.Property<string>("ISIN")
                         .HasColumnType("text");
 
-                    b.HasKey("ID");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.ToTable("Depot");
-                });
+                    b.Property<string>("WKN")
+                        .HasColumnType("text");
 
-            modelBuilder.Entity("Aktien.Data.Model.DepotModels.DepotAktie", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("AktieID")
-                        .HasColumnType("integer");
-
-                    b.Property<double>("Anzahl")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("BuyIn")
-                        .HasColumnType("double precision");
-
-                    b.Property<int>("DepotID")
+                    b.Property<int>("WertpapierTyp")
                         .HasColumnType("integer");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("AktieID");
-
-                    b.HasIndex("DepotID");
-
-                    b.ToTable("DepotAktien");
+                    b.ToTable("Wertpapier");
                 });
 
-            modelBuilder.Entity("Aktien.Data.Model.AktienModels.Dividende", b =>
+            modelBuilder.Entity("Aktien.Data.Model.DepotModels.DepotWertpapier", b =>
                 {
-                    b.HasOne("Aktien.Data.Model.AktienModels.Aktie", "Aktie")
+                    b.HasOne("Aktien.Data.Model.DepotModels.Depot", "Depot")
+                        .WithMany("DepotWertpapier")
+                        .HasForeignKey("DepotID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Aktien.Data.Model.WertpapierModels.Wertpapier", "Wertpapier")
+                        .WithMany()
+                        .HasForeignKey("WertpapierID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Aktien.Data.Model.WertpapierModels.Dividende", b =>
+                {
+                    b.HasOne("Aktien.Data.Model.WertpapierModels.Wertpapier", "Wertpapier")
                         .WithMany("Dividenden")
-                        .HasForeignKey("AktieID")
+                        .HasForeignKey("WertpapierID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Aktien.Data.Model.AktienModels.DividendeErhalten", b =>
+            modelBuilder.Entity("Aktien.Data.Model.WertpapierModels.DividendeErhalten", b =>
                 {
-                    b.HasOne("Aktien.Data.Model.AktienModels.Aktie", "Aktie")
-                        .WithMany("ErhalteneDividenden")
-                        .HasForeignKey("AktieID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Aktien.Data.Model.AktienModels.Dividende", "Dividende")
+                    b.HasOne("Aktien.Data.Model.WertpapierModels.Dividende", "Dividende")
                         .WithMany()
                         .HasForeignKey("DividendeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Aktien.Data.Model.WertpapierModels.Wertpapier", "Wertpapier")
+                        .WithMany("ErhalteneDividenden")
+                        .HasForeignKey("WertpapierID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("Aktien.Data.Model.AktienModels.OrderHistory", b =>
+            modelBuilder.Entity("Aktien.Data.Model.WertpapierModels.OrderHistory", b =>
                 {
-                    b.HasOne("Aktien.Data.Model.AktienModels.Aktie", "Aktie")
+                    b.HasOne("Aktien.Data.Model.WertpapierModels.Wertpapier", "Wertpapier")
                         .WithMany("OrderHistories")
-                        .HasForeignKey("AktieID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Aktien.Data.Model.DepotModels.DepotAktie", b =>
-                {
-                    b.HasOne("Aktien.Data.Model.AktienModels.Aktie", "Aktie")
-                        .WithMany()
-                        .HasForeignKey("AktieID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Aktien.Data.Model.DepotModels.Depot", "Depot")
-                        .WithMany("DepotAktien")
-                        .HasForeignKey("DepotID")
+                        .HasForeignKey("WertpapierID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

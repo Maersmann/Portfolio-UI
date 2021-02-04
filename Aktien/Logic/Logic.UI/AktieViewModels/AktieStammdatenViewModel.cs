@@ -14,21 +14,19 @@ using System.Windows.Input;
 using Aktien.Logic.Messages.Base;
 using Aktien.Data.Types;
 using Aktien.Logic.UI.BaseViewModels;
-using Aktien.Logic.Core.AktieLogic;
-using Aktien.Data.Model.AktienModels;
+using Aktien.Data.Model.WertpapierModels;
+using Aktien.Logic.Core.WertpapierLogic;
 
 namespace Aktien.Logic.UI.AktieViewModels
 {
     public class AktieStammdatenViewModel : ViewModelStammdaten
     {
 
-        private Aktie aktie;
-
-
+        private Wertpapier aktie;
 
         public AktieStammdatenViewModel():base()
         {
-            aktie = new Aktie();
+            aktie = new Wertpapier();
             SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
 
             ISIN = "";
@@ -46,8 +44,8 @@ namespace Aktien.Logic.UI.AktieViewModels
             {            
                 try
                 { 
-                    api.Speichern(new Aktie() { ISIN = aktie.ISIN, Name = aktie.Name, WKN = aktie.WKN });
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Aktie erfolgreich gespeichert." }, "AktieStammdaten");
+                    api.Speichern(new Wertpapier() { ISIN = aktie.ISIN, Name = aktie.Name, WKN = aktie.WKN });
+                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Aktie gespeichert." }, "AktieStammdaten");
                 }
                 catch( AktieSchonVorhandenException)
                 {
@@ -57,7 +55,7 @@ namespace Aktien.Logic.UI.AktieViewModels
             else
             {
                 api.Aktualisieren(aktie);
-                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Aktie erfolgreich aktualisiert." }, "AktieStammdaten");
+                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Aktie aktualisiert." }, "AktieStammdaten");
             } 
         }
 
@@ -66,7 +64,7 @@ namespace Aktien.Logic.UI.AktieViewModels
         { 
             LoadAktie = true;
             var Loadaktie = new AktieAPI().LadeAnhandID(inID);
-            aktie = new Aktie
+            aktie = new Wertpapier
             {
                 ID = Loadaktie.ID
             };
@@ -129,7 +127,7 @@ namespace Aktien.Logic.UI.AktieViewModels
         #region Validate
         private bool ValidateName(String inName)
         {
-            var Validierung = new AktieStammdatenValidierung();
+            var Validierung = new WertpapierStammdatenValidierung();
 
             bool isValid = Validierung.ValidateName(inName, out ICollection<string> validationErrors);
 
@@ -139,7 +137,7 @@ namespace Aktien.Logic.UI.AktieViewModels
 
         private bool ValidateISIN(String inISIN)
         {
-            var Validierung = new AktieStammdatenValidierung();
+            var Validierung = new WertpapierStammdatenValidierung();
 
             bool isValid = Validierung.ValidateISIN(inISIN, out ICollection<string> validationErrors);
 
@@ -151,7 +149,7 @@ namespace Aktien.Logic.UI.AktieViewModels
         public override void Cleanup()
         {
             state = State.Neu;
-            aktie = new Aktie();
+            aktie = new Wertpapier();
             ISIN = "";
             Name = "";
             WKN = "";

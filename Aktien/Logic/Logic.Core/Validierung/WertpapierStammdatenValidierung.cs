@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Aktien.Logic.Core.Validierung
 {
-    public class AktieStammdatenValidierung : IValidierung
+    public class WertpapierStammdatenValidierung : IValidierung
     {
         public bool ValidateName(String inName, out ICollection<string> validationErrors)
         {

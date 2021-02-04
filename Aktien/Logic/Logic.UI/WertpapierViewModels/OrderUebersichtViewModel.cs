@@ -1,9 +1,10 @@
-﻿using Aktien.Data.Model.AktienModels;
+﻿using Aktien.Data.Model.WertpapierModels;
 using Aktien.Data.Types;
-using Aktien.Logic.Core.AktieLogic;
 using Aktien.Logic.Core.Depot;
+using Aktien.Logic.Core.WertpapierLogic;
 using Aktien.Logic.Messages.AktieMessages;
 using Aktien.Logic.Messages.DepotMessages;
+using Aktien.Logic.Messages.WertpapierMessages;
 using Aktien.Logic.UI.BaseViewModels;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
@@ -16,20 +17,20 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Aktien.Logic.UI.AktieViewModels
+namespace Aktien.Logic.UI.WertpapierViewModels
 {
-    public class AktieOrderUebersichtViewModel : ViewModelBasis
+    public class OrderUebersichtViewModel : ViewModelBasis
     {
         private ObservableCollection<OrderHistory> orderHistories;
 
         private OrderHistory selectedOrderHistory;
 
-        private int aktieID;
+        private int wertpapierID;
 
-        public AktieOrderUebersichtViewModel()
+        public OrderUebersichtViewModel()
         {
-            aktieID = 0;
-            Messenger.Default.Register<LoadAktieOrderMessage>(this, m => ReceiveLoadAktieMessage(m));
+            wertpapierID = 0;
+            Messenger.Default.Register<LoadWertpapierOrderMessage>(this, m => ReceiveLoadAktieMessage(m));
             AktieGekauftCommand = new DelegateCommand(this.ExecuteAktieGekauftCommand, this.CanExecuteCommand);
             AktieVerkauftCommand = new DelegateCommand(this.ExecuteAktieVerkauftCommand, this.CanExecuteCommand);
             EntfernenCommand = new DelegateCommand(this.ExecuteEntfernenCommand, this.CanSelectedItemExecuteCommand);
@@ -37,15 +38,15 @@ namespace Aktien.Logic.UI.AktieViewModels
 
 
 
-        private void ReceiveLoadAktieMessage(LoadAktieOrderMessage m)
+        private void ReceiveLoadAktieMessage(LoadWertpapierOrderMessage m)
         {
-            LoadData(m.AktieID);
+            LoadData(m.WertpapierID);
         }
 
-        public void LoadData(int inAktieID)
+        public void LoadData(int inWertpapierID)
         {
-            aktieID = inAktieID;
-            orderHistories = new AktieAPI().LadeAlleOrdersDerAktie(aktieID);
+            wertpapierID = inWertpapierID;
+            orderHistories = new AktieAPI().LadeAlleOrdersDerAktie(wertpapierID);
             this.RaisePropertyChanged("OrderHistories");
             ((DelegateCommand)AktieGekauftCommand).RaiseCanExecuteChanged();
             ((DelegateCommand)AktieVerkauftCommand).RaiseCanExecuteChanged();
@@ -83,11 +84,11 @@ namespace Aktien.Logic.UI.AktieViewModels
         #region Commands
         private void ExecuteAktieGekauftCommand()
         {
-            Messenger.Default.Send<OpenAktieGekauftViewMessage>(new OpenAktieGekauftViewMessage { AktieID = aktieID, BuySell = BuySell.Buy });
+            Messenger.Default.Send<OpenAktieGekauftViewMessage>(new OpenAktieGekauftViewMessage { WertpapierID = wertpapierID, BuySell = BuySell.Buy });
         }
         private void ExecuteAktieVerkauftCommand()
         {
-            Messenger.Default.Send<OpenAktieGekauftViewMessage>(new OpenAktieGekauftViewMessage { AktieID = aktieID, BuySell = BuySell.Sell });
+            Messenger.Default.Send<OpenAktieGekauftViewMessage>(new OpenAktieGekauftViewMessage { WertpapierID = wertpapierID, BuySell = BuySell.Sell });
         }
         private void ExecuteEntfernenCommand()
         {
@@ -106,7 +107,7 @@ namespace Aktien.Logic.UI.AktieViewModels
 
         private bool CanExecuteCommand()
         {
-            return aktieID != 0;
+            return wertpapierID != 0;
         }
         private bool CanSelectedItemExecuteCommand()
         {

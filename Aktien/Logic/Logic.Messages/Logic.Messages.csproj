@@ -51,6 +51,8 @@
     <Compile Include="DividendeMessages\OpenDividendeErhaltenUebersichtViewMessage.cs" />
     <Compile Include="DividendeMessages\OpenDividendenUebersichtAuswahlMessage.cs" />
     <Compile Include="DividendeMessages\OpenErhaltendeDividendeStammdatenMessage.cs" />
+    <Compile Include="ETFMessages\DeleteEtfErfolgreichMessage.cs" />
+    <Compile Include="ETFMessages\OpenETFStammdatenMessage.cs" />
     <Compile Include="MainViewMessages.cs" />
     <Compile Include="AktieMessages\AktieStammdatenViewMessages.cs" />
     <Compile Include="AktieMessages\AktieOrderViewMessages.cs" />
@@ -59,6 +61,7 @@
     <Compile Include="DividendeMessages\DividendeStammdatenViewMessages.cs" />
     <Compile Include="DividendeMessages\DividendeUebersichtViewMessages.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WertpapierMessages\LoadWertpapierOrderMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Data\Data.Types\Data.Types.csproj">

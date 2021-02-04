@@ -11,11 +11,4 @@ namespace Aktien.Logic.Messages.AktieMessages
     {
 
     }
-
-    public class LoadAktieOrderMessage
-    {
-        public int AktieID { get; set; }
-    }
-
-
 }

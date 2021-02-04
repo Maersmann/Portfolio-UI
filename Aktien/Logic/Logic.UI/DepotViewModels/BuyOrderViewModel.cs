@@ -11,8 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Aktien.Data.Model.DepotModels;
-using Aktien.Data.Model.AktienModels;
-using Aktien.Logic.Core.AktieLogic;
+using Aktien.Data.Model.WertpapierModels;
 
 namespace Aktien.Logic.UI.DepotViewModels
 {
@@ -40,11 +39,11 @@ namespace Aktien.Logic.UI.DepotViewModels
             var Depot = new DepotAPI();
             if (buySell.Equals(BuySell.Buy))
             {
-                Depot.NeueAktieGekauft(data.Preis, data.Fremdkostenzuschlag, data.Orderdatum, AktieID, data.Anzahl, data.KaufartTyp, data.OrderartTyp);
+                Depot.NeueAktieGekauft(data.Preis, data.Fremdkostenzuschlag, data.Orderdatum, WertpapierID, data.Anzahl, data.KaufartTyp, data.OrderartTyp);
             }
             else
             {
-                Depot.NeueAktieVerkauft(data.Preis, data.Fremdkostenzuschlag, data.Orderdatum, AktieID, data.Anzahl, data.KaufartTyp, data.OrderartTyp);
+                Depot.NeueAktieVerkauft(data.Preis, data.Fremdkostenzuschlag, data.Orderdatum, WertpapierID, data.Anzahl, data.KaufartTyp, data.OrderartTyp);
             }
             Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Buy-Order erfolgreich gespeichert." }, "BuyOrder");
         }
@@ -192,7 +191,7 @@ namespace Aktien.Logic.UI.DepotViewModels
                 }
             }
         }
-        public int AktieID { get; set; }
+        public int WertpapierID { get; set; }
 
         #endregion
 

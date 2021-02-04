@@ -35,7 +35,7 @@ namespace Aktien.UI.Desktop.Dividende
             var view = new DividendeErhaltenUebersichtView();
 
             if (view.DataContext is DividendeErhaltenUebersichtViewModel model)
-                model.LoadData(m.AktieID);
+                model.LoadData(m.WertpapierID);
 
             Window window = new Window
             {
@@ -55,7 +55,7 @@ namespace Aktien.UI.Desktop.Dividende
             var view = new DividendenUebersichtView();
 
             if (view.DataContext is DividendenUebersichtViewModel model)
-                model.LoadData(m.AktieID);
+                model.LoadData(m.WertpapierID);
 
             Window window = new Window
             {

@@ -1,4 +1,4 @@
-﻿using Aktien.Data.Model.AktienModels;
+﻿using Aktien.Data.Model.WertpapierModels;
 using Aktien.Data.Types;
 using Aktien.Logic.Core.Depot;
 using Aktien.Logic.Core.DividendeLogic;
@@ -52,7 +52,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
             dividendeErhalten = new DividendeErhalten
             {
                 ID = dividendeLoad.ID,
-                AktieID = dividendeLoad.AktieID,
+                WertpapierID = dividendeLoad.WertpapierID,
                 DividendeID = dividendeLoad.DividendeID,
                 GesamtBrutto = dividendeLoad.GesamtBrutto,
                 GesamtNetto = dividendeLoad.GesamtNetto, 
@@ -79,7 +79,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         private void ExecuteOpenAuswahlCommand()
         {
-            Messenger.Default.Send<OpenDividendenAuswahlMessage>(new OpenDividendenAuswahlMessage { AktieID = dividendeErhalten.AktieID });
+            Messenger.Default.Send<OpenDividendenAuswahlMessage>(new OpenDividendenAuswahlMessage { WertpapierID = dividendeErhalten.WertpapierID });
         }
         protected override void ExecuteSaveCommand()
         {
@@ -97,9 +97,9 @@ namespace Aktien.Logic.UI.DividendeViewModels
             }
         }
 
-        public void AktieID(int aktieID)
+        public void WertpapierID(int inWertpapierID)
         {
-            dividendeErhalten.AktieID = aktieID;
+            dividendeErhalten.WertpapierID = inWertpapierID;
         }
 
         #region Bindings

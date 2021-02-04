@@ -211,7 +211,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Aktie\AktieOrderUebersichtView.xaml">
+    <Page Include="ETF\ETFGesamtUebersicht.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Wertpapier\OrderUebersichtView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -255,6 +259,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ETF\ETFStammdatenView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -265,8 +273,11 @@
     <Compile Include="Aktie\AktienUebersichtView.xaml.cs">
       <DependentUpon>AktienUebersichtView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Aktie\AktieOrderUebersichtView.xaml.cs">
-      <DependentUpon>AktieOrderUebersichtView.xaml</DependentUpon>
+    <Compile Include="ETF\ETFGesamtUebersicht.xaml.cs">
+      <DependentUpon>ETFGesamtUebersicht.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wertpapier\OrderUebersichtView.xaml.cs">
+      <DependentUpon>OrderUebersichtView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Aktie\AktieStammdatenView.xaml.cs">
       <DependentUpon>AktieStammdatenView.xaml</DependentUpon>
@@ -302,6 +313,9 @@
     </Compile>
     <Compile Include="Dividende\DividendeStammdatenView.xaml.cs">
       <DependentUpon>DividendeStammdatenView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ETF\ETFStammdatenView.xaml.cs">
+      <DependentUpon>ETFStammdatenView.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>

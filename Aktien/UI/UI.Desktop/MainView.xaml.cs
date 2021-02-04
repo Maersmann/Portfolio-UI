@@ -20,6 +20,7 @@ using Aktien.UI.Desktop.Aktie;
 using Aktien.Data.Types;
 using Aktien.UI.Desktop.Depot;
 using Aktien.Logic.Messages;
+using Aktien.UI.Desktop.ETF;
 
 namespace Aktien.UI.Desktop
 {
@@ -31,6 +32,7 @@ namespace Aktien.UI.Desktop
 
         private static AktieUebersichtPage aktienUebersichtView;
         private static DepotUebersichtView depotUebersichtView;
+        private static ETFGesamtUebersicht etfGesamtUebersicht;
 
         public MainView()
         {
@@ -59,6 +61,10 @@ namespace Aktien.UI.Desktop
                 case ViewType.viewDepotUebersicht:
                     depotUebersichtView = depotUebersichtView ?? new DepotUebersichtView();
                     Container.NavigationService.Navigate(depotUebersichtView);
+                    break;
+                case ViewType.viewETFUebersicht:
+                    etfGesamtUebersicht = etfGesamtUebersicht ?? new ETFGesamtUebersicht();
+                    Container.NavigationService.Navigate(etfGesamtUebersicht);
                     break;
                 default:
                     break;

@@ -1,4 +1,4 @@
-﻿using Aktien.Data.Model.AktienModels;
+﻿using Aktien.Data.Model.WertpapierModels;
 using Aktien.Data.Types;
 using Aktien.Logic.Core.DividendeLogic;
 using Aktien.Logic.Messages.AuswahlMessages;
@@ -19,7 +19,7 @@ namespace Aktien.Logic.UI.AuswahlViewModels
 {
     public class DividendenAuswahlViewModel : ViewModelBasis
     {
-        private int aktieID;
+        private int wertpapierID;
         private ObservableCollection<Dividende> dividenden;
 
         private Dividende selectedDividende;
@@ -33,7 +33,7 @@ namespace Aktien.Logic.UI.AuswahlViewModels
 
         private void ExcecuteAddCommand()
         {
-            Messenger.Default.Send<OpenDividendeStammdatenMessage>(new OpenDividendeStammdatenMessage { AktieID = aktieID, State = State.Neu });
+            Messenger.Default.Send<OpenDividendeStammdatenMessage>(new OpenDividendeStammdatenMessage { WertpapierID = wertpapierID, State = State.Neu });
         }
 
         private bool CanExecuteCommand()
@@ -69,10 +69,10 @@ namespace Aktien.Logic.UI.AuswahlViewModels
         }
         public ICommand AuswahlCommand { get; set; }
         public ICommand AddCommand { get; set; }
-        public void LoadData(int inAktieID)
+        public void LoadData(int inWertpapierID)
         {
-            aktieID = inAktieID;
-            dividenden = new DividendeAPI().LadeAlleFuerAktie(aktieID);
+            wertpapierID = inWertpapierID;
+            dividenden = new DividendeAPI().LadeAlleFuerAktie(wertpapierID);
             this.RaisePropertyChanged("Dividenden");
         }
         #endregion

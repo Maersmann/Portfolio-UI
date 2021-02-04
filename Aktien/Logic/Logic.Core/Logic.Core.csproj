@@ -44,7 +44,7 @@
     <Compile Include="..\..\_Shared\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Aktie\AktieAPI.cs" />
+    <Compile Include="Wertpapier\AktieAPI.cs" />
     <Compile Include="DatabaseAPI.cs" />
     <Compile Include="Depot\Classes\KaufBerechnungen.cs" />
     <Compile Include="Depot\DepotAPI.cs" />
@@ -56,7 +56,8 @@
     <Compile Include="Validierung\AktieGekauftValidierung.cs" />
     <Compile Include="Validierung\DividendeErhaltenValidierung.cs" />
     <Compile Include="Validierung\DividendeStammdatenValidierung.cs" />
-    <Compile Include="Validierung\AktieStammdatenValidierung.cs" />
+    <Compile Include="Validierung\WertpapierStammdatenValidierung.cs" />
+    <Compile Include="Wertpapier\EtfAPI.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Data\Data.Infrastructure\Data.Infrastructure.csproj">
@@ -78,7 +79,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Aktie\Classes\" />
+    <Folder Include="ETF\" />
+    <Folder Include="Wertpapier\Classes\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

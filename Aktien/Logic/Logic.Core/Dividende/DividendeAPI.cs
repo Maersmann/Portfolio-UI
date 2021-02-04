@@ -1,5 +1,5 @@
 ﻿using Aktien.Data.Infrastructure.AktienRepositorys;
-using Aktien.Data.Model.AktienModels;
+using Aktien.Data.Model.WertpapierModels;
 using Aktien.Data.Types;
 using System;
 using System.Collections.Generic;
@@ -12,10 +12,10 @@ namespace Aktien.Logic.Core.DividendeLogic
 {
     public class DividendeAPI
     {
-        public void Speichern(Double inBetrag, DateTime inDatum, int inAktieID, Waehrungen inWaehrung, Double? inBetragUmgerechnet)
+        public void Speichern(Double inBetrag, DateTime inDatum, int inWertpapierID, Waehrungen inWaehrung, Double? inBetragUmgerechnet)
         {
             var DividendeRepo = new DividendeRepository();
-            DividendeRepo.Speichern(null, inBetrag, inDatum, inAktieID, inWaehrung, inBetragUmgerechnet);
+            DividendeRepo.Speichern(null, inBetrag, inDatum, inWertpapierID, inWaehrung, inBetragUmgerechnet);
         }
 
         public void Aktualisiere(Double inBetrag, DateTime inDatum, int inID, Waehrungen inWaehrung, Double? inBetragUmgerechnet)
@@ -30,10 +30,10 @@ namespace Aktien.Logic.Core.DividendeLogic
             DividendeRepo.Entfernen( inID);
         }
 
-        public ObservableCollection<Dividende> LadeAlleFuerAktie(int inAktieID)
+        public ObservableCollection<Dividende> LadeAlleFuerAktie(int inWertpapierID)
         {
             var DividendeRepo = new DividendeRepository();
-            return DividendeRepo.LadeAlleFuerAktie(inAktieID);
+            return DividendeRepo.LadeAlleFuerAktie(inWertpapierID);
         }
 
         public Dividende LadeAnhandID(int inID)

@@ -41,7 +41,7 @@ namespace Aktien.UI.Desktop.Dividende
             var view = new DividendeErhaltenView();
             if (view.DataContext is DividendeErhaltenViewModel model)
             {
-                model.AktieID( m.AktieID );
+                model.WertpapierID( m.WertpapierID );
                 if (m.State == State.Bearbeiten)
                 {
                     model.Bearbeiten(m.ID.GetValueOrDefault());
@@ -51,7 +51,7 @@ namespace Aktien.UI.Desktop.Dividende
 
             if ((Result.GetValueOrDefault(false)) && (this.DataContext is DividendeErhaltenUebersichtViewModel modelUebersicht))
             {
-                modelUebersicht.LoadData(m.AktieID);
+                modelUebersicht.LoadData(m.WertpapierID);
             }
         }
 

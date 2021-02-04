@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Aktien.UI.Desktop.Wertpapier;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,7 +25,7 @@ namespace Aktien.UI.Desktop.Aktie
         {
             InitializeComponent();
             ContainerLeft.NavigationService.Navigate(new AktienUebersichtView());
-            ContainerRight.NavigationService.Navigate(new AktieOrderUebersichtView());
+            ContainerRight.NavigationService.Navigate(new OrderUebersichtView());
         }
     }
 }

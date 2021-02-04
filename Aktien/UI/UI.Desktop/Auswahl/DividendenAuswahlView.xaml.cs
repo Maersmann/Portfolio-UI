@@ -35,13 +35,13 @@ namespace Aktien.UI.Desktop.Auswahl
             var view = new DividendeStammdatenView();
             if (view.DataContext is DividendeStammdatenViewModel model)
             {
-                model.AktieID = m.AktieID;
+                model.WertpapierID = m.WertpapierID;
             }
             bool? Result = view.ShowDialog();
 
             if ((Result.GetValueOrDefault(false)) && (this.DataContext is DividendenAuswahlViewModel modelUebersicht))
             {
-                modelUebersicht.LoadData(m.AktieID);
+                modelUebersicht.LoadData(m.WertpapierID);
             }
         }
 

@@ -1,7 +1,7 @@
-﻿using Aktien.Data.Model.AktienModels;
+﻿using Aktien.Data.Model.WertpapierModels;
 using Aktien.Data.Types;
-using Aktien.Logic.Core.AktieLogic;
 using Aktien.Logic.Core.DividendeLogic;
+using Aktien.Logic.Core.WertpapierLogic;
 using Aktien.Logic.Messages.DividendeMessages;
 using Aktien.Logic.UI.BaseViewModels;
 using GalaSoft.MvvmLight;
@@ -24,7 +24,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         private DividendeErhalten selectedDividende;
 
-        private int aktieID;
+        private int wertpapierID;
 
         public DividendeErhaltenUebersichtViewModel()
         {
@@ -34,17 +34,17 @@ namespace Aktien.Logic.UI.DividendeViewModels
             EntfernenCommand = new DelegateCommand(this.ExecuteEntfernenCommand, this.CanExecuteCommand);
         }
 
-        public void LoadData(int inAktieID)
+        public void LoadData(int inWertpapierID)
         {
-            aktieID = inAktieID;
-            dividenden = new AktieAPI().LadeAlleErhalteneDividenden(aktieID);
+            wertpapierID = inWertpapierID;
+            dividenden = new AktieAPI().LadeAlleErhalteneDividenden(wertpapierID);
             this.RaisePropertyChanged("Dividenden");
         }
 
         #region Commands
         private void ExecuteNeuCommand()
         {
-            Messenger.Default.Send<OpenErhaltendeDividendeStammdatenMessage>(new OpenErhaltendeDividendeStammdatenMessage { AktieID = aktieID, State = State.Neu });
+            Messenger.Default.Send<OpenErhaltendeDividendeStammdatenMessage>(new OpenErhaltendeDividendeStammdatenMessage { WertpapierID = wertpapierID, State = State.Neu });
         }
 
         private bool CanExecuteCommand()
@@ -54,7 +54,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         private void ExecuteBearbeitenCommand()
         {
-            Messenger.Default.Send<OpenErhaltendeDividendeStammdatenMessage>(new OpenErhaltendeDividendeStammdatenMessage { AktieID = aktieID, State = State.Bearbeiten, ID = selectedDividende.ID });
+            Messenger.Default.Send<OpenErhaltendeDividendeStammdatenMessage>(new OpenErhaltendeDividendeStammdatenMessage { WertpapierID = wertpapierID, State = State.Bearbeiten, ID = selectedDividende.ID });
         }
 
         private void ExecuteEntfernenCommand()

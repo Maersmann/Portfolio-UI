@@ -16,9 +16,9 @@ namespace Aktien.Logic.UI.DepotViewModels
 {
     public class DepotUebersichtViewModel: ViewModelBasis
     {
-        private readonly ObservableCollection<DepotAktie> depotAktien;
+        private readonly ObservableCollection<DepotWertpapier> depotAktien;
 
-        private DepotAktie selectedDepotAktie;
+        private DepotWertpapier selectedDepotAktie;
 
         public DepotUebersichtViewModel()
         {
@@ -29,7 +29,7 @@ namespace Aktien.Logic.UI.DepotViewModels
 
 
         #region Bindings
-        public DepotAktie SelectedDepotAktie
+        public DepotWertpapier SelectedDepotAktie
         {
             get
             {
@@ -43,7 +43,7 @@ namespace Aktien.Logic.UI.DepotViewModels
             }
         }
 
-        public IEnumerable<DepotAktie> DepotAktien
+        public IEnumerable<DepotWertpapier> DepotAktien
         {
             get
             {
@@ -62,7 +62,7 @@ namespace Aktien.Logic.UI.DepotViewModels
 
         private void ExecuteOpenDividendeCommandCommand()
         {
-            Messenger.Default.Send<OpenDividendenUebersichtAuswahlMessage>(new OpenDividendenUebersichtAuswahlMessage { AktieID = selectedDepotAktie.AktieID }, "DepotUebersicht");
+            Messenger.Default.Send<OpenDividendenUebersichtAuswahlMessage>(new OpenDividendenUebersichtAuswahlMessage { WertpapierID = selectedDepotAktie.WertpapierID }, "DepotUebersicht");
         }
         #endregion
     }

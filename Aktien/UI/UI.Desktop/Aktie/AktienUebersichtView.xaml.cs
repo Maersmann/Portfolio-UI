@@ -46,7 +46,7 @@ namespace Aktien.UI.Desktop
             var view = new DividendenUebersichtAuswahlView();
 
             if (view.DataContext is DividendenUebersichtAuswahlViewModel model)
-                model.AktieID = m.AktieID;
+                model.WertpapierID = m.WertpapierID;
             view.ShowDialog();
         }
 
@@ -57,7 +57,7 @@ namespace Aktien.UI.Desktop
             {
                 if (message.State == Data.Types.State.Bearbeiten)
                 {
-                    model.Bearbeiten( message.AktieID );
+                    model.Bearbeiten( message.WertpapierID );
                 }
                 
             }
@@ -71,7 +71,7 @@ namespace Aktien.UI.Desktop
     
         private void ReceiveDeleteAktieErfolgreich()
         {
-            MessageBox.Show("Aktie erfolgreich gelöscht.");
+            MessageBox.Show("Aktie gelöscht.");
         }
     }
 }

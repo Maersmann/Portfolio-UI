@@ -3,6 +3,7 @@ using Aktien.Logic.Messages.AktieMessages;
 using Aktien.Logic.Messages.DepotMessages;
 using Aktien.Logic.UI.AktieViewModels;
 using Aktien.Logic.UI.DepotViewModels;
+using Aktien.Logic.UI.WertpapierViewModels;
 using Aktien.UI.Desktop.Depot;
 using GalaSoft.MvvmLight.Messaging;
 using System;
@@ -20,14 +21,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Aktien.UI.Desktop.Aktie
+namespace Aktien.UI.Desktop.Wertpapier
 {
     /// <summary>
     /// Interaktionslogik für AktieOrderUebersichtView.xaml
     /// </summary>
-    public partial class AktieOrderUebersichtView : UserControl
+    public partial class OrderUebersichtView : UserControl
     {
-        public AktieOrderUebersichtView()
+        public OrderUebersichtView()
         {
             InitializeComponent();
             Messenger.Default.Register<OpenAktieGekauftViewMessage>(this, m => ReceiveOpenAktieGekauftViewMessage(m));
@@ -39,14 +40,14 @@ namespace Aktien.UI.Desktop.Aktie
             var view = new BuyOrderView();
             if (view.DataContext is BuyOrderViewModel model)
             {
-                model.AktieID = m.AktieID;
+                model.WertpapierID = m.WertpapierID;
                 model.SetBuySell(m.BuySell);
             }
             bool? Result = view.ShowDialog();
 
-            if ((Result.GetValueOrDefault(false)) && (this.DataContext is AktieOrderUebersichtViewModel modelUebersicht))
+            if ((Result.GetValueOrDefault(false)) && (this.DataContext is OrderUebersichtViewModel modelUebersicht))
             {
-                modelUebersicht.LoadData(m.AktieID);
+                modelUebersicht.LoadData(m.WertpapierID);
             }
 
         }

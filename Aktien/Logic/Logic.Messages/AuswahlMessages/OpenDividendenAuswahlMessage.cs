@@ -8,6 +8,6 @@ namespace Aktien.Logic.Messages.AuswahlMessages
 {
     public class OpenDividendenAuswahlMessage
     {
-        public int AktieID { get; set; }
+        public int WertpapierID { get; set; }
     }
 }

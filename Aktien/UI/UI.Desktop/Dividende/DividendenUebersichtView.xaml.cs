@@ -41,7 +41,7 @@ namespace Aktien.UI.Desktop.Dividende
             var view = new DividendeStammdatenView();
             if (view.DataContext is DividendeStammdatenViewModel model)
             {
-                model.AktieID = m.AktieID;
+                model.WertpapierID = m.WertpapierID;
                 if (m.State == State.Bearbeiten)
                 {
                     model.Bearbeiten( m.DividendeID.GetValueOrDefault() );
@@ -51,7 +51,7 @@ namespace Aktien.UI.Desktop.Dividende
 
             if ((Result.GetValueOrDefault(false)) && (this.DataContext is DividendenUebersichtViewModel modelUebersicht))
             {
-                modelUebersicht.LoadData( m.AktieID );
+                modelUebersicht.LoadData( m.WertpapierID );
             }
         }
 

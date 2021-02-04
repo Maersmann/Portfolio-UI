@@ -1,4 +1,4 @@
-﻿using Aktien.Data.Model.AktienModels;
+﻿using Aktien.Data.Model.WertpapierModels;
 using Aktien.Data.Types;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aktien.Data.Model.AktienModels
+namespace Aktien.Data.Model.WertpapierModels
 {
     [Table("OrderHistory")]
     public class OrderHistory
@@ -20,8 +20,8 @@ namespace Aktien.Data.Model.AktienModels
         public Double Preis { get; set; }
         public Double? Fremdkostenzuschlag { get; set; }
         public DateTime Orderdatum { get; set; }
-        public int AktieID { get; set; }
-        public Aktie Aktie { get; set; }
+        public int WertpapierID { get; set; }
+        public Wertpapier Wertpapier { get; set; }
 
         [EnumDataType(typeof(KaufTypes))]
         public KaufTypes KaufartTyp { get; set; }

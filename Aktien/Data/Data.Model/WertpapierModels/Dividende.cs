@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aktien.Data.Model.AktienModels
+namespace Aktien.Data.Model.WertpapierModels
 {
     [Table("Dividende")]
     public class Dividende
@@ -21,8 +21,8 @@ namespace Aktien.Data.Model.AktienModels
 
         public Double Betrag { get; set; }
 
-        public int AktieID { get; set; }
-        public Aktie Aktie { get; set; }
+        public int WertpapierID { get; set; }
+        public Wertpapier Wertpapier { get; set; }
 
         [EnumDataType(typeof(Waehrungen))]
         public Waehrungen Waehrung { get; set; }

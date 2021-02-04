@@ -49,7 +49,7 @@ namespace Aktien.UI.Desktop.Dividende
             view = new DividendenAuswahlView();
             if (view.DataContext is DividendenAuswahlViewModel model)
             {
-                model.LoadData( m.AktieID );
+                model.LoadData( m.WertpapierID );
             }
             
             view.ShowDialog();

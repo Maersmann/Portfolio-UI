@@ -1,11 +1,11 @@
-﻿using Aktien.Data.Model.AktienModels;
+﻿using Aktien.Data.Model.WertpapierModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace Aktien.Data.Model.AktienModels
+namespace Aktien.Data.Model.WertpapierModels
 {
     [Table("DividendeErhalten")]
     public class DividendeErhalten
@@ -21,8 +21,8 @@ namespace Aktien.Data.Model.AktienModels
         public Double Bestand { get; set; }
         public int DividendeID { get; set; }
         public Dividende Dividende { get; set; }
-        public int AktieID { get; set; }
-        public Aktie Aktie { get; set; }
+        public int WertpapierID { get; set; }
+        public Wertpapier Wertpapier { get; set; }
 
     }
 }

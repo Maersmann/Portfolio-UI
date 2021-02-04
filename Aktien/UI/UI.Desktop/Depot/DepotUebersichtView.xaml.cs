@@ -35,7 +35,7 @@ namespace Aktien.UI.Desktop.Depot
             var view = new DividendenUebersichtAuswahlView();
 
             if (view.DataContext is DividendenUebersichtAuswahlViewModel model)
-                model.AktieID = m.AktieID;
+                model.WertpapierID = m.WertpapierID;
             view.ShowDialog();
         }
     }
