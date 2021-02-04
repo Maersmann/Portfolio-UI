@@ -11,6 +11,7 @@ namespace Aktien.Logic.Messages.DepotMessages
     {
         public int WertpapierID { get; set; }
         public BuySell BuySell { get; set; }
+        public WertpapierTypes WertpapierTypes { get; set; }
     }
 
 

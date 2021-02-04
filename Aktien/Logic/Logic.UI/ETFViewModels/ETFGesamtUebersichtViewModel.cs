@@ -25,10 +25,13 @@ namespace Aktien.Logic.UI.ETFViewModels
         public ETFGesamtUebersichtViewModel()
         {
             LoadData();
+            messageToken = "";
             BearbeitenCommand = new DelegateCommand(this.ExecuteBearbeitenCommand, this.CanExecuteCommand);
             EntfernenCommand = new DelegateCommand(this.ExecuteEntfernenCommand, this.CanExecuteCommand);
             AddAktieCommand = new RelayCommand(this.ExecuteAddAktieCommand);
         }
+
+        public string MessageToken { set { messageToken = value; } }
 
         public void LoadData()
         {
@@ -51,7 +54,7 @@ namespace Aktien.Logic.UI.ETFViewModels
                 ((DelegateCommand)EntfernenCommand).RaiseCanExecuteChanged();
                 if (selectedETF != null)
                 {
-                    Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = selectedETF.ID });
+                    Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = selectedETF.ID }, messageToken);
                 }
             }
         }

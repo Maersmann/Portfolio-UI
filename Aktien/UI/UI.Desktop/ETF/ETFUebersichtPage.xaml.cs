@@ -14,18 +14,18 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Aktien.UI.Desktop.Aktie
+namespace Aktien.UI.Desktop.ETF
 {
     /// <summary>
-    /// Interaktionslogik für AktieUebersichtPage.xaml
+    /// Interaktionslogik für ETFUebersichtPage.xaml
     /// </summary>
-    public partial class AktieUebersichtPage : Page
+    public partial class ETFUebersichtPage : Page
     {
-        public AktieUebersichtPage()
+        public ETFUebersichtPage()
         {
             InitializeComponent();
-            ContainerLeft.NavigationService.Navigate(new AktienUebersichtView { MessageToken = "AktieUebersicht" });
-            ContainerRight.NavigationService.Navigate(new OrderUebersichtView { MessageToken = "AktieUebersicht" });
+            ContainerLeft.NavigationService.Navigate(new ETFGesamtUebersichtView { MessageToken = "ETFUebersicht" });
+            ContainerRight.NavigationService.Navigate(new OrderUebersichtView { MessageToken = "ETFUebersicht" });
         }
     }
 }

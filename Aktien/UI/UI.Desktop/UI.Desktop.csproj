@@ -211,7 +211,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ETF\ETFGesamtUebersicht.xaml">
+    <Page Include="ETF\ETFGesamtUebersichtView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ETF\ETFUebersichtPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -273,8 +277,11 @@
     <Compile Include="Aktie\AktienUebersichtView.xaml.cs">
       <DependentUpon>AktienUebersichtView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ETF\ETFGesamtUebersicht.xaml.cs">
-      <DependentUpon>ETFGesamtUebersicht.xaml</DependentUpon>
+    <Compile Include="ETF\ETFGesamtUebersichtView.xaml.cs">
+      <DependentUpon>ETFGesamtUebersichtView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ETF\ETFUebersichtPage.xaml.cs">
+      <DependentUpon>ETFUebersichtPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Wertpapier\OrderUebersichtView.xaml.cs">
       <DependentUpon>OrderUebersichtView.xaml</DependentUpon>

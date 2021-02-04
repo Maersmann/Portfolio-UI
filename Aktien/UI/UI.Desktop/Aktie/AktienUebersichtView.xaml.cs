@@ -25,7 +25,7 @@ using Aktien.UI.Desktop.Depot;
 using Aktien.UI.Desktop.Dividende;
 using Aktien.Logic.Messages.AktieMessages;
 
-namespace Aktien.UI.Desktop
+namespace Aktien.UI.Desktop.Aktie
 {
     /// <summary>
     /// Interaktionslogik für AktienUebersichtView.xaml
@@ -39,6 +39,17 @@ namespace Aktien.UI.Desktop
             Messenger.Default.Register<DeleteAktieErfolgreichMessage>(this, m => ReceiveDeleteAktieErfolgreich() );
             Messenger.Default.Register<OpenDividendenUebersichtAuswahlMessage>(this, "AktienUebersicht", m => ReceiveOpenDividendeUebersichtMessage(m));
            
+        }
+
+        public string MessageToken
+        {
+            set
+            {
+                if (this.DataContext is AktienUebersichtViewModel modelUebersicht)
+                {
+                    modelUebersicht.MessageToken = value;
+                }
+            }
         }
 
         private void ReceiveOpenDividendeUebersichtMessage(OpenDividendenUebersichtAuswahlMessage m)

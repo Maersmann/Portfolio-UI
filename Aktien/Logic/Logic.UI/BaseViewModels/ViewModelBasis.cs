@@ -16,12 +16,17 @@ namespace Aktien.Logic.UI.BaseViewModels
 {
     public class ViewModelBasis : ViewModelBase
     {
+
         public ViewModelBasis()
         {
             CloseCommand = new RelayCommand(() => ExecuteCloseCommand());
         }
 
+        protected string messageToken;
+
         public string Title { get; protected set; }
+
+        
 
         public ICommand CloseCommand { get; private set; }
 

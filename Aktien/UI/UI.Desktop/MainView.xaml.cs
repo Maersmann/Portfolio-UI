@@ -32,7 +32,7 @@ namespace Aktien.UI.Desktop
 
         private static AktieUebersichtPage aktienUebersichtView;
         private static DepotUebersichtView depotUebersichtView;
-        private static ETFGesamtUebersicht etfGesamtUebersicht;
+        private static ETFUebersichtPage etfGesamtUebersicht;
 
         public MainView()
         {
@@ -63,7 +63,7 @@ namespace Aktien.UI.Desktop
                     Container.NavigationService.Navigate(depotUebersichtView);
                     break;
                 case ViewType.viewETFUebersicht:
-                    etfGesamtUebersicht = etfGesamtUebersicht ?? new ETFGesamtUebersicht();
+                    etfGesamtUebersicht = etfGesamtUebersicht ?? new ETFUebersichtPage();
                     Container.NavigationService.Navigate(etfGesamtUebersicht);
                     break;
                 default:

@@ -31,8 +31,21 @@ namespace Aktien.UI.Desktop.Wertpapier
         public OrderUebersichtView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenAktieGekauftViewMessage>(this, m => ReceiveOpenAktieGekauftViewMessage(m));
+            
         }
+
+        public string MessageToken
+        {
+            set
+            {
+                Messenger.Default.Register<OpenAktieGekauftViewMessage>(this, value, m => ReceiveOpenAktieGekauftViewMessage(m));
+                if (this.DataContext is OrderUebersichtViewModel modelUebersicht)
+                {
+                    modelUebersicht.MessageToken = value;
+                }
+            }
+        }
+
 
         private void ReceiveOpenAktieGekauftViewMessage(OpenAktieGekauftViewMessage m)
         {
@@ -41,7 +54,7 @@ namespace Aktien.UI.Desktop.Wertpapier
             if (view.DataContext is BuyOrderViewModel model)
             {
                 model.WertpapierID = m.WertpapierID;
-                model.SetBuySell(m.BuySell);
+                model.SetTitle(m.BuySell, m.WertpapierTypes);
             }
             bool? Result = view.ShowDialog();
 

@@ -25,15 +25,19 @@ namespace Aktien.Logic.UI.AktieViewModels
         private ObservableCollection<Wertpapier> alleAktien;
 
         private Wertpapier selectedAktie;
+        
 
         public AktienUebersichtViewModel()
         {
             LoadData();
+            messageToken = "";
             BearbeitenCommand = new DelegateCommand(this.ExecuteBearbeitenCommand, this.CanExecuteCommand);
             EntfernenCommand = new DelegateCommand(this.ExecuteEntfernenCommand, this.CanExecuteCommand);
             OpenNeueDividendeCommand = new DelegateCommand(this.ExecuteOpenNeueDividendeCommand, this.CanExecuteCommand);
             AddAktieCommand = new RelayCommand(this.ExecuteAddAktieCommand);
         }
+        public string MessageToken { set { messageToken = value; } }
+
 
         public void LoadData()
         {
@@ -57,7 +61,7 @@ namespace Aktien.Logic.UI.AktieViewModels
                 ((DelegateCommand)OpenNeueDividendeCommand).RaiseCanExecuteChanged();
                 if (selectedAktie != null)
                 {
-                    Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = selectedAktie.ID });
+                    Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = selectedAktie.ID }, messageToken);
                 }
             } 
         }

@@ -26,14 +26,26 @@ namespace Aktien.Logic.UI.WertpapierViewModels
         private OrderHistory selectedOrderHistory;
 
         private int wertpapierID;
+        private WertpapierTypes wertpapierTypes;
+        private string messagtoken;
 
         public OrderUebersichtViewModel()
         {
+            messagtoken = "";
             wertpapierID = 0;
-            Messenger.Default.Register<LoadWertpapierOrderMessage>(this, m => ReceiveLoadAktieMessage(m));
+            wertpapierTypes = WertpapierTypes.Aktie;
             AktieGekauftCommand = new DelegateCommand(this.ExecuteAktieGekauftCommand, this.CanExecuteCommand);
             AktieVerkauftCommand = new DelegateCommand(this.ExecuteAktieVerkauftCommand, this.CanExecuteCommand);
             EntfernenCommand = new DelegateCommand(this.ExecuteEntfernenCommand, this.CanSelectedItemExecuteCommand);
+        }
+
+        public string MessageToken
+        {
+            set
+            {
+                Messenger.Default.Register<LoadWertpapierOrderMessage>(this, value, m => ReceiveLoadAktieMessage(m));
+                messagtoken = value;
+            }
         }
 
 
@@ -47,6 +59,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
         {
             wertpapierID = inWertpapierID;
             orderHistories = new AktieAPI().LadeAlleOrdersDerAktie(wertpapierID);
+            wertpapierTypes = new AktieAPI().LadeAnhandID(wertpapierID).WertpapierTyp;
             this.RaisePropertyChanged("OrderHistories");
             ((DelegateCommand)AktieGekauftCommand).RaiseCanExecuteChanged();
             ((DelegateCommand)AktieVerkauftCommand).RaiseCanExecuteChanged();
@@ -84,11 +97,11 @@ namespace Aktien.Logic.UI.WertpapierViewModels
         #region Commands
         private void ExecuteAktieGekauftCommand()
         {
-            Messenger.Default.Send<OpenAktieGekauftViewMessage>(new OpenAktieGekauftViewMessage { WertpapierID = wertpapierID, BuySell = BuySell.Buy });
+            Messenger.Default.Send<OpenAktieGekauftViewMessage>(new OpenAktieGekauftViewMessage { WertpapierID = wertpapierID, BuySell = BuySell.Buy, WertpapierTypes = wertpapierTypes }, messagtoken);
         }
         private void ExecuteAktieVerkauftCommand()
         {
-            Messenger.Default.Send<OpenAktieGekauftViewMessage>(new OpenAktieGekauftViewMessage { WertpapierID = wertpapierID, BuySell = BuySell.Sell });
+            Messenger.Default.Send<OpenAktieGekauftViewMessage>(new OpenAktieGekauftViewMessage { WertpapierID = wertpapierID, BuySell = BuySell.Sell, WertpapierTypes = wertpapierTypes }, messagtoken);
         }
         private void ExecuteEntfernenCommand()
         {

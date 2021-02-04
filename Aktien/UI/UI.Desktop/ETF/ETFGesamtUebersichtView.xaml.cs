@@ -21,13 +21,25 @@ namespace Aktien.UI.Desktop.ETF
     /// <summary>
     /// Interaktionslogik für ETFGesamtUebersicht.xaml
     /// </summary>
-    public partial class ETFGesamtUebersicht : UserControl
+    public partial class ETFGesamtUebersichtView : UserControl
     {
-        public ETFGesamtUebersicht()
+       
+        public ETFGesamtUebersichtView()
         {
             InitializeComponent();
             Messenger.Default.Register<OpenETFStammdatenMessage>(this, m => ReceiveOpenETFStammdatenMessage(m));
             Messenger.Default.Register<DeleteEtfErfolgreichMessage>(this, m => ReceiveDeleteEtfErfolgreichMessage());
+        }
+
+        public string MessageToken 
+        { 
+            set 
+            {
+                if (this.DataContext is ETFGesamtUebersichtViewModel modelUebersicht)
+                {
+                    modelUebersicht.MessageToken = value;
+                }
+            } 
         }
 
         private void ReceiveOpenETFStammdatenMessage(OpenETFStammdatenMessage m)

@@ -19,6 +19,7 @@ namespace Aktien.Logic.UI.DepotViewModels
     {
         private OrderHistory data;
         private BuySell buySell;
+        private WertpapierTypes typ;
         public BuyOrderViewModel()
         {
             SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
@@ -32,6 +33,7 @@ namespace Aktien.Logic.UI.DepotViewModels
             Preis = null;
             Datum = DateTime.Now;
             buySell = BuySell.Buy;
+            typ = WertpapierTypes.Aktie;
         }
 
         protected override void ExecuteSaveCommand()
@@ -48,9 +50,10 @@ namespace Aktien.Logic.UI.DepotViewModels
             Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Buy-Order erfolgreich gespeichert." }, "BuyOrder");
         }
 
-        public void SetBuySell(BuySell inBuySell)
+        public void SetTitle(BuySell inBuySell, WertpapierTypes inTypes)
         {
             buySell = inBuySell;
+            typ = inTypes;
             this.RaisePropertyChanged("KauftypBez");
             this.RaisePropertyChanged("Titel");
         }
@@ -181,13 +184,22 @@ namespace Aktien.Logic.UI.DepotViewModels
         {
             get
             {
+                var Wertpapiertyp = "";
+
+                switch (typ)        
+                {
+                    case WertpapierTypes.Aktie: Wertpapiertyp = "Aktie"; break;
+                    case WertpapierTypes.ETF: Wertpapiertyp = "ETF"; break;
+                    default: Wertpapiertyp = ""; break;
+                }
+
                 if (buySell == BuySell.Buy)
                 {
-                    return "Aktie gekauft";
+                    return  Wertpapiertyp + " gekauft";
                 }
                 else
                 {
-                    return "Aktie verkauft";
+                    return Wertpapiertyp + " verkauft";
                 }
             }
         }
