@@ -24,9 +24,10 @@
 
         <DataGrid Grid.Row="1" Margin="5"  ItemsSource="{Binding DepotAktien}" SelectedItem="{Binding SelectedDepotAktie, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" SelectionUnit="FullRow" >
             <DataGrid.Columns >
-                <DataGridTextColumn Header="Name" Binding="{Binding Wertpapier.Name}" Width="auto" FocusManager.IsFocusScope="False"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding Wertpapier.Name}" Width="auto" />
                 <DataGridTextColumn Header="Anzahl" Binding="{Binding Anzahl}" Width="auto"/>
-                <DataGridTextColumn Header="Buy-In" Binding="{Binding BuyIn}"   Width="auto"/>
+                <DataGridTextColumn Header="Buy-In" Binding="{Binding BuyIn , StringFormat=N2, ConverterCulture='de-DE'}"  Width="auto"/>
+                <DataGridTextColumn Header="Wertpapier-Art" Binding="{Binding Wertpapier.WertpapierTyp }"  Width="auto"/>
             </DataGrid.Columns>
         </DataGrid>
 

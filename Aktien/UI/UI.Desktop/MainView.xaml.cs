@@ -31,7 +31,7 @@ namespace Aktien.UI.Desktop
     {
 
         private static AktieUebersichtPage aktienUebersichtView;
-        private static DepotUebersichtView depotUebersichtView;
+        private static DepotUebersichtPage depotUebersichtView;
         private static ETFUebersichtPage etfGesamtUebersicht;
 
         public MainView()
@@ -59,7 +59,7 @@ namespace Aktien.UI.Desktop
                     new BuyOrderView().ShowDialog();
                     break;
                 case ViewType.viewDepotUebersicht:
-                    depotUebersichtView = depotUebersichtView ?? new DepotUebersichtView();
+                    depotUebersichtView = depotUebersichtView ?? new DepotUebersichtPage();
                     Container.NavigationService.Navigate(depotUebersichtView);
                     break;
                 case ViewType.viewETFUebersicht:

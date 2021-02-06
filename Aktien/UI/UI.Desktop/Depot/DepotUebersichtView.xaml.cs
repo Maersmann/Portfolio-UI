@@ -1,5 +1,8 @@
-﻿using Aktien.Logic.Messages.DividendeMessages;
+﻿using Aktien.Logic.Messages.DepotMessages;
+using Aktien.Logic.Messages.DividendeMessages;
+using Aktien.Logic.UI.DepotViewModels;
 using Aktien.Logic.UI.DividendeViewModels;
+using Aktien.Logic.UI.WertpapierViewModels;
 using Aktien.UI.Desktop.Dividende;
 using GalaSoft.MvvmLight.Messaging;
 using System;
@@ -28,6 +31,18 @@ namespace Aktien.UI.Desktop.Depot
         {
             InitializeComponent();
             Messenger.Default.Register<OpenDividendenUebersichtAuswahlMessage>(this, "DepotUebersicht", m => ReceiveOpenDividendeUebersichtMessage(m));
+        }
+
+        public string MessageToken
+        {
+            set
+            {
+               
+                if (this.DataContext is DepotUebersichtViewModel modelUebersicht)
+                {
+                    modelUebersicht.MessageToken = value;
+                }
+            }
         }
 
         private void ReceiveOpenDividendeUebersichtMessage(OpenDividendenUebersichtAuswahlMessage m)

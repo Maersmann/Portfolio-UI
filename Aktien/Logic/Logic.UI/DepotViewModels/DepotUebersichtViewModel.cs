@@ -1,6 +1,7 @@
 ﻿using Aktien.Data.Model.DepotModels;
 using Aktien.Logic.Core.Depot;
 using Aktien.Logic.Messages.DividendeMessages;
+using Aktien.Logic.Messages.WertpapierMessages;
 using Aktien.Logic.UI.BaseViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using Prism.Commands;
@@ -27,6 +28,8 @@ namespace Aktien.Logic.UI.DepotViewModels
             OpenDividendeCommand = new DelegateCommand(this.ExecuteOpenDividendeCommandCommand, this.CanExecuteCommand);
         }
 
+        public string MessageToken { set { messageToken = value; } }
+
 
         #region Bindings
         public DepotWertpapier SelectedDepotAktie
@@ -40,6 +43,10 @@ namespace Aktien.Logic.UI.DepotViewModels
                 selectedDepotAktie = value;
                 ((DelegateCommand)OpenDividendeCommand).RaiseCanExecuteChanged();
                 this.RaisePropertyChanged();
+                if (selectedDepotAktie != null)
+                {
+                    Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = selectedDepotAktie.WertpapierID }, messageToken);
+                }
             }
         }
 
