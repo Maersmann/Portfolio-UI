@@ -58,6 +58,7 @@
     <Compile Include="Validierung\DividendeStammdatenValidierung.cs" />
     <Compile Include="Validierung\WertpapierStammdatenValidierung.cs" />
     <Compile Include="Wertpapier\EtfAPI.cs" />
+    <Compile Include="Wertpapier\WertpapierAPI.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Data\Data.Infrastructure\Data.Infrastructure.csproj">

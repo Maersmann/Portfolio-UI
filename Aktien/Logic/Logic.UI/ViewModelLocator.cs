@@ -66,6 +66,7 @@ namespace Aktien.Logic.UI
             SimpleIoc.Default.Register<ETFGesamtUebersichtViewModel>(); 
             SimpleIoc.Default.Register<ETFUebersichtPageViewModel>();
             SimpleIoc.Default.Register<DepotUebersichtPageViewModel>();
+            SimpleIoc.Default.Register<WertpapierGesamtUebersichtViewModel>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
@@ -85,6 +86,7 @@ namespace Aktien.Logic.UI
         public ETFGesamtUebersichtViewModel ETFGesamtUebersicht => ServiceLocator.Current.GetInstance<ETFGesamtUebersichtViewModel>(); 
         public ETFUebersichtPageViewModel ETFUebersichtPage => ServiceLocator.Current.GetInstance<ETFUebersichtPageViewModel>();
         public DepotUebersichtPageViewModel DepotUebersichtPage => ServiceLocator.Current.GetInstance<DepotUebersichtPageViewModel>();
+        public WertpapierGesamtUebersichtViewModel WertpapierGesamtUebersicht => ServiceLocator.Current.GetInstance<WertpapierGesamtUebersichtViewModel>();
         public static void Cleanup()
         {
 
