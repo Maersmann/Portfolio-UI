@@ -1,4 +1,5 @@
-﻿using Aktien.Logic.Core.Interfaces;
+﻿using Aktien.Data.Types;
+using Aktien.Logic.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,14 +25,14 @@ namespace Aktien.Logic.Core.Validierung
 
             return validationErrors.Count == 0;
         }
-        public bool ValidateBetrag(Double? inBetrag, out ICollection<string> validatonErrors)
+        public bool ValidateBetrag(Double? inBetrag, KaufTypes inKaufTyp,  out ICollection<string> validatonErrors)
         {
             validatonErrors = new List<String>();
 
             if (!inBetrag.HasValue)
                 validatonErrors.Add("Kein Betrag hinterlegt sein");
 
-            if (inBetrag == 0)
+            if ((inBetrag == 0) && (!inKaufTyp.Equals(KaufTypes.SpinOff)) )
                 validatonErrors.Add("Der Betrag darf nicht 0 sein");
 
             return validatonErrors.Count == 0;

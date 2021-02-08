@@ -93,8 +93,10 @@ namespace Aktien.Logic.UI.DepotViewModels
             {
                 if (LoadAktie || (this.data.KaufartTyp != value))
                 {
+                    ValidateBetrag(Preis, value);
                     this.data.KaufartTyp = value;
                     this.RaisePropertyChanged();
+                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
@@ -153,10 +155,10 @@ namespace Aktien.Logic.UI.DepotViewModels
             {
                 if (LoadAktie || (this.data.Preis != value))
                 {
-                    ValidateBetrag(value);
+                    ValidateBetrag(value, KaufTyp);
                     this.data.Preis = value.GetValueOrDefault();
                     this.RaisePropertyChanged();
-                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                    
                 }
             }
         }
@@ -201,7 +203,6 @@ namespace Aktien.Logic.UI.DepotViewModels
                 {
                     case WertpapierTypes.Aktie: Wertpapiertyp = "Aktie"; break;
                     case WertpapierTypes.ETF: Wertpapiertyp = "ETF"; break;
-                    default: Wertpapiertyp = ""; break;
                 }
 
                 if (buySell == BuySell.Buy)
@@ -230,11 +231,11 @@ namespace Aktien.Logic.UI.DepotViewModels
             return isValid;
         }
 
-        private bool ValidateBetrag(Double? inBetrag)
+        private bool ValidateBetrag(Double? inBetrag, KaufTypes inKaufTyp)
         {
             var Validierung = new AktieGekauftValidierung();
 
-            bool isValid = Validierung.ValidateBetrag(inBetrag, out ICollection<string> validationErrors);
+            bool isValid = Validierung.ValidateBetrag(inBetrag, inKaufTyp, out ICollection<string> validationErrors);
 
             AddValidateInfo(isValid, "Preis", validationErrors);
             return isValid;

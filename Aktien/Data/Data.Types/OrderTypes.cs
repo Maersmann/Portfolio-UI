@@ -24,7 +24,7 @@ namespace Aktien.Data.Types
     {
         [Description("Order")]
         Normal = 0,
-        [Description("Limi-Order")]
+        [Description("Limit-Order")]
         Limit = 1,
         [Description("Stop-Order")]
         Stop = 2
