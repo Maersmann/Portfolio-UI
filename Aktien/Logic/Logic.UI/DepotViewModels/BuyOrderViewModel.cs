@@ -58,6 +58,7 @@ namespace Aktien.Logic.UI.DepotViewModels
                 
             }
             Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Buy-Order erfolgreich gespeichert." }, "BuyOrder");
+            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewDepotUebersicht);
         }
 
         public void SetTitle(BuySell inBuySell, WertpapierTypes inTypes)

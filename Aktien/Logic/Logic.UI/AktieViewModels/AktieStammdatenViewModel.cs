@@ -51,13 +51,15 @@ namespace Aktien.Logic.UI.AktieViewModels
                 catch( WertpapierSchonVorhandenException)
                 {
                     Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = false, Message = "Aktie ist schon vorhanden." }, "AktieStammdaten");
+                    return;
                 }
             }
             else
             {
                 api.Aktualisieren(aktie);
                 Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Aktie aktualisiert." }, "AktieStammdaten");
-            } 
+            }
+            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewWertpapierUebersicht);
         }
 
 

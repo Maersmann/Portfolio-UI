@@ -1,5 +1,7 @@
 ﻿using Aktien.Data.Model.WertpapierModels;
+using Aktien.Data.Types;
 using Aktien.Logic.Core.WertpapierLogic;
+using Aktien.Logic.Messages.Base;
 using Aktien.Logic.Messages.WertpapierMessages;
 using Aktien.Logic.UI.BaseViewModels;
 using GalaSoft.MvvmLight.Messaging;
@@ -12,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Aktien.Logic.UI.WertpapierViewModels
 {
-    public class WertpapierGesamtUebersichtViewModel : ViewModelBasis
+    public class WertpapierGesamtUebersichtViewModel : ViewModelUebersicht
     {
         private ObservableCollection<Wertpapier> wertpapiere;
 
@@ -22,10 +24,11 @@ namespace Aktien.Logic.UI.WertpapierViewModels
         {
             LoadData();
             messageToken = "";
+            RegisterAktualisereViewMessage(ViewType.viewWertpapierUebersicht);
         }
-
+        
         public string MessageToken { set { messageToken = value; } }
-        public void LoadData()
+        public override void LoadData()
         {
             wertpapiere = new WertpapierAPI().LadeAlle();
             this.RaisePropertyChanged("Wertpapiere");

@@ -1,6 +1,7 @@
 ﻿using Aktien.Data.Model.DepotModels;
 using Aktien.Data.Types;
 using Aktien.Logic.Core.Depot;
+using Aktien.Logic.Messages.Base;
 using Aktien.Logic.Messages.DividendeMessages;
 using Aktien.Logic.Messages.WertpapierMessages;
 using Aktien.Logic.UI.BaseViewModels;
@@ -16,20 +17,28 @@ using System.Windows.Input;
 
 namespace Aktien.Logic.UI.DepotViewModels
 {
-    public class DepotUebersichtViewModel: ViewModelBasis
+    public class DepotUebersichtViewModel: ViewModelUebersicht
     {
-        private readonly ObservableCollection<DepotWertpapier> depotAktien;
+        private ObservableCollection<DepotWertpapier> depotAktien;
 
         private DepotWertpapier selectedDepotAktie;
 
         public DepotUebersichtViewModel()
         {
-            var api = new DepotAPI();
-            depotAktien = api.LadeAlleVorhandeneImDepot();
+            LoadData();
             OpenDividendeCommand = new DelegateCommand(this.ExecuteOpenDividendeCommandCommand, this.CanExecuteCommand);
+            RegisterAktualisereViewMessage(ViewType.viewDepotUebersicht);
         }
 
+
         public string MessageToken { set { messageToken = value; } }
+
+        public override void LoadData()
+        {
+            var api = new DepotAPI();
+            depotAktien = api.LadeAlleVorhandeneImDepot();
+            this.RaisePropertyChanged("Wertpapiere");
+        }
 
 
         #region Bindings

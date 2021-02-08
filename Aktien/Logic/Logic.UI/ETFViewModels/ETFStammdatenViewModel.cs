@@ -45,6 +45,7 @@ namespace Aktien.Logic.UI.ETFViewModels
                 catch (WertpapierSchonVorhandenException)
                 {
                     Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = false, Message = "ETF ist schon vorhanden." }, "ETFStammdaten");
+                    return;
                 }
             }
             else
@@ -52,6 +53,7 @@ namespace Aktien.Logic.UI.ETFViewModels
                 api.Aktualisieren(etf);
                 Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "ETF aktualisiert." }, "ETFStammdaten");
             }
+            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewWertpapierUebersicht);
         }
 
         public void Bearbeiten(int inID)
