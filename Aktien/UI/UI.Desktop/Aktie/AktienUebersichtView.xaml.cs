@@ -37,7 +37,7 @@ namespace Aktien.UI.Desktop.Aktie
             InitializeComponent();
             Messenger.Default.Register<OpenAktieStammdatenMessage>(this, m => ReceiveOpenAktieStammdatenMessage( m ));
             Messenger.Default.Register<DeleteAktieErfolgreichMessage>(this, m => ReceiveDeleteAktieErfolgreich() );
-            Messenger.Default.Register<OpenDividendenUebersichtAuswahlMessage>(this, "AktienUebersicht", m => ReceiveOpenDividendeUebersichtMessage(m));
+           
            
         }
 
@@ -47,6 +47,7 @@ namespace Aktien.UI.Desktop.Aktie
             {
                 if (this.DataContext is AktienUebersichtViewModel modelUebersicht)
                 {
+                    Messenger.Default.Register<OpenDividendenUebersichtAuswahlMessage>(this, value , m => ReceiveOpenDividendeUebersichtMessage(m));
                     modelUebersicht.MessageToken = value;
                 }
             }

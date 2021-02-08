@@ -127,5 +127,6 @@ namespace Aktien.Logic.UI.WertpapierViewModels
             return selectedOrderHistory != null;
         }
         #endregion
+
     }
 }

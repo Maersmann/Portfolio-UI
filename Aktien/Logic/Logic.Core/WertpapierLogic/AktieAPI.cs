@@ -54,7 +54,7 @@ namespace Aktien.Logic.Core.WertpapierLogic
 
         public ObservableCollection<Dividende> LadeAlleDividendenDerAktie(int inWertpapierID)
         {
-            return new DividendeAPI().LadeAlleFuerAktie(inWertpapierID);
+            return new DividendeAPI().LadeAlleFuerWertpapier(inWertpapierID);
         }
 
         public Dividende LadeDividendeDerAktie(int inID)

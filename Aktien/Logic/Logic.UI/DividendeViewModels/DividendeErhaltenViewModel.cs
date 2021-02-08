@@ -26,15 +26,9 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         public DividendeErhaltenViewModel()
         {
-            dividendeErhalten = new DividendeErhalten();
             SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
             OpenAuswahlCommand = new RelayCommand(this.ExecuteOpenAuswahlCommand);
-            Bestand = -1;
-            Datum = DateTime.Now;
-            Quellensteuer = null;
-            Wechselkurs = null;
-            dividendetext = "";
-            DividendeID = -1;
+            Cleanup();
         }
 
         public void DividendeAusgewaehlt(int inID, double inBetrag, DateTime inDatum)
@@ -209,7 +203,13 @@ namespace Aktien.Logic.UI.DividendeViewModels
         public override void Cleanup()
         {
             dividendeErhalten = new DividendeErhalten();
+            dividendetext = "";
+            DividendeID = -1;
+            Bestand = -1;
+            Datum = DateTime.Now;
             state = State.Neu;
+            Quellensteuer = null;
+            Wechselkurs = null;
             this.RaisePropertyChanged();
         }
     }

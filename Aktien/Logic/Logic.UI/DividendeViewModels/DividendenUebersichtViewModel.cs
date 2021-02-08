@@ -45,7 +45,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
         public void LoadData(int inWertpapierID)
         {
             wertpapierID = inWertpapierID;
-            dividenden = new DividendeAPI().LadeAlleFuerAktie(wertpapierID);
+            dividenden = new DividendeAPI().LadeAlleFuerWertpapier(wertpapierID);
             this.RaisePropertyChanged("Dividenden");
         }
 

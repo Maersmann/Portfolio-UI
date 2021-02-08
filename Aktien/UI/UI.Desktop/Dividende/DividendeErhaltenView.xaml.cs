@@ -49,6 +49,7 @@ namespace Aktien.UI.Desktop.Dividende
             view = new DividendenAuswahlView();
             if (view.DataContext is DividendenAuswahlViewModel model)
             {
+                model.OhneHinterlegteDividende = true;
                 model.LoadData( m.WertpapierID );
             }
             

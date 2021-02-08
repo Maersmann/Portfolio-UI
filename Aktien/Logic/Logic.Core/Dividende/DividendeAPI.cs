@@ -30,10 +30,15 @@ namespace Aktien.Logic.Core.DividendeLogic
             DividendeRepo.Entfernen( inID);
         }
 
-        public ObservableCollection<Dividende> LadeAlleFuerAktie(int inWertpapierID)
+        public ObservableCollection<Dividende> LadeAlleFuerWertpapier(int inWertpapierID)
         {
             var DividendeRepo = new DividendeRepository();
             return DividendeRepo.LadeAlleFuerAktie(inWertpapierID);
+        }
+
+        public ObservableCollection<Dividende> LadeAlleNichtErhaltendeFuerWertpapier(int inWertpapierID)
+        {
+            return new DividendeRepository().LadeAlleNichtErhaltendeFuerWertpapier(inWertpapierID) ;
         }
 
         public Dividende LadeAnhandID(int inID)

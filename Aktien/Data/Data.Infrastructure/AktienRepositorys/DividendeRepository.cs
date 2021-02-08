@@ -1,6 +1,7 @@
 ﻿using Aktien.Data.Infrastructure.Base;
 using Aktien.Data.Model.WertpapierModels;
 using Aktien.Data.Types;
+using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -44,5 +45,11 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
             repo.Dividenden.Remove( repo.Dividenden.Find( inID ) );
             repo.SaveChanges();
         }
+
+        public ObservableCollection<Dividende> LadeAlleNichtErhaltendeFuerWertpapier(int inWertpapierID)
+        {
+            return new ObservableCollection<Dividende>(repo.Dividenden.Where(d => (d.WertpapierID == inWertpapierID)).Where( d=> (!repo.ErhaltendeDividenden.Select(e => e.WertpapierID).Contains(d.WertpapierID))).OrderByDescending(d => d.Datum).ToList());
+        }
+
     }
 }
