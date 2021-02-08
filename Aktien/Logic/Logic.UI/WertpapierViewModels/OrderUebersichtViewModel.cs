@@ -35,7 +35,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
             wertpapierID = 0;
             wertpapierTypes = WertpapierTypes.Aktie;
             AktieGekauftCommand = new DelegateCommand(this.ExecuteAktieGekauftCommand, this.CanExecuteCommand);
-            AktieVerkauftCommand = new DelegateCommand(this.ExecuteAktieVerkauftCommand, this.CanExecuteCommand);
+            AktieVerkauftCommand = new DelegateCommand(this.ExecuteAktieVerkauftCommand, this.CanExecuteAktieVerkaufCommand);
             EntfernenCommand = new DelegateCommand(this.ExecuteEntfernenCommand, this.CanSelectedItemExecuteCommand);
         }
 
@@ -47,7 +47,6 @@ namespace Aktien.Logic.UI.WertpapierViewModels
                 messagtoken = value;
             }
         }
-
 
 
         private void ReceiveLoadAktieMessage(LoadWertpapierOrderMessage m)
@@ -107,11 +106,11 @@ namespace Aktien.Logic.UI.WertpapierViewModels
         {
             if (selectedOrderHistory.BuySell == BuySell.Buy)
             {
-                new DepotAPI().EntferneGekaufteAktie(selectedOrderHistory.ID);
+                new DepotAPI().EntferneGekauftenWertpapier(selectedOrderHistory.ID);
             }
             else
             {
-                new DepotAPI().EntferneVerkaufteAktie(selectedOrderHistory.ID);
+                new DepotAPI().EntferneVerkauftenWertpapier(selectedOrderHistory.ID);
             }
             
             orderHistories.Remove(selectedOrderHistory);
@@ -126,6 +125,12 @@ namespace Aktien.Logic.UI.WertpapierViewModels
         {
             return selectedOrderHistory != null;
         }
+
+        private bool CanExecuteAktieVerkaufCommand()
+        {
+            return new DepotAPI().WertpapierImDepotVorhanden( wertpapierID ); 
+        }
+
         #endregion
 
     }

@@ -1,4 +1,5 @@
 ﻿using Aktien.Data.Model.DepotModels;
+using Aktien.Data.Types;
 using Aktien.Logic.Core.Depot;
 using Aktien.Logic.Messages.DividendeMessages;
 using Aktien.Logic.Messages.WertpapierMessages;
@@ -64,7 +65,7 @@ namespace Aktien.Logic.UI.DepotViewModels
         #region Commands
         private bool CanExecuteCommand()
         {
-            return selectedDepotAktie != null;
+            return (selectedDepotAktie != null) && ( SelectedDepotAktie.Wertpapier.WertpapierTyp.Equals(WertpapierTypes.Aktie));
         }
 
         private void ExecuteOpenDividendeCommandCommand()

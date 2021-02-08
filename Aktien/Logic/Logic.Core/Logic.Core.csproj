@@ -44,10 +44,11 @@
     <Compile Include="..\..\_Shared\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="DepotLogic\Exceptions\ZuVieleWertpapiereVerkaufException.cs" />
     <Compile Include="WertpapierLogic\AktieAPI.cs" />
     <Compile Include="DatabaseAPI.cs" />
-    <Compile Include="Depot\Classes\KaufBerechnungen.cs" />
-    <Compile Include="Depot\DepotAPI.cs" />
+    <Compile Include="DepotLogic\Classes\KaufBerechnungen.cs" />
+    <Compile Include="DepotLogic\DepotAPI.cs" />
     <Compile Include="Dividende\Classes\DividendenBerechnungen.cs" />
     <Compile Include="Dividende\DividendeAPI.cs" />
     <Compile Include="Dividende\DividendeErhaltenAPI.cs" />

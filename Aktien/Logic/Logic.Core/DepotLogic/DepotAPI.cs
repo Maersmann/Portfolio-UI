@@ -11,18 +11,21 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Aktien.Logic.Core.DepotLogic.Exceptions;
 
 namespace Aktien.Logic.Core.Depot
 {
     public class DepotAPI
     {
-        public void NeueAktieGekauft(double inPreis, double? inFremdkosten, DateTime inDatum, int inWertpapierID, Double inAnzahl, Data.Types.KaufTypes inKauftyp, Data.Types.OrderTypes inOrderTyp)
+        public Exception ZuVieleWertpapiereVerkauftException { get; private set; }
+
+        public void NeuerWertpapierGekauft(double inPreis, double? inFremdkosten, DateTime inDatum, int inWertpapierID, Double inAnzahl, Data.Types.KaufTypes inKauftyp, Data.Types.OrderTypes inOrderTyp)
         {
             var orderHistoryRepo = new OrderHistoryRepository();
             orderHistoryRepo.Speichern(inPreis, inFremdkosten, inDatum, inWertpapierID, inAnzahl, inKauftyp, inOrderTyp, BuySell.Buy);
 
             var DepotAktieRepo = new DepotAktienRepository();
-            var depotAktie = DepotAktieRepo.LadeAllByWertpapierID(inWertpapierID);
+            var depotAktie = DepotAktieRepo.LadeByWertpapierID(inWertpapierID);
 
             if (depotAktie == null)
             {
@@ -36,13 +39,13 @@ namespace Aktien.Logic.Core.Depot
             DepotAktieRepo.Speichern(depotAktie.ID, depotAktie.Anzahl, depotAktie.BuyIn, depotAktie.WertpapierID, depotAktie.DepotID);
         }
 
-        public void EntferneGekaufteAktie(int OrderID)
+        public void EntferneGekauftenWertpapier(int OrderID)
         {
             var OrderRepo = new OrderHistoryRepository();
             var DepotAktieRepo = new DepotAktienRepository();
 
             var Order = OrderRepo.LadeByID(OrderID);
-            var DepotAktie = DepotAktieRepo.LadeAllByWertpapierID(Order.WertpapierID);
+            var DepotAktie = DepotAktieRepo.LadeByWertpapierID(Order.WertpapierID);
 
             var AlteAnzahl = DepotAktie.Anzahl;
             DepotAktie.Anzahl -= Order.Anzahl;
@@ -59,13 +62,16 @@ namespace Aktien.Logic.Core.Depot
             OrderRepo.Entfernen(Order);
         }
 
-        public void NeueAktieVerkauft(double inPreis, double? inFremdkosten, DateTime inDatum, int inWertpapierID, Double inAnzahl, KaufTypes inKauftyp, OrderTypes inOrderTyp)
+        public void NeuerWertpapierVerkauft(double inPreis, double? inFremdkosten, DateTime inDatum, int inWertpapierID, Double inAnzahl, KaufTypes inKauftyp, OrderTypes inOrderTyp)
         {
-            var orderHistoryRepo = new OrderHistoryRepository();
-            orderHistoryRepo.Speichern(inPreis, inFremdkosten, inDatum, inWertpapierID, inAnzahl, inKauftyp, inOrderTyp, BuySell.Sell);
-
             var DepotAktieRepo = new DepotAktienRepository();
-            var DepotAktie = DepotAktieRepo.LadeAllByWertpapierID(inWertpapierID);
+            var DepotAktie = DepotAktieRepo.LadeByWertpapierID(inWertpapierID);
+
+            if (DepotAktie.Anzahl < inAnzahl)
+                throw new ZuVieleWertpapiereVerkaufException();
+
+            var orderHistoryRepo = new OrderHistoryRepository();       
+            orderHistoryRepo.Speichern(inPreis, inFremdkosten, inDatum, inWertpapierID, inAnzahl, inKauftyp, inOrderTyp, BuySell.Sell);
 
             DepotAktie.Anzahl -= inAnzahl;
 
@@ -80,13 +86,13 @@ namespace Aktien.Logic.Core.Depot
             }
         }
 
-        public void EntferneVerkaufteAktie(int OrderID)
+        public void EntferneVerkauftenWertpapier(int OrderID)
         {
             var OrderRepo = new OrderHistoryRepository();
             var DepotAktieRepo = new DepotAktienRepository();
 
             var Order = OrderRepo.LadeByID(OrderID);
-            var DepotAktie = DepotAktieRepo.LadeAllByWertpapierID(Order.WertpapierID);
+            var DepotAktie = DepotAktieRepo.LadeByWertpapierID(Order.WertpapierID);
 
             //var AlteAnzahl = DepotAktie.Anzahl;
             DepotAktie.Anzahl += Order.Anzahl;
@@ -140,8 +146,10 @@ namespace Aktien.Logic.Core.Depot
 
             new DividendeErhaltenRepository().Speichern(inDividendeErhalten.ID, inDividendeErhalten.Datum, inDividendeErhalten.Quellensteuer, inDividendeErhalten.Umrechnungskurs, inDividendeErhalten.GesamtBrutto, inDividendeErhalten.GesamtNetto, inDividendeErhalten.Bestand, inDividendeErhalten.DividendeID, inDividendeErhalten.WertpapierID);
         }
+    
+        public bool WertpapierImDepotVorhanden(int inWertpapierID )
+        {
+            return new DepotAktienRepository().IstAktieInDepotVorhanden( inWertpapierID );
+        }
     }
-
-    public class AktieSchonVorhandenException : Exception
-    { }
 }

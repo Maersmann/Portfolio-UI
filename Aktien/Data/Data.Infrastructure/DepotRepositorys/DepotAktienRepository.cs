@@ -11,7 +11,7 @@ namespace Aktien.Data.Infrastructure.DepotRepositorys
 {
     public class DepotAktienRepository : BaseRepository
     {
-        public DepotWertpapier LadeAllByWertpapierID(int inWertpapierID)
+        public DepotWertpapier LadeByWertpapierID(int inWertpapierID)
         {
             return repo.AktienInDepots.Where(a => a.WertpapierID == inWertpapierID).FirstOrDefault();
         }
