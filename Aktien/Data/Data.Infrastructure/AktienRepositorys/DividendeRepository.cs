@@ -1,6 +1,7 @@
 ﻿using Aktien.Data.Infrastructure.Base;
-using Aktien.Data.Model.AktienModels;
+using Aktien.Data.Model.WertpapierModels;
 using Aktien.Data.Types;
+using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,7 +12,7 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
 {
     public class DividendeRepository : BaseRepository
     {
-        public void Speichern(int? inID, Double inBetrag, DateTime inDatum, int? inAktieID, Waehrungen inWaehrung, Double? inBetragUmgerechnet )
+        public void Speichern(int? inID, Double inBetrag, DateTime inDatum, int? inWertpapierID, Waehrungen inWaehrung, Double? inBetragUmgerechnet )
         {
             var dividende = new Dividende();
 
@@ -24,14 +25,14 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
             dividende.Datum = inDatum;
             dividende.Waehrung = inWaehrung;
             dividende.BetragUmgerechnet = inBetragUmgerechnet;
-            if (inAktieID.HasValue)
-                dividende.AktieID = inAktieID.Value;
+            if (inWertpapierID.HasValue)
+                dividende.WertpapierID = inWertpapierID.Value;
             repo.SaveChanges();
         }
 
-        public ObservableCollection<Dividende> LadeAlleFuerAktie( int inAktieID )
+        public ObservableCollection<Dividende> LadeAlleFuerAktie( int inWertpapierID )
         {
-            return new ObservableCollection<Dividende>(repo.Dividenden.Where(d=>d.AktieID == inAktieID).OrderByDescending( d=>d.Datum ).ToList());
+            return new ObservableCollection<Dividende>(repo.Dividenden.Where(d=>d.WertpapierID == inWertpapierID).OrderByDescending( d=>d.Datum ).ToList());
         }
 
         public Dividende LadeAnhandID(int inID)
@@ -44,5 +45,11 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
             repo.Dividenden.Remove( repo.Dividenden.Find( inID ) );
             repo.SaveChanges();
         }
+
+        public ObservableCollection<Dividende> LadeAlleNichtErhaltendeFuerWertpapier(int inWertpapierID)
+        {
+            return new ObservableCollection<Dividende>(repo.Dividenden.Where(d => (d.WertpapierID == inWertpapierID)).Where( d=> (!repo.ErhaltendeDividenden.Select(e => e.WertpapierID).Contains(d.WertpapierID))).OrderByDescending(d => d.Datum).ToList());
+        }
+
     }
 }

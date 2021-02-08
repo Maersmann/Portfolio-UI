@@ -207,11 +207,29 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Wertpapier\WertpapierGesamtUebersichtPage.xaml.cs">
+      <DependentUpon>WertpapierGesamtUebersichtPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wertpapier\WertpapierGesamtUebersichtView.xaml.cs">
+      <DependentUpon>WertpapierGesamtUebersichtView.xaml</DependentUpon>
+    </Compile>
     <Page Include="Aktie\AktienUebersichtView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Aktie\AktieOrderUebersichtView.xaml">
+    <Page Include="Depot\DepotUebersichtPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ETF\ETFGesamtUebersichtView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ETF\ETFUebersichtPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Wertpapier\OrderUebersichtView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -255,6 +273,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ETF\ETFStammdatenView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -265,8 +287,17 @@
     <Compile Include="Aktie\AktienUebersichtView.xaml.cs">
       <DependentUpon>AktienUebersichtView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Aktie\AktieOrderUebersichtView.xaml.cs">
-      <DependentUpon>AktieOrderUebersichtView.xaml</DependentUpon>
+    <Compile Include="Depot\DepotUebersichtPage.xaml.cs">
+      <DependentUpon>DepotUebersichtPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ETF\ETFGesamtUebersichtView.xaml.cs">
+      <DependentUpon>ETFGesamtUebersichtView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ETF\ETFUebersichtPage.xaml.cs">
+      <DependentUpon>ETFUebersichtPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wertpapier\OrderUebersichtView.xaml.cs">
+      <DependentUpon>OrderUebersichtView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Aktie\AktieStammdatenView.xaml.cs">
       <DependentUpon>AktieStammdatenView.xaml</DependentUpon>
@@ -303,6 +334,9 @@
     <Compile Include="Dividende\DividendeStammdatenView.xaml.cs">
       <DependentUpon>DividendeStammdatenView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ETF\ETFStammdatenView.xaml.cs">
+      <DependentUpon>ETFStammdatenView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -310,6 +344,14 @@
     <Page Include="Resources\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wertpapier\WertpapierGesamtUebersichtPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Wertpapier\WertpapierGesamtUebersichtView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -370,10 +412,12 @@
     <Resource Include="Resources\Bank.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\database.png" />
+    <Resource Include="Resources\aktien.png" />
+    <Resource Include="Resources\etf.png" />
+    <Resource Include="Resources\gesamt.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\format-list-numbered.png" />
+    <Resource Include="Resources\depot.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

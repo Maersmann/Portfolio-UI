@@ -44,10 +44,11 @@
     <Compile Include="..\..\_Shared\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Aktie\AktieAPI.cs" />
+    <Compile Include="DepotLogic\Exceptions\ZuVieleWertpapiereVerkaufException.cs" />
+    <Compile Include="WertpapierLogic\AktieAPI.cs" />
     <Compile Include="DatabaseAPI.cs" />
-    <Compile Include="Depot\Classes\KaufBerechnungen.cs" />
-    <Compile Include="Depot\DepotAPI.cs" />
+    <Compile Include="DepotLogic\Classes\KaufBerechnungen.cs" />
+    <Compile Include="DepotLogic\DepotAPI.cs" />
     <Compile Include="Dividende\Classes\DividendenBerechnungen.cs" />
     <Compile Include="Dividende\DividendeAPI.cs" />
     <Compile Include="Dividende\DividendeErhaltenAPI.cs" />
@@ -56,7 +57,11 @@
     <Compile Include="Validierung\AktieGekauftValidierung.cs" />
     <Compile Include="Validierung\DividendeErhaltenValidierung.cs" />
     <Compile Include="Validierung\DividendeStammdatenValidierung.cs" />
-    <Compile Include="Validierung\AktieStammdatenValidierung.cs" />
+    <Compile Include="Validierung\WertpapierStammdatenValidierung.cs" />
+    <Compile Include="WertpapierLogic\EtfAPI.cs" />
+    <Compile Include="WertpapierLogic\Exceptions\WertpapierInDepotVorhandenException.cs" />
+    <Compile Include="WertpapierLogic\Exceptions\WertpapierSchonVorhandenException.cs" />
+    <Compile Include="WertpapierLogic\WertpapierAPI.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Data\Data.Infrastructure\Data.Infrastructure.csproj">
@@ -78,7 +83,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Aktie\Classes\" />
+    <Folder Include="ETF\" />
+    <Folder Include="WertpapierLogic\Classes\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

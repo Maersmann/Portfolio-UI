@@ -8,6 +8,6 @@ namespace Aktien.Logic.Messages.DividendeMessages
 {
     public class OpenDividendeErhaltenUebersichtViewMessage
     {
-        public int AktieID { get; set; }
+        public int WertpapierID { get; set; }
     }
 }

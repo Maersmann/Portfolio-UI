@@ -9,7 +9,7 @@ namespace Aktien.Logic.Messages.DividendeMessages
 {
     public class OpenErhaltendeDividendeStammdatenMessage
     {
-        public int AktieID { get; set; }
+        public int WertpapierID { get; set; }
         public State State { get; set; }
         public int? ID { get; set; }
     }

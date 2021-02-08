@@ -9,8 +9,9 @@ namespace Aktien.Logic.Messages.DepotMessages
 {
     public class OpenAktieGekauftViewMessage
     {
-        public int AktieID { get; set; }
+        public int WertpapierID { get; set; }
         public BuySell BuySell { get; set; }
+        public WertpapierTypes WertpapierTypes { get; set; }
     }
 
 

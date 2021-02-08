@@ -1,4 +1,4 @@
-﻿using Aktien.Data.Model.AktienModels;
+﻿using Aktien.Data.Model.WertpapierModels;
 using Aktien.Data.Model.DepotModels;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,11 +10,11 @@ namespace Aktien.Data.Infrastructure
     public class Repository : DbContext
     {
 
-        public DbSet<Aktie> Aktien { get; set; }
+        public DbSet<Wertpapier> Aktien { get; set; }
         public DbSet<Dividende> Dividenden { get; set; }
         public DbSet<OrderHistory> OrderHistories { get; set; }
         public DbSet<Depot> Depots { get; set; }
-        public DbSet<DepotAktie> AktienInDepots { get; set; }
+        public DbSet<DepotWertpapier> AktienInDepots { get; set; }
         public DbSet<DividendeErhalten> ErhaltendeDividenden { get; set; }
 
         public Repository() : base() { this.Database.Migrate(); }

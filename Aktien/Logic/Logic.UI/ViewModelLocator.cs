@@ -22,6 +22,10 @@ using Aktien.Logic.UI.DepotViewModels;
 using Aktien.Logic.UI.DividendeViewModels;
 using Aktien.Logic.UI.AktieViewModels.Page;
 using Aktien.Logic.UI.AuswahlViewModels;
+using Aktien.Logic.UI.ETFViewModels;
+using Aktien.Logic.UI.WertpapierViewModels;
+using Aktien.Logic.UI.ETFViewModels.Page;
+using Aktien.Logic.UI.DepotViewModels.Page;
 
 namespace Aktien.Logic.UI
 {
@@ -52,12 +56,17 @@ namespace Aktien.Logic.UI
             SimpleIoc.Default.Register<DividendenUebersichtViewModel>();
             SimpleIoc.Default.Register<BuyOrderViewModel>();
             SimpleIoc.Default.Register<DepotUebersichtViewModel>();
-            SimpleIoc.Default.Register<AktieOrderUebersichtViewModel>();
+            SimpleIoc.Default.Register<OrderUebersichtViewModel>();
             SimpleIoc.Default.Register<AktieUebersichtPageViewModel>();
             SimpleIoc.Default.Register<DividendeErhaltenViewModel>();
             SimpleIoc.Default.Register<DividendenUebersichtAuswahlViewModel>();
             SimpleIoc.Default.Register<DividendenAuswahlViewModel>();
             SimpleIoc.Default.Register<DividendeErhaltenUebersichtViewModel>();
+            SimpleIoc.Default.Register<ETFStammdatenViewModel>();
+            SimpleIoc.Default.Register<ETFGesamtUebersichtViewModel>(); 
+            SimpleIoc.Default.Register<ETFUebersichtPageViewModel>();
+            SimpleIoc.Default.Register<DepotUebersichtPageViewModel>();
+            SimpleIoc.Default.Register<WertpapierGesamtUebersichtViewModel>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
@@ -67,12 +76,17 @@ namespace Aktien.Logic.UI
         public DividendenUebersichtViewModel DividendenUebersicht => ServiceLocator.Current.GetInstance<DividendenUebersichtViewModel>();
         public BuyOrderViewModel BuyOrder => ServiceLocator.Current.GetInstance<BuyOrderViewModel>();
         public DepotUebersichtViewModel DepotUebersicht => ServiceLocator.Current.GetInstance<DepotUebersichtViewModel>();
-        public AktieOrderUebersichtViewModel AktieOrderUebersicht => ServiceLocator.Current.GetInstance<AktieOrderUebersichtViewModel>();
+        public OrderUebersichtViewModel OrderUebersicht => new OrderUebersichtViewModel();
         public AktieUebersichtPageViewModel AktieUebersichtPage => ServiceLocator.Current.GetInstance<AktieUebersichtPageViewModel>();
         public DividendeErhaltenViewModel DividendeErhalten => ServiceLocator.Current.GetInstance<DividendeErhaltenViewModel>();
         public DividendenUebersichtAuswahlViewModel DividendenUebersichtAuswahl => ServiceLocator.Current.GetInstance<DividendenUebersichtAuswahlViewModel>();
         public DividendenAuswahlViewModel DividendenAuswahl => ServiceLocator.Current.GetInstance<DividendenAuswahlViewModel>();
         public DividendeErhaltenUebersichtViewModel DividendeErhaltenUebersicht => ServiceLocator.Current.GetInstance<DividendeErhaltenUebersichtViewModel>();
+        public ETFStammdatenViewModel ETFStammdaten => ServiceLocator.Current.GetInstance<ETFStammdatenViewModel>();
+        public ETFGesamtUebersichtViewModel ETFGesamtUebersicht => ServiceLocator.Current.GetInstance<ETFGesamtUebersichtViewModel>(); 
+        public ETFUebersichtPageViewModel ETFUebersichtPage => ServiceLocator.Current.GetInstance<ETFUebersichtPageViewModel>();
+        public DepotUebersichtPageViewModel DepotUebersichtPage => ServiceLocator.Current.GetInstance<DepotUebersichtPageViewModel>();
+        public WertpapierGesamtUebersichtViewModel WertpapierGesamtUebersicht => ServiceLocator.Current.GetInstance<WertpapierGesamtUebersichtViewModel>();
         public static void Cleanup()
         {
 

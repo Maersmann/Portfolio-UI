@@ -1,5 +1,5 @@
 ﻿using Aktien.Data.Infrastructure.Base;
-using Aktien.Data.Model.AktienModels;
+using Aktien.Data.Model.WertpapierModels;
 using Aktien.Data.Model.DepotModels;
 using Aktien.Data.Types;
 using System;
@@ -12,15 +12,15 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
 {
     public class OrderHistoryRepository : BaseRepository
     {
-        public void Speichern(Double inPreis, Double? inFremdkosten, DateTime inDatum, int inAktieID, Double inAnzahl, KaufTypes inKauftyp, OrderTypes inOrderTyp, BuySell inBuySell)
+        public void Speichern(Double inPreis, Double? inFremdkosten, DateTime inDatum, int inWertpapierID, Double inAnzahl, KaufTypes inKauftyp, OrderTypes inOrderTyp, BuySell inBuySell)
         {
-            repo.OrderHistories.Add(new OrderHistory { AktieID = inAktieID, Preis = inPreis, Orderdatum = inDatum, Anzahl = inAnzahl, Fremdkostenzuschlag = inFremdkosten, KaufartTyp = inKauftyp, OrderartTyp = inOrderTyp, BuySell = inBuySell });
+            repo.OrderHistories.Add(new OrderHistory { WertpapierID = inWertpapierID, Preis = inPreis, Orderdatum = inDatum, Anzahl = inAnzahl, Fremdkostenzuschlag = inFremdkosten, KaufartTyp = inKauftyp, OrderartTyp = inOrderTyp, BuySell = inBuySell });
             repo.SaveChanges();
         }
 
-        public ObservableCollection<OrderHistory> LadeAlleByAktieID(int inAktieID)
+        public ObservableCollection<OrderHistory> LadeAlleByWertpapierID(int inWertpapierID)
         {
-            return new ObservableCollection<OrderHistory>(repo.OrderHistories.Where(o => o.AktieID == inAktieID).OrderBy(o => o.ID).ToList());
+            return new ObservableCollection<OrderHistory>(repo.OrderHistories.Where(o => o.WertpapierID == inWertpapierID).OrderBy(o => o.ID).ToList());
         }
 
         public OrderHistory LadeByID(int inID)

@@ -1,5 +1,5 @@
 ﻿using Aktien.Data.Infrastructure.AktienRepositorys;
-using Aktien.Data.Model.AktienModels;
+using Aktien.Data.Model.WertpapierModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,21 +11,15 @@ namespace Aktien.Logic.Core.DividendeLogic
 {
     public class DividendeErhaltenAPI
     {
-        public void Speichern(int inAktieID, int inDividendeID, DateTime inDatum, Double? inQuellensteuer, Double? inUmrechnungskurs, int inBestand, double inGesamtBrutto, double inGesamtNetto)
+        public void Speichern(int inWertpapierID, int inDividendeID, DateTime inDatum, Double? inQuellensteuer, Double? inUmrechnungskurs, int inBestand, double inGesamtBrutto, double inGesamtNetto)
         {
-            new DividendeErhaltenRepository().Speichern(null, inDatum, inQuellensteuer, inUmrechnungskurs, inGesamtBrutto, inGesamtNetto, inBestand, inDividendeID, inAktieID);
+            new DividendeErhaltenRepository().Speichern(null, inDatum, inQuellensteuer, inUmrechnungskurs, inGesamtBrutto, inGesamtNetto, inBestand, inDividendeID, inWertpapierID);
         }
 
-        public void Aktualisiere(int inAktieID, int inDividendeID, DateTime inDatum, Double? inQuellensteuer, Double? inUmrechnungskurs, int inBestand, double inGesamtBrutto, double inGesamtNetto)
+        public ObservableCollection<DividendeErhalten> LadeAlleFuerAktie(int inWertpapierID)
         {
-            //var DividendeRepo = new DividendeRepository();
-            //DividendeRepo.Update(inBetrag, inDatum, inID, inWaehrung, inBetragUmgerechnet);
-        }
-
-        public ObservableCollection<DividendeErhalten> LadeAlleFuerAktie(int inAktieID)
-        {
-            new DividendeRepository().LadeAlleFuerAktie(inAktieID);
-            return new DividendeErhaltenRepository().LadeAllByAktieID(inAktieID);
+            new DividendeRepository().LadeAlleFuerAktie(inWertpapierID);
+            return new DividendeErhaltenRepository().LadeAllByWertpapierID(inWertpapierID);
         }
 
         public DividendeErhalten LadeAnhandID(int inID)

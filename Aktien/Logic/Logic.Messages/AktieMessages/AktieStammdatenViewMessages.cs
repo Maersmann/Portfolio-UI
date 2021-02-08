@@ -10,7 +10,7 @@ namespace Aktien.Logic.Messages.Aktie
 
     public class OpenAktieStammdatenMessage
     {
-        public int AktieID { get; set; }
+        public int WertpapierID { get; set; }
         public State State { get; set; }
     }
 

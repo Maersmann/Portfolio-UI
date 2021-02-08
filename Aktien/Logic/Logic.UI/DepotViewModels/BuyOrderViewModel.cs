@@ -11,8 +11,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Aktien.Data.Model.DepotModels;
-using Aktien.Data.Model.AktienModels;
-using Aktien.Logic.Core.AktieLogic;
+using Aktien.Data.Model.WertpapierModels;
+using Aktien.Logic.Core.DepotLogic.Exceptions;
 
 namespace Aktien.Logic.UI.DepotViewModels
 {
@@ -20,6 +20,7 @@ namespace Aktien.Logic.UI.DepotViewModels
     {
         private OrderHistory data;
         private BuySell buySell;
+        private WertpapierTypes typ;
         public BuyOrderViewModel()
         {
             SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
@@ -33,6 +34,7 @@ namespace Aktien.Logic.UI.DepotViewModels
             Preis = null;
             Datum = DateTime.Now;
             buySell = BuySell.Buy;
+            typ = WertpapierTypes.Aktie;
         }
 
         protected override void ExecuteSaveCommand()
@@ -40,18 +42,29 @@ namespace Aktien.Logic.UI.DepotViewModels
             var Depot = new DepotAPI();
             if (buySell.Equals(BuySell.Buy))
             {
-                Depot.NeueAktieGekauft(data.Preis, data.Fremdkostenzuschlag, data.Orderdatum, AktieID, data.Anzahl, data.KaufartTyp, data.OrderartTyp);
+                Depot.NeuerWertpapierGekauft(data.Preis, data.Fremdkostenzuschlag, data.Orderdatum, WertpapierID, data.Anzahl, data.KaufartTyp, data.OrderartTyp);
             }
             else
             {
-                Depot.NeueAktieVerkauft(data.Preis, data.Fremdkostenzuschlag, data.Orderdatum, AktieID, data.Anzahl, data.KaufartTyp, data.OrderartTyp);
+                try
+                {
+                    Depot.NeuerWertpapierVerkauft(data.Preis, data.Fremdkostenzuschlag, data.Orderdatum, WertpapierID, data.Anzahl, data.KaufartTyp, data.OrderartTyp);
+                }
+                catch (ZuVieleWertpapiereVerkaufException)
+                {
+                    SendExceptionMessage("Es wurden mehr Aktien zum Verkauf eingetragen, als im Depot vorhanden.");                   
+                    return;
+                }
+                
             }
             Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Buy-Order erfolgreich gespeichert." }, "BuyOrder");
+            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewDepotUebersicht);
         }
 
-        public void SetBuySell(BuySell inBuySell)
+        public void SetTitle(BuySell inBuySell, WertpapierTypes inTypes)
         {
             buySell = inBuySell;
+            typ = inTypes;
             this.RaisePropertyChanged("KauftypBez");
             this.RaisePropertyChanged("Titel");
         }
@@ -182,17 +195,26 @@ namespace Aktien.Logic.UI.DepotViewModels
         {
             get
             {
+                var Wertpapiertyp = "";
+
+                switch (typ)        
+                {
+                    case WertpapierTypes.Aktie: Wertpapiertyp = "Aktie"; break;
+                    case WertpapierTypes.ETF: Wertpapiertyp = "ETF"; break;
+                    default: Wertpapiertyp = ""; break;
+                }
+
                 if (buySell == BuySell.Buy)
                 {
-                    return "Aktie gekauft";
+                    return  Wertpapiertyp + " gekauft";
                 }
                 else
                 {
-                    return "Aktie verkauft";
+                    return Wertpapiertyp + " verkauft";
                 }
             }
         }
-        public int AktieID { get; set; }
+        public int WertpapierID { get; set; }
 
         #endregion
 

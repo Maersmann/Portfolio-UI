@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Aktien.Data.Model.AktienModels;
+using Aktien.Data.Model.WertpapierModels;
 
 namespace Aktien.Logic.UI.DividendeViewModels
 {
@@ -35,7 +35,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
             var API = new DividendeAPI();
             if (state == State.Neu)
             {           
-                API.Speichern(dividende.Betrag, dividende.Datum, dividende.AktieID, dividende.Waehrung, dividende.BetragUmgerechnet);
+                API.Speichern(dividende.Betrag, dividende.Datum, dividende.WertpapierID, dividende.Waehrung, dividende.BetragUmgerechnet);
                 Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Dividende gespeichert." }, "DividendenStammdaten");
             }
             else
@@ -116,9 +116,9 @@ namespace Aktien.Logic.UI.DividendeViewModels
         }
 
         #endregion
-        public int AktieID
+        public int WertpapierID
         {
-            set { dividende.AktieID = value; }
+            set { dividende.WertpapierID = value; }
         }
         public void Bearbeiten(int inID)
         {
@@ -129,7 +129,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
                 ID = _dividende.ID
              };
 
-            AktieID = _dividende.AktieID;
+            WertpapierID = _dividende.WertpapierID;
             Datum = _dividende.Datum;
             Betrag = _dividende.Betrag;
             Waehrung = _dividende.Waehrung;

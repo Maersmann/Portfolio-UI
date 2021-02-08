@@ -1,4 +1,4 @@
-﻿using Aktien.Data.Model.AktienModels;
+﻿using Aktien.Data.Model.WertpapierModels;
 using Aktien.Data.Types;
 using Aktien.Logic.Core.Depot;
 using Aktien.Logic.Core.DividendeLogic;
@@ -26,15 +26,9 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         public DividendeErhaltenViewModel()
         {
-            dividendeErhalten = new DividendeErhalten();
             SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
             OpenAuswahlCommand = new RelayCommand(this.ExecuteOpenAuswahlCommand);
-            Bestand = -1;
-            Datum = DateTime.Now;
-            Quellensteuer = null;
-            Wechselkurs = null;
-            dividendetext = "";
-            DividendeID = -1;
+            Cleanup();
         }
 
         public void DividendeAusgewaehlt(int inID, double inBetrag, DateTime inDatum)
@@ -52,7 +46,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
             dividendeErhalten = new DividendeErhalten
             {
                 ID = dividendeLoad.ID,
-                AktieID = dividendeLoad.AktieID,
+                WertpapierID = dividendeLoad.WertpapierID,
                 DividendeID = dividendeLoad.DividendeID,
                 GesamtBrutto = dividendeLoad.GesamtBrutto,
                 GesamtNetto = dividendeLoad.GesamtNetto, 
@@ -79,7 +73,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         private void ExecuteOpenAuswahlCommand()
         {
-            Messenger.Default.Send<OpenDividendenAuswahlMessage>(new OpenDividendenAuswahlMessage { AktieID = dividendeErhalten.AktieID });
+            Messenger.Default.Send<OpenDividendenAuswahlMessage>(new OpenDividendenAuswahlMessage { WertpapierID = dividendeErhalten.WertpapierID });
         }
         protected override void ExecuteSaveCommand()
         {
@@ -97,9 +91,9 @@ namespace Aktien.Logic.UI.DividendeViewModels
             }
         }
 
-        public void AktieID(int aktieID)
+        public void WertpapierID(int inWertpapierID)
         {
-            dividendeErhalten.AktieID = aktieID;
+            dividendeErhalten.WertpapierID = inWertpapierID;
         }
 
         #region Bindings
@@ -209,7 +203,13 @@ namespace Aktien.Logic.UI.DividendeViewModels
         public override void Cleanup()
         {
             dividendeErhalten = new DividendeErhalten();
+            dividendetext = "";
+            DividendeID = -1;
+            Bestand = -1;
+            Datum = DateTime.Now;
             state = State.Neu;
+            Quellensteuer = null;
+            Wechselkurs = null;
             this.RaisePropertyChanged();
         }
     }

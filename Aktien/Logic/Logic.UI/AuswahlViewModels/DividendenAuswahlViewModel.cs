@@ -1,4 +1,4 @@
-﻿using Aktien.Data.Model.AktienModels;
+﻿using Aktien.Data.Model.WertpapierModels;
 using Aktien.Data.Types;
 using Aktien.Logic.Core.DividendeLogic;
 using Aktien.Logic.Messages.AuswahlMessages;
@@ -19,23 +19,39 @@ namespace Aktien.Logic.UI.AuswahlViewModels
 {
     public class DividendenAuswahlViewModel : ViewModelBasis
     {
-        private int aktieID;
+        private int wertpapierID;
         private ObservableCollection<Dividende> dividenden;
 
         private Dividende selectedDividende;
+        private bool ohneHinterlegteDividende;
 
         public DividendenAuswahlViewModel()
         {
             dividenden = new ObservableCollection<Dividende>();
             AuswahlCommand = new DelegateCommand(this.ExecutAuswahlCommand, this.CanExecuteCommand);
             AddCommand = new RelayCommand(this.ExcecuteAddCommand);
+            OhneHinterlegteDividende = false;
         }
+
+        public bool OhneHinterlegteDividende { set { ohneHinterlegteDividende = value; } }
+
+        public void LoadData(int inWertpapierID)
+        {
+            wertpapierID = inWertpapierID;
+            if (ohneHinterlegteDividende)
+                dividenden = new DividendeAPI().LadeAlleNichtErhaltendeFuerWertpapier(inWertpapierID);
+            else
+                dividenden = new DividendeAPI().LadeAlleFuerWertpapier(wertpapierID);
+            this.RaisePropertyChanged("Dividenden");
+        }
+
+        #region Commands
 
         private void ExcecuteAddCommand()
         {
-            Messenger.Default.Send<OpenDividendeStammdatenMessage>(new OpenDividendeStammdatenMessage { AktieID = aktieID, State = State.Neu });
+            Messenger.Default.Send<OpenDividendeStammdatenMessage>(new OpenDividendeStammdatenMessage { WertpapierID = wertpapierID, State = State.Neu });
         }
-
+       
         private bool CanExecuteCommand()
         {
             return selectedDividende != null;
@@ -45,6 +61,8 @@ namespace Aktien.Logic.UI.AuswahlViewModels
         {
             Messenger.Default.Send<DividendeAusgewaehltMessage>(new DividendeAusgewaehltMessage {  ID = selectedDividende.ID, Betrag = selectedDividende.Betrag, Datum = selectedDividende.Datum});
         }
+
+        #endregion
 
         #region Bindings
         public Dividende SelectedDividende
@@ -69,12 +87,7 @@ namespace Aktien.Logic.UI.AuswahlViewModels
         }
         public ICommand AuswahlCommand { get; set; }
         public ICommand AddCommand { get; set; }
-        public void LoadData(int inAktieID)
-        {
-            aktieID = inAktieID;
-            dividenden = new DividendeAPI().LadeAlleFuerAktie(aktieID);
-            this.RaisePropertyChanged("Dividenden");
-        }
+
         #endregion
     }
 }

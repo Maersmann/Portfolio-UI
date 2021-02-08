@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Aktien.Data.Model.AktienModels;
+using Aktien.Data.Model.WertpapierModels;
 
 namespace Aktien.Logic.UI.DividendeViewModels
 {
@@ -22,7 +22,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         private Dividende selectedDividende;
 
-        private int aktieID;
+        private int wertpapierID;
 
         public DividendenUebersichtViewModel()
         {
@@ -35,17 +35,17 @@ namespace Aktien.Logic.UI.DividendeViewModels
         #region Commands
         private void ExecuteNeuCommand()
         {
-            Messenger.Default.Send<OpenDividendeStammdatenMessage>(new OpenDividendeStammdatenMessage { AktieID = aktieID, State = State.Neu });
+            Messenger.Default.Send<OpenDividendeStammdatenMessage>(new OpenDividendeStammdatenMessage { WertpapierID = wertpapierID, State = State.Neu });
         }
         private void ExecuteBearbeitenCommand()
         {
-            Messenger.Default.Send<OpenDividendeStammdatenMessage>(new OpenDividendeStammdatenMessage { AktieID = aktieID, State = State.Bearbeiten, DividendeID = selectedDividende.ID });
+            Messenger.Default.Send<OpenDividendeStammdatenMessage>(new OpenDividendeStammdatenMessage { WertpapierID = wertpapierID, State = State.Bearbeiten, DividendeID = selectedDividende.ID });
         }
 
-        public void LoadData(int inAktieID)
+        public void LoadData(int inWertpapierID)
         {
-            aktieID = inAktieID;
-            dividenden = new DividendeAPI().LadeAlleFuerAktie(aktieID);
+            wertpapierID = inWertpapierID;
+            dividenden = new DividendeAPI().LadeAlleFuerWertpapier(wertpapierID);
             this.RaisePropertyChanged("Dividenden");
         }
 

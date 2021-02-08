@@ -20,6 +20,8 @@ using Aktien.UI.Desktop.Aktie;
 using Aktien.Data.Types;
 using Aktien.UI.Desktop.Depot;
 using Aktien.Logic.Messages;
+using Aktien.UI.Desktop.ETF;
+using Aktien.UI.Desktop.Wertpapier;
 
 namespace Aktien.UI.Desktop
 {
@@ -30,14 +32,22 @@ namespace Aktien.UI.Desktop
     {
 
         private static AktieUebersichtPage aktienUebersichtView;
-        private static DepotUebersichtView depotUebersichtView;
+        private static DepotUebersichtPage depotUebersichtView;
+        private static ETFUebersichtPage etfGesamtUebersicht;
+        private static WertpapierGesamtUebersichtPage wertpapierGesamtUebersichtPage;
 
         public MainView()
         {
             InitializeComponent();
             Messenger.Default.Register<OpenViewMessage>(this, m => ReceiveOpenViewMessage(m));
+            Messenger.Default.Register<ExceptionMessage>(this, m => ReceiveExceptionMessage(m));
 
-            Naviagtion(ViewType.viewAktienUebersicht);
+            Naviagtion(ViewType.viewWertpapierUebersicht);
+        }
+
+        private void ReceiveExceptionMessage(ExceptionMessage m)
+        {
+            MessageBox.Show(m.Message);
         }
 
         private void ReceiveOpenViewMessage(OpenViewMessage m)
@@ -57,8 +67,16 @@ namespace Aktien.UI.Desktop
                     new BuyOrderView().ShowDialog();
                     break;
                 case ViewType.viewDepotUebersicht:
-                    depotUebersichtView = depotUebersichtView ?? new DepotUebersichtView();
+                    depotUebersichtView = depotUebersichtView ?? new DepotUebersichtPage();
                     Container.NavigationService.Navigate(depotUebersichtView);
+                    break;
+                case ViewType.viewETFUebersicht:
+                    etfGesamtUebersicht = etfGesamtUebersicht ?? new ETFUebersichtPage();
+                    Container.NavigationService.Navigate(etfGesamtUebersicht);
+                    break;
+                case ViewType.viewWertpapierUebersicht:
+                    wertpapierGesamtUebersichtPage = wertpapierGesamtUebersichtPage ?? new WertpapierGesamtUebersichtPage();
+                    Container.NavigationService.Navigate(wertpapierGesamtUebersichtPage);
                     break;
                 default:
                     break;

@@ -1,5 +1,5 @@
 ﻿using Aktien.Data.Infrastructure.Base;
-using Aktien.Data.Model.AktienModels;
+using Aktien.Data.Model.WertpapierModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,7 +10,7 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
 {
     public class DividendeErhaltenRepository: BaseRepository
     {
-        public void Speichern(int? inID, DateTime inDatum, Double? inQuellensteuer, Double? inUmrechnungskurs, Double inGesamtBrutto, Double inGesamtNetto, Double inBestand, int inDividendeID, int inAktieID)
+        public void Speichern(int? inID, DateTime inDatum, Double? inQuellensteuer, Double? inUmrechnungskurs, Double inGesamtBrutto, Double inGesamtNetto, Double inBestand, int inDividendeID, int inWertpapierID)
         {
             var Entity = new DividendeErhalten();
                 
@@ -24,7 +24,7 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
             Entity.GesamtNetto = inGesamtNetto;
             Entity.Bestand = inBestand;
             Entity.DividendeID = inDividendeID;
-            Entity.AktieID = inAktieID;
+            Entity.WertpapierID = inWertpapierID;
 
             if (!inID.HasValue)
                 repo.ErhaltendeDividenden.Add(Entity);
@@ -32,9 +32,9 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
             repo.SaveChanges();
         }
 
-        public ObservableCollection<DividendeErhalten> LadeAllByAktieID(int inAktieID)
+        public ObservableCollection<DividendeErhalten> LadeAllByWertpapierID(int inWertpapierID)
         {
-            return new ObservableCollection<DividendeErhalten>(repo.ErhaltendeDividenden.Where(d => d.AktieID == inAktieID).OrderByDescending(o => o.Datum).ToList());
+            return new ObservableCollection<DividendeErhalten>(repo.ErhaltendeDividenden.Where(d => d.WertpapierID == inWertpapierID).OrderByDescending(o => o.Datum).ToList());
         }
 
         public DividendeErhalten LadeByID(int inID)

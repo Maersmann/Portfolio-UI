@@ -8,7 +8,7 @@ namespace Aktien.Logic.Messages.DividendeMessages
 {
     public class OpenDividendeUebersichtMessage
     {
-        public int AktieID { get; set; }
+        public int WertpapierID { get; set; }
     }
 
     public class DeleteDividendeErfolgreichMessage

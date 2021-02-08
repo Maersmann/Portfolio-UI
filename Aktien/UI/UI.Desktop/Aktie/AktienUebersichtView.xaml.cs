@@ -25,7 +25,7 @@ using Aktien.UI.Desktop.Depot;
 using Aktien.UI.Desktop.Dividende;
 using Aktien.Logic.Messages.AktieMessages;
 
-namespace Aktien.UI.Desktop
+namespace Aktien.UI.Desktop.Aktie
 {
     /// <summary>
     /// Interaktionslogik für AktienUebersichtView.xaml
@@ -37,8 +37,20 @@ namespace Aktien.UI.Desktop
             InitializeComponent();
             Messenger.Default.Register<OpenAktieStammdatenMessage>(this, m => ReceiveOpenAktieStammdatenMessage( m ));
             Messenger.Default.Register<DeleteAktieErfolgreichMessage>(this, m => ReceiveDeleteAktieErfolgreich() );
-            Messenger.Default.Register<OpenDividendenUebersichtAuswahlMessage>(this, "AktienUebersicht", m => ReceiveOpenDividendeUebersichtMessage(m));
            
+           
+        }
+
+        public string MessageToken
+        {
+            set
+            {
+                if (this.DataContext is AktienUebersichtViewModel modelUebersicht)
+                {
+                    Messenger.Default.Register<OpenDividendenUebersichtAuswahlMessage>(this, value , m => ReceiveOpenDividendeUebersichtMessage(m));
+                    modelUebersicht.MessageToken = value;
+                }
+            }
         }
 
         private void ReceiveOpenDividendeUebersichtMessage(OpenDividendenUebersichtAuswahlMessage m)
@@ -46,7 +58,7 @@ namespace Aktien.UI.Desktop
             var view = new DividendenUebersichtAuswahlView();
 
             if (view.DataContext is DividendenUebersichtAuswahlViewModel model)
-                model.AktieID = m.AktieID;
+                model.WertpapierID = m.WertpapierID;
             view.ShowDialog();
         }
 
@@ -57,7 +69,7 @@ namespace Aktien.UI.Desktop
             {
                 if (message.State == Data.Types.State.Bearbeiten)
                 {
-                    model.Bearbeiten( message.AktieID );
+                    model.Bearbeiten( message.WertpapierID );
                 }
                 
             }
@@ -71,7 +83,7 @@ namespace Aktien.UI.Desktop
     
         private void ReceiveDeleteAktieErfolgreich()
         {
-            MessageBox.Show("Aktie erfolgreich gelöscht.");
+            MessageBox.Show("Aktie gelöscht.");
         }
     }
 }

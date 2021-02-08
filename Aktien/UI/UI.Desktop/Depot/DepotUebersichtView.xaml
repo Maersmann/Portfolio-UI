@@ -24,14 +24,12 @@
 
         <DataGrid Grid.Row="1" Margin="5"  ItemsSource="{Binding DepotAktien}" SelectedItem="{Binding SelectedDepotAktie, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" SelectionUnit="FullRow" >
             <DataGrid.Columns >
-                <DataGridTextColumn Header="Name" Binding="{Binding Aktie.Name}" Width="auto" FocusManager.IsFocusScope="False"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding Wertpapier.Name}" Width="auto" />
                 <DataGridTextColumn Header="Anzahl" Binding="{Binding Anzahl}" Width="auto"/>
-                <DataGridTextColumn Header="Buy-In" Binding="{Binding BuyIn}"   Width="auto"/>
+                <DataGridTextColumn Header="Buy-In" Binding="{Binding BuyIn , StringFormat=N2, ConverterCulture='de-DE'}"  Width="auto"/>
+                <DataGridTextColumn Header="Wertpapier-Art" Binding="{Binding Wertpapier.WertpapierTyp }"  Width="auto"/>
             </DataGrid.Columns>
         </DataGrid>
-
-        <Button Grid.Row="1" DockPanel.Dock="Right" Style="{DynamicResource MaterialDesignFloatingActionButton}" Command="{Binding AddAktieCommand, Mode=OneWay}" Content="+" FontSize="35" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" FontWeight="Bold" HorizontalContentAlignment="Center" />
-        <Button Grid.Row="1" DockPanel.Dock="Right" Style="{DynamicResource MaterialDesignFloatingActionButton}" Command="{Binding AddAktieCommand, Mode=OneWay}" Content="-" FontSize="35" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,71,10" FontWeight="Bold" HorizontalContentAlignment="Center" />
 
         <materialDesign:Card  Grid.Row="2">
             <DockPanel  LastChildFill="False">

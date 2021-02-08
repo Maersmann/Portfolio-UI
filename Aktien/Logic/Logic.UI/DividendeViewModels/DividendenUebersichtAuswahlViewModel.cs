@@ -20,17 +20,17 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         private void ExecuteOpenErhalteneDividendenViewCommand()
         {
-            Messenger.Default.Send<OpenDividendeErhaltenUebersichtViewMessage>(new OpenDividendeErhaltenUebersichtViewMessage { AktieID = AktieID });
+            Messenger.Default.Send<OpenDividendeErhaltenUebersichtViewMessage>(new OpenDividendeErhaltenUebersichtViewMessage { WertpapierID = WertpapierID });
         }
 
         private void ExecuteOpenAlleDividendenViewCommand()
         {
-            Messenger.Default.Send<OpenDividendeUebersichtMessage>(new OpenDividendeUebersichtMessage { AktieID = AktieID });
+            Messenger.Default.Send<OpenDividendeUebersichtMessage>(new OpenDividendeUebersichtMessage { WertpapierID = WertpapierID });
         }
 
         public ICommand OpenAlleDividendenViewCommand { get; set; }
         public ICommand OpenErhalteneDividendenViewCommand { get; set; }
 
-        public int AktieID { get; set; }
+        public int WertpapierID { get; set; }
     }
 }

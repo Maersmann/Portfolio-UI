@@ -15,6 +15,6 @@ namespace Aktien.Data.Model.DepotModels
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
         public String Bezeichnung { get; set; }
-        public List<DepotAktie> DepotAktien { get; set; }
+        public List<DepotWertpapier> DepotWertpapier { get; set; }
     }
 }
