@@ -23,16 +23,18 @@ namespace Aktien.Logic.UI.BaseViewModels
         }
 
         protected string messageToken;
-
         public string Title { get; protected set; }
-
-        
-
+     
         public ICommand CloseCommand { get; private set; }
 
         protected virtual void ExecuteCloseCommand()
         {
             Cleanup();
+        }
+
+        public void SendExceptionMessage(string inException)
+        {
+            Messenger.Default.Send<ExceptionMessage>(new ExceptionMessage { Message = inException });
         }
 
 

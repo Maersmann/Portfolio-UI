@@ -44,7 +44,7 @@
     <Compile Include="..\..\_Shared\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Wertpapier\AktieAPI.cs" />
+    <Compile Include="WertpapierLogic\AktieAPI.cs" />
     <Compile Include="DatabaseAPI.cs" />
     <Compile Include="Depot\Classes\KaufBerechnungen.cs" />
     <Compile Include="Depot\DepotAPI.cs" />
@@ -57,8 +57,10 @@
     <Compile Include="Validierung\DividendeErhaltenValidierung.cs" />
     <Compile Include="Validierung\DividendeStammdatenValidierung.cs" />
     <Compile Include="Validierung\WertpapierStammdatenValidierung.cs" />
-    <Compile Include="Wertpapier\EtfAPI.cs" />
-    <Compile Include="Wertpapier\WertpapierAPI.cs" />
+    <Compile Include="WertpapierLogic\EtfAPI.cs" />
+    <Compile Include="WertpapierLogic\Exceptions\WertpapierInDepotVorhandenException.cs" />
+    <Compile Include="WertpapierLogic\Exceptions\WertpapierSchonVorhandenException.cs" />
+    <Compile Include="WertpapierLogic\WertpapierAPI.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Data\Data.Infrastructure\Data.Infrastructure.csproj">
@@ -81,7 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ETF\" />
-    <Folder Include="Wertpapier\Classes\" />
+    <Folder Include="WertpapierLogic\Classes\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

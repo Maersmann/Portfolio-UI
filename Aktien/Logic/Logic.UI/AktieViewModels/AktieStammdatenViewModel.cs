@@ -16,6 +16,7 @@ using Aktien.Data.Types;
 using Aktien.Logic.UI.BaseViewModels;
 using Aktien.Data.Model.WertpapierModels;
 using Aktien.Logic.Core.WertpapierLogic;
+using Aktien.Logic.Core.WertpapierLogic.Exceptions;
 
 namespace Aktien.Logic.UI.AktieViewModels
 {
@@ -47,7 +48,7 @@ namespace Aktien.Logic.UI.AktieViewModels
                     api.Speichern(new Wertpapier() { ISIN = aktie.ISIN, Name = aktie.Name, WKN = aktie.WKN });
                     Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Aktie gespeichert." }, "AktieStammdaten");
                 }
-                catch( AktieSchonVorhandenException)
+                catch( WertpapierSchonVorhandenException)
                 {
                     Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = false, Message = "Aktie ist schon vorhanden." }, "AktieStammdaten");
                 }

@@ -2,6 +2,7 @@
 using Aktien.Data.Types;
 using Aktien.Logic.Core.Validierung;
 using Aktien.Logic.Core.WertpapierLogic;
+using Aktien.Logic.Core.WertpapierLogic.Exceptions;
 using Aktien.Logic.Messages.Base;
 using Aktien.Logic.UI.BaseViewModels;
 using GalaSoft.MvvmLight.Messaging;
@@ -41,7 +42,7 @@ namespace Aktien.Logic.UI.ETFViewModels
                     api.Speichern(new Wertpapier() { ISIN = etf.ISIN, Name = etf.Name, WKN = etf.WKN });
                     Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "ETF gespeichert." }, "ETFStammdaten");
                 }
-                catch (ETFSchonVorhandenException)
+                catch (WertpapierSchonVorhandenException)
                 {
                     Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = false, Message = "ETF ist schon vorhanden." }, "ETFStammdaten");
                 }

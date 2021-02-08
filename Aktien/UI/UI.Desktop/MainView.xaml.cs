@@ -40,8 +40,14 @@ namespace Aktien.UI.Desktop
         {
             InitializeComponent();
             Messenger.Default.Register<OpenViewMessage>(this, m => ReceiveOpenViewMessage(m));
+            Messenger.Default.Register<ExceptionMessage>(this, m => ReceiveExceptionMessage(m));
 
             Naviagtion(ViewType.viewWertpapierUebersicht);
+        }
+
+        private void ReceiveExceptionMessage(ExceptionMessage m)
+        {
+            MessageBox.Show(m.Message);
         }
 
         private void ReceiveOpenViewMessage(OpenViewMessage m)

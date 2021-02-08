@@ -1,5 +1,6 @@
 ﻿using Aktien.Data.Model.WertpapierModels;
 using Aktien.Logic.Core.WertpapierLogic;
+using Aktien.Logic.Core.WertpapierLogic.Exceptions;
 using Aktien.Logic.Messages.ETFMessages;
 using Aktien.Logic.Messages.WertpapierMessages;
 using Aktien.Logic.UI.BaseViewModels;
@@ -84,11 +85,21 @@ namespace Aktien.Logic.UI.ETFViewModels
 
         private void ExecuteEntfernenCommand()
         {
-            new EtfAPI().Entfernen(selectedETF);
+            try
+            {
+                new EtfAPI().Entfernen(selectedETF);
+            }
+            catch (WertpapierInDepotVorhandenException)
+            {
+                SendExceptionMessage("ETF ist im Depot vorhanden.");
+                return;
+            }
+
             Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = 0 });
             alleETF.Remove(SelectedETF);
             this.RaisePropertyChanged("AlleAktien");
             Messenger.Default.Send<DeleteEtfErfolgreichMessage>(new DeleteEtfErfolgreichMessage());
+
         }
 
         private void ExecuteAddAktieCommand()

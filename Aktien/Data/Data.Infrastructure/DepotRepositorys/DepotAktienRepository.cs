@@ -16,7 +16,7 @@ namespace Aktien.Data.Infrastructure.DepotRepositorys
             return repo.AktienInDepots.Where(a => a.WertpapierID == inWertpapierID).FirstOrDefault();
         }
 
-        public Boolean IstAktieinDepotVorhanden( int inWertpapierID)
+        public Boolean IstAktieInDepotVorhanden( int inWertpapierID)
         {
             return repo.AktienInDepots.Where(a => a.WertpapierID == inWertpapierID).FirstOrDefault() != null;
         }

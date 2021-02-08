@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Aktien.Data.Types;
+using Aktien.Data.Infrastructure.DepotRepositorys;
+using Aktien.Logic.Core.WertpapierLogic.Exceptions;
 
 namespace Aktien.Logic.Core.WertpapierLogic
 {
@@ -17,9 +19,7 @@ namespace Aktien.Logic.Core.WertpapierLogic
         public void Speichern(Wertpapier inAktie)
         {
             if (IstAkieVorhanden( inAktie.ISIN ))
-            {
-                throw new AktieSchonVorhandenException();
-            }
+                throw new WertpapierSchonVorhandenException();
 
             new WertpapierRepository().Speichern(null, inAktie.Name, inAktie.ISIN, inAktie.WKN, WertpapierTypes.Aktie);
         }
@@ -46,6 +46,9 @@ namespace Aktien.Logic.Core.WertpapierLogic
 
         public void Entfernen(Wertpapier inAktie)
         {
+            if (new DepotAktienRepository().IstAktieInDepotVorhanden( inAktie.ID) )
+                throw new WertpapierInDepotVorhandenException();
+
             new WertpapierRepository().Entfernen(inAktie);
         }
 
@@ -74,10 +77,5 @@ namespace Aktien.Logic.Core.WertpapierLogic
             new DividendeRepository().LadeAlleFuerAktie(inWertpapierID);
             return new DividendeErhaltenRepository().LadeAllByWertpapierID(inWertpapierID);
         }
-    }
-
-    public class AktieSchonVorhandenException : Exception
-    {
-
     }
 }

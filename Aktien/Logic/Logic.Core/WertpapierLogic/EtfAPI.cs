@@ -1,6 +1,7 @@
 ﻿using Aktien.Data.Infrastructure.AktienRepositorys;
 using Aktien.Data.Model.WertpapierModels;
 using Aktien.Data.Types;
+using Aktien.Logic.Core.WertpapierLogic.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,9 +16,7 @@ namespace Aktien.Logic.Core.WertpapierLogic
         public void Speichern(Wertpapier inAktie)
         {
             if (IstAkieVorhanden(inAktie.ISIN))
-            {
-                throw new ETFSchonVorhandenException();
-            }
+                throw new WertpapierSchonVorhandenException();
 
             new WertpapierRepository().Speichern(null, inAktie.Name, inAktie.ISIN, inAktie.WKN, WertpapierTypes.ETF);
         }
@@ -46,10 +45,5 @@ namespace Aktien.Logic.Core.WertpapierLogic
         {
             new WertpapierRepository().Entfernen(inAktie);
         }
-    }
-
-    public class ETFSchonVorhandenException : Exception
-    {
-
     }
 }
