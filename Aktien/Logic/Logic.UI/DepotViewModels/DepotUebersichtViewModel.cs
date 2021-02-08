@@ -37,7 +37,7 @@ namespace Aktien.Logic.UI.DepotViewModels
         {
             var api = new DepotAPI();
             depotAktien = api.LadeAlleVorhandeneImDepot();
-            this.RaisePropertyChanged("Wertpapiere");
+            this.RaisePropertyChanged("DepotAktien");
         }
 
 
