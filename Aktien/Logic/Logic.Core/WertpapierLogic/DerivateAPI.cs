@@ -11,19 +11,19 @@ using System.Threading.Tasks;
 
 namespace Aktien.Logic.Core.WertpapierLogic
 {
-    public class EtfAPI
+    public class DerivateAPI
     {
         public void Speichern(Wertpapier inWertpapier)
         {
             if (IstAkieVorhanden(inWertpapier.ISIN))
                 throw new WertpapierSchonVorhandenException();
 
-            new WertpapierRepository().Speichern(null, inWertpapier.Name, inWertpapier.ISIN, inWertpapier.WKN, WertpapierTypes.ETF);
+            new WertpapierRepository().Speichern(null, inWertpapier.Name, inWertpapier.ISIN, inWertpapier.WKN, WertpapierTypes.Derivate);
         }
 
         public void Aktualisieren(Wertpapier inWertpapier)
         {
-            new WertpapierRepository().Speichern(inWertpapier.ID, inWertpapier.Name, inWertpapier.ISIN, inWertpapier.WKN, WertpapierTypes.ETF);
+            new WertpapierRepository().Speichern(inWertpapier.ID, inWertpapier.Name, inWertpapier.ISIN, inWertpapier.WKN, WertpapierTypes.Derivate);
         }
 
         public bool IstAkieVorhanden(String inISIN)
@@ -33,7 +33,7 @@ namespace Aktien.Logic.Core.WertpapierLogic
 
         public ObservableCollection<Wertpapier> LadeAlle()
         {
-            return new WertpapierRepository().LadeAlleByWertpapierTyp(WertpapierTypes.ETF);
+            return new WertpapierRepository().LadeAlleByWertpapierTyp( WertpapierTypes.Derivate);
         }
 
         public Wertpapier LadeAnhandID(int inID)

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="Aktie" Language="1033" Version="1.1.1" Manufacturer="Märsmann" UpgradeCode="127a1ee4-ee7d-4a65-9c41-3a6ec823378f">
+	<Product Id="*" Name="Aktie" Language="1033" Version="1.2.0" Manufacturer="Märsmann" UpgradeCode="127a1ee4-ee7d-4a65-9c41-3a6ec823378f">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." MigrateFeatures="yes" AllowSameVersionUpgrades="yes" />
@@ -45,14 +45,14 @@
   <Fragment>
     <DirectoryRef Id="ApplicationProgramsFolder">
       <Component Id="ApplicationShortcut" Guid="9bd13330-6540-406f-a3a8-d7f7c69ae7f9">
-        <Shortcut Id="ApplicationStartMenuShortcut" Name="Aktie" Description="Aktie" Target="[INSTALLFOLDER]Aktien.exe" WorkingDirectory="INSTALLFOLDER" />
+        <Shortcut Id="ApplicationStartMenuShortcut" Name="Aktien-Verwaltung" Description="Aktie" Target="[INSTALLFOLDER]Aktien.exe" WorkingDirectory="INSTALLFOLDER" />
         <RemoveFolder Id="RemoveApplicationProgramsFolder" Directory="ApplicationProgramsFolder" On="uninstall" />
         <RegistryValue Root="HKCU" Key="Software\Maersmann\Aktie" Name="installed" Type="integer" Value="1" KeyPath="yes" />
       </Component>
     </DirectoryRef>
     <DirectoryRef Id="DesktopFolder">
       <Component Id="ApplicationShortcutDesktop" Guid="cde1e030-eb64-49a5-b7b8-400b379c2d1a">
-        <Shortcut Id="ApplicationDesktopShortcut" Name="Aktie" Description="Aktie" Target="[INSTALLFOLDER]Aktien.exe" WorkingDirectory="INSTALLFOLDER" />
+        <Shortcut Id="ApplicationDesktopShortcut" Name="Aktien-Verwaltung" Description="Aktie" Target="[INSTALLFOLDER]Aktien.exe" WorkingDirectory="INSTALLFOLDER" />
         <RemoveFolder Id="RemoveDesktopFolder" Directory="DesktopFolder" On="uninstall" />
         <RegistryValue Root="HKCU" Key="Software\Maersmann\Aktie" Name="installed" Type="integer" Value="1" KeyPath="yes" />
       </Component>

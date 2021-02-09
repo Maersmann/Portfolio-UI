@@ -26,6 +26,7 @@ using Aktien.Logic.UI.ETFViewModels;
 using Aktien.Logic.UI.WertpapierViewModels;
 using Aktien.Logic.UI.ETFViewModels.Page;
 using Aktien.Logic.UI.DepotViewModels.Page;
+using Aktien.Logic.UI.DerivateViewModels;
 
 namespace Aktien.Logic.UI
 {
@@ -67,6 +68,8 @@ namespace Aktien.Logic.UI
             SimpleIoc.Default.Register<ETFUebersichtPageViewModel>();
             SimpleIoc.Default.Register<DepotUebersichtPageViewModel>();
             SimpleIoc.Default.Register<WertpapierGesamtUebersichtViewModel>();
+            SimpleIoc.Default.Register<DerivateGesamtUebersichtViewModel>();
+            SimpleIoc.Default.Register<DerivateStammdatenViewModel>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
@@ -87,6 +90,8 @@ namespace Aktien.Logic.UI
         public ETFUebersichtPageViewModel ETFUebersichtPage => ServiceLocator.Current.GetInstance<ETFUebersichtPageViewModel>();
         public DepotUebersichtPageViewModel DepotUebersichtPage => ServiceLocator.Current.GetInstance<DepotUebersichtPageViewModel>();
         public WertpapierGesamtUebersichtViewModel WertpapierGesamtUebersicht => ServiceLocator.Current.GetInstance<WertpapierGesamtUebersichtViewModel>();
+        public DerivateStammdatenViewModel DerivateStammdaten => ServiceLocator.Current.GetInstance<DerivateStammdatenViewModel>();
+        public DerivateGesamtUebersichtViewModel DerivateGesamtUebersicht => ServiceLocator.Current.GetInstance<DerivateGesamtUebersichtViewModel>();
         public static void Cleanup()
         {
 
