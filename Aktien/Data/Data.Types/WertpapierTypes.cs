@@ -14,6 +14,8 @@ namespace Aktien.Data.Types
         [Description("Aktie")]
         Aktie = 0,
         [Description("ETF")]
-        ETF = 1
+        ETF = 1,
+        [Description("Derivate")]
+        Derivate = 2
     }
 }

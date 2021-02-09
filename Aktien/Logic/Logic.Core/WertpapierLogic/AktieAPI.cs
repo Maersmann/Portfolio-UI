@@ -36,7 +36,7 @@ namespace Aktien.Logic.Core.WertpapierLogic
 
         public ObservableCollection<Wertpapier> LadeAlle()
         {
-            return new WertpapierRepository().LadeAlleAktien();
+            return new WertpapierRepository().LadeAlleByWertpapierTyp(WertpapierTypes.Aktie);
         }
 
         public Wertpapier LadeAnhandID(int inID)

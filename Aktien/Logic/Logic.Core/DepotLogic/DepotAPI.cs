@@ -105,7 +105,7 @@ namespace Aktien.Logic.Core.Depot
        
         public ObservableCollection<DepotWertpapier> LadeAlleVorhandeneImDepot()
         {
-            new WertpapierRepository().LadeAlleETFs();
+            new WertpapierRepository().LadeAlle();
             return new DepotAktienRepository().LoadAll();
         }
 

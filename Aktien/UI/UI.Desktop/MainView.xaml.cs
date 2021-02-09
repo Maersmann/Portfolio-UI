@@ -22,6 +22,7 @@ using Aktien.UI.Desktop.Depot;
 using Aktien.Logic.Messages;
 using Aktien.UI.Desktop.ETF;
 using Aktien.UI.Desktop.Wertpapier;
+using Aktien.UI.Desktop.Derivate;
 
 namespace Aktien.UI.Desktop
 {
@@ -35,6 +36,7 @@ namespace Aktien.UI.Desktop
         private static DepotUebersichtPage depotUebersichtView;
         private static ETFUebersichtPage etfGesamtUebersicht;
         private static WertpapierGesamtUebersichtPage wertpapierGesamtUebersichtPage;
+        private static DerivateUebersichtPage derivateGesamtUebersichtPage;
 
         public MainView()
         {
@@ -77,6 +79,10 @@ namespace Aktien.UI.Desktop
                 case ViewType.viewWertpapierUebersicht:
                     wertpapierGesamtUebersichtPage = wertpapierGesamtUebersichtPage ?? new WertpapierGesamtUebersichtPage();
                     Container.NavigationService.Navigate(wertpapierGesamtUebersichtPage);
+                    break;
+                case ViewType.viewDerivateUebersicht:
+                    derivateGesamtUebersichtPage = derivateGesamtUebersichtPage ?? new DerivateUebersichtPage();
+                    Container.NavigationService.Navigate(derivateGesamtUebersichtPage);
                     break;
                 default:
                     break;

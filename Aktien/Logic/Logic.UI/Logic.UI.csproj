@@ -159,6 +159,8 @@
     <Compile Include="AktieViewModels\AktienUebersichtViewModel.cs" />
     <Compile Include="BaseViewModels\ViewModelUebersicht.cs" />
     <Compile Include="DepotViewModels\Page\DepotUebersichtPageViewModel.cs" />
+    <Compile Include="DerivateViewModels\DerivateGesamtUebersichtViewModel.cs" />
+    <Compile Include="DerivateViewModels\DerivateStammdatenViewModel.cs" />
     <Compile Include="ETFViewModels\Page\ETFUebersichtPageViewModel.cs" />
     <Compile Include="WertpapierViewModels\OrderUebersichtViewModel.cs" />
     <Compile Include="AktieViewModels\AktieStammdatenViewModel.cs" />
@@ -202,6 +204,9 @@
       <Project>{d8f93673-9e8e-4f2e-8b59-82d3abb3bb59}</Project>
       <Name>Logic.Messages</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DerivateViewModels\Page\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
