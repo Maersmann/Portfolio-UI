@@ -1,4 +1,4 @@
-﻿using Aktien.Data.Model.WertpapierModels;
+﻿using Aktien.Data.Model.WertpapierEntitys;
 using Aktien.Logic.Core.WertpapierLogic;
 using Aktien.Logic.Core.WertpapierLogic.Exceptions;
 using Aktien.Logic.Messages.DerivateMessages;

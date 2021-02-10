@@ -1,5 +1,5 @@
 ﻿using Aktien.Data.Infrastructure.Base;
-using Aktien.Data.Model.WertpapierModels;
+using Aktien.Data.Model.WertpapierEntitys;
 using Aktien.Data.Types;
 using Microsoft.EntityFrameworkCore.Internal;
 using System;

@@ -1,4 +1,4 @@
-﻿using Aktien.Data.Model.WertpapierModels;
+﻿using Aktien.Data.Model.WertpapierEntitys;
 using Aktien.Data.Types;
 using Aktien.Logic.Core.WertpapierLogic;
 using Aktien.Logic.Messages.Base;

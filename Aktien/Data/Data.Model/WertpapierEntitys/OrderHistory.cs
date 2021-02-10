@@ -1,5 +1,4 @@
-﻿using Aktien.Data.Model.WertpapierModels;
-using Aktien.Data.Types;
+﻿using Aktien.Data.Types;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aktien.Data.Model.WertpapierModels
+namespace Aktien.Data.Model.WertpapierEntitys
 {
     [Table("OrderHistory")]
     public class OrderHistory

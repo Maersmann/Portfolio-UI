@@ -1,6 +1,6 @@
 ﻿using Aktien.Data.Infrastructure.AktienRepositorys;
-using Aktien.Data.Model.WertpapierModels;
-using Aktien.Data.Model.DepotModels;
+using Aktien.Data.Model.WertpapierEntitys;
+using Aktien.Data.Model.DepotEntitys;
 using Aktien.Logic.Core.DividendeLogic;
 using System;
 using System.Collections.Generic;

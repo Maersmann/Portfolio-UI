@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aktien.Data.Model.DepotModels
+namespace Aktien.Data.Model.DepotEntitys
 {
     [Table("Depot")]
     public class Depot

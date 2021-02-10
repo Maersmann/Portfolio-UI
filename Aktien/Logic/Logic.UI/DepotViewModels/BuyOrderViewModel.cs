@@ -10,8 +10,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Aktien.Data.Model.DepotModels;
-using Aktien.Data.Model.WertpapierModels;
+using Aktien.Data.Model.DepotEntitys;
+using Aktien.Data.Model.WertpapierEntitys;
 using Aktien.Logic.Core.DepotLogic.Exceptions;
 
 namespace Aktien.Logic.UI.DepotViewModels

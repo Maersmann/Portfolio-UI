@@ -1,4 +1,5 @@
-﻿using Aktien.Data.Model.DepotModels;
+﻿using Aktien.Data.Model.DepotEntitys;
+using Aktien.Data.Model.DepotModels;
 using Aktien.Data.Types;
 using Aktien.Logic.Core.Depot;
 using Aktien.Logic.Messages.Base;
@@ -19,9 +20,9 @@ namespace Aktien.Logic.UI.DepotViewModels
 {
     public class DepotUebersichtViewModel: ViewModelUebersicht
     {
-        private ObservableCollection<DepotWertpapier> depotAktien;
+        private ObservableCollection<DepotGesamtUebersichtItem> depotAktien;
 
-        private DepotWertpapier selectedDepotAktie;
+        private DepotGesamtUebersichtItem selectedDepotAktie;
 
         public DepotUebersichtViewModel()
         {
@@ -36,13 +37,13 @@ namespace Aktien.Logic.UI.DepotViewModels
         public override void LoadData()
         {
             var api = new DepotAPI();
-            depotAktien = api.LadeAlleVorhandeneImDepot();
+            depotAktien = api.LadeFuerGesamtUebersicht();
             this.RaisePropertyChanged("DepotAktien");
         }
 
 
         #region Bindings
-        public DepotWertpapier SelectedDepotAktie
+        public DepotGesamtUebersichtItem SelectedDepotAktie
         {
             get
             {
@@ -60,7 +61,7 @@ namespace Aktien.Logic.UI.DepotViewModels
             }
         }
 
-        public IEnumerable<DepotWertpapier> DepotAktien
+        public IEnumerable<DepotGesamtUebersichtItem> DepotAktien
         {
             get
             {
@@ -74,7 +75,7 @@ namespace Aktien.Logic.UI.DepotViewModels
         #region Commands
         private bool CanExecuteCommand()
         {
-            return (selectedDepotAktie != null) && ( SelectedDepotAktie.Wertpapier.WertpapierTyp.Equals(WertpapierTypes.Aktie));
+            return (selectedDepotAktie != null) && ( SelectedDepotAktie.WertpapierTyp.Equals(WertpapierTypes.Aktie));
         }
 
         private void ExecuteOpenDividendeCommandCommand()

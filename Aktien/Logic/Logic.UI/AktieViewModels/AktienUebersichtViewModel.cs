@@ -14,7 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Aktien.Data.Model.WertpapierModels;
+using Aktien.Data.Model.WertpapierEntitys;
 using Aktien.Logic.Core.WertpapierLogic;
 using Aktien.Logic.Messages.WertpapierMessages;
 using Aktien.Logic.Core.WertpapierLogic.Exceptions;
