@@ -24,7 +24,8 @@
 
         <DataGrid Grid.Row="1" Margin="5" Width="auto"  ItemsSource="{Binding Dividenden}" SelectedItem="{Binding SelectedDividende, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" >
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Datum" Binding="{Binding Datum, StringFormat=dd.MM.yyyy}" Width="auto"/>
+                <DataGridTextColumn Header="Ex-Tag" Binding="{Binding Dividende.Datum, StringFormat=dd.MM.yyyy}" Width="auto"/>
+                <DataGridTextColumn Header="Erhalten" Binding="{Binding Datum, StringFormat=dd.MM.yyyy}" Width="auto"/>
                 <DataGridTextColumn Header="Bestand" Binding="{Binding Bestand}" Width="auto"/>
                 <DataGridTextColumn Header="Brutto" Binding="{Binding GesamtBrutto, StringFormat=N2, ConverterCulture='de-DE'}" Width="auto"/>
                 <DataGridTextColumn Header="Quellensteuer" Binding="{Binding Quellensteuer,StringFormat=N2, ConverterCulture='de-DE', TargetNullValue='0,00'}" Width="auto"/>
