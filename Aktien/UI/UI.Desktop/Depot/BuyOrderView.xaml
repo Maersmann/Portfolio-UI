@@ -54,10 +54,10 @@
             <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Datum</Label>
             <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Order Art</Label>
             <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"  Content="{Binding KauftypBez}"/>
-            <TextBox Grid.Row="0"  Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Anzahl, UpdateSourceTrigger=PropertyChanged, TargetNullValue='', ValidatesOnNotifyDataErrors=True }" >
+            <TextBox Grid.Row="0"  Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Anzahl, UpdateSourceTrigger=PropertyChanged, TargetNullValue='', ValidatesOnNotifyDataErrors=True, StringFormat=N4,ConverterCulture='de-DE' }" >
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="PreviewTextInput" >
-                        <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyNumbersCommand"  />
+                        <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyBetragCommand"  />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
                 <Validation.ErrorTemplate>
