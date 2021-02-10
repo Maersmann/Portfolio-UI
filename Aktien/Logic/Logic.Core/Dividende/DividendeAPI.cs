@@ -1,5 +1,5 @@
 ﻿using Aktien.Data.Infrastructure.AktienRepositorys;
-using Aktien.Data.Model.WertpapierModels;
+using Aktien.Data.Model.WertpapierEntitys;
 using Aktien.Data.Types;
 using System;
 using System.Collections.Generic;

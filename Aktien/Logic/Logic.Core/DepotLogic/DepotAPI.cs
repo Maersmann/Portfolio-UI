@@ -1,7 +1,7 @@
 ﻿using Aktien.Data.Infrastructure.AktienRepositorys;
 using Aktien.Data.Infrastructure.DepotRepositorys;
-using Aktien.Data.Model.WertpapierModels;
-using Aktien.Data.Model.DepotModels;
+using Aktien.Data.Model.WertpapierEntitys;
+using Aktien.Data.Model.DepotEntitys;
 using Aktien.Data.Types;
 using Aktien.Logic.Core.Depot.Classes;
 using Aktien.Logic.Core.DividendeLogic.Classes;
@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Aktien.Logic.Core.DepotLogic.Exceptions;
+using Aktien.Data.Model.DepotModels;
 
 namespace Aktien.Logic.Core.Depot
 {
@@ -107,6 +108,15 @@ namespace Aktien.Logic.Core.Depot
         {
             new WertpapierRepository().LadeAlle();
             return new DepotAktienRepository().LoadAll();
+        }
+        public ObservableCollection<DepotGesamtUebersichtItem> LadeFuerGesamtUebersicht()
+        {
+            var returnList = new ObservableCollection<DepotGesamtUebersichtItem>();
+            new WertpapierRepository().LadeAlle();
+            new DepotAktienRepository().LoadAll().ToList().ForEach(item => returnList.Add( new DepotGesamtUebersichtItem { Anzahl = item.Anzahl, BuyIn = item.BuyIn, DepotWertpapierID = item.ID, 
+                                                                                                                           WertpapierID = item.WertpapierID, WertpapierTyp = item.Wertpapier.WertpapierTyp,
+                                                                                                                           Bezeichnung = item.Wertpapier.Name }));
+            return returnList;
         }
 
         public void NeueDividendeErhalten(int inWertpapierID, int inDividendeID, DateTime inDatum, Double? inQuellensteuer, Double? inUmrechnungskurs, int inBestand)

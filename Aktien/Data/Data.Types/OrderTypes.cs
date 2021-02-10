@@ -27,7 +27,9 @@ namespace Aktien.Data.Types
         [Description("Limit-Order")]
         Limit = 1,
         [Description("Stop-Order")]
-        Stop = 2
+        Stop = 2,
+        [Description("Sparplan")]
+        Sparplan = 3
     }
 
     public enum BuySell

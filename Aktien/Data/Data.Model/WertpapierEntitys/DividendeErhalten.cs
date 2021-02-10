@@ -1,11 +1,10 @@
-﻿using Aktien.Data.Model.WertpapierModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace Aktien.Data.Model.WertpapierModels
+namespace Aktien.Data.Model.WertpapierEntitys
 {
     [Table("DividendeErhalten")]
     public class DividendeErhalten

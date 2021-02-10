@@ -1,4 +1,4 @@
-﻿using Aktien.Data.Model.WertpapierModels;
+﻿using Aktien.Data.Model.WertpapierEntitys;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aktien.Data.Model.DepotModels
+namespace Aktien.Data.Model.DepotEntitys
 {
     [Table("DepotWertpapier")]
     public class DepotWertpapier

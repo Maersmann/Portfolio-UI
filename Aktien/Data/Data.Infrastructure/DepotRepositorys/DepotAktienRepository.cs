@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using Aktien.Data.Infrastructure.Base;
-using Aktien.Data.Model.DepotModels;
+using Aktien.Data.Model.DepotEntitys;
 using System.Collections.ObjectModel;
 
 namespace Aktien.Data.Infrastructure.DepotRepositorys

@@ -1,5 +1,5 @@
-﻿using Aktien.Data.Model.WertpapierModels;
-using Aktien.Data.Model.DepotModels;
+﻿using Aktien.Data.Model.WertpapierEntitys;
+using Aktien.Data.Model.DepotEntitys;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

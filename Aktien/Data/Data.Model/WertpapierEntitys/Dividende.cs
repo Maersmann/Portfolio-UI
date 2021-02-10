@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aktien.Data.Model.WertpapierModels
+namespace Aktien.Data.Model.WertpapierEntitys
 {
     [Table("Dividende")]
     public class Dividende
