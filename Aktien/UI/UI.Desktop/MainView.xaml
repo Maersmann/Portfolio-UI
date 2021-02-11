@@ -31,13 +31,14 @@
             <!--Tabs-->
             <Fluent:RibbonTabItem Header="Allgemein">
                 <Fluent:RibbonGroupBox Header="Übersicht" >
-                    <Fluent:Button Header="Gesamt" LargeIcon="Resources/gesamt.png"  Command="{Binding OpenWertpapierUebersichtCommand}" Width="50" />
-                    <Fluent:Button Header="Aktien" LargeIcon="Resources/aktien.png"  Command="{Binding OpenAktienUebersichtCommand}" Width="50" />
-                    <Fluent:Button Header="ETF's" LargeIcon="Resources/etf.png"  Command="{Binding OpenETFUebersichtCommand}" Width="50" />
-                    <Fluent:Button Header="Derivate" LargeIcon="Resources/derivate.png"  Command="{Binding OpenDerivateUebersichtCommand}" Width="50" />
+                    <Fluent:Button Header="Gesamt" LargeIcon="Resources/gesamt.png"  Command="{Binding OpenWertpapierUebersichtCommand}" Width="60" />
+                    <Fluent:Button Header="Aktien" LargeIcon="Resources/aktien.png"  Command="{Binding OpenAktienUebersichtCommand}" Width="60" />
+                    <Fluent:Button Header="ETF's" LargeIcon="Resources/etf.png"  Command="{Binding OpenETFUebersichtCommand}" Width="60" />
+                    <Fluent:Button Header="Derivate" LargeIcon="Resources/derivate.png"  Command="{Binding OpenDerivateUebersichtCommand}" Width="60" />
                 </Fluent:RibbonGroupBox>
-                <Fluent:RibbonGroupBox Header="">
-                    <Fluent:Button Header="Depot" LargeIcon="Resources/depot.png" Command="{Binding OpenDepotUebersichtCommand}" Width="50" />
+                <Fluent:RibbonGroupBox Header="Depot">
+                    <Fluent:Button Header="Bestand" LargeIcon="Resources/depot.png" Command="{Binding OpenDepotUebersichtCommand}" Width="60" />
+                    <Fluent:Button Header="Einahmen Ausgaben" LargeIcon="Resources/depot.png" Command="{Binding OpenEinAusgabenUebersichtCommand}"  Width="60" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
         </Fluent:Ribbon>

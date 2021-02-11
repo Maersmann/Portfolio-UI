@@ -32,6 +32,13 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
             repo.SaveChanges();
         }
 
+        public void Speichern(DividendeErhalten inDividendeErhalten)
+        {
+            if (inDividendeErhalten.ID == 0)
+                repo.ErhaltendeDividenden.Add(inDividendeErhalten);
+            repo.SaveChanges();
+        }
+
         public ObservableCollection<DividendeErhalten> LadeAllByWertpapierID(int inWertpapierID)
         {
             return new ObservableCollection<DividendeErhalten>(repo.ErhaltendeDividenden.Where(d => d.WertpapierID == inWertpapierID).OrderByDescending(o => o.Datum).ToList());

@@ -16,6 +16,7 @@ namespace Aktien.Data.Infrastructure
         public DbSet<Depot> Depots { get; set; }
         public DbSet<DepotWertpapier> AktienInDepots { get; set; }
         public DbSet<DividendeErhalten> ErhaltendeDividenden { get; set; }
+        public DbSet<Einnahme> Einnahmen { get; set; }
 
         public Repository() : base() { this.Database.Migrate(); }
 

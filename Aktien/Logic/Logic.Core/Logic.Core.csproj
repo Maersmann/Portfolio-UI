@@ -45,6 +45,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="DepotLogic\Exceptions\ZuVieleWertpapiereVerkaufException.cs" />
+    <Compile Include="Validierung\Base\BaseValidierung.cs" />
     <Compile Include="WertpapierLogic\AktieAPI.cs" />
     <Compile Include="DatabaseAPI.cs" />
     <Compile Include="DepotLogic\Classes\KaufBerechnungen.cs" />

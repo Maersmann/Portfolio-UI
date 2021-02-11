@@ -1,4 +1,5 @@
 ﻿using Aktien.Logic.Core.Interfaces;
+using Aktien.Logic.Core.Validierung.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,29 +8,7 @@ using System.Threading.Tasks;
 
 namespace Aktien.Logic.Core.Validierung
 {
-    public class DividendeStammdatenValidierung : IValidierung
+    public class DividendeStammdatenValidierung : BaseValidierung
     {
-        public bool ValidateDatum(DateTime? inDate, out ICollection<string> validationErrors)
-        {
-            validationErrors = new List<String>();
-
-            if (!inDate.HasValue)
-                validationErrors.Add("Kein Datum hinterlegt");
-
-            return validationErrors.Count == 0;
-        }
-
-        public bool ValidateBetrag(Double? inBetrag, out ICollection<string> validatonErrors  )
-        {
-            validatonErrors = new List<String>();
-
-            if (!inBetrag.HasValue)
-                validatonErrors.Add("Es muss ein Betrag hinterlegt sein");
-
-            if (inBetrag == 0)
-                validatonErrors.Add("Der Betrag darf nicht 0 sein");
-
-            return validatonErrors.Count == 0;
-        }
     }
 }

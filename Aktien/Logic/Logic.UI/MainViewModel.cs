@@ -23,6 +23,7 @@ namespace Aktien.Logic.UI
             OpenETFUebersichtCommand = new RelayCommand(() => ExecuteOpenETFUebersichtCommand());
             OpenWertpapierUebersichtCommand = new RelayCommand(() => ExecuteOpenWertpapierUebersichtCommand());
             OpenDerivateUebersichtCommand = new RelayCommand(() => ExecutOpenDerivateUebersichtCommand());
+            OpenEinAusgabenUebersichtCommand = new RelayCommand(() => ExecuteOpenEinAusgabenUebersichtCommand());
         }
 
         public ICommand OpenAktienUebersichtCommand { get; private set; }
@@ -30,33 +31,32 @@ namespace Aktien.Logic.UI
         public ICommand OpenDepotUebersichtCommand { get; private set; }
         public ICommand OpenWertpapierUebersichtCommand { get; private set; }
         public ICommand OpenDerivateUebersichtCommand { get; private set; }
+        public ICommand OpenEinAusgabenUebersichtCommand { get; private set; }
         public ICommand OpenConnectionCommand { get; private set; }
-
-
 
         private void ExecuteOpenAktienUebersichtCommand()
         {
             Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = ViewType.viewAktienUebersicht  });
         }
-
         private void ExecuteOpenDepotUebersichtCommand()
         {
             Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = ViewType.viewDepotUebersicht });
         }
-
         private void ExecuteOpenETFUebersichtCommand()
         {
             Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = ViewType.viewETFUebersicht });
         }
-
         private void ExecuteOpenWertpapierUebersichtCommand()
         {
             Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = ViewType.viewWertpapierUebersicht });
         }
-
         private void ExecutOpenDerivateUebersichtCommand()
         {
             Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = ViewType.viewDerivateUebersicht });
+        }
+        private void ExecuteOpenEinAusgabenUebersichtCommand()
+        {
+            Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = ViewType.viewEinAusgabenUebersicht });
         }
 
         private void ExecuteOpenConnectionCommand()
