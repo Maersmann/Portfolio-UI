@@ -1,4 +1,5 @@
 ﻿using Aktien.Data.Types;
+using Aktien.Logic.Messages.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,10 +8,9 @@ using System.Threading.Tasks;
 
 namespace Aktien.Logic.Messages.DividendeMessages
 {
-    public class OpenErhaltendeDividendeStammdatenMessage
+    public class OpenErhaltendeDividendeStammdatenMessage : BaseStammdatenMessage
     {
         public int WertpapierID { get; set; }
-        public State State { get; set; }
         public int? ID { get; set; }
     }
 }

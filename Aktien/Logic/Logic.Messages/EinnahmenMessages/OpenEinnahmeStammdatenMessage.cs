@@ -6,10 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aktien.Logic.Messages.DerivateMessages
+namespace Aktien.Logic.Messages.EinnahmenMessages
 {
-    public class OpenDerivateStammdatenMessage: BaseStammdatenMessage
+    public class OpenEinnahmeStammdatenMessage : BaseStammdatenMessage
     {
-        public int WertpapierID { get; set; }
     }
 }

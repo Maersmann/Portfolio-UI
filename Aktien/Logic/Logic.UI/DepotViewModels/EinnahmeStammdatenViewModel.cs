@@ -88,6 +88,22 @@ namespace Aktien.Logic.UI.DepotViewModels
             }
         }
 
+        public String Beschreibung
+        {
+            get
+            {
+                return data.Beschreibung;
+            }
+            set
+            {
+                if (this.data.Beschreibung != value)
+                {
+                    this.data.Beschreibung = value;
+                    this.RaisePropertyChanged();
+                }
+            }
+        }
+
 
         #endregion
 
@@ -95,11 +111,10 @@ namespace Aktien.Logic.UI.DepotViewModels
         protected override void ExecuteSaveCommand()
         {
             var Depot = new DepotAPI();
-            Depot.NeueEinnahme(data.Betrag, data.Datum, data.Art, data.DepotID, null);
-
+            Depot.NeueEinnahme(data.Betrag, data.Datum, data.Art, data.DepotID, null, data.Beschreibung);
 
             Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Einnahme gespeichert." }, "EinahmeStammdaten");
-            //Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewDepotUebersicht);
+            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewEinnahmenUebersicht);
         }
 
         #endregion

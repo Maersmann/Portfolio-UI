@@ -71,6 +71,7 @@ namespace Aktien.Logic.UI
             SimpleIoc.Default.Register<DerivateGesamtUebersichtViewModel>();
             SimpleIoc.Default.Register<DerivateStammdatenViewModel>();
             SimpleIoc.Default.Register<EinnahmeStammdatenViewModel>();
+            SimpleIoc.Default.Register<EinnahmenUebersichtViewModel>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
@@ -94,6 +95,7 @@ namespace Aktien.Logic.UI
         public DerivateStammdatenViewModel DerivateStammdaten => ServiceLocator.Current.GetInstance<DerivateStammdatenViewModel>();
         public DerivateGesamtUebersichtViewModel DerivateGesamtUebersicht => ServiceLocator.Current.GetInstance<DerivateGesamtUebersichtViewModel>();
         public EinnahmeStammdatenViewModel EinnahmeStammdaten => ServiceLocator.Current.GetInstance<EinnahmeStammdatenViewModel>();
+        public EinnahmenUebersichtViewModel EinnahmenUebersicht => ServiceLocator.Current.GetInstance<EinnahmenUebersichtViewModel>();
         public static void Cleanup()
         {
 

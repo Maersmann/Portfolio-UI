@@ -30,7 +30,7 @@ namespace Aktien.Logic.Core.DividendeLogic
 
         public void Entfernen(int inID)
         {
-            new DepotAPI().EntferneNeueEinnahme(null, inID);
+            new DepotAPI().EntferneNeueEinnahme(null, inID, Data.Types.DepotTypes.EinnahmeArtTypes.Dividende );
             new DividendeErhaltenRepository().Entfernen(inID);
         }
     }

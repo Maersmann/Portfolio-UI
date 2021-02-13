@@ -14,13 +14,13 @@ using System.Threading.Tasks;
 using Aktien.Logic.Core.DepotLogic.Exceptions;
 using Aktien.Data.Model.DepotModels;
 using Aktien.Data.Types.DepotTypes;
+using System.Globalization;
 
 namespace Aktien.Logic.Core.Depot
 {
     public class DepotAPI
     {
-        public Exception ZuVieleWertpapiereVerkauftException { get; private set; }
-
+        
         public void WertpapierGekauft(double inPreis, double? inFremdkosten, DateTime inDatum, int inWertpapierID, Double inAnzahl, Data.Types.KaufTypes inKauftyp, Data.Types.OrderTypes inOrderTyp)
         {
             var orderHistoryRepo = new OrderHistoryRepository();
@@ -87,9 +87,9 @@ namespace Aktien.Logic.Core.Depot
                 DepotAktieRepo.Speichern(DepotAktie.ID, DepotAktie.Anzahl, DepotAktie.BuyIn, DepotAktie.WertpapierID, DepotAktie.DepotID);
             }
 
-            var Betrag = (inPreis * inAnzahl) + inFremdkosten.GetValueOrDefault(0);
+            var Betrag = (inPreis * inAnzahl) - inFremdkosten.GetValueOrDefault(0);
 
-            NeueEinnahme(Betrag, inDatum, EinnahmeArtTypes.Verkauf, 1, orderHistory.ID);
+            NeueEinnahme(Betrag, inDatum, EinnahmeArtTypes.Verkauf, 1, orderHistory.ID, "");
         }
 
         public void EntferneVerkauftenWertpapier(int OrderID)
@@ -104,7 +104,7 @@ namespace Aktien.Logic.Core.Depot
 
             DepotAktieRepo.Speichern(DepotAktie.ID, DepotAktie.Anzahl, DepotAktie.BuyIn, DepotAktie.WertpapierID, DepotAktie.DepotID);
 
-            EntferneNeueEinnahme(null, OrderID);
+            EntferneNeueEinnahme(null, OrderID, EinnahmeArtTypes.Verkauf);
             OrderRepo.Entfernen(Order);
             
         }
@@ -151,7 +151,7 @@ namespace Aktien.Logic.Core.Depot
 
             new DividendeErhaltenRepository().Speichern(inDividendeErhalten);
 
-            NeueEinnahme(EuroBetrag, inDividendeErhalten.Datum, EinnahmeArtTypes.Dividende, 1, inDividendeErhalten.ID);
+            NeueEinnahme(EuroBetrag, inDividendeErhalten.Datum, EinnahmeArtTypes.Dividende, 1, inDividendeErhalten.ID, "");
         }
   
         public void AktualisiereDividendeErhalten(DividendeErhalten inDividendeErhalten)
@@ -182,9 +182,24 @@ namespace Aktien.Logic.Core.Depot
             return new DepotAktienRepository().IstAktieInDepotVorhanden( inWertpapierID );
         }
   
-        public void NeueEinnahme( double inBetrag, DateTime inDatum, EinnahmeArtTypes inTyp, int inDepotID, int? inHerkunftID)
+        public void NeueEinnahme( double inBetrag, DateTime inDatum, EinnahmeArtTypes inTyp, int inDepotID, int? inHerkunftID, string inBeschreibung)
         {
-            var Einnahme = new Einnahme { Art = inTyp, Betrag = inBetrag, DepotID = inDepotID, Datum = inDatum, HerkunftID = inHerkunftID };
+            var Beschreibung = inBeschreibung;
+
+            if ((Beschreibung.Length == 0 ) && (inHerkunftID.HasValue))
+            {
+                if ( inTyp.Equals( EinnahmeArtTypes.Dividende ) )
+                {
+                    var Dividende = new DividendeErhaltenRepository().LadeByID(inHerkunftID.Value);
+                    Beschreibung = "Dividende von " + Dividende.Wertpapier.Name;
+                }
+                else if ( inTyp.Equals( EinnahmeArtTypes.Verkauf ) )
+                {
+                    var Verkauf = new OrderHistoryRepository().LadeByID(inHerkunftID.Value);
+                    Beschreibung = "Verkauf von " + Verkauf.Wertpapier.Name;
+                }
+            }
+            var Einnahme = new Einnahme { Art = inTyp, Betrag = inBetrag, DepotID = inDepotID, Datum = inDatum, HerkunftID = inHerkunftID, Beschreibung = Beschreibung };
             new EinnahmenRepository().Speichern(Einnahme);
 
             var Depot = new DepotRepository().LoadByID(inDepotID);
@@ -193,7 +208,7 @@ namespace Aktien.Logic.Core.Depot
             new DepotRepository().Speichern(Depot);
         }
 
-        public void EntferneNeueEinnahme(int? inID, int? inHerkunftID)
+        public void EntferneNeueEinnahme(int? inID, int? inHerkunftID, EinnahmeArtTypes? inTyp)
         {
             Einnahme einnahme = null;
             if ( inID.HasValue )
@@ -202,7 +217,7 @@ namespace Aktien.Logic.Core.Depot
             }
             else if (inHerkunftID.HasValue)
             {
-                einnahme = new EinnahmenRepository().LoadByHerkunftID(inHerkunftID.Value);
+                einnahme = new EinnahmenRepository().LoadByHerkunftIDAndArt(inHerkunftID.Value, inTyp.Value);
             }
 
             if (einnahme == null) return;
@@ -222,7 +237,7 @@ namespace Aktien.Logic.Core.Depot
             }
             else if (inHerkunftID.HasValue)
             {
-                einnahme = new EinnahmenRepository().LoadByHerkunftID(inHerkunftID.Value);
+                einnahme = new EinnahmenRepository().LoadByHerkunftIDAndArt(inHerkunftID.Value, inTyp);
             }
 
             if (einnahme == null) return;

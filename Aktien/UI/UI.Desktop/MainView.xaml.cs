@@ -37,7 +37,7 @@ namespace Aktien.UI.Desktop
         private static ETFUebersichtPage etfGesamtUebersicht;
         private static WertpapierGesamtUebersichtPage wertpapierGesamtUebersichtPage;
         private static DerivateUebersichtPage derivateGesamtUebersichtPage;
-        private static EinahmeStammdatenView EinnahmenAusgabenUebersichtPage;
+        private static EinnahmenAusgabenUebersichtPage EinnahmenAusgabenUebersichtPage;
 
         public MainView()
         {
@@ -86,9 +86,8 @@ namespace Aktien.UI.Desktop
                     Container.NavigationService.Navigate(derivateGesamtUebersichtPage);
                     break;
                 case ViewType.viewEinAusgabenUebersicht:
-                    //EinnahmenAusgabenUebersichtPage = EinnahmenAusgabenUebersichtPage ?? new EinahmeStammdatenView();
-                    new EinahmeStammdatenView().ShowDialog();
-                    //Container.NavigationService.Navigate(EinnahmenAusgabenUebersichtPage);
+                    EinnahmenAusgabenUebersichtPage = EinnahmenAusgabenUebersichtPage ?? new EinnahmenAusgabenUebersichtPage();
+                    Container.NavigationService.Navigate(EinnahmenAusgabenUebersichtPage);
                     break;
                 default:
                     break;

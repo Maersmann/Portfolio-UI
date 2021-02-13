@@ -1,5 +1,5 @@
 ﻿<src:StammdatenView xmlns:src="clr-namespace:Aktien.UI.Desktop.Base"
-                    x:Class="Aktien.UI.Desktop.Depot.EinahmeStammdatenView"
+                    x:Class="Aktien.UI.Desktop.Depot.EinnahmeStammdatenView"
                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -9,7 +9,7 @@
                     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
                     xmlns:command="http://www.galasoft.ch/mvvmlight"
                     mc:Ignorable="d"
-                    Height="241.971" Width="302.644"
+                    Height="260" Width="302.644"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                     ResizeMode="NoResize"
                     WindowStartupLocation="CenterScreen"
@@ -39,6 +39,7 @@
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50*"/>
@@ -48,7 +49,8 @@
             <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Betrag</Label>
             <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Datum</Label>
             <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Einahmen Art</Label>
-           
+            <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Beschreibung</Label>
+            
             <TextBox Grid.Row="0"  Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Betrag, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, TargetNullValue='', StringFormat=N3,ConverterCulture='de-DE' }"  >
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="PreviewTextInput" >
@@ -87,6 +89,8 @@
                 </Validation.ErrorTemplate>
             </DatePicker>
             <ComboBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" ItemsSource="{Binding EinnahmeTypes}" SelectedItem="{Binding EinnahmeTyp}" />
+
+            <TextBox Grid.Row="3"  Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Beschreibung, UpdateSourceTrigger=PropertyChanged }"  />
 
         </Grid>
 

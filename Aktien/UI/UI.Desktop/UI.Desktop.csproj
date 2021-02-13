@@ -207,8 +207,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Depot\EinahmeStammdatenView.xaml.cs">
-      <DependentUpon>EinahmeStammdatenView.xaml</DependentUpon>
+    <Compile Include="Depot\EinnahmenAusgabenUebersichtPage.xaml.cs">
+      <DependentUpon>EinnahmenAusgabenUebersichtPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Depot\EinnahmeStammdatenView.xaml.cs">
+      <DependentUpon>EinnahmeStammdatenView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Depot\EinnahmenUebersichtView.xaml.cs">
+      <DependentUpon>EinnahmenUebersichtView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Derivate\DerivateGesamtUebersichtView.xaml.cs">
       <DependentUpon>DerivateGesamtUebersichtView.xaml</DependentUpon>
@@ -233,7 +239,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Depot\EinahmeStammdatenView.xaml">
+    <Page Include="Depot\EinnahmenAusgabenUebersichtPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Depot\EinnahmeStammdatenView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Depot\EinnahmenUebersichtView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

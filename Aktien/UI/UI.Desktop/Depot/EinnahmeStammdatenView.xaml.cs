@@ -19,9 +19,9 @@ namespace Aktien.UI.Desktop.Depot
     /// <summary>
     /// Interaktionslogik für EinahmeStammdatenView.xaml
     /// </summary>
-    public partial class EinahmeStammdatenView : StammdatenView
+    public partial class EinnahmeStammdatenView : StammdatenView
     {
-        public EinahmeStammdatenView()
+        public EinnahmeStammdatenView()
         {
             InitializeComponent();
             base.MessageWithToken("EinahmeStammdaten");

@@ -28,6 +28,7 @@ namespace Aktien.Data.Infrastructure.Migrations
                     Datum = table.Column<DateTime>(nullable: false),
                     Art = table.Column<int>(nullable: false),
                     HerkunftID = table.Column<int>(nullable: true),
+                    Beschreibung = table.Column<string>(nullable: true),
                     DepotID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>

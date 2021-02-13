@@ -78,6 +78,9 @@ namespace Aktien.Data.Infrastructure.Migrations
                     b.Property<int>("Art")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Beschreibung")
+                        .HasColumnType("text");
+
                     b.Property<double>("Betrag")
                         .HasColumnType("double precision");
 

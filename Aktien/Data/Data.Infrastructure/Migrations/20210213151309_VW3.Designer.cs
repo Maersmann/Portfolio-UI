@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Aktien.Data.Infrastructure.Migrations
 {
     [DbContext(typeof(Repository))]
-    [Migration("20210211151903_VW3")]
+    [Migration("20210213151309_VW3")]
     partial class VW3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -79,6 +79,9 @@ namespace Aktien.Data.Infrastructure.Migrations
 
                     b.Property<int>("Art")
                         .HasColumnType("integer");
+
+                    b.Property<string>("Beschreibung")
+                        .HasColumnType("text");
 
                     b.Property<double>("Betrag")
                         .HasColumnType("double precision");

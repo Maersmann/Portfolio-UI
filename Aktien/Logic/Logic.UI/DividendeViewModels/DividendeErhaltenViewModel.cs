@@ -89,6 +89,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
                 API.AktualisiereDividendeErhalten(dividendeErhalten);
                 Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Erhaltene Dividende aktualisiert." }, "ErhalteneDividendeStammdaten");
             }
+            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewEinnahmenUebersicht);
         }
 
         public void WertpapierID(int inWertpapierID)

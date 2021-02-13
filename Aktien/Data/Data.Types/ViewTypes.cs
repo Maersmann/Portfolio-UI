@@ -16,7 +16,8 @@ namespace Aktien.Data.Types
             viewETFUebersicht,
             viewWertpapierUebersicht,
             viewDerivateUebersicht,
-            viewEinAusgabenUebersicht
+            viewEinAusgabenUebersicht,
+            viewEinnahmenUebersicht
         }
 
 }

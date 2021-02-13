@@ -17,6 +17,7 @@ namespace Aktien.Data.Model.DepotEntitys
         public DateTime Datum { get; set; }
         public EinnahmeArtTypes Art { get; set; }
         public int? HerkunftID { get; set; }
+        public string Beschreibung { get; set; }
         public int DepotID { get; set; }
         public Depot Depot { get; set; }
     }
