@@ -49,6 +49,16 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
             return repo.ErhaltendeDividenden.Where(d => d.ID == inID).First();
         }
 
+        public DividendeErhalten LadeByDividendeID(int inID)
+        {
+            return repo.ErhaltendeDividenden.Where(d => d.DividendeID == inID).First();
+        }
+
+        public bool IstDividendeErhalten(int inDividendeID)
+        {
+            return repo.ErhaltendeDividenden.Where(a => a.DividendeID == inDividendeID).FirstOrDefault() != null;
+        }
+
         public void Entfernen(int inID)
         {
             repo.ErhaltendeDividenden.Remove(repo.ErhaltendeDividenden.Find(inID));
