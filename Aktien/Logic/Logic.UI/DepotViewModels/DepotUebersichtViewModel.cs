@@ -18,11 +18,8 @@ using System.Windows.Input;
 
 namespace Aktien.Logic.UI.DepotViewModels
 {
-    public class DepotUebersichtViewModel: ViewModelUebersicht
+    public class DepotUebersichtViewModel: ViewModelUebersicht<DepotGesamtUebersichtItem>
     {
-        private ObservableCollection<DepotGesamtUebersichtItem> depotAktien;
-
-        private DepotGesamtUebersichtItem selectedDepotAktie;
 
         public DepotUebersichtViewModel()
         {
@@ -37,37 +34,30 @@ namespace Aktien.Logic.UI.DepotViewModels
         public override void LoadData()
         {
             var api = new DepotAPI();
-            depotAktien = api.LadeFuerGesamtUebersicht();
-            this.RaisePropertyChanged("DepotAktien");
+            itemList = api.LadeFuerGesamtUebersicht();
+            this.RaisePropertyChanged("ItemList");
         }
 
 
         #region Bindings
-        public DepotGesamtUebersichtItem SelectedDepotAktie
+        public override DepotGesamtUebersichtItem SelectedItem
         {
             get
             {
-                return selectedDepotAktie;
+                return selectedItem;
             }
             set
             {
-                selectedDepotAktie = value;
+                selectedItem = value;
                 ((DelegateCommand)OpenDividendeCommand).RaiseCanExecuteChanged();
                 this.RaisePropertyChanged();
-                if (selectedDepotAktie != null)
+                if (selectedItem != null)
                 {
-                    Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = selectedDepotAktie.WertpapierID }, messageToken);
+                    Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = selectedItem.WertpapierID }, messageToken);
                 }
             }
         }
 
-        public IEnumerable<DepotGesamtUebersichtItem> DepotAktien
-        {
-            get
-            {
-                return depotAktien;
-            }
-        }
 
         public ICommand OpenDividendeCommand { get; set; }
         #endregion
@@ -75,12 +65,12 @@ namespace Aktien.Logic.UI.DepotViewModels
         #region Commands
         private bool CanExecuteCommand()
         {
-            return (selectedDepotAktie != null) && ( SelectedDepotAktie.WertpapierTyp.Equals(WertpapierTypes.Aktie));
+            return (selectedItem != null) && (selectedItem.WertpapierTyp.Equals(WertpapierTypes.Aktie));
         }
 
         private void ExecuteOpenDividendeCommandCommand()
         {
-            Messenger.Default.Send<OpenDividendenUebersichtAuswahlMessage>(new OpenDividendenUebersichtAuswahlMessage { WertpapierID = selectedDepotAktie.WertpapierID }, "DepotUebersicht");
+            Messenger.Default.Send<OpenDividendenUebersichtAuswahlMessage>(new OpenDividendenUebersichtAuswahlMessage { WertpapierID = selectedItem.WertpapierID }, "DepotUebersicht");
         }
         #endregion
     }

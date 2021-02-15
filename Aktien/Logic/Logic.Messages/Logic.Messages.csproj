@@ -45,6 +45,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AktieMessages\AktieUebersichtPageMessages.cs" />
+    <Compile Include="AusgabenMessages\OpenAusgabeStammdatenMessage.cs" />
     <Compile Include="AuswahlMessages\DividendeAusgewaehltMessage.cs" />
     <Compile Include="AuswahlMessages\OpenDividendenAuswahlMessage.cs" />
     <Compile Include="Base\AktualisiereViewMessage.cs" />

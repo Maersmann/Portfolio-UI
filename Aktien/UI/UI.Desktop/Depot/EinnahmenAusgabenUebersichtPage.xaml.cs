@@ -23,8 +23,8 @@ namespace Aktien.UI.Desktop.Depot
         public EinnahmenAusgabenUebersichtPage()
         {
             InitializeComponent();
-            ContainerLeft.NavigationService.Navigate(new EinnahmenUebersichtView { MessageToken = "DepotUebersicht" });
-            //ContainerRight.NavigationService.Navigate(new OrderUebersichtView { MessageToken = "DepotUebersicht" });
+            ContainerLeft.NavigationService.Navigate(new EinnahmenUebersichtView { MessageToken = "EinnahmenAusgabenUebersicht" });
+            ContainerRight.NavigationService.Navigate(new AusgabenUebersichtView { MessageToken = "EinnahmenAusgabenUebersicht" });
         }
     }
 }

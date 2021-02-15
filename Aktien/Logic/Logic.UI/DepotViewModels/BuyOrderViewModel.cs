@@ -34,12 +34,14 @@ namespace Aktien.Logic.UI.DepotViewModels
             if (buySell.Equals(BuySell.Buy))
             {
                 Depot.WertpapierGekauft(data.Preis, data.Fremdkostenzuschlag, data.Orderdatum, WertpapierID, data.Anzahl, data.KaufartTyp, data.OrderartTyp);
+                Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewAusgabenUebersicht);
             }
             else
             {
                 try
                 {
                     Depot.WertpapierVerkauft(data.Preis, data.Fremdkostenzuschlag, data.Orderdatum, WertpapierID, data.Anzahl, data.KaufartTyp, data.OrderartTyp);
+                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewEinnahmenUebersicht);
                 }
                 catch (ZuVieleWertpapiereVerkaufException)
                 {
@@ -50,7 +52,6 @@ namespace Aktien.Logic.UI.DepotViewModels
             }
             Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Buy-Order erfolgreich gespeichert." }, "BuyOrder");
             Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewDepotUebersicht);
-            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewEinnahmenUebersicht);
         }
 
         public void SetTitle(BuySell inBuySell, WertpapierTypes inTypes)

@@ -17,11 +17,8 @@ using System.Windows.Input;
 
 namespace Aktien.Logic.UI.WertpapierViewModels
 {
-    public class WertpapierGesamtUebersichtViewModel : ViewModelUebersicht
+    public class WertpapierGesamtUebersichtViewModel : ViewModelUebersicht<Wertpapier>
     {
-        private ObservableCollection<Wertpapier> wertpapiere;
-
-        private Wertpapier selectedWertpapier;
 
         public WertpapierGesamtUebersichtViewModel()
         {
@@ -35,34 +32,27 @@ namespace Aktien.Logic.UI.WertpapierViewModels
         public string MessageToken { set { messageToken = value; } }
         public override void LoadData()
         {
-            wertpapiere = new WertpapierAPI().LadeAlle();
-            this.RaisePropertyChanged("Wertpapiere");
+            itemList = new WertpapierAPI().LadeAlle();
+            this.RaisePropertyChanged("ItemList");
         }
 
 
         #region Bindings
-        public Wertpapier SelectedWertpapier
+        public override Wertpapier SelectedItem
         {
             get
             {
-                return selectedWertpapier;
+                return selectedItem;
             }
             set
             {
-                selectedWertpapier = value;
+                selectedItem = value;
                 this.RaisePropertyChanged();
                 ((DelegateCommand)OpenNeueDividendeCommand).RaiseCanExecuteChanged();
-                if (selectedWertpapier != null)
+                if (selectedItem != null)
                 {
-                    Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = selectedWertpapier.ID }, messageToken);
+                    Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = selectedItem.ID }, messageToken);
                 }
-            }
-        }
-        public IEnumerable<Wertpapier> Wertpapiere
-        {
-            get
-            {
-                return wertpapiere;
             }
         }
 
@@ -72,12 +62,12 @@ namespace Aktien.Logic.UI.WertpapierViewModels
         #region commands
         private bool CanExecuteCommand()
         {
-            return (selectedWertpapier != null) && ( selectedWertpapier.WertpapierTyp.Equals( WertpapierTypes.Aktie ) );
+            return (selectedItem != null) && (selectedItem.WertpapierTyp.Equals( WertpapierTypes.Aktie ) );
         }
 
         private void ExecuteOpenNeueDividendeCommand()
         {
-            Messenger.Default.Send<OpenDividendenUebersichtAuswahlMessage>(new OpenDividendenUebersichtAuswahlMessage { WertpapierID = selectedWertpapier.ID }, messageToken);
+            Messenger.Default.Send<OpenDividendenUebersichtAuswahlMessage>(new OpenDividendenUebersichtAuswahlMessage { WertpapierID = selectedItem.ID }, messageToken);
         }
         #endregion
     }

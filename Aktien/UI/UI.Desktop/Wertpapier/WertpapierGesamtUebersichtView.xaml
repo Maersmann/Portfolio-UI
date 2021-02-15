@@ -23,7 +23,7 @@
             <Label HorizontalAlignment="Center" Width="auto" >Übersicht aller Aktien</Label>
         </materialDesign:Card>
 
-        <DataGrid Grid.Row="1" Margin="5"  ItemsSource="{Binding Wertpapiere}" SelectedItem="{Binding SelectedWertpapier, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" SelectionUnit="FullRow" >
+        <DataGrid Grid.Row="1" Margin="5"  ItemsSource="{Binding ItemList}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" SelectionUnit="FullRow" >
             <DataGrid.Columns >
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="auto" FocusManager.IsFocusScope="False"/>
                 <DataGridTextColumn Header="ISIN" Binding="{Binding ISIN}" Width="auto"/>

@@ -148,6 +148,7 @@ namespace Aktien.Logic.UI.DepotViewModels
             Betrag = null;
             Datum = DateTime.Now;
             DepotID = 1;
+            Beschreibung = "";
         }
     }
 }

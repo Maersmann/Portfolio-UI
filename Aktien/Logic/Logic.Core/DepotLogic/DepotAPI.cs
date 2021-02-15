@@ -26,7 +26,7 @@ namespace Aktien.Logic.Core.Depot
             var orderHistory = new OrderHistory { WertpapierID = inWertpapierID, Preis = inPreis, Orderdatum = inDatum, Anzahl = inAnzahl, Fremdkostenzuschlag = inFremdkosten, KaufartTyp = inKauftyp, OrderartTyp = inOrderTyp, BuySell = BuySell.Buy }; 
             new OrderHistoryRepository().Speichern(orderHistory);
 
-            var DepotAktieRepo = new DepotAktienRepository();
+            var DepotAktieRepo = new DepotWertpapierRepository();
             var depotAktie = DepotAktieRepo.LadeByWertpapierID(inWertpapierID);
 
             if (depotAktie == null)
@@ -47,7 +47,7 @@ namespace Aktien.Logic.Core.Depot
         public void EntferneGekauftenWertpapier(int OrderID)
         {
             var OrderRepo = new OrderHistoryRepository();
-            var DepotAktieRepo = new DepotAktienRepository();
+            var DepotAktieRepo = new DepotWertpapierRepository();
 
             var Order = OrderRepo.LadeByID(OrderID);
             var DepotAktie = DepotAktieRepo.LadeByWertpapierID(Order.WertpapierID);
@@ -71,7 +71,7 @@ namespace Aktien.Logic.Core.Depot
 
         public void WertpapierVerkauft(double inPreis, double? inFremdkosten, DateTime inDatum, int inWertpapierID, Double inAnzahl, KaufTypes inKauftyp, OrderTypes inOrderTyp)
         {
-            var DepotAktieRepo = new DepotAktienRepository();
+            var DepotAktieRepo = new DepotWertpapierRepository();
             var DepotAktie = DepotAktieRepo.LadeByWertpapierID(inWertpapierID);
 
             if (DepotAktie.Anzahl < inAnzahl)
@@ -99,7 +99,7 @@ namespace Aktien.Logic.Core.Depot
         public void EntferneVerkauftenWertpapier(int OrderID)
         {
             var OrderRepo = new OrderHistoryRepository();
-            var DepotAktieRepo = new DepotAktienRepository();
+            var DepotAktieRepo = new DepotWertpapierRepository();
 
             var Order = OrderRepo.LadeByID(OrderID);
             var DepotAktie = DepotAktieRepo.LadeByWertpapierID(Order.WertpapierID);
@@ -116,13 +116,13 @@ namespace Aktien.Logic.Core.Depot
         public ObservableCollection<DepotWertpapier> LadeAlleVorhandeneImDepot()
         {
             new WertpapierRepository().LadeAlle();
-            return new DepotAktienRepository().LoadAll();
+            return new DepotWertpapierRepository().LoadAll();
         }
         public ObservableCollection<DepotGesamtUebersichtItem> LadeFuerGesamtUebersicht()
         {
             var returnList = new ObservableCollection<DepotGesamtUebersichtItem>();
             new WertpapierRepository().LadeAlle();
-            new DepotAktienRepository().LoadAll().ToList().ForEach(item => returnList.Add( new DepotGesamtUebersichtItem { Anzahl = item.Anzahl, BuyIn = item.BuyIn, DepotWertpapierID = item.ID, 
+            new DepotWertpapierRepository().LoadAll().ToList().ForEach(item => returnList.Add( new DepotGesamtUebersichtItem { Anzahl = item.Anzahl, BuyIn = item.BuyIn, DepotWertpapierID = item.ID, 
                                                                                                                            WertpapierID = item.WertpapierID, WertpapierTyp = item.Wertpapier.WertpapierTyp,
                                                                                                                            Bezeichnung = item.Wertpapier.Name }));
             return returnList;
@@ -183,14 +183,14 @@ namespace Aktien.Logic.Core.Depot
     
         public bool WertpapierImDepotVorhanden(int inWertpapierID )
         {
-            return new DepotAktienRepository().IstAktieInDepotVorhanden( inWertpapierID );
+            return new DepotWertpapierRepository().IstWertpapierInDepotVorhanden( inWertpapierID );
         }
   
         public void NeueEinnahme( double inBetrag, DateTime inDatum, EinnahmeArtTypes inTyp, int inDepotID, int? inHerkunftID, string inBeschreibung)
         {
-            var Beschreibung = inBeschreibung;
+            string Beschreibung = inBeschreibung;
 
-            if ((Beschreibung.Length == 0 ) && (inHerkunftID.HasValue))
+            if ((inBeschreibung.Length == 0 ) && (inHerkunftID.HasValue))
             {
                 if ( inTyp.Equals( EinnahmeArtTypes.Dividende ) )
                 {
@@ -262,7 +262,7 @@ namespace Aktien.Logic.Core.Depot
     
         public void NeueAusgabe(double inBetrag, DateTime inDatum, AusgabenArtTypes inTyp, int inDepotID, int? inHerkunftID, string inBeschreibung)
         {
-            var Beschreibung = inBeschreibung;
+            string Beschreibung = inBeschreibung;
 
             if ((Beschreibung.Length == 0) && (inHerkunftID.HasValue))
             {
