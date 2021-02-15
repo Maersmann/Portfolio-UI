@@ -207,6 +207,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Depot\AusgabeStammdatenView.xaml.cs">
+      <DependentUpon>AusgabeStammdatenView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Depot\EinnahmenAusgabenUebersichtPage.xaml.cs">
       <DependentUpon>EinnahmenAusgabenUebersichtPage.xaml</DependentUpon>
     </Compile>
@@ -232,6 +235,10 @@
       <DependentUpon>WertpapierGesamtUebersichtView.xaml</DependentUpon>
     </Compile>
     <Page Include="Aktie\AktienUebersichtView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Depot\AusgabeStammdatenView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

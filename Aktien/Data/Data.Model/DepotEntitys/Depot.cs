@@ -19,5 +19,6 @@ namespace Aktien.Data.Model.DepotEntitys
         public Double? GesamtAusgaben { get; set; }
         public List<DepotWertpapier> DepotWertpapier { get; set; }
         public List<Einnahme> Einnahmen { get; set; }
+        public List<Ausgabe> Ausgaben { get; set; }
     }
 }
