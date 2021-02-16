@@ -9,14 +9,14 @@ using System.Collections.ObjectModel;
 
 namespace Aktien.Data.Infrastructure.DepotRepositorys
 {
-    public class DepotAktienRepository : BaseRepository
+    public class DepotWertpapierRepository : BaseRepository
     {
         public DepotWertpapier LadeByWertpapierID(int inWertpapierID)
         {
             return repo.AktienInDepots.Where(a => a.WertpapierID == inWertpapierID).FirstOrDefault();
         }
 
-        public Boolean IstAktieInDepotVorhanden( int inWertpapierID)
+        public Boolean IstWertpapierInDepotVorhanden( int inWertpapierID)
         {
             return repo.AktienInDepots.Where(a => a.WertpapierID == inWertpapierID).FirstOrDefault() != null;
         }
@@ -31,7 +31,8 @@ namespace Aktien.Data.Infrastructure.DepotRepositorys
             if (inID.HasValue)
                 Entity = repo.AktienInDepots.Find(inID.Value);
 
-            Entity.BuyIn = inBuyIn;
+            Entity.BuyIn = Math.Round(inBuyIn, 4, MidpointRounding.AwayFromZero);
+
             Entity.Anzahl = inAnzahl;
             Entity.WertpapierID = inWertpapierID;
             Entity.DepotID = inDepotID;

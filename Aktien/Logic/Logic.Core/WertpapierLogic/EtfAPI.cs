@@ -1,4 +1,5 @@
 ﻿using Aktien.Data.Infrastructure.AktienRepositorys;
+using Aktien.Data.Infrastructure.DepotRepositorys;
 using Aktien.Data.Model.WertpapierEntitys;
 using Aktien.Data.Types;
 using Aktien.Logic.Core.WertpapierLogic.Exceptions;
@@ -43,6 +44,9 @@ namespace Aktien.Logic.Core.WertpapierLogic
 
         public void Entfernen(Wertpapier inWertpapier)
         {
+            if (new DepotWertpapierRepository().IstWertpapierInDepotVorhanden(inWertpapier.ID))
+                throw new WertpapierInDepotVorhandenException();
+
             new WertpapierRepository().Entfernen(inWertpapier);
         }
     }

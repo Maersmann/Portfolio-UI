@@ -46,6 +46,9 @@
     </Compile>
     <Compile Include="BaseTypes.cs" />
     <Compile Include="Converter\EnumDescriptionTypeConverter.cs" />
+    <Compile Include="DepotTypes\AusgabenArtTypes.cs" />
+    <Compile Include="DepotTypes\EinnahmeArtTypes.cs" />
+    <Compile Include="OptionTypes\KonvertierungTypes.cs" />
     <Compile Include="OrderTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewTypes.cs" />

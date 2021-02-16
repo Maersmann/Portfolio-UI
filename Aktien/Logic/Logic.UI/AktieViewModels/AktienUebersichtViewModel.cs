@@ -18,6 +18,7 @@ using Aktien.Data.Model.WertpapierEntitys;
 using Aktien.Logic.Core.WertpapierLogic;
 using Aktien.Logic.Messages.WertpapierMessages;
 using Aktien.Logic.Core.WertpapierLogic.Exceptions;
+using Aktien.Data.Types;
 
 namespace Aktien.Logic.UI.AktieViewModels
 {
@@ -108,10 +109,11 @@ namespace Aktien.Logic.UI.AktieViewModels
                 SendExceptionMessage("Aktie ist im Depot vorhanden.");
                 return;
             }
-                Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = 0 }, "AktieOrder");
+            Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = 0 }, "AktieOrder");
             alleAktien.Remove(SelectedAktie);
             this.RaisePropertyChanged("AlleAktien");
             Messenger.Default.Send<DeleteAktieErfolgreichMessage>(new DeleteAktieErfolgreichMessage());
+            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewWertpapierUebersicht);
         }
 
         private void ExecuteAddAktieCommand()

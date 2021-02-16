@@ -1,5 +1,6 @@
 ﻿using Aktien.Data.Types;
 using Aktien.Logic.Core.Interfaces;
+using Aktien.Logic.Core.Validierung.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Aktien.Logic.Core.Validierung
 {
-    public class AktieGekauftValidierung : IValidierung
+    public class AktieGekauftValidierung : BaseValidierung
     {
         public bool ValidateAnzahl(Double? inAnzahl, out ICollection<string> validationErrors)
         {
@@ -36,16 +37,6 @@ namespace Aktien.Logic.Core.Validierung
                 validatonErrors.Add("Der Betrag darf nicht 0 sein");
 
             return validatonErrors.Count == 0;
-        }
-
-        public bool ValidateDatum(DateTime? inDate, out ICollection<string> validationErrors)
-        {
-            validationErrors = new List<String>();
-
-            if (!inDate.HasValue)
-                validationErrors.Add("Kein Datum hinterlegt");
-
-            return validationErrors.Count == 0;
         }
 
     }

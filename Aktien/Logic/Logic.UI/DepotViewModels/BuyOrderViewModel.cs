@@ -25,16 +25,7 @@ namespace Aktien.Logic.UI.DepotViewModels
         {
             SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
 
-            state = State.Neu;
-            data = new OrderHistory();
-
-            KaufTyp = Data.Types.KaufTypes.Kauf;
-            OrderTyp = Data.Types.OrderTypes.Normal;
-            Anzahl = null;
-            Preis = null;
-            Datum = DateTime.Now;
-            buySell = BuySell.Buy;
-            typ = WertpapierTypes.Aktie;
+            Cleanup();
         }
 
         protected override void ExecuteSaveCommand()
@@ -42,13 +33,15 @@ namespace Aktien.Logic.UI.DepotViewModels
             var Depot = new DepotAPI();
             if (buySell.Equals(BuySell.Buy))
             {
-                Depot.NeuerWertpapierGekauft(data.Preis, data.Fremdkostenzuschlag, data.Orderdatum, WertpapierID, data.Anzahl, data.KaufartTyp, data.OrderartTyp);
+                Depot.WertpapierGekauft(data.Preis, data.Fremdkostenzuschlag, data.Orderdatum, WertpapierID, data.Anzahl, data.KaufartTyp, data.OrderartTyp);
+                Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewAusgabenUebersicht);
             }
             else
             {
                 try
                 {
-                    Depot.NeuerWertpapierVerkauft(data.Preis, data.Fremdkostenzuschlag, data.Orderdatum, WertpapierID, data.Anzahl, data.KaufartTyp, data.OrderartTyp);
+                    Depot.WertpapierVerkauft(data.Preis, data.Fremdkostenzuschlag, data.Orderdatum, WertpapierID, data.Anzahl, data.KaufartTyp, data.OrderartTyp);
+                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewEinnahmenUebersicht);
                 }
                 catch (ZuVieleWertpapiereVerkaufException)
                 {

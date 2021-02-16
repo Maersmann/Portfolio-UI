@@ -1,6 +1,7 @@
 ﻿using Aktien.Data.Infrastructure.AktienRepositorys;
 using Aktien.Data.Model.WertpapierEntitys;
 using Aktien.Data.Types;
+using Aktien.Logic.Core.Depot;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,6 +23,11 @@ namespace Aktien.Logic.Core.DividendeLogic
         {
             var DividendeRepo = new DividendeRepository();
             DividendeRepo.Speichern(inID, inBetrag, inDatum, null , inWaehrung, inBetragUmgerechnet);
+
+            if (new DividendeErhaltenRepository().IstDividendeErhalten(inID))
+            {
+                new DepotAPI().AktualisiereDividendeErhalten(new DividendeErhaltenRepository().LadeByDividendeID(inID));
+            }
         }
 
         public void Entfernen(int inID)

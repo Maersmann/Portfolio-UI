@@ -15,6 +15,10 @@ namespace Aktien.Data.Model.DepotEntitys
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
         public String Bezeichnung { get; set; }
+        public Double? GesamtEinahmen { get; set; }
+        public Double? GesamtAusgaben { get; set; }
         public List<DepotWertpapier> DepotWertpapier { get; set; }
+        public List<Einnahme> Einnahmen { get; set; }
+        public List<Ausgabe> Ausgaben { get; set; }
     }
 }

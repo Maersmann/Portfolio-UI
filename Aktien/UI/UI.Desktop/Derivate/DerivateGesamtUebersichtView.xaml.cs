@@ -57,12 +57,7 @@ namespace Aktien.UI.Desktop.Derivate
                 }
 
             }
-            bool? Result = view.ShowDialog();
-
-            if (Result.GetValueOrDefault(false) && (this.DataContext is DerivateGesamtUebersichtViewModel modelUebersicht))
-            {
-                modelUebersicht.LoadData();
-            }
+            view.ShowDialog();
         }
     }
 }

@@ -17,6 +17,11 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
             repo.OrderHistories.Add(new OrderHistory { WertpapierID = inWertpapierID, Preis = inPreis, Orderdatum = inDatum, Anzahl = inAnzahl, Fremdkostenzuschlag = inFremdkosten, KaufartTyp = inKauftyp, OrderartTyp = inOrderTyp, BuySell = inBuySell });
             repo.SaveChanges();
         }
+        public void Speichern(OrderHistory inHistory)
+        {
+            repo.OrderHistories.Add(inHistory);
+            repo.SaveChanges();
+        }
 
         public ObservableCollection<OrderHistory> LadeAlleByWertpapierID(int inWertpapierID)
         {
@@ -32,6 +37,11 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
         {
             repo.OrderHistories.Remove(order);
             repo.SaveChanges();
+        }
+
+        public ObservableCollection<OrderHistory> LadeAlle()
+        {
+            return new ObservableCollection<OrderHistory>(repo.OrderHistories.OrderBy(o => o.ID).ToList());
         }
     }
 }

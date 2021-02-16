@@ -1,4 +1,5 @@
 ﻿using Aktien.Logic.Core.Interfaces;
+using Aktien.Logic.Core.Validierung.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Aktien.Logic.Core.Validierung
 {
-    public class WertpapierStammdatenValidierung : IValidierung
+    public class WertpapierStammdatenValidierung : BaseValidierung
     {
         public bool ValidateName(String inName, out ICollection<string> validationErrors)
         {

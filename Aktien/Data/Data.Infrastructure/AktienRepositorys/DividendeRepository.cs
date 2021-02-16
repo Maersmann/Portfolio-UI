@@ -24,7 +24,9 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
             dividende.Betrag = inBetrag;
             dividende.Datum = inDatum;
             dividende.Waehrung = inWaehrung;
-            dividende.BetragUmgerechnet = inBetragUmgerechnet;
+            if (inBetragUmgerechnet.HasValue)
+                dividende.BetragUmgerechnet = Math.Round(inBetragUmgerechnet.GetValueOrDefault(0), 4, MidpointRounding.AwayFromZero);
+
             if (inWertpapierID.HasValue)
                 dividende.WertpapierID = inWertpapierID.Value;
             repo.SaveChanges();
@@ -33,6 +35,11 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
         public ObservableCollection<Dividende> LadeAlleFuerAktie( int inWertpapierID )
         {
             return new ObservableCollection<Dividende>(repo.Dividenden.Where(d=>d.WertpapierID == inWertpapierID).OrderByDescending( d=>d.Datum ).ToList());
+        }
+
+        public ObservableCollection<Dividende> LadeAlle()
+        {
+            return new ObservableCollection<Dividende>(repo.Dividenden.OrderBy(o => o.ID).ToList());
         }
 
         public Dividende LadeAnhandID(int inID)

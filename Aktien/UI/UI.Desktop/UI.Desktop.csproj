@@ -207,6 +207,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Depot\AusgabenUebersichtView.xaml.cs">
+      <DependentUpon>AusgabenUebersichtView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Depot\AusgabeStammdatenView.xaml.cs">
+      <DependentUpon>AusgabeStammdatenView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Depot\EinnahmenAusgabenUebersichtPage.xaml.cs">
+      <DependentUpon>EinnahmenAusgabenUebersichtPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Depot\EinnahmeStammdatenView.xaml.cs">
+      <DependentUpon>EinnahmeStammdatenView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Depot\EinnahmenUebersichtView.xaml.cs">
+      <DependentUpon>EinnahmenUebersichtView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Derivate\DerivateGesamtUebersichtView.xaml.cs">
       <DependentUpon>DerivateGesamtUebersichtView.xaml</DependentUpon>
     </Compile>
@@ -226,7 +241,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Depot\AusgabenUebersichtView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Depot\AusgabeStammdatenView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Depot\DepotUebersichtPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Depot\EinnahmenAusgabenUebersichtPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Depot\EinnahmeStammdatenView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Depot\EinnahmenUebersichtView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

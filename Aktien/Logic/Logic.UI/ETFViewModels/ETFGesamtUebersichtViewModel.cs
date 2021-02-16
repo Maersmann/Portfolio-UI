@@ -1,6 +1,8 @@
 ﻿using Aktien.Data.Model.WertpapierEntitys;
+using Aktien.Data.Types;
 using Aktien.Logic.Core.WertpapierLogic;
 using Aktien.Logic.Core.WertpapierLogic.Exceptions;
+using Aktien.Logic.Messages.Base;
 using Aktien.Logic.Messages.ETFMessages;
 using Aktien.Logic.Messages.WertpapierMessages;
 using Aktien.Logic.UI.BaseViewModels;
@@ -99,6 +101,7 @@ namespace Aktien.Logic.UI.ETFViewModels
             alleETF.Remove(SelectedETF);
             this.RaisePropertyChanged("AlleAktien");
             Messenger.Default.Send<DeleteEtfErfolgreichMessage>(new DeleteEtfErfolgreichMessage());
+            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewWertpapierUebersicht);
 
         }
 

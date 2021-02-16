@@ -46,7 +46,7 @@ namespace Aktien.Logic.Core.WertpapierLogic
 
         public void Entfernen(Wertpapier inAktie)
         {
-            if (new DepotAktienRepository().IstAktieInDepotVorhanden( inAktie.ID) )
+            if (new DepotWertpapierRepository().IstWertpapierInDepotVorhanden( inAktie.ID) )
                 throw new WertpapierInDepotVorhandenException();
 
             new WertpapierRepository().Entfernen(inAktie);

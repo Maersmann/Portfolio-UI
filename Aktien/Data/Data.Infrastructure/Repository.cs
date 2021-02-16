@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Aktien.Data.Model.OptionEntitys;
 
 namespace Aktien.Data.Infrastructure
 {
@@ -16,6 +17,9 @@ namespace Aktien.Data.Infrastructure
         public DbSet<Depot> Depots { get; set; }
         public DbSet<DepotWertpapier> AktienInDepots { get; set; }
         public DbSet<DividendeErhalten> ErhaltendeDividenden { get; set; }
+        public DbSet<Einnahme> Einnahmen { get; set; }
+        public DbSet<Ausgabe> Ausgaben { get; set; }
+        public DbSet<Konvertierung> Konvertierungen { get; set; }
 
         public Repository() : base() { this.Database.Migrate(); }
 

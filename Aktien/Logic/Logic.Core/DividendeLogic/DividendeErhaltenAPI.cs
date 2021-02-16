@@ -1,5 +1,6 @@
 ﻿using Aktien.Data.Infrastructure.AktienRepositorys;
 using Aktien.Data.Model.WertpapierEntitys;
+using Aktien.Logic.Core.Depot;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -29,6 +30,7 @@ namespace Aktien.Logic.Core.DividendeLogic
 
         public void Entfernen(int inID)
         {
+            new DepotAPI().EntferneNeueEinnahme(null, inID, Data.Types.DepotTypes.EinnahmeArtTypes.Dividende );
             new DividendeErhaltenRepository().Entfernen(inID);
         }
     }

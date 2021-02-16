@@ -45,15 +45,18 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AktieMessages\AktieUebersichtPageMessages.cs" />
+    <Compile Include="AusgabenMessages\OpenAusgabeStammdatenMessage.cs" />
     <Compile Include="AuswahlMessages\DividendeAusgewaehltMessage.cs" />
     <Compile Include="AuswahlMessages\OpenDividendenAuswahlMessage.cs" />
     <Compile Include="Base\AktualisiereViewMessage.cs" />
+    <Compile Include="Base\BaseStammdatenMessage.cs" />
     <Compile Include="DerivateMessages\DeleteDerivateErfolgreichMessage.cs" />
     <Compile Include="DerivateMessages\OpenDerivateStammdatenMessage.cs" />
     <Compile Include="DividendeMessages\DeleteErhalteneDividendenErfolgreichMessage.cs" />
     <Compile Include="DividendeMessages\OpenDividendeErhaltenUebersichtViewMessage.cs" />
     <Compile Include="DividendeMessages\OpenDividendenUebersichtAuswahlMessage.cs" />
     <Compile Include="DividendeMessages\OpenErhaltendeDividendeStammdatenMessage.cs" />
+    <Compile Include="EinnahmenMessages\OpenEinnahmeStammdatenMessage.cs" />
     <Compile Include="ETFMessages\DeleteEtfErfolgreichMessage.cs" />
     <Compile Include="ETFMessages\OpenETFStammdatenMessage.cs" />
     <Compile Include="MainViewMessages.cs" />

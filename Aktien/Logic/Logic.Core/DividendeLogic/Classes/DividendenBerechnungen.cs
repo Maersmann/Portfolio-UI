@@ -10,17 +10,17 @@ namespace Aktien.Logic.Core.DividendeLogic.Classes
     {
         public Double GesamtBrutto(double inBetrag, Double inBestand)
         {
-            return (inBetrag * inBestand);
+            return Math.Round((inBetrag * inBestand),4, MidpointRounding.AwayFromZero);
         }
 
         public Double GesamtNetto(double inGesamtBrutto, Double? inQuellensteuer)
         {
-            return inGesamtBrutto - inQuellensteuer.GetValueOrDefault(0);
+            return Math.Round(inGesamtBrutto - inQuellensteuer.GetValueOrDefault(0),4, MidpointRounding.AwayFromZero);
         }
 
         public Double BetragUmgerechnet( Double inBetrag, Double? inUmrechnungskurs )
         {
-            return inBetrag / inUmrechnungskurs.GetValueOrDefault(1);
+            return Math.Round(inBetrag / inUmrechnungskurs.GetValueOrDefault(1),4, MidpointRounding.AwayFromZero);
         }
     }
 }

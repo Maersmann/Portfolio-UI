@@ -32,6 +32,18 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
             repo.SaveChanges();
         }
 
+        public void Speichern(DividendeErhalten inDividendeErhalten)
+        {
+            if (inDividendeErhalten.ID == 0)
+                repo.ErhaltendeDividenden.Add(inDividendeErhalten);
+            repo.SaveChanges();
+        }
+
+        public ObservableCollection<DividendeErhalten> LadeAlle()
+        {
+            return new ObservableCollection<DividendeErhalten>(repo.ErhaltendeDividenden.OrderBy(o => o.ID).ToList());
+        }
+
         public ObservableCollection<DividendeErhalten> LadeAllByWertpapierID(int inWertpapierID)
         {
             return new ObservableCollection<DividendeErhalten>(repo.ErhaltendeDividenden.Where(d => d.WertpapierID == inWertpapierID).OrderByDescending(o => o.Datum).ToList());
@@ -40,6 +52,16 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
         public DividendeErhalten LadeByID(int inID)
         {
             return repo.ErhaltendeDividenden.Where(d => d.ID == inID).First();
+        }
+
+        public DividendeErhalten LadeByDividendeID(int inID)
+        {
+            return repo.ErhaltendeDividenden.Where(d => d.DividendeID == inID).First();
+        }
+
+        public bool IstDividendeErhalten(int inDividendeID)
+        {
+            return repo.ErhaltendeDividenden.Where(a => a.DividendeID == inDividendeID).FirstOrDefault() != null;
         }
 
         public void Entfernen(int inID)

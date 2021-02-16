@@ -54,6 +54,7 @@ namespace Aktien.Logic.UI.DerivateViewModels
                 Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Derivate aktualisiert." }, "DerivateStammdaten");
             }
             Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewWertpapierUebersicht);
+            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewDerivateUebersicht);
         }
 
         public void Bearbeiten(int inID)

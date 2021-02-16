@@ -70,6 +70,10 @@ namespace Aktien.Logic.UI
             SimpleIoc.Default.Register<WertpapierGesamtUebersichtViewModel>();
             SimpleIoc.Default.Register<DerivateGesamtUebersichtViewModel>();
             SimpleIoc.Default.Register<DerivateStammdatenViewModel>();
+            SimpleIoc.Default.Register<EinnahmeStammdatenViewModel>();
+            SimpleIoc.Default.Register<EinnahmenUebersichtViewModel>();
+            SimpleIoc.Default.Register<AusgabeStammdatenViewModel>();
+            SimpleIoc.Default.Register<AusgabenUebersichtViewModel>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
@@ -92,6 +96,10 @@ namespace Aktien.Logic.UI
         public WertpapierGesamtUebersichtViewModel WertpapierGesamtUebersicht => ServiceLocator.Current.GetInstance<WertpapierGesamtUebersichtViewModel>();
         public DerivateStammdatenViewModel DerivateStammdaten => ServiceLocator.Current.GetInstance<DerivateStammdatenViewModel>();
         public DerivateGesamtUebersichtViewModel DerivateGesamtUebersicht => ServiceLocator.Current.GetInstance<DerivateGesamtUebersichtViewModel>();
+        public EinnahmeStammdatenViewModel EinnahmeStammdaten => ServiceLocator.Current.GetInstance<EinnahmeStammdatenViewModel>();
+        public EinnahmenUebersichtViewModel EinnahmenUebersicht => ServiceLocator.Current.GetInstance<EinnahmenUebersichtViewModel>();
+        public AusgabeStammdatenViewModel AusgabeStammdaten => ServiceLocator.Current.GetInstance<AusgabeStammdatenViewModel>();
+        public AusgabenUebersichtViewModel AusgabenUebersicht => ServiceLocator.Current.GetInstance<AusgabenUebersichtViewModel>();
         public static void Cleanup()
         {
 

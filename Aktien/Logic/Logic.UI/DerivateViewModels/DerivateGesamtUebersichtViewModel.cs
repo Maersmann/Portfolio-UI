@@ -1,6 +1,8 @@
 ﻿using Aktien.Data.Model.WertpapierEntitys;
+using Aktien.Data.Types;
 using Aktien.Logic.Core.WertpapierLogic;
 using Aktien.Logic.Core.WertpapierLogic.Exceptions;
+using Aktien.Logic.Messages.Base;
 using Aktien.Logic.Messages.DerivateMessages;
 using Aktien.Logic.Messages.WertpapierMessages;
 using Aktien.Logic.UI.BaseViewModels;
@@ -17,11 +19,8 @@ using System.Windows.Input;
 
 namespace Aktien.Logic.UI.DerivateViewModels
 {
-    public class DerivateGesamtUebersichtViewModel : ViewModelUebersicht
+    public class DerivateGesamtUebersichtViewModel : ViewModelUebersicht<Wertpapier>
     {
-        private ObservableCollection<Wertpapier> alleDerivate;
-
-        private Wertpapier selectedDerivate;
 
         public DerivateGesamtUebersichtViewModel()
         {
@@ -30,42 +29,37 @@ namespace Aktien.Logic.UI.DerivateViewModels
             BearbeitenCommand = new DelegateCommand(this.ExecuteBearbeitenCommand, this.CanExecuteCommand);
             EntfernenCommand = new DelegateCommand(this.ExecuteEntfernenCommand, this.CanExecuteCommand);
             AddAktieCommand = new RelayCommand(this.ExecuteAddAktieCommand);
+            RegisterAktualisereViewMessage(ViewType.viewDerivateUebersicht);
         }
 
         public string MessageToken { set { messageToken = value; } }
 
         public override void LoadData()
         {
-            alleDerivate = new DerivateAPI().LadeAlle();
-            this.RaisePropertyChanged("AlleDerivate");
+            itemList = new DerivateAPI().LadeAlle();
+            this.RaisePropertyChanged("ItemList");
         }
 
         #region Binding
-        public Wertpapier SelectedDerivate
+        public override Wertpapier SelectedItem
         {
             get
             {
-                return selectedDerivate;
+                return selectedItem;
             }
             set
             {
-                selectedDerivate = value;
+                selectedItem = value;
                 this.RaisePropertyChanged();
                 ((DelegateCommand)BearbeitenCommand).RaiseCanExecuteChanged();
                 ((DelegateCommand)EntfernenCommand).RaiseCanExecuteChanged();
-                if (selectedDerivate != null)
+                if (selectedItem != null)
                 {
-                    Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = selectedDerivate.ID }, messageToken);
+                    Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = selectedItem.ID }, messageToken);
                 }
             }
         }
-        public IEnumerable<Wertpapier> AlleDerivate
-        {
-            get
-            {
-                return alleDerivate;
-            }
-        }
+
         public ICommand BearbeitenCommand { get; protected set; }
         public ICommand EntfernenCommand { get; protected set; }
         public ICommand AddAktieCommand { get; set; }
@@ -74,12 +68,12 @@ namespace Aktien.Logic.UI.DerivateViewModels
         #region Commands
         private bool CanExecuteCommand()
         {
-            return selectedDerivate != null;
+            return selectedItem != null;
         }
 
         private void ExecuteBearbeitenCommand()
         {
-            Messenger.Default.Send<OpenDerivateStammdatenMessage>(new OpenDerivateStammdatenMessage { WertpapierID = selectedDerivate.ID, State = Data.Types.State.Bearbeiten });
+            Messenger.Default.Send<OpenDerivateStammdatenMessage>(new OpenDerivateStammdatenMessage { WertpapierID = selectedItem.ID, State = Data.Types.State.Bearbeiten });
         }
 
 
@@ -87,7 +81,7 @@ namespace Aktien.Logic.UI.DerivateViewModels
         {
             try
             {
-                new EtfAPI().Entfernen(selectedDerivate);
+                new EtfAPI().Entfernen(selectedItem);
             }
             catch (WertpapierInDepotVorhandenException)
             {
@@ -96,10 +90,10 @@ namespace Aktien.Logic.UI.DerivateViewModels
             }
 
             Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = 0 });
-            alleDerivate.Remove(SelectedDerivate);
-            this.RaisePropertyChanged("AlleAktien");
+            itemList.Remove(SelectedItem);
+            this.RaisePropertyChanged("ItemList");
             Messenger.Default.Send<DeleteDerivateErfolgreichMessage>(new DeleteDerivateErfolgreichMessage());
-
+            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewWertpapierUebersicht);
         }
 
         private void ExecuteAddAktieCommand()

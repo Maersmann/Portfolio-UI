@@ -1,4 +1,5 @@
 ﻿using Aktien.Data.Types;
+using Aktien.Logic.Messages.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,8 @@ using System.Threading.Tasks;
 
 namespace Aktien.Logic.Messages.DerivateMessages
 {
-    public class OpenDerivateStammdatenMessage
+    public class OpenDerivateStammdatenMessage: BaseStammdatenMessage
     {
         public int WertpapierID { get; set; }
-        public State State { get; set; }
     }
 }
