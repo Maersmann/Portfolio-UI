@@ -24,7 +24,9 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
             dividende.Betrag = inBetrag;
             dividende.Datum = inDatum;
             dividende.Waehrung = inWaehrung;
-            dividende.BetragUmgerechnet = inBetragUmgerechnet;
+            if (inBetragUmgerechnet.HasValue)
+                dividende.BetragUmgerechnet = Math.Round(inBetragUmgerechnet.GetValueOrDefault(0), 4, MidpointRounding.AwayFromZero);
+
             if (inWertpapierID.HasValue)
                 dividende.WertpapierID = inWertpapierID.Value;
             repo.SaveChanges();

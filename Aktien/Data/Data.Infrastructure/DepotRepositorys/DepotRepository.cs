@@ -19,8 +19,8 @@ namespace Aktien.Data.Infrastructure.DepotRepositorys
                 Entity = repo.Depots.Find(inID.Value);
 
             Entity.Bezeichnung = inBezeichnung;
-            Entity.GesamtAusgaben = inGesamtAusgaben;
-            Entity.GesamtEinahmen = inGesamtEinnahmen;
+            Entity.GesamtAusgaben = Math.Round(inGesamtAusgaben.GetValueOrDefault(0), 4, MidpointRounding.AwayFromZero);
+            Entity.GesamtEinahmen = Math.Round(inGesamtEinnahmen.GetValueOrDefault(0), 4, MidpointRounding.AwayFromZero);
 
             if (!inID.HasValue)
                 repo.Depots.Add(Entity);
@@ -32,6 +32,10 @@ namespace Aktien.Data.Infrastructure.DepotRepositorys
         {
             if (inDepot.ID == 0)
                 repo.Depots.Add(inDepot);
+
+            inDepot.GesamtAusgaben = Math.Round(inDepot.GesamtAusgaben.GetValueOrDefault(0), 4, MidpointRounding.AwayFromZero);
+            inDepot.GesamtEinahmen = Math.Round(inDepot.GesamtEinahmen.GetValueOrDefault(0), 4, MidpointRounding.AwayFromZero);
+
             repo.SaveChanges();
         }
 

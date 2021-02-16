@@ -9,7 +9,9 @@ namespace Aktien.Data.Types.OptionTypes
 
     public enum KonvertierungTypes
     {
-        konvertierungEinAusgaben = 1
+        konvertierungRunden = 1,
+        konvertierungEinAusgaben = 2
     }
 
 }
+

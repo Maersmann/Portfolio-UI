@@ -22,7 +22,7 @@ namespace Aktien.Data.Infrastructure.DepotRepositorys
                 Entity = repo.Ausgaben.Find(inID.Value);
 
             Entity.Art = inTyp;
-            Entity.Betrag = inBetrag;
+            Entity.Betrag = Math.Round(inBetrag, 4, MidpointRounding.AwayFromZero);
             Entity.Datum = inDatum;
             Entity.DepotID = inDepotID;
             Entity.HerkunftID = inHerkunftID;
@@ -43,6 +43,9 @@ namespace Aktien.Data.Infrastructure.DepotRepositorys
         {
             if (inAusgabe.ID == 0)
                 repo.Ausgaben.Add(inAusgabe);
+
+            inAusgabe.Betrag = Math.Round(inAusgabe.Betrag, 4, MidpointRounding.AwayFromZero);
+
             repo.SaveChanges();
         }
 

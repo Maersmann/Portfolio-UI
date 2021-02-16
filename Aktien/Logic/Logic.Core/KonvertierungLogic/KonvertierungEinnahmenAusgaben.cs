@@ -24,12 +24,12 @@ namespace Aktien.Logic.Core.KonvertierungLogic
             {
                 if (e.BuySell.Equals(BuySell.Buy))
                 {
-                    var Betrag = (e.Preis * e.Anzahl) + e.Fremdkostenzuschlag.GetValueOrDefault(0);
+                    var Betrag = Math.Round((e.Preis * e.Anzahl) + e.Fremdkostenzuschlag.GetValueOrDefault(0), 4, MidpointRounding.AwayFromZero);
                     depotAPI.NeueAusgabe(Betrag, e.Orderdatum, AusgabenArtTypes.Kauf, 1, e.ID, "");
                 }
                 else
                 {
-                    var Betrag = (e.Preis * e.Anzahl) - e.Fremdkostenzuschlag.GetValueOrDefault(0);
+                    var Betrag = Math.Round((e.Preis * e.Anzahl) - e.Fremdkostenzuschlag.GetValueOrDefault(0), 4, MidpointRounding.AwayFromZero);
                     depotAPI.NeueEinnahme(Betrag, e.Orderdatum, EinnahmeArtTypes.Verkauf, 1, e.ID, "");
                 }
 
@@ -46,7 +46,7 @@ namespace Aktien.Logic.Core.KonvertierungLogic
                     EuroBetrag = new DividendenBerechnungen().BetragUmgerechnet(EuroBetrag, e.Umrechnungskurs);
                 }
 
-                depotAPI.NeueEinnahme(EuroBetrag, e.Datum, EinnahmeArtTypes.Dividende, 1, e.ID, "");
+                depotAPI.NeueEinnahme(Math.Round(EuroBetrag, 4, MidpointRounding.AwayFromZero), e.Datum, EinnahmeArtTypes.Dividende, 1, e.ID, "");
             });
 
 

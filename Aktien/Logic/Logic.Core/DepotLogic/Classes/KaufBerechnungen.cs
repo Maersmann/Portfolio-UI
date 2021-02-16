@@ -10,12 +10,12 @@ namespace Aktien.Logic.Core.Depot.Classes
     { 
         public Double BuyInAktieGekauft(Double inBuyIn, double inAlteAnzahl, double inNeueGesamtAnzahl, double inPreis, double inNeueAnzahl, double? inFremdkosten)
         {
-             return ((inBuyIn * inAlteAnzahl) + ((inPreis * inNeueAnzahl) + inFremdkosten.GetValueOrDefault(0))) / inNeueGesamtAnzahl;
+             return Math.Round(((inBuyIn * inAlteAnzahl) + ((inPreis * inNeueAnzahl) + inFremdkosten.GetValueOrDefault(0))) / inNeueGesamtAnzahl,4, MidpointRounding.AwayFromZero);
         }
 
         public Double BuyInAktieEntfernt(Double inBuyIn, double inAlteAnzahl, double inNeueGesamtAnzahl, double inPreis, double inNeueAnzahl, double? inFremdkosten)
         {
-            return ((inBuyIn * inAlteAnzahl) - ((inPreis * inNeueAnzahl) - inFremdkosten.GetValueOrDefault(0))) / inNeueGesamtAnzahl;
+            return Math.Round(((inBuyIn * inAlteAnzahl) - ((inPreis * inNeueAnzahl) - inFremdkosten.GetValueOrDefault(0))) / inNeueGesamtAnzahl,4, MidpointRounding.AwayFromZero);
         }
     }
 }
