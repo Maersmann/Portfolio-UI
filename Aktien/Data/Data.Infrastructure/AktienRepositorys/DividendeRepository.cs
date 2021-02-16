@@ -35,6 +35,11 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
             return new ObservableCollection<Dividende>(repo.Dividenden.Where(d=>d.WertpapierID == inWertpapierID).OrderByDescending( d=>d.Datum ).ToList());
         }
 
+        public ObservableCollection<Dividende> LadeAlle()
+        {
+            return new ObservableCollection<Dividende>(repo.Dividenden.OrderBy(o => o.ID).ToList());
+        }
+
         public Dividende LadeAnhandID(int inID)
         {
             return repo.Dividenden.Where(a => a.ID == inID).First();

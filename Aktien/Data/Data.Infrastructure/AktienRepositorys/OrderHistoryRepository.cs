@@ -38,5 +38,10 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
             repo.OrderHistories.Remove(order);
             repo.SaveChanges();
         }
+
+        public ObservableCollection<OrderHistory> LadeAlle()
+        {
+            return new ObservableCollection<OrderHistory>(repo.OrderHistories.OrderBy(o => o.ID).ToList());
+        }
     }
 }
