@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aktien.Logic.Core.Depot.Classes
+namespace Aktien.Logic.Core.DepotLogic.Classes
 {
     public class KaufBerechnungen
     { 

@@ -6,18 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aktien.Data.Types
+namespace Aktien.Data.Types.WertpapierTypes
 {
     [TypeConverter(typeof(EnumDescriptionTypeConverter))]
-    public enum Waehrungen
+    public enum ProfitTypes
     {
-        [Description("EUR")]
-        Euro = 0,
-        [Description("USD")]
-        Dollar = 1,
-        [Description("JPY")]
-        JapanYen = 2
+        [Description("Thesaurierend")]
+        Thesaurierend = 0,
+        [Description("Ausschüttend")]
+        Ausschuettend = 1,
     }
-
-
 }

@@ -1,6 +1,6 @@
 ﻿using Aktien.Data.Infrastructure.Base;
 using Aktien.Data.Model.WertpapierEntitys;
-using Aktien.Data.Types;
+using Aktien.Data.Types.WertpapierTypes;
 using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;

@@ -11,7 +11,7 @@ namespace Aktien.Data.Infrastructure
     public class Repository : DbContext
     {
 
-        public DbSet<Wertpapier> Aktien { get; set; }
+        public DbSet<Wertpapier> Wertpapiere { get; set; }
         public DbSet<Dividende> Dividenden { get; set; }
         public DbSet<OrderHistory> OrderHistories { get; set; }
         public DbSet<Depot> Depots { get; set; }
@@ -20,6 +20,7 @@ namespace Aktien.Data.Infrastructure
         public DbSet<Einnahme> Einnahmen { get; set; }
         public DbSet<Ausgabe> Ausgaben { get; set; }
         public DbSet<Konvertierung> Konvertierungen { get; set; }
+        public DbSet<ETFInfo> ETFInfos { get; set; }
 
         public Repository() : base() { this.Database.Migrate(); }
 

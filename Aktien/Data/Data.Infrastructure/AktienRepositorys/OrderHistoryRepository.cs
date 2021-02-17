@@ -1,7 +1,7 @@
 ﻿using Aktien.Data.Infrastructure.Base;
 using Aktien.Data.Model.WertpapierEntitys;
 using Aktien.Data.Model.DepotEntitys;
-using Aktien.Data.Types;
+using Aktien.Data.Types.WertpapierTypes;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

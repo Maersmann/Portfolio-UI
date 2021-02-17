@@ -2,8 +2,8 @@
 using Aktien.Data.Infrastructure.DepotRepositorys;
 using Aktien.Data.Model.WertpapierEntitys;
 using Aktien.Data.Model.DepotEntitys;
-using Aktien.Data.Types;
-using Aktien.Logic.Core.Depot.Classes;
+using Aktien.Data.Types.WertpapierTypes;
+using Aktien.Logic.Core.DepotLogic.Classes;
 using Aktien.Logic.Core.DividendeLogic.Classes;
 using System;
 using System.Collections.Generic;
@@ -12,16 +12,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Aktien.Logic.Core.DepotLogic.Exceptions;
-using Aktien.Data.Model.DepotModels;
 using Aktien.Data.Types.DepotTypes;
 using System.Globalization;
+using Aktien.Logic.Core.DepotLogic.Models;
 
 namespace Aktien.Logic.Core.Depot
 {
     public class DepotAPI
     {
         
-        public void WertpapierGekauft(double inPreis, double? inFremdkosten, DateTime inDatum, int inWertpapierID, Double inAnzahl, Data.Types.KaufTypes inKauftyp, Data.Types.OrderTypes inOrderTyp)
+        public void WertpapierGekauft(double inPreis, double? inFremdkosten, DateTime inDatum, int inWertpapierID, Double inAnzahl, KaufTypes inKauftyp, OrderTypes inOrderTyp)
         {
             var orderHistory = new OrderHistory { WertpapierID = inWertpapierID, Preis = inPreis, Orderdatum = inDatum, Anzahl = inAnzahl, Fremdkostenzuschlag = inFremdkosten, KaufartTyp = inKauftyp, OrderartTyp = inOrderTyp, BuySell = BuySell.Buy }; 
             new OrderHistoryRepository().Speichern(orderHistory);
@@ -123,8 +123,8 @@ namespace Aktien.Logic.Core.Depot
             var returnList = new ObservableCollection<DepotGesamtUebersichtItem>();
             new WertpapierRepository().LadeAlle();
             new DepotWertpapierRepository().LoadAll().ToList().ForEach(item => returnList.Add( new DepotGesamtUebersichtItem { Anzahl = item.Anzahl, BuyIn = item.BuyIn, DepotWertpapierID = item.ID, 
-                                                                                                                           WertpapierID = item.WertpapierID, WertpapierTyp = item.Wertpapier.WertpapierTyp,
-                                                                                                                           Bezeichnung = item.Wertpapier.Name }));
+                                                                                                                               WertpapierID = item.WertpapierID, WertpapierTyp = item.Wertpapier.WertpapierTyp,
+                                                                                                                               Bezeichnung = item.Wertpapier.Name }));
             return returnList;
         }
 

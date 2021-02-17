@@ -1,4 +1,4 @@
-﻿using Aktien.Data.Types;
+﻿using Aktien.Data.Types.WertpapierTypes;
 using Aktien.Logic.Core.Interfaces;
 using Aktien.Logic.Core.Validierung.Base;
 using System;

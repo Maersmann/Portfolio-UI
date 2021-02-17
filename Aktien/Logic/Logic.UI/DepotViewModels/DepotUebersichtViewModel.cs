@@ -1,7 +1,8 @@
 ﻿using Aktien.Data.Model.DepotEntitys;
-using Aktien.Data.Model.DepotModels;
 using Aktien.Data.Types;
+using Aktien.Data.Types.WertpapierTypes;
 using Aktien.Logic.Core.Depot;
+using Aktien.Logic.Core.DepotLogic.Models;
 using Aktien.Logic.Messages.Base;
 using Aktien.Logic.Messages.DividendeMessages;
 using Aktien.Logic.Messages.WertpapierMessages;

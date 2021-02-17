@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Aktien.Data.Types;
+using Aktien.Data.Types.WertpapierTypes;
 using Aktien.Data.Infrastructure.DepotRepositorys;
 using Aktien.Logic.Core.WertpapierLogic.Exceptions;
 

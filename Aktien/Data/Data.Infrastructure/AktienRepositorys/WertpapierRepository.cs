@@ -6,7 +6,8 @@ using System.Linq;
 using System.Text;
 using Aktien.Data.Infrastructure.Base;
 using Aktien.Data.Model.WertpapierEntitys;
-using Aktien.Data.Types;
+using Aktien.Data.Types.WertpapierTypes;
+using Microsoft.EntityFrameworkCore;
 
 namespace Aktien.Data.Infrastructure.AktienRepositorys
 {
@@ -17,7 +18,7 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
         {
             var Entity = new Wertpapier();
             if (inID.HasValue)
-                Entity = repo.Aktien.Find(inID.Value);
+                Entity = repo.Wertpapiere.Find(inID.Value);
 
             Entity.Name = inName;
             Entity.ISIN = inISIN;
@@ -25,36 +26,44 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
             Entity.WertpapierTyp = inTyp;
 
             if (!inID.HasValue)
-                repo.Aktien.Add(Entity);
+                repo.Wertpapiere.Add(Entity);
+
+            repo.SaveChanges();
+        }
+
+        public void Speichern(Wertpapier inWertpapier)
+        {
+            if (inWertpapier.ID == 0)
+                repo.Wertpapiere.Add(inWertpapier);
 
             repo.SaveChanges();
         }
 
         public bool IstVorhanden( String inISIN )
         {
-            var Aktie = repo.Aktien.Where(a => a.ISIN.Equals(inISIN)).FirstOrDefault();
+            var Aktie = repo.Wertpapiere.Where(a => a.ISIN.Equals(inISIN)).FirstOrDefault();
 
             return ( Aktie != null );
         }
 
         public ObservableCollection<Wertpapier> LadeAlle()
         {
-            return new ObservableCollection<Wertpapier>(repo.Aktien.OrderBy(o => o.ID).ToList());
+            return new ObservableCollection<Wertpapier>(repo.Wertpapiere.OrderBy(o => o.ID).ToList());
         }
 
         public ObservableCollection<Wertpapier> LadeAlleByWertpapierTyp( WertpapierTypes inWertpapiertyp)
         {
-            return new ObservableCollection<Wertpapier>(repo.Aktien.Where(w => w.WertpapierTyp == inWertpapiertyp).OrderBy(o => o.ID).ToList());
+            return new ObservableCollection<Wertpapier>(repo.Wertpapiere.Include(w => w.ETFInfo).Where(w => w.WertpapierTyp == inWertpapiertyp).OrderBy(o => o.ID).ToList());
         }
 
         public Wertpapier LadeAnhandID( int inID )
         {
-            return repo.Aktien.Where(a => a.ID == inID).First();
+            return repo.Wertpapiere.Include(w => w.ETFInfo).Where(a => a.ID == inID). First();
         }
 
         public void Entfernen( Wertpapier inWertpapier)
         {
-            repo.Aktien.Remove(inWertpapier);
+            repo.Wertpapiere.Remove(inWertpapier);
             repo.SaveChanges();
         }
 

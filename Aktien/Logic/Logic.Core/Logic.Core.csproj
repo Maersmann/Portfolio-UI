@@ -45,6 +45,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="DepotLogic\AusgabeAPI.cs" />
+    <Compile Include="DepotLogic\Models\DepotGesamtUebersichtItem.cs" />
     <Compile Include="DepotLogic\EinnahmenAPI.cs" />
     <Compile Include="DepotLogic\Exceptions\ZuVieleWertpapiereVerkaufException.cs" />
     <Compile Include="KonvertierungLogic\KonvertierungEinnahmenAusgaben.cs" />

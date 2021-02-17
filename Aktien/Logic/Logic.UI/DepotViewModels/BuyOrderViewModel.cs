@@ -1,4 +1,4 @@
-﻿using Aktien.Data.Types;
+﻿using Aktien.Data.Types.WertpapierTypes;
 using GalaSoft.MvvmLight.Messaging;
 using Aktien.Logic.Core.Depot;
 using Aktien.Logic.Core.Validierung;
@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Aktien.Data.Model.DepotEntitys;
 using Aktien.Data.Model.WertpapierEntitys;
 using Aktien.Logic.Core.DepotLogic.Exceptions;
+using Aktien.Data.Types;
 
 namespace Aktien.Logic.UI.DepotViewModels
 {
@@ -251,8 +252,8 @@ namespace Aktien.Logic.UI.DepotViewModels
         {
             state = State.Neu;
             data = new OrderHistory();
-            KaufTyp = Data.Types.KaufTypes.Kauf;
-            OrderTyp = Data.Types.OrderTypes.Normal;
+            KaufTyp = Data.Types.WertpapierTypes.KaufTypes.Kauf;
+            OrderTyp = Data.Types.WertpapierTypes.OrderTypes.Normal;
             Anzahl = null;
             Preis = null;
             Datum = DateTime.Now;
