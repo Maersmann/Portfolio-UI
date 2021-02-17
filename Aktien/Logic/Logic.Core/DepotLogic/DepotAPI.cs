@@ -21,8 +21,11 @@ namespace Aktien.Logic.Core.Depot
     public class DepotAPI
     {
         
-        public void WertpapierGekauft(double inPreis, double? inFremdkosten, DateTime inDatum, int inWertpapierID, Double inAnzahl, KaufTypes inKauftyp, OrderTypes inOrderTyp)
+        public void WertpapierGekauft(double inPreis, double? inFremdkosten, DateTime inDatum, int inWertpapierID, Double inAnzahl, KaufTypes inKauftyp, OrderTypes inOrderTyp, Double? inGesamtbetrag)
         {
+            if (inGesamtbetrag.HasValue)
+                inPreis = Math.Round(inGesamtbetrag.Value / inAnzahl, 3, MidpointRounding.AwayFromZero);
+
             var orderHistory = new OrderHistory { WertpapierID = inWertpapierID, Preis = inPreis, Orderdatum = inDatum, Anzahl = inAnzahl, Fremdkostenzuschlag = inFremdkosten, KaufartTyp = inKauftyp, OrderartTyp = inOrderTyp, BuySell = BuySell.Buy }; 
             new OrderHistoryRepository().Speichern(orderHistory);
 
@@ -36,6 +39,8 @@ namespace Aktien.Logic.Core.Depot
             var AlteAnzahl = depotAktie.Anzahl;
 
             depotAktie.Anzahl +=inAnzahl;
+
+            
 
             depotAktie.BuyIn = new KaufBerechnungen().BuyInAktieGekauft(depotAktie.BuyIn, AlteAnzahl, depotAktie.Anzahl, inPreis, inAnzahl, inFremdkosten);
             DepotAktieRepo.Speichern(depotAktie.ID, depotAktie.Anzahl, depotAktie.BuyIn, depotAktie.WertpapierID, depotAktie.DepotID);
@@ -69,8 +74,11 @@ namespace Aktien.Logic.Core.Depot
             OrderRepo.Entfernen(Order);
         }
 
-        public void WertpapierVerkauft(double inPreis, double? inFremdkosten, DateTime inDatum, int inWertpapierID, Double inAnzahl, KaufTypes inKauftyp, OrderTypes inOrderTyp)
+        public void WertpapierVerkauft(double inPreis, double? inFremdkosten, DateTime inDatum, int inWertpapierID, Double inAnzahl, KaufTypes inKauftyp, OrderTypes inOrderTyp, Double? inGesamtbetrag)
         {
+            if (inGesamtbetrag.HasValue)
+                inPreis = Math.Round(inGesamtbetrag.Value / inAnzahl, 3, MidpointRounding.AwayFromZero);
+
             var DepotAktieRepo = new DepotWertpapierRepository();
             var DepotAktie = DepotAktieRepo.LadeByWertpapierID(inWertpapierID);
 

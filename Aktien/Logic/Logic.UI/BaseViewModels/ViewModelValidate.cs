@@ -49,5 +49,16 @@ namespace Aktien.Logic.UI.BaseViewModels
                 RaiseErrorsChanged(inPropertyKey);
             }
         }
+
+        protected void DeleteValidateInfo(string inPropertyKey)
+        {
+            if (ValidationErrors.ContainsKey(inPropertyKey))
+            {
+
+                ValidationErrors.Remove(inPropertyKey);
+
+                RaiseErrorsChanged(inPropertyKey);
+            }
+        }
     }
 }

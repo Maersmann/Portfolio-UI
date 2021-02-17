@@ -9,7 +9,7 @@
                     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
                     xmlns:command="http://www.galasoft.ch/mvvmlight"
                     mc:Ignorable="d"
-                    Height="387.417" Width="302.644"
+                    Height="400" Width="302.644"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                     ResizeMode="NoResize"
                     WindowStartupLocation="CenterScreen"
@@ -42,6 +42,7 @@
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50*"/>
@@ -50,10 +51,11 @@
 
             <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Anzahl</Label>
             <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Preis</Label>
-            <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Fremdkosten</Label>
-            <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Datum</Label>
-            <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Order Art</Label>
-            <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"  Content="{Binding KauftypBez}"/>
+            <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Gesamtbetrag</Label>
+            <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Fremdkosten</Label>
+            <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Datum</Label>
+            <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Order Art</Label>
+            <Label Grid.Row="6" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"  Content="{Binding KauftypBez}"/>
             <TextBox Grid.Row="0"  Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Anzahl, UpdateSourceTrigger=PropertyChanged, TargetNullValue='', ValidatesOnNotifyDataErrors=True, StringFormat=N4,ConverterCulture='de-DE' }" >
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="PreviewTextInput" >
@@ -75,7 +77,7 @@
                     </ControlTemplate>
                 </Validation.ErrorTemplate>
             </TextBox>
-            <TextBox Grid.Row="1"  Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Preis, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, TargetNullValue='', StringFormat=N3,ConverterCulture='de-DE' }"  >
+            <TextBox Grid.Row="1"  Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Preis, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, TargetNullValue='', StringFormat=N3,ConverterCulture='de-DE' }" IsEnabled="{Binding EingabePreisEnabled, Mode=OneWay}"  >
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="PreviewTextInput" >
                         <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyBetragCommand"  />
@@ -96,14 +98,35 @@
                     </ControlTemplate>
                 </Validation.ErrorTemplate>
             </TextBox>
-            <TextBox Grid.Row="2"  Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Fremdkosten, UpdateSourceTrigger=PropertyChanged, TargetNullValue='', StringFormat=N2,ConverterCulture='de-DE' }" >
+            <TextBox Grid.Row="2"  Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Gesamtbetrag, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, TargetNullValue='', StringFormat=N3,ConverterCulture='de-DE' }" IsEnabled="{Binding EingabeGesamtbetragEnabled, Mode=OneWay}" >
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="PreviewTextInput" >
+                        <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyBetragCommand"  />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <Validation.ErrorTemplate>
+                    <ControlTemplate>
+                        <StackPanel>
+                            <AdornedElementPlaceholder x:Name="textBox"/>
+                            <ItemsControl ItemsSource="{Binding}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding ErrorContent}" Foreground="Red" TextWrapping="Wrap" FontSize="10" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </ControlTemplate>
+                </Validation.ErrorTemplate>
+            </TextBox>
+            <TextBox Grid.Row="3"  Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Fremdkosten, UpdateSourceTrigger=PropertyChanged, TargetNullValue='', StringFormat=N2,ConverterCulture='de-DE' }" >
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="PreviewTextInput" >
                         <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyBetragCommand"  />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </TextBox>
-            <DatePicker Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" SelectedDate="{Binding Datum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" >
+            <DatePicker Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" SelectedDate="{Binding Datum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" >
                 <Validation.ErrorTemplate>
                     <ControlTemplate>
                         <StackPanel>
@@ -119,8 +142,8 @@
                     </ControlTemplate>
                 </Validation.ErrorTemplate>
             </DatePicker>
-            <ComboBox Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" ItemsSource="{Binding OrderTypes}" SelectedItem="{Binding OrderTyp}" />
-            <ComboBox Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" ItemsSource="{Binding KaufTypes}" SelectedItem="{Binding KaufTyp}" />
+            <ComboBox Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" ItemsSource="{Binding OrderTypes}" SelectedItem="{Binding OrderTyp}" />
+            <ComboBox Grid.Row="6" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" ItemsSource="{Binding KaufTypes}" SelectedItem="{Binding KaufTyp}" />
 
         </Grid>
 

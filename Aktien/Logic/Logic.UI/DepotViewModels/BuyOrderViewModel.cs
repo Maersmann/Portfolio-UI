@@ -22,6 +22,7 @@ namespace Aktien.Logic.UI.DepotViewModels
         private OrderHistory data;
         private BuySell buySell;
         private WertpapierTypes typ;
+        private Double? gesamtbetrag;
         public BuyOrderViewModel()
         {
             SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
@@ -34,14 +35,14 @@ namespace Aktien.Logic.UI.DepotViewModels
             var Depot = new DepotAPI();
             if (buySell.Equals(BuySell.Buy))
             {
-                Depot.WertpapierGekauft(data.Preis, data.Fremdkostenzuschlag, data.Orderdatum, WertpapierID, data.Anzahl, data.KaufartTyp, data.OrderartTyp);
+                Depot.WertpapierGekauft(data.Preis, data.Fremdkostenzuschlag, data.Orderdatum, WertpapierID, data.Anzahl, data.KaufartTyp, data.OrderartTyp, gesamtbetrag);
                 Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewAusgabenUebersicht);
             }
             else
             {
                 try
                 {
-                    Depot.WertpapierVerkauft(data.Preis, data.Fremdkostenzuschlag, data.Orderdatum, WertpapierID, data.Anzahl, data.KaufartTyp, data.OrderartTyp);
+                    Depot.WertpapierVerkauft(data.Preis, data.Fremdkostenzuschlag, data.Orderdatum, WertpapierID, data.Anzahl, data.KaufartTyp, data.OrderartTyp, gesamtbetrag);
                     Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewEinnahmenUebersicht);
                 }
                 catch (ZuVieleWertpapiereVerkaufException)
@@ -87,7 +88,7 @@ namespace Aktien.Logic.UI.DepotViewModels
             {
                 if (LoadAktie || (this.data.KaufartTyp != value))
                 {
-                    ValidateBetrag(Preis, value);
+                    ValidateBetrag(Preis, value,"Preis");
                     this.data.KaufartTyp = value;
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
@@ -101,8 +102,24 @@ namespace Aktien.Logic.UI.DepotViewModels
             {
                 if (LoadAktie || (this.data.OrderartTyp != value))
                 {
+                    LoadAktie = true;
+                    if (value.Equals(Data.Types.WertpapierTypes.OrderTypes.Sparplan))
+                    {
+                        Preis = null;
+                        Gesamtbetrag = null;
+                        DeleteValidateInfo("Preis");
+                    }
+                    else if  (data.OrderartTyp.Equals(Data.Types.WertpapierTypes.OrderTypes.Sparplan))
+                    {
+                        Gesamtbetrag = null;
+                        Preis = null;
+                        DeleteValidateInfo("Gesamtbetrag");
+                    }
+                    LoadAktie = false;
                     this.data.OrderartTyp = value;
                     this.RaisePropertyChanged();
+                    this.RaisePropertyChanged("EingabePreisEnabled");
+                    this.RaisePropertyChanged("EingabeGesamtbetragEnabled");
                 }
             }
         }
@@ -149,7 +166,7 @@ namespace Aktien.Logic.UI.DepotViewModels
             {
                 if (LoadAktie || (this.data.Preis != value))
                 {
-                    ValidateBetrag(value, KaufTyp);
+                    ValidateBetrag(value, KaufTyp, "Preis");
                     this.data.Preis = value.GetValueOrDefault();
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
@@ -212,6 +229,27 @@ namespace Aktien.Logic.UI.DepotViewModels
         }
         public int WertpapierID { get; set; }
 
+        public Double? Gesamtbetrag
+        {
+            get
+            {
+                return gesamtbetrag;
+            }
+            set
+            {
+                if (LoadAktie || (this.gesamtbetrag != value))
+                {
+                    ValidateBetrag(value, KaufTyp, "Gesamtbetrag");
+                    this.gesamtbetrag = value.GetValueOrDefault();
+                    this.RaisePropertyChanged();
+                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public bool EingabePreisEnabled { get { return data.OrderartTyp != Data.Types.WertpapierTypes.OrderTypes.Sparplan; } }
+        public bool EingabeGesamtbetragEnabled { get { return data.OrderartTyp == Data.Types.WertpapierTypes.OrderTypes.Sparplan; } }
+
         #endregion
 
         #region Validierung
@@ -226,13 +264,13 @@ namespace Aktien.Logic.UI.DepotViewModels
             return isValid;
         }
 
-        private bool ValidateBetrag(Double? inBetrag, KaufTypes inKaufTyp)
+        private bool ValidateBetrag(Double? inBetrag, KaufTypes inKaufTyp, string inPropertyKey)
         {
             var Validierung = new AktieGekauftValidierung();
 
             bool isValid = Validierung.ValidateBetrag(inBetrag, inKaufTyp, out ICollection<string> validationErrors);
 
-            AddValidateInfo(isValid, "Preis", validationErrors);
+            AddValidateInfo(isValid, inPropertyKey, validationErrors);
             return isValid;
         }
 
@@ -258,6 +296,7 @@ namespace Aktien.Logic.UI.DepotViewModels
             Preis = null;
             Datum = DateTime.Now;
             Fremdkosten = null;
+            Gesamtbetrag = null;
         }
     }
 }
