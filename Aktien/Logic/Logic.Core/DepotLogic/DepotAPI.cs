@@ -15,6 +15,7 @@ using Aktien.Logic.Core.DepotLogic.Exceptions;
 using Aktien.Data.Types.DepotTypes;
 using System.Globalization;
 using Aktien.Logic.Core.DepotLogic.Models;
+using Aktien.Logic.Core.WertpapierLogic.Exceptions;
 
 namespace Aktien.Logic.Core.Depot
 {
@@ -23,6 +24,8 @@ namespace Aktien.Logic.Core.Depot
         
         public void WertpapierGekauft(double inPreis, double? inFremdkosten, DateTime inDatum, int inWertpapierID, Double inAnzahl, KaufTypes inKauftyp, OrderTypes inOrderTyp, Double? inGesamtbetrag)
         {
+            if (new OrderHistoryRepository().IstNeuereOrderVorhanden(inWertpapierID, inDatum)) throw new NeuereOrderVorhandenException();
+
             if (inGesamtbetrag.HasValue)
                 inPreis = Math.Round(inGesamtbetrag.Value / inAnzahl, 3, MidpointRounding.AwayFromZero);
 
@@ -76,6 +79,8 @@ namespace Aktien.Logic.Core.Depot
 
         public void WertpapierVerkauft(double inPreis, double? inFremdkosten, DateTime inDatum, int inWertpapierID, Double inAnzahl, KaufTypes inKauftyp, OrderTypes inOrderTyp, Double? inGesamtbetrag)
         {
+            if (new OrderHistoryRepository().IstNeuereOrderVorhanden(inWertpapierID, inDatum)) throw new NeuereOrderVorhandenException();
+
             if (inGesamtbetrag.HasValue)
                 inPreis = Math.Round(inGesamtbetrag.Value / inAnzahl, 3, MidpointRounding.AwayFromZero);
 
@@ -111,14 +116,19 @@ namespace Aktien.Logic.Core.Depot
 
             var Order = OrderRepo.LadeByID(OrderID);
             var DepotAktie = DepotAktieRepo.LadeByWertpapierID(Order.WertpapierID);
-            
-            DepotAktie.Anzahl += Order.Anzahl;
 
-            DepotAktieRepo.Speichern(DepotAktie.ID, DepotAktie.Anzahl, DepotAktie.BuyIn, DepotAktie.WertpapierID, DepotAktie.DepotID);
+            if (DepotAktie != null)
+            {
+                DepotAktie.Anzahl += Order.Anzahl;
+                DepotAktieRepo.Speichern(DepotAktie.ID, DepotAktie.Anzahl, DepotAktie.BuyIn, DepotAktie.WertpapierID, DepotAktie.DepotID);
+            }
 
             EntferneNeueEinnahme(null, OrderID, EinnahmeArtTypes.Verkauf);
             OrderRepo.Entfernen(Order);
-            
+
+            if(DepotAktie == null)
+                new DepotWertpapierFunctions().NeuBerechnen(Order.WertpapierID);
+
         }
        
         public ObservableCollection<DepotWertpapier> LadeAlleVorhandeneImDepot()

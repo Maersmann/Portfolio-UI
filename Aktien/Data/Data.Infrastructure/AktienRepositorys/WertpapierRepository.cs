@@ -58,7 +58,7 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
 
         public Wertpapier LadeAnhandID( int inID )
         {
-            return repo.Wertpapiere.Include(w => w.ETFInfo).Where(a => a.ID == inID). First();
+            return repo.Wertpapiere.Include(w => w.ETFInfo).Where(a => a.ID == inID).FirstOrDefault();
         }
 
         public void Entfernen( Wertpapier inWertpapier)

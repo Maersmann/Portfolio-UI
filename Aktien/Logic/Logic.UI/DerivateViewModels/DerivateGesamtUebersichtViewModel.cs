@@ -55,7 +55,7 @@ namespace Aktien.Logic.UI.DerivateViewModels
                 ((DelegateCommand)EntfernenCommand).RaiseCanExecuteChanged();
                 if (selectedItem != null)
                 {
-                    Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = selectedItem.ID }, messageToken);
+                    Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = selectedItem.ID, WertpapierTyp = selectedItem.WertpapierTyp }, messageToken);
                 }
             }
         }
@@ -89,7 +89,7 @@ namespace Aktien.Logic.UI.DerivateViewModels
                 return;
             }
 
-            Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = 0 });
+            Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = 0, WertpapierTyp = selectedItem.WertpapierTyp }, messageToken);
             itemList.Remove(SelectedItem);
             this.RaisePropertyChanged("ItemList");
             Messenger.Default.Send<DeleteDerivateErfolgreichMessage>(new DeleteDerivateErfolgreichMessage());

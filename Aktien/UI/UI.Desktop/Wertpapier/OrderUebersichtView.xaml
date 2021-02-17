@@ -22,7 +22,7 @@
             <Label HorizontalAlignment="Center" Width="auto" >Übersicht der Order</Label>
         </materialDesign:Card>
 
-        <DataGrid Grid.Row="1" Margin="5"  ItemsSource="{Binding OrderHistories}" SelectedItem="{Binding SelectedOrderHistory, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow" >
+        <DataGrid Grid.Row="1" Margin="5"  ItemsSource="{Binding ItemList}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow" >
             <DataGrid.Columns >
                 <materialDesign:DataGridTextColumn Header="Datum" Binding="{Binding Orderdatum, StringFormat=dd.MM.yyyy}"  Width="auto"/>
                 <materialDesign:DataGridTextColumn Header="Anzahl" Binding="{Binding Anzahl,ConverterCulture='de-DE'}" Width="auto"/>

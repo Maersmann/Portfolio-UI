@@ -42,6 +42,15 @@ namespace Aktien.Data.Infrastructure.DepotRepositorys
 
             repo.SaveChanges();
         }
+        public void Speichern(DepotWertpapier inWertpapier)
+        {
+            if (inWertpapier.ID == 0)
+                repo.AktienInDepots.Add(inWertpapier);
+
+            inWertpapier.BuyIn = Math.Round(inWertpapier.BuyIn, 4, MidpointRounding.AwayFromZero);
+
+            repo.SaveChanges();
+        }
 
         public ObservableCollection<DepotWertpapier> LoadAll()
         {

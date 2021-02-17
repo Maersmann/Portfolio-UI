@@ -45,6 +45,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="DepotLogic\AusgabeAPI.cs" />
+    <Compile Include="DepotLogic\Classes\DepotWertpapierFunctions.cs" />
     <Compile Include="DepotLogic\Models\DepotGesamtUebersichtItem.cs" />
     <Compile Include="DepotLogic\EinnahmenAPI.cs" />
     <Compile Include="DepotLogic\Exceptions\ZuVieleWertpapiereVerkaufException.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="Validierungen\WertpapierStammdatenValidierung.cs" />
     <Compile Include="WertpapierLogic\DerivateAPI.cs" />
     <Compile Include="WertpapierLogic\EtfAPI.cs" />
+    <Compile Include="WertpapierLogic\Exceptions\NeuereOrderVorhandenException.cs" />
     <Compile Include="WertpapierLogic\Exceptions\WertpapierInDepotVorhandenException.cs" />
     <Compile Include="WertpapierLogic\Exceptions\WertpapierSchonVorhandenException.cs" />
     <Compile Include="WertpapierLogic\WertpapierAPI.cs" />

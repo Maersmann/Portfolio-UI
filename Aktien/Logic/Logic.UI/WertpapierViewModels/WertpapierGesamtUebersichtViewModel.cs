@@ -52,7 +52,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
                 ((DelegateCommand)OpenNeueDividendeCommand).RaiseCanExecuteChanged();
                 if (selectedItem != null)
                 {
-                    Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = selectedItem.ID }, messageToken);
+                    Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = selectedItem.ID, WertpapierTyp = selectedItem.WertpapierTyp }, messageToken);
                 }
             }
         }

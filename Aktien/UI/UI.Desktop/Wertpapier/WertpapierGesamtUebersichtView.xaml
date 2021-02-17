@@ -20,7 +20,7 @@
         </Grid.RowDefinitions>
 
         <materialDesign:Card  Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushHeaderBG}}">
-            <Label HorizontalAlignment="Center" Width="auto" >Übersicht aller Aktien</Label>
+            <Label HorizontalAlignment="Center" Width="auto" >Übersicht aller Wertpapiere</Label>
         </materialDesign:Card>
 
         <DataGrid Grid.Row="1" Margin="5"  ItemsSource="{Binding ItemList}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" SelectionUnit="FullRow" >

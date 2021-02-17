@@ -14,6 +14,7 @@ using Aktien.Data.Model.DepotEntitys;
 using Aktien.Data.Model.WertpapierEntitys;
 using Aktien.Logic.Core.DepotLogic.Exceptions;
 using Aktien.Data.Types;
+using Aktien.Logic.Core.WertpapierLogic.Exceptions;
 
 namespace Aktien.Logic.UI.DepotViewModels
 {
@@ -35,8 +36,16 @@ namespace Aktien.Logic.UI.DepotViewModels
             var Depot = new DepotAPI();
             if (buySell.Equals(BuySell.Buy))
             {
-                Depot.WertpapierGekauft(data.Preis, data.Fremdkostenzuschlag, data.Orderdatum, WertpapierID, data.Anzahl, data.KaufartTyp, data.OrderartTyp, gesamtbetrag);
-                Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewAusgabenUebersicht);
+                try
+                {
+                    Depot.WertpapierGekauft(data.Preis, data.Fremdkostenzuschlag, data.Orderdatum, WertpapierID, data.Anzahl, data.KaufartTyp, data.OrderartTyp, gesamtbetrag);
+                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewAusgabenUebersicht);
+                }
+                catch (NeuereOrderVorhandenException)
+                {
+                    SendExceptionMessage("Es sind neuere Orders vorhanden.");
+                    return;
+                }                        
             }
             else
             {
@@ -50,10 +59,16 @@ namespace Aktien.Logic.UI.DepotViewModels
                     SendExceptionMessage("Es wurden mehr Wertpapiere zum Verkauf eingetragen, als im Depot vorhanden.");                   
                     return;
                 }
-                
+                catch (NeuereOrderVorhandenException)
+                {
+                    SendExceptionMessage("Es sind neuere Orders vorhanden.");
+                    return;
+                }
+
             }
-            Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Buy-Order erfolgreich gespeichert." }, "BuyOrder");
+            Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Buy-Order gespeichert." }, "BuyOrder");
             Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewDepotUebersicht);
+            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewOrderUebersicht);
         }
 
         public void SetTitle(BuySell inBuySell, WertpapierTypes inTypes)

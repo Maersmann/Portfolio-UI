@@ -25,7 +25,7 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
 
         public ObservableCollection<OrderHistory> LadeAlleByWertpapierID(int inWertpapierID)
         {
-            return new ObservableCollection<OrderHistory>(repo.OrderHistories.Where(o => o.WertpapierID == inWertpapierID).OrderBy(o => o.ID).ToList());
+            return new ObservableCollection<OrderHistory>(repo.OrderHistories.Where(o => o.WertpapierID == inWertpapierID).OrderByDescending(o => o.ID ).ToList());
         }
 
         public OrderHistory LadeByID(int inID)
@@ -42,6 +42,11 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
         public ObservableCollection<OrderHistory> LadeAlle()
         {
             return new ObservableCollection<OrderHistory>(repo.OrderHistories.OrderBy(o => o.ID).ToList());
+        }
+
+        public bool IstNeuereOrderVorhanden(int inWertpapierID, DateTime inDatum)
+        {
+            return repo.OrderHistories.Where(o => o.WertpapierID == inWertpapierID).Where(o => o.Orderdatum > inDatum).FirstOrDefault() != null;
         }
     }
 }

@@ -56,12 +56,7 @@ namespace Aktien.UI.Desktop.Wertpapier
                 model.WertpapierID = m.WertpapierID;
                 model.SetTitle(m.BuySell, m.WertpapierTypes);
             }
-            bool? Result = view.ShowDialog();
-
-            if ((Result.GetValueOrDefault(false)) && (this.DataContext is OrderUebersichtViewModel modelUebersicht))
-            {
-                modelUebersicht.LoadData(m.WertpapierID);
-            }
+            view.ShowDialog();
 
         }
     }
