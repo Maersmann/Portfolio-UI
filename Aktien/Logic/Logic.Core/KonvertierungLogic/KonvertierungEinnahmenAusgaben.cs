@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Aktien.Data.Infrastructure.DepotRepositorys;
 
 namespace Aktien.Logic.Core.KonvertierungLogic
 {
@@ -20,16 +21,23 @@ namespace Aktien.Logic.Core.KonvertierungLogic
 
             var depotAPI = new DepotAPI();
 
+            new AusgabenRepository().EntferneAlle();
+            new EinnahmenRepository().EntferneAlle();
+            var depot = new DepotRepository().LoadByID(1);
+            depot.GesamtAusgaben = 0;
+            depot.GesamtEinahmen = 0;
+            new DepotRepository().Speichern(depot);
+
             OrderList.ToList().ForEach(e =>
             {
                 if (e.BuySell.Equals(BuySell.Buy))
                 {
-                    var Betrag = Math.Round((e.Preis * e.Anzahl) + e.Fremdkostenzuschlag.GetValueOrDefault(0), 4, MidpointRounding.AwayFromZero);
+                    var Betrag = Math.Round((e.Preis * e.Anzahl) + e.Fremdkostenzuschlag.GetValueOrDefault(0), 2, MidpointRounding.AwayFromZero);
                     depotAPI.NeueAusgabe(Betrag, e.Orderdatum, AusgabenArtTypes.Kauf, 1, e.ID, "");
                 }
                 else
                 {
-                    var Betrag = Math.Round((e.Preis * e.Anzahl) - e.Fremdkostenzuschlag.GetValueOrDefault(0), 4, MidpointRounding.AwayFromZero);
+                    var Betrag = Math.Round((e.Preis * e.Anzahl) - e.Fremdkostenzuschlag.GetValueOrDefault(0), 2, MidpointRounding.AwayFromZero);
                     depotAPI.NeueEinnahme(Betrag, e.Orderdatum, EinnahmeArtTypes.Verkauf, 1, e.ID, "");
                 }
 
@@ -46,7 +54,7 @@ namespace Aktien.Logic.Core.KonvertierungLogic
                     EuroBetrag = new DividendenBerechnungen().BetragUmgerechnet(EuroBetrag, e.Umrechnungskurs);
                 }
 
-                depotAPI.NeueEinnahme(Math.Round(EuroBetrag, 4, MidpointRounding.AwayFromZero), e.Datum, EinnahmeArtTypes.Dividende, 1, e.ID, "");
+                depotAPI.NeueEinnahme(Math.Round(EuroBetrag, 2, MidpointRounding.AwayFromZero), e.Datum, EinnahmeArtTypes.Dividende, 1, e.ID, "");
             });
 
 

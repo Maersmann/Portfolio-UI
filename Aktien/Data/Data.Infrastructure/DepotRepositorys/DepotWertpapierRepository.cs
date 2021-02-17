@@ -31,7 +31,7 @@ namespace Aktien.Data.Infrastructure.DepotRepositorys
             if (inID.HasValue)
                 Entity = repo.AktienInDepots.Find(inID.Value);
 
-            Entity.BuyIn = Math.Round(inBuyIn, 4, MidpointRounding.AwayFromZero);
+            Entity.BuyIn = Math.Round(inBuyIn, 3, MidpointRounding.AwayFromZero);
 
             Entity.Anzahl = inAnzahl;
             Entity.WertpapierID = inWertpapierID;
