@@ -10,7 +10,7 @@
                     xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                     mc:Ignorable="d" WindowStartupLocation="CenterScreen"
-                    Height="235.445" Width="227"
+                    Height="auto" Width="227" SizeToContent="Height"
                     DataContext="{Binding DividendeStammdaten ,Source={StaticResource Locator}}" Unloaded="Window_Unloaded">
 
     <i:Interaction.Triggers>
@@ -22,7 +22,7 @@
     <Grid  >
         <Grid.RowDefinitions>
             <RowDefinition Height="25px" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="45px" />
         </Grid.RowDefinitions>
 
@@ -50,7 +50,7 @@
             </Grid.RowDefinitions>
 
             <Label Content="Datum" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="0" VerticalAlignment="Top"/>
-            <DatePicker HorizontalAlignment="Left" Margin="61,10,0,0" Grid.Row="0" VerticalAlignment="Top" Width="134"  SelectedDate="{Binding Datum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"   >
+            <DatePicker HorizontalAlignment="Left" Margin="61,10,0,10" Grid.Row="0" VerticalAlignment="Top" Width="134"  SelectedDate="{Binding Datum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"   >
                 <Validation.ErrorTemplate>
                     <ControlTemplate>
                         <StackPanel>
@@ -68,7 +68,7 @@
             </DatePicker>
 
             <Label Content="Betrag" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top"/>
-            <TextBox HorizontalAlignment="Left" Height="26" Margin="61,10,0,0" Grid.Row="1" TextWrapping="NoWrap" VerticalAlignment="Top" Width="89" Text="{Binding Betrag, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, TargetNullValue='', StringFormat=N3,ConverterCulture='de-DE' }" >
+            <TextBox HorizontalAlignment="Left" Height="26" Margin="61,10,0,10" Grid.Row="1" TextWrapping="NoWrap" VerticalAlignment="Top" Width="89" Text="{Binding Betrag, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, TargetNullValue='', StringFormat=N3,ConverterCulture='de-DE' }" >
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="PreviewTextInput" >
                         <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyBetragCommand"  />
@@ -93,7 +93,7 @@
             <ComboBox Grid.Row="1" HorizontalAlignment="Left"  VerticalAlignment="Top"  Width="40" ItemsSource="{Binding Waehrungen}" SelectedItem="{Binding Waehrung}" Margin="155,8,0,0" />
 
             <Label Content="Umgerechnet" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="3" VerticalAlignment="Top"/>
-            <TextBox HorizontalAlignment="Left" Height="26" Margin="98,10,0,0" Grid.Row="3" TextWrapping="NoWrap" VerticalAlignment="Top" Width="97" Text="{Binding BetragUmgerechnet, ConverterCulture=de-DE, StringFormat=N3, TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" >
+            <TextBox HorizontalAlignment="Left" Height="26" Margin="98,10,0,20" Grid.Row="3" TextWrapping="NoWrap" VerticalAlignment="Top" Width="97" Text="{Binding BetragUmgerechnet, ConverterCulture=de-DE, StringFormat=N3, TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" >
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="PreviewTextInput" >
                         <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyBetragCommand"  />

@@ -1,5 +1,6 @@
 ﻿using Aktien.Data.Model.WertpapierEntitys;
 using Aktien.Data.Types;
+using Aktien.Data.Types.DividendenTypes;
 using Aktien.Logic.Core.Depot;
 using Aktien.Logic.Core.DividendeLogic;
 using Aktien.Logic.Core.Validierung;
@@ -164,9 +165,43 @@ namespace Aktien.Logic.UI.DividendeViewModels
                 {
                     this.dividendeErhalten.Umrechnungskurs = value;
                     this.RaisePropertyChanged();
+                    this.RaisePropertyChanged("WechsellkursHasValue");
                 }
             }
         }
+
+        public IEnumerable<DividendenRundungTypes> RundungTypes
+        {
+            get
+            {
+                return Enum.GetValues(typeof(DividendenRundungTypes)).Cast<DividendenRundungTypes>();
+            }
+        }
+
+        public DividendenRundungTypes RundungTyp
+        {
+            get { return dividendeErhalten.RundundArt; }
+            set
+            {
+                if (LoadAktie || (this.dividendeErhalten.RundundArt != value))
+                {
+                    this.dividendeErhalten.RundundArt = value;
+                    this.RaisePropertyChanged();
+                }
+            }
+        }
+
+        public Double? GesamtNettoUmgerechnet
+        {
+            get { return dividendeErhalten.GesamtNettoUmgerechnet; }
+        }
+
+        public Double? GesamtNettoUmgerechnetUngerundet
+        {
+            get { return dividendeErhalten.GesamtNettoUmgerechnetUngerundet; }
+        }
+
+        public bool WechsellkursHasValue { get { return this.dividendeErhalten.Umrechnungskurs.GetValueOrDefault(0)>0; } }
         #endregion
 
         #region Validate
@@ -211,6 +246,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
             state = State.Neu;
             Quellensteuer = null;
             Wechselkurs = null;
+            RundungTyp = DividendenRundungTypes.Normal;
             this.RaisePropertyChanged();
         }
     }

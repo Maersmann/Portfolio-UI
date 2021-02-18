@@ -48,6 +48,7 @@
     <Compile Include="Converter\EnumDescriptionTypeConverter.cs" />
     <Compile Include="DepotTypes\AusgabenArtTypes.cs" />
     <Compile Include="DepotTypes\EinnahmeArtTypes.cs" />
+    <Compile Include="DividendenTypes\DividendenRundungTypes.cs" />
     <Compile Include="OptionTypes\KonvertierungTypes.cs" />
     <Compile Include="WertpapierTypes\ErmittentTypes.cs" />
     <Compile Include="WertpapierTypes\OrderTypes.cs" />
