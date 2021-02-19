@@ -19,7 +19,10 @@ namespace Aktien.Logic.Core.KonvertierungLogic
 
             depotList.ToList().ForEach(e =>
             {
-                e.BuyIn = Math.Round(e.BuyIn, 4, MidpointRounding.AwayFromZero);
+                e.BuyIn = Math.Round(e.BuyIn, 3, MidpointRounding.AwayFromZero);
+                if (e.BuyIn >= 2)
+                    e.BuyIn = Math.Round(e.BuyIn, 2, MidpointRounding.AwayFromZero);
+
                 dwRepo.Speichern(e.ID, e.Anzahl, e.BuyIn, e.WertpapierID, e.DepotID);
             });
 
@@ -30,7 +33,7 @@ namespace Aktien.Logic.Core.KonvertierungLogic
             {
                 if (e.BetragUmgerechnet.HasValue)
                 {
-                    e.BetragUmgerechnet = Math.Round(e.BetragUmgerechnet.Value, 4, MidpointRounding.AwayFromZero);
+                    e.BetragUmgerechnet = Math.Round(e.BetragUmgerechnet.Value, 2, MidpointRounding.AwayFromZero);
                     dRepo.Speichern(e.ID, e.Betrag, e.Datum, e.WertpapierID, e.Waehrung, e.BetragUmgerechnet);
                 }
                 

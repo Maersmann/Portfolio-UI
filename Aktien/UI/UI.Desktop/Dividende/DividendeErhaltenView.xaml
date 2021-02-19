@@ -11,7 +11,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              WindowStartupLocation="CenterScreen"
              mc:Ignorable="d"
-             DataContext="{Binding DividendeErhalten ,Source={StaticResource Locator}}" Unloaded="Window_Unloaded" Width="303.069" Height="303.973">
+             DataContext="{Binding DividendeErhalten ,Source={StaticResource Locator}}" Unloaded="Window_Unloaded" Width="500" Height="auto" SizeToContent="Height">
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closed">
@@ -20,29 +20,47 @@
     </i:Interaction.Triggers>
     <Grid>
 
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="6*"/>
+            <ColumnDefinition Width="4*"/>
+        </Grid.ColumnDefinitions>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="25px" />
             <RowDefinition Height="*" />
+            <RowDefinition Name="rowToHide">
+                <RowDefinition.Style>
+                    <Style TargetType="{x:Type RowDefinition}">
+                        <Setter Property="Height" Value="auto" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding WechsellkursHasValue}" Value="False">
+                                <Setter Property="Height" Value="0" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </RowDefinition.Style>
+            </RowDefinition>
             <RowDefinition Height="45px" />
         </Grid.RowDefinitions>
 
 
-        <materialDesign:Card Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushHeaderBG}}"   >
+        <materialDesign:Card Grid.Row="0" Grid.ColumnSpan="2" Background="{Binding Mode=OneWay, Source={StaticResource brushHeaderBG}}"   >
             <Label HorizontalAlignment="Center" Width="auto" >Informationen erhaltene Dividende</Label>
         </materialDesign:Card>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Grid.Column="0" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="1.5*" />
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
+                <RowDefinition Height="50px"/>
+                <RowDefinition Height="40px" />
+                <RowDefinition Height="40px" />
+                <RowDefinition Height="40px" />
+                <RowDefinition Height="40px" />
             </Grid.RowDefinitions>
+
 
             <Grid Grid.Row="0" Grid.ColumnSpan="2" Background="{Binding Mode=OneWay, Source={StaticResource brushStammdatenBereich}}"/>
 
@@ -129,14 +147,97 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </TextBox>
+        </Grid>
+
+        <Grid Grid.Row="2" Grid.Column="0" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40px" />
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Rundung</Label>
+
+            <ComboBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  Width="100" ItemsSource="{Binding RundungTypes}" SelectedItem="{Binding RundungTyp}" />
+           
 
         </Grid>
 
-        <materialDesign:Card Grid.Row="2"  >
+        <materialDesign:Card Grid.Row="3" Grid.ColumnSpan="2"  >
             <DockPanel  LastChildFill="False" >
                 <Button Grid.Row ="1" DockPanel.Dock="Right" Margin="5" HorizontalAlignment="Right" Width="100"  Command="{Binding SaveCommand, Mode=OneWay}"  Style="{DynamicResource MaterialDesignToolButton}" >Speichern</Button>
             </DockPanel>
         </materialDesign:Card>
 
+        <Grid Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Background="{Binding Mode=OneWay, Source={StaticResource brushUebersicht}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30px" />
+                <RowDefinition Height="25px" />
+                <RowDefinition Height="30px" />
+                <RowDefinition Height="25px" />
+                <RowDefinition>
+                    <RowDefinition.Style>
+                        <Style TargetType="{x:Type RowDefinition}">
+                            <Setter Property="Height" Value="30px" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding WechsellkursHasValue}" Value="False">
+                                    <Setter Property="Height" Value="0" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
+                <RowDefinition >
+                    <RowDefinition.Style>
+                        <Style TargetType="{x:Type RowDefinition}">
+                            <Setter Property="Height" Value="25px" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding WechsellkursHasValue}" Value="False">
+                                    <Setter Property="Height" Value="0" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
+                <RowDefinition >
+                    <RowDefinition.Style>
+                        <Style TargetType="{x:Type RowDefinition}">
+                            <Setter Property="Height" Value="30px" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding WechsellkursHasValue}" Value="False">
+                                    <Setter Property="Height" Value="0" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
+                <RowDefinition >
+                    <RowDefinition.Style>
+                        <Style TargetType="{x:Type RowDefinition}">
+                            <Setter Property="Height" Value="25px" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding WechsellkursHasValue}" Value="False">
+                                    <Setter Property="Height" Value="0" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Brutto Betrag</Label>
+            <Label Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" >Netto Betrag</Label>
+            
+            <Label Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" >Ermittelter Netto Betrag (€)</Label>
+            <Label Grid.Row="6" HorizontalAlignment="Center" VerticalAlignment="Center" >Erhaltener Netto Betrag (€)</Label>
+
+            <TextBox Grid.Row="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding GesamtBrutto, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2,ConverterCulture='de-DE' }" TextAlignment="Center"  />
+            <TextBox Grid.Row="3" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding GesamtNetto, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2,ConverterCulture='de-DE' }"  TextAlignment="Center" />
+
+            <TextBox Grid.Row="5" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding GesamtNettoUmgerechnetUngerundet, Mode=OneWay, UpdateSourceTrigger=PropertyChanged,  StringFormat=N5,ConverterCulture='de-DE' }" TextAlignment="Center"  />
+            <TextBox Grid.Row="7" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding GesamtNettoUmgerechnet, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2,ConverterCulture='de-DE' }" TextAlignment="Center"  />
+        </Grid>
+        
     </Grid>
 </src:StammdatenView>

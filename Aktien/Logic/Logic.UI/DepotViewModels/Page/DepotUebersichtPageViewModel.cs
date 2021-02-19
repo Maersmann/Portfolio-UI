@@ -25,7 +25,7 @@ namespace Aktien.Logic.UI.DepotViewModels.Page
 
         private void ExecuteShowOrderHistoryViewCommand()
         {
-            Messenger.Default.Send<OpenDetailViewMessage>(new OpenDetailViewMessage { ViewType = Data.Types.ViewType.viewAktieOrderUebersicht });
+            Messenger.Default.Send<OpenDetailViewMessage>(new OpenDetailViewMessage { ViewType = Data.Types.ViewType.viewOrderUebersicht });
         }
 
         public ICommand ShowDividendenViewCommand { get; set; }

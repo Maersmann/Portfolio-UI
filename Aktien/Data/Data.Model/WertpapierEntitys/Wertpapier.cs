@@ -1,4 +1,4 @@
-﻿using Aktien.Data.Types;
+﻿using Aktien.Data.Types.WertpapierTypes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -21,9 +21,9 @@ namespace Aktien.Data.Model.WertpapierEntitys
 
         [EnumDataType(typeof(WertpapierTypes))]
         public WertpapierTypes WertpapierTyp { get; set; }
-
         public List<Dividende> Dividenden { get; set; }
         public List<DividendeErhalten> ErhalteneDividenden { get; set; }
         public List<OrderHistory> OrderHistories { get; set; }
+        public virtual ETFInfo ETFInfo { get; set; }
     }
 }

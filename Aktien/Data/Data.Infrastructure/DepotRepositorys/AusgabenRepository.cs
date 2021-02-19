@@ -22,7 +22,7 @@ namespace Aktien.Data.Infrastructure.DepotRepositorys
                 Entity = repo.Ausgaben.Find(inID.Value);
 
             Entity.Art = inTyp;
-            Entity.Betrag = Math.Round(inBetrag, 4, MidpointRounding.AwayFromZero);
+            Entity.Betrag = Math.Round(inBetrag, 2, MidpointRounding.AwayFromZero);
             Entity.Datum = inDatum;
             Entity.DepotID = inDepotID;
             Entity.HerkunftID = inHerkunftID;
@@ -44,7 +44,7 @@ namespace Aktien.Data.Infrastructure.DepotRepositorys
             if (inAusgabe.ID == 0)
                 repo.Ausgaben.Add(inAusgabe);
 
-            inAusgabe.Betrag = Math.Round(inAusgabe.Betrag, 4, MidpointRounding.AwayFromZero);
+            inAusgabe.Betrag = Math.Round(inAusgabe.Betrag, 2, MidpointRounding.AwayFromZero);
 
             repo.SaveChanges();
         }
@@ -52,6 +52,12 @@ namespace Aktien.Data.Infrastructure.DepotRepositorys
         public void Entfernen(Ausgabe inAusgabe)
         {
             repo.Ausgaben.Remove(inAusgabe);
+            repo.SaveChanges();
+        }
+
+        public void EntferneAlle()
+        {
+            repo.Ausgaben.RemoveRange(repo.Ausgaben);
             repo.SaveChanges();
         }
 

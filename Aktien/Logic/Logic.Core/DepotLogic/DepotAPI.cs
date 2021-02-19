@@ -2,8 +2,8 @@
 using Aktien.Data.Infrastructure.DepotRepositorys;
 using Aktien.Data.Model.WertpapierEntitys;
 using Aktien.Data.Model.DepotEntitys;
-using Aktien.Data.Types;
-using Aktien.Logic.Core.Depot.Classes;
+using Aktien.Data.Types.WertpapierTypes;
+using Aktien.Logic.Core.DepotLogic.Classes;
 using Aktien.Logic.Core.DividendeLogic.Classes;
 using System;
 using System.Collections.Generic;
@@ -12,17 +12,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Aktien.Logic.Core.DepotLogic.Exceptions;
-using Aktien.Data.Model.DepotModels;
 using Aktien.Data.Types.DepotTypes;
 using System.Globalization;
+using Aktien.Logic.Core.DepotLogic.Models;
+using Aktien.Logic.Core.WertpapierLogic.Exceptions;
 
 namespace Aktien.Logic.Core.Depot
 {
     public class DepotAPI
     {
         
-        public void WertpapierGekauft(double inPreis, double? inFremdkosten, DateTime inDatum, int inWertpapierID, Double inAnzahl, Data.Types.KaufTypes inKauftyp, Data.Types.OrderTypes inOrderTyp)
+        public void WertpapierGekauft(double inPreis, double? inFremdkosten, DateTime inDatum, int inWertpapierID, Double inAnzahl, KaufTypes inKauftyp, OrderTypes inOrderTyp, Double? inGesamtbetrag)
         {
+            if (new OrderHistoryRepository().IstNeuereOrderVorhanden(inWertpapierID, inDatum)) throw new NeuereOrderVorhandenException();
+
+            if (inGesamtbetrag.HasValue)
+                inPreis = Math.Round(inGesamtbetrag.Value / inAnzahl, 3, MidpointRounding.AwayFromZero);
+
             var orderHistory = new OrderHistory { WertpapierID = inWertpapierID, Preis = inPreis, Orderdatum = inDatum, Anzahl = inAnzahl, Fremdkostenzuschlag = inFremdkosten, KaufartTyp = inKauftyp, OrderartTyp = inOrderTyp, BuySell = BuySell.Buy }; 
             new OrderHistoryRepository().Speichern(orderHistory);
 
@@ -36,6 +42,8 @@ namespace Aktien.Logic.Core.Depot
             var AlteAnzahl = depotAktie.Anzahl;
 
             depotAktie.Anzahl +=inAnzahl;
+
+            
 
             depotAktie.BuyIn = new KaufBerechnungen().BuyInAktieGekauft(depotAktie.BuyIn, AlteAnzahl, depotAktie.Anzahl, inPreis, inAnzahl, inFremdkosten);
             DepotAktieRepo.Speichern(depotAktie.ID, depotAktie.Anzahl, depotAktie.BuyIn, depotAktie.WertpapierID, depotAktie.DepotID);
@@ -69,8 +77,13 @@ namespace Aktien.Logic.Core.Depot
             OrderRepo.Entfernen(Order);
         }
 
-        public void WertpapierVerkauft(double inPreis, double? inFremdkosten, DateTime inDatum, int inWertpapierID, Double inAnzahl, KaufTypes inKauftyp, OrderTypes inOrderTyp)
+        public void WertpapierVerkauft(double inPreis, double? inFremdkosten, DateTime inDatum, int inWertpapierID, Double inAnzahl, KaufTypes inKauftyp, OrderTypes inOrderTyp, Double? inGesamtbetrag)
         {
+            if (new OrderHistoryRepository().IstNeuereOrderVorhanden(inWertpapierID, inDatum)) throw new NeuereOrderVorhandenException();
+
+            if (inGesamtbetrag.HasValue)
+                inPreis = Math.Round(inGesamtbetrag.Value / inAnzahl, 3, MidpointRounding.AwayFromZero);
+
             var DepotAktieRepo = new DepotWertpapierRepository();
             var DepotAktie = DepotAktieRepo.LadeByWertpapierID(inWertpapierID);
 
@@ -103,14 +116,19 @@ namespace Aktien.Logic.Core.Depot
 
             var Order = OrderRepo.LadeByID(OrderID);
             var DepotAktie = DepotAktieRepo.LadeByWertpapierID(Order.WertpapierID);
-            
-            DepotAktie.Anzahl += Order.Anzahl;
 
-            DepotAktieRepo.Speichern(DepotAktie.ID, DepotAktie.Anzahl, DepotAktie.BuyIn, DepotAktie.WertpapierID, DepotAktie.DepotID);
+            if (DepotAktie != null)
+            {
+                DepotAktie.Anzahl += Order.Anzahl;
+                DepotAktieRepo.Speichern(DepotAktie.ID, DepotAktie.Anzahl, DepotAktie.BuyIn, DepotAktie.WertpapierID, DepotAktie.DepotID);
+            }
 
             EntferneNeueEinnahme(null, OrderID, EinnahmeArtTypes.Verkauf);
             OrderRepo.Entfernen(Order);
-            
+
+            if(DepotAktie == null)
+                new DepotWertpapierFunctions().NeuBerechnen(Order.WertpapierID);
+
         }
        
         public ObservableCollection<DepotWertpapier> LadeAlleVorhandeneImDepot()
@@ -123,15 +141,9 @@ namespace Aktien.Logic.Core.Depot
             var returnList = new ObservableCollection<DepotGesamtUebersichtItem>();
             new WertpapierRepository().LadeAlle();
             new DepotWertpapierRepository().LoadAll().ToList().ForEach(item => returnList.Add( new DepotGesamtUebersichtItem { Anzahl = item.Anzahl, BuyIn = item.BuyIn, DepotWertpapierID = item.ID, 
-                                                                                                                           WertpapierID = item.WertpapierID, WertpapierTyp = item.Wertpapier.WertpapierTyp,
-                                                                                                                           Bezeichnung = item.Wertpapier.Name }));
+                                                                                                                               WertpapierID = item.WertpapierID, WertpapierTyp = item.Wertpapier.WertpapierTyp,
+                                                                                                                               Bezeichnung = item.Wertpapier.Name }));
             return returnList;
-        }
-
-        public void NeueDividendeErhalten(int inWertpapierID, int inDividendeID, DateTime inDatum, Double? inQuellensteuer, Double? inUmrechnungskurs, int inBestand)
-        {
-            var Erhaltenedividende = new DividendeErhalten { WertpapierID = inWertpapierID, DividendeID = inDividendeID, Bestand = inBestand, Datum = inDatum, Quellensteuer = inQuellensteuer, Umrechnungskurs = inUmrechnungskurs };
-            NeueDividendeErhalten(Erhaltenedividende);
         }
 
         public void NeueDividendeErhalten(DividendeErhalten inDividendeErhalten)
@@ -143,19 +155,26 @@ namespace Aktien.Logic.Core.Depot
 
             if( (!dividende.Waehrung.Equals(Waehrungen.Euro)) && ( !dividende.BetragUmgerechnet.HasValue ))
             {
-                dividende.BetragUmgerechnet = new DividendenBerechnungen().BetragUmgerechnet(dividende.Betrag, inDividendeErhalten.Umrechnungskurs);
+                dividende.BetragUmgerechnet = new DividendenBerechnungen().BetragUmgerechnet(dividende.Betrag, inDividendeErhalten.Umrechnungskurs,true, inDividendeErhalten.RundungArt);
                 new DividendeRepository().Speichern(dividende.ID,dividende.Betrag, dividende.Datum, dividende.WertpapierID, dividende.Waehrung, dividende.BetragUmgerechnet);
             }
 
-            var EuroBetrag = inDividendeErhalten.GesamtNetto;
-            if (!dividende.Waehrung.Equals(Waehrungen.Euro))
-            {
-                EuroBetrag = new DividendenBerechnungen().BetragUmgerechnet(EuroBetrag, inDividendeErhalten.Umrechnungskurs);
+            var Eurobetrag = inDividendeErhalten.GesamtNetto;
+            if (!inDividendeErhalten.GesamtNettoUmgerechnetErhalten.HasValue)
+            {      
+                if (!dividende.Waehrung.Equals(Waehrungen.Euro))
+                {
+                    inDividendeErhalten.GesamtNettoUmgerechnetErhalten = new DividendenBerechnungen().BetragUmgerechnet(inDividendeErhalten.GesamtNetto, inDividendeErhalten.Umrechnungskurs,true, inDividendeErhalten.RundungArt);
+                    inDividendeErhalten.GesamtNettoUmgerechnetErmittelt = new DividendenBerechnungen().BetragUmgerechnet(inDividendeErhalten.GesamtNetto, inDividendeErhalten.Umrechnungskurs, false, inDividendeErhalten.RundungArt);
+                    Eurobetrag = inDividendeErhalten.GesamtNettoUmgerechnetErhalten.Value;
+                }
             }
+            else
+                Eurobetrag = inDividendeErhalten.GesamtNettoUmgerechnetErhalten.Value;
 
             new DividendeErhaltenRepository().Speichern(inDividendeErhalten);
 
-            NeueEinnahme(EuroBetrag, inDividendeErhalten.Datum, EinnahmeArtTypes.Dividende, 1, inDividendeErhalten.ID, "");
+            NeueEinnahme(Eurobetrag, inDividendeErhalten.Datum, EinnahmeArtTypes.Dividende, 1, inDividendeErhalten.ID, "");
         }
   
         public void AktualisiereDividendeErhalten(DividendeErhalten inDividendeErhalten)
@@ -167,18 +186,19 @@ namespace Aktien.Logic.Core.Depot
 
             if ((!dividende.Waehrung.Equals(Waehrungen.Euro)))
             {
-                dividende.BetragUmgerechnet = new DividendenBerechnungen().BetragUmgerechnet(dividende.Betrag, inDividendeErhalten.Umrechnungskurs);
+                dividende.BetragUmgerechnet = new DividendenBerechnungen().BetragUmgerechnet(dividende.Betrag, inDividendeErhalten.Umrechnungskurs,true, inDividendeErhalten.RundungArt);
                 new DividendeRepository().Speichern(dividende.ID, dividende.Betrag, dividende.Datum, dividende.WertpapierID, dividende.Waehrung, dividende.BetragUmgerechnet);
             }
 
             var EuroBetrag = inDividendeErhalten.GesamtNetto;
             if (!dividende.Waehrung.Equals(Waehrungen.Euro))
             {
-                EuroBetrag = new DividendenBerechnungen().BetragUmgerechnet(EuroBetrag, inDividendeErhalten.Umrechnungskurs);
+                EuroBetrag = new DividendenBerechnungen().BetragUmgerechnet(EuroBetrag, inDividendeErhalten.Umrechnungskurs,true, inDividendeErhalten.RundungArt);
             }
 
             AktualisiereEinnahme(null, inDividendeErhalten.ID, EuroBetrag, inDividendeErhalten.Datum, EinnahmeArtTypes.Dividende);
-            new DividendeErhaltenRepository().Speichern(inDividendeErhalten.ID, inDividendeErhalten.Datum, inDividendeErhalten.Quellensteuer, inDividendeErhalten.Umrechnungskurs, inDividendeErhalten.GesamtBrutto, inDividendeErhalten.GesamtNetto, inDividendeErhalten.Bestand, inDividendeErhalten.DividendeID, inDividendeErhalten.WertpapierID);
+            new DividendeErhaltenRepository().Speichern(inDividendeErhalten.ID, inDividendeErhalten.Datum, inDividendeErhalten.Quellensteuer, inDividendeErhalten.Umrechnungskurs, inDividendeErhalten.GesamtBrutto, inDividendeErhalten.GesamtNetto, inDividendeErhalten.Bestand, 
+                                                        inDividendeErhalten.DividendeID, inDividendeErhalten.WertpapierID, inDividendeErhalten.RundungArt, inDividendeErhalten.GesamtNettoUmgerechnetErhalten, inDividendeErhalten.GesamtNettoUmgerechnetErmittelt);
         }
     
         public bool WertpapierImDepotVorhanden(int inWertpapierID )

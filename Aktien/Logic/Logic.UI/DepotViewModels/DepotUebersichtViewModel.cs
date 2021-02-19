@@ -1,7 +1,8 @@
 ﻿using Aktien.Data.Model.DepotEntitys;
-using Aktien.Data.Model.DepotModels;
 using Aktien.Data.Types;
+using Aktien.Data.Types.WertpapierTypes;
 using Aktien.Logic.Core.Depot;
+using Aktien.Logic.Core.DepotLogic.Models;
 using Aktien.Logic.Messages.Base;
 using Aktien.Logic.Messages.DividendeMessages;
 using Aktien.Logic.Messages.WertpapierMessages;
@@ -36,6 +37,7 @@ namespace Aktien.Logic.UI.DepotViewModels
             var api = new DepotAPI();
             itemList = api.LadeFuerGesamtUebersicht();
             this.RaisePropertyChanged("ItemList");
+            Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = 0, WertpapierTyp = WertpapierTypes.Aktie }, messageToken);
         }
 
 
@@ -53,7 +55,7 @@ namespace Aktien.Logic.UI.DepotViewModels
                 this.RaisePropertyChanged();
                 if (selectedItem != null)
                 {
-                    Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = selectedItem.WertpapierID }, messageToken);
+                    Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = selectedItem.WertpapierID, WertpapierTyp = selectedItem.WertpapierTyp }, messageToken);
                 }
             }
         }

@@ -19,18 +19,13 @@ namespace Aktien.Logic.Core
 
             var konv = new KonvertierungRepository();
 
-            if (!konv.IstVorhanden(KonvertierungTypes.konvertierungRunden))
+            if (!konv.IstVorhanden(KonvertierungTypes.konvertierungEinAusgabenUndRunden))
             {
                 new KonvertierungRunden().Start();
-                konv.Speichern(KonvertierungTypes.konvertierungRunden);
-            }
-
-
-            if (!konv.IstVorhanden(KonvertierungTypes.konvertierungEinAusgaben))
-            {
                 new KonvertierungEinnahmenAusgaben().Start();
-                konv.Speichern(KonvertierungTypes.konvertierungEinAusgaben);
+                konv.Speichern(KonvertierungTypes.konvertierungEinAusgabenUndRunden);
             }
+            
 
         }
     }

@@ -1,7 +1,7 @@
 ﻿using Aktien.Data.Infrastructure.AktienRepositorys;
 using Aktien.Data.Infrastructure.DepotRepositorys;
 using Aktien.Data.Model.WertpapierEntitys;
-using Aktien.Data.Types;
+using Aktien.Data.Types.WertpapierTypes;
 using Aktien.Logic.Core.WertpapierLogic.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -19,12 +19,16 @@ namespace Aktien.Logic.Core.WertpapierLogic
             if (IstAkieVorhanden(inWertpapier.ISIN))
                 throw new WertpapierSchonVorhandenException();
 
-            new WertpapierRepository().Speichern(null, inWertpapier.Name, inWertpapier.ISIN, inWertpapier.WKN, WertpapierTypes.ETF);
+            inWertpapier.WertpapierTyp = WertpapierTypes.ETF;
+
+            new WertpapierRepository().Speichern(inWertpapier);
+            new ETFInfoRepository().Speichern(null, inWertpapier.ETFInfo.Emittent, inWertpapier.ETFInfo.ProfitTyp, inWertpapier.ID);
         }
 
         public void Aktualisieren(Wertpapier inWertpapier)
         {
             new WertpapierRepository().Speichern(inWertpapier.ID, inWertpapier.Name, inWertpapier.ISIN, inWertpapier.WKN, WertpapierTypes.ETF);
+            new ETFInfoRepository().Speichern(inWertpapier.ETFInfo.ID, inWertpapier.ETFInfo.Emittent, inWertpapier.ETFInfo.ProfitTyp, inWertpapier.ID);
         }
 
         public bool IstAkieVorhanden(String inISIN)

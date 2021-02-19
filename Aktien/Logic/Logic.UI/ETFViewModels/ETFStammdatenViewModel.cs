@@ -1,5 +1,6 @@
 ﻿using Aktien.Data.Model.WertpapierEntitys;
 using Aktien.Data.Types;
+using Aktien.Data.Types.WertpapierTypes;
 using Aktien.Logic.Core.Validierung;
 using Aktien.Logic.Core.WertpapierLogic;
 using Aktien.Logic.Core.WertpapierLogic.Exceptions;
@@ -21,14 +22,8 @@ namespace Aktien.Logic.UI.ETFViewModels
 
         public ETFStammdatenViewModel() : base()
         {
-            etf = new Wertpapier();
             SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
-
-            ISIN = "";
-            Name = "";
-            WKN = "";
-
-            state = State.Neu;
+            Cleanup();
         }
 
 
@@ -39,7 +34,7 @@ namespace Aktien.Logic.UI.ETFViewModels
             {
                 try
                 {
-                    api.Speichern(new Wertpapier() { ISIN = etf.ISIN, Name = etf.Name, WKN = etf.WKN });
+                    api.Speichern(new Wertpapier() { ISIN = etf.ISIN, Name = etf.Name, WKN = etf.WKN, ETFInfo = new ETFInfo { Emittent = etf.ETFInfo.Emittent, ProfitTyp = etf.ETFInfo.ProfitTyp } });
                     Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "ETF gespeichert." }, "ETFStammdaten");
                 }
                 catch (WertpapierSchonVorhandenException)
@@ -62,12 +57,20 @@ namespace Aktien.Logic.UI.ETFViewModels
             var Loadaktie = new EtfAPI().LadeAnhandID(inID);
             etf = new Wertpapier
             {
-                ID = Loadaktie.ID
+                ID = Loadaktie.ID,
+                ETFInfo = new ETFInfo()
             };
-
+            if (Loadaktie.ETFInfo != null)
+            {
+                ProfitTyp = Loadaktie.ETFInfo.ProfitTyp;
+                ErmittentTyp = Loadaktie.ETFInfo.Emittent; 
+                etf.ETFInfo.ID = Loadaktie.ETFInfo.ID;
+            }
             WKN = Loadaktie.WKN;
             Name = Loadaktie.Name;
             ISIN = Loadaktie.ISIN;
+
+
             LoadAktie = false;
             state = State.Bearbeiten;
             this.RaisePropertyChanged("ISIN_isEnabled");
@@ -122,6 +125,47 @@ namespace Aktien.Logic.UI.ETFViewModels
                 }
             }
         }
+
+        public IEnumerable<ProfitTypes> ProfitTypes
+        {
+            get
+            {
+                return Enum.GetValues(typeof(ProfitTypes)).Cast<ProfitTypes>();
+            }
+        }
+        public ProfitTypes ProfitTyp
+        {
+            get { return etf.ETFInfo.ProfitTyp; }
+            set
+            {
+                if (LoadAktie || (this.etf.ETFInfo.ProfitTyp != value))
+                {
+                    this.etf.ETFInfo.ProfitTyp = value;
+                    this.RaisePropertyChanged();
+                }
+            }
+        }
+
+        public IEnumerable<ErmittentTypes> ErmittentTypes
+        {
+            get
+            {
+                return Enum.GetValues(typeof(ErmittentTypes)).Cast<ErmittentTypes>();
+            }
+        }
+        public ErmittentTypes ErmittentTyp
+        {
+            get { return etf.ETFInfo.Emittent; }
+            set
+            {
+                if (LoadAktie || (this.etf.ETFInfo.Emittent != value))
+                {
+                    this.etf.ETFInfo.Emittent = value;
+                    this.RaisePropertyChanged();
+                }
+            }
+        }
+
         #endregion
 
         #region Validate
@@ -150,9 +194,12 @@ namespace Aktien.Logic.UI.ETFViewModels
         {
             state = State.Neu;
             etf = new Wertpapier();
+            etf.ETFInfo = new ETFInfo();
             ISIN = "";
             Name = "";
             WKN = "";
+            ProfitTyp = Data.Types.WertpapierTypes.ProfitTypes.Thesaurierend;
+            ErmittentTyp = Data.Types.WertpapierTypes.ErmittentTypes.iShares;
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aktien.Data.Types
+namespace Aktien.Data.Types.WertpapierTypes
 {
     [TypeConverter(typeof(EnumDescriptionTypeConverter))]
     public enum KaufTypes

@@ -1,4 +1,4 @@
-﻿using Aktien.Data.Types;
+﻿using Aktien.Data.Types.WertpapierTypes;
 using GalaSoft.MvvmLight.Messaging;
 using Aktien.Logic.Core.DividendeLogic;
 using Aktien.Logic.Core.Validierung;
@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Aktien.Data.Model.WertpapierEntitys;
+using Aktien.Data.Types;
 
 namespace Aktien.Logic.UI.DividendeViewModels
 {
@@ -27,7 +28,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
             Datum = DateTime.Now;
             state = State.Neu;
             Betrag = null;
-            Waehrung = Data.Types.Waehrungen.Euro;
+            Waehrung = Data.Types.WertpapierTypes.Waehrungen.Euro;
         }
 
         protected override void ExecuteSaveCommand()

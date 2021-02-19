@@ -1,6 +1,6 @@
 ﻿using Aktien.Data.Infrastructure.Base;
 using Aktien.Data.Model.WertpapierEntitys;
-using Aktien.Data.Types;
+using Aktien.Data.Types.WertpapierTypes;
 using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;
@@ -25,7 +25,7 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
             dividende.Datum = inDatum;
             dividende.Waehrung = inWaehrung;
             if (inBetragUmgerechnet.HasValue)
-                dividende.BetragUmgerechnet = Math.Round(inBetragUmgerechnet.GetValueOrDefault(0), 4, MidpointRounding.AwayFromZero);
+                dividende.BetragUmgerechnet = Math.Round(inBetragUmgerechnet.GetValueOrDefault(0), 2, MidpointRounding.AwayFromZero);
 
             if (inWertpapierID.HasValue)
                 dividende.WertpapierID = inWertpapierID.Value;

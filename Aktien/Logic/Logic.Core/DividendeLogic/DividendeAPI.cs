@@ -1,6 +1,6 @@
 ﻿using Aktien.Data.Infrastructure.AktienRepositorys;
 using Aktien.Data.Model.WertpapierEntitys;
-using Aktien.Data.Types;
+using Aktien.Data.Types.WertpapierTypes;
 using Aktien.Logic.Core.Depot;
 using System;
 using System.Collections.Generic;

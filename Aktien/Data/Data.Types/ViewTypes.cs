@@ -11,7 +11,7 @@ namespace Aktien.Data.Types
             viewAktienUebersicht,
             viewAktieGekauft,
             viewDepotUebersicht,
-            viewAktieOrderUebersicht,
+            viewOrderUebersicht,
             viewDividendeUebersicht,
             viewETFUebersicht,
             viewWertpapierUebersicht,

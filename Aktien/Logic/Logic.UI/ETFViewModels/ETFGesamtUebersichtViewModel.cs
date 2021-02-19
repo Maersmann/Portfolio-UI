@@ -57,7 +57,7 @@ namespace Aktien.Logic.UI.ETFViewModels
                 ((DelegateCommand)EntfernenCommand).RaiseCanExecuteChanged();
                 if (selectedETF != null)
                 {
-                    Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = selectedETF.ID }, messageToken);
+                    Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = selectedETF.ID, WertpapierTyp = selectedETF.WertpapierTyp }, messageToken);
                 }
             }
         }
@@ -97,7 +97,7 @@ namespace Aktien.Logic.UI.ETFViewModels
                 return;
             }
 
-            Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = 0 });
+            Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = 0, WertpapierTyp = selectedETF.WertpapierTyp }, messageToken);
             alleETF.Remove(SelectedETF);
             this.RaisePropertyChanged("AlleAktien");
             Messenger.Default.Send<DeleteEtfErfolgreichMessage>(new DeleteEtfErfolgreichMessage());

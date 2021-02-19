@@ -9,6 +9,9 @@
     <Color R="190" G="190" B="190" A="255" x:Key="colorStammdatenBereich" />
     <SolidColorBrush Color="{StaticResource colorStammdatenBereich}" x:Key="brushStammdatenBereich" />
 
+    <Color R="135" G="206" B="250" A="255" x:Key="colorUebersicht" />
+    <SolidColorBrush Color="{StaticResource colorUebersicht}" x:Key="brushUebersicht" />
+
     <Style TargetType="GroupBox" x:Key="grpBigBlock">
         <Setter Property="Background" Value="White" />
         <Setter Property="BorderThickness" Value="0" />

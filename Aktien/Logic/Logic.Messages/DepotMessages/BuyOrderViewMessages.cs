@@ -1,4 +1,4 @@
-﻿using Aktien.Data.Types;
+﻿using Aktien.Data.Types.WertpapierTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;

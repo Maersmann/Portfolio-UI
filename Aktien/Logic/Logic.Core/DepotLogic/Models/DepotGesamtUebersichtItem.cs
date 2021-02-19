@@ -1,9 +1,9 @@
-﻿using Aktien.Data.Types;
+﻿using Aktien.Data.Types.WertpapierTypes;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Aktien.Data.Model.DepotModels
+namespace Aktien.Logic.Core.DepotLogic.Models
 {
     public class DepotGesamtUebersichtItem
     {

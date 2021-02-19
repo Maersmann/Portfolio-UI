@@ -1,8 +1,10 @@
 ﻿using Aktien.Data.Model.WertpapierEntitys;
 using Aktien.Data.Types;
+using Aktien.Data.Types.WertpapierTypes;
 using Aktien.Logic.Core.Depot;
 using Aktien.Logic.Core.WertpapierLogic;
 using Aktien.Logic.Messages.AktieMessages;
+using Aktien.Logic.Messages.Base;
 using Aktien.Logic.Messages.DepotMessages;
 using Aktien.Logic.Messages.WertpapierMessages;
 using Aktien.Logic.UI.BaseViewModels;
@@ -19,11 +21,8 @@ using System.Windows.Input;
 
 namespace Aktien.Logic.UI.WertpapierViewModels
 {
-    public class OrderUebersichtViewModel : ViewModelBasis
+    public class OrderUebersichtViewModel : ViewModelUebersicht<OrderHistory>
     {
-        private ObservableCollection<OrderHistory> orderHistories;
-
-        private OrderHistory selectedOrderHistory;
 
         private int wertpapierID;
         private WertpapierTypes wertpapierTypes;
@@ -37,6 +36,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
             AktieGekauftCommand = new DelegateCommand(this.ExecuteAktieGekauftCommand, this.CanExecuteCommand);
             AktieVerkauftCommand = new DelegateCommand(this.ExecuteAktieVerkauftCommand, this.CanExecuteAktieVerkaufCommand);
             EntfernenCommand = new DelegateCommand(this.ExecuteEntfernenCommand, this.CanSelectedItemExecuteCommand);
+            RegisterAktualisereViewMessage(ViewType.viewOrderUebersicht);
         }
 
         public string MessageToken
@@ -51,17 +51,23 @@ namespace Aktien.Logic.UI.WertpapierViewModels
 
         private void ReceiveLoadAktieMessage(LoadWertpapierOrderMessage m)
         {
+            wertpapierTypes = m.WertpapierTyp;
             LoadData(m.WertpapierID);
+        }
+
+        public override void LoadData()
+        {
+            LoadData(wertpapierID);
         }
 
         public void LoadData(int inWertpapierID)
         {
             wertpapierID = inWertpapierID;
-            orderHistories = new AktieAPI().LadeAlleOrdersDerAktie(wertpapierID);
-            wertpapierTypes = new AktieAPI().LadeAnhandID(wertpapierID).WertpapierTyp;
-            this.RaisePropertyChanged("OrderHistories");
+            itemList = new AktieAPI().LadeAlleOrdersDerAktie(wertpapierID);
+            this.RaisePropertyChanged("ItemList");
             ((DelegateCommand)AktieGekauftCommand).RaiseCanExecuteChanged();
             ((DelegateCommand)AktieVerkauftCommand).RaiseCanExecuteChanged();
+
         }
 
         #region Bindings
@@ -71,26 +77,20 @@ namespace Aktien.Logic.UI.WertpapierViewModels
         public ICommand BearbeitenCommand { get; set; }
         public ICommand EntfernenCommand{get;set;}
 
-        public OrderHistory SelectedOrderHistory
+        public override OrderHistory SelectedItem
         {
             get
             {
-                return selectedOrderHistory;
+                return selectedItem;
             }
             set
             {
-                selectedOrderHistory = value;
+                selectedItem = value;
                 ((DelegateCommand)EntfernenCommand).RaiseCanExecuteChanged();
                 this.RaisePropertyChanged();
             }
         }
-        public IEnumerable<OrderHistory> OrderHistories
-        {
-            get
-            {
-                return orderHistories;
-            }
-        }
+
         #endregion
 
         #region Commands
@@ -104,17 +104,18 @@ namespace Aktien.Logic.UI.WertpapierViewModels
         }
         private void ExecuteEntfernenCommand()
         {
-            if (selectedOrderHistory.BuySell == BuySell.Buy)
+            if (selectedItem.BuySell == BuySell.Buy)
             {
-                new DepotAPI().EntferneGekauftenWertpapier(selectedOrderHistory.ID);
+                new DepotAPI().EntferneGekauftenWertpapier(selectedItem.ID);
             }
             else
             {
-                new DepotAPI().EntferneVerkauftenWertpapier(selectedOrderHistory.ID);
+                new DepotAPI().EntferneVerkauftenWertpapier(selectedItem.ID);
             }
             
-            orderHistories.Remove(selectedOrderHistory);
-            this.RaisePropertyChanged("SelectedOrderHistory");
+            itemList.Remove(selectedItem);
+            this.RaisePropertyChanged("SelectedItem");
+            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewDepotUebersicht);
         }
 
         private bool CanExecuteCommand()
@@ -123,7 +124,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
         }
         private bool CanSelectedItemExecuteCommand()
         {
-            return selectedOrderHistory != null;
+            return (selectedItem != null) && ( itemList.IndexOf(SelectedItem) == 0 );
         }
 
         private bool CanExecuteAktieVerkaufCommand()
