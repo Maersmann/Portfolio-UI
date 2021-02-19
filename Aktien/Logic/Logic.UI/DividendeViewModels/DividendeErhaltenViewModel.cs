@@ -3,6 +3,7 @@ using Aktien.Data.Types;
 using Aktien.Data.Types.DividendenTypes;
 using Aktien.Logic.Core.Depot;
 using Aktien.Logic.Core.DividendeLogic;
+using Aktien.Logic.Core.DividendeLogic.Classes;
 using Aktien.Logic.Core.Validierung;
 using Aktien.Logic.Messages.AuswahlMessages;
 using Aktien.Logic.Messages.Base;
@@ -24,6 +25,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
     {
         private DividendeErhalten dividendeErhalten;
         private string dividendetext;
+        private Double betrag;
 
         public DividendeErhaltenViewModel()
         {
@@ -38,6 +40,8 @@ namespace Aktien.Logic.UI.DividendeViewModels
             dividendetext = inDatum.ToString("d", fmt) + " (" + inBetrag.ToString("N2") + ")";
             this.RaisePropertyChanged("DividendeText");
             DividendeID = inID;
+            betrag = inBetrag;
+            BerechneGesamtWerte();
         }
 
         public void Bearbeiten(int inID)
@@ -57,7 +61,8 @@ namespace Aktien.Logic.UI.DividendeViewModels
             Datum = dividendeLoad.Datum;
             Quellensteuer = dividendeLoad.Quellensteuer;
             Wechselkurs = dividendeLoad.Umrechnungskurs;
-            DividendeID = dividendeLoad.DividendeID;
+            RundungTyp = dividendeLoad.RundungArt;
+            DividendeAusgewaehlt(dividendeLoad.Dividende.ID, dividendeLoad.Dividende.Betrag, dividendeLoad.Dividende.Datum);
             state = State.Bearbeiten;
         }
 
@@ -98,6 +103,21 @@ namespace Aktien.Logic.UI.DividendeViewModels
             dividendeErhalten.WertpapierID = inWertpapierID;
         }
 
+        public void BerechneGesamtWerte()
+        {
+            dividendeErhalten.GesamtBrutto = new DividendenBerechnungen().GesamtBrutto(betrag, dividendeErhalten.Bestand);
+            dividendeErhalten.GesamtNetto = new DividendenBerechnungen().GesamtNetto(dividendeErhalten.GesamtBrutto, dividendeErhalten.Quellensteuer.GetValueOrDefault(0));
+            this.RaisePropertyChanged("GesamtNetto");
+            this.RaisePropertyChanged("GesamtBrutto");
+            if (WechsellkursHasValue)
+            {
+                dividendeErhalten.GesamtNettoUmgerechnetErhalten = new DividendenBerechnungen().BetragUmgerechnet(dividendeErhalten.GesamtNetto, dividendeErhalten.Umrechnungskurs,true, dividendeErhalten.RundungArt);
+                dividendeErhalten.GesamtNettoUmgerechnetErmittelt = new DividendenBerechnungen().BetragUmgerechnet(dividendeErhalten.GesamtNetto, dividendeErhalten.Umrechnungskurs, false, dividendeErhalten.RundungArt);
+                this.RaisePropertyChanged("GesamtNettoUmgerechnet");
+                this.RaisePropertyChanged("GesamtNettoUmgerechnetUngerundet");
+            }
+        }
+
         #region Bindings
         public ICommand OpenAuswahlCommand { get; set; }
         public Double? Bestand
@@ -117,6 +137,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
                     this.dividendeErhalten.Bestand = value.GetValueOrDefault(-1);
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                    BerechneGesamtWerte();
                 }
             }
         }
@@ -151,6 +172,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
             {
                 if (this.dividendeErhalten.Quellensteuer != value)
                 {
+                    BerechneGesamtWerte();
                     this.dividendeErhalten.Quellensteuer = value;
                     this.RaisePropertyChanged();
                 }
@@ -180,25 +202,34 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         public DividendenRundungTypes RundungTyp
         {
-            get { return dividendeErhalten.RundundArt; }
+            get { return dividendeErhalten.RundungArt; }
             set
             {
-                if (LoadAktie || (this.dividendeErhalten.RundundArt != value))
+                if (LoadAktie || (this.dividendeErhalten.RundungArt != value))
                 {
-                    this.dividendeErhalten.RundundArt = value;
+                    this.dividendeErhalten.RundungArt = value;
                     this.RaisePropertyChanged();
+                    BerechneGesamtWerte();
                 }
             }
         }
 
+        public Double? GesamtBrutto
+        {
+            get { return dividendeErhalten.GesamtBrutto; }
+        }
+        public Double? GesamtNetto
+        {
+            get { return dividendeErhalten.GesamtNetto; }
+        }
         public Double? GesamtNettoUmgerechnet
         {
-            get { return dividendeErhalten.GesamtNettoUmgerechnet; }
+            get { return dividendeErhalten.GesamtNettoUmgerechnetErhalten.GetValueOrDefault(0); }
         }
 
         public Double? GesamtNettoUmgerechnetUngerundet
         {
-            get { return dividendeErhalten.GesamtNettoUmgerechnetUngerundet; }
+            get { return dividendeErhalten.GesamtNettoUmgerechnetErmittelt.GetValueOrDefault(0); }
         }
 
         public bool WechsellkursHasValue { get { return this.dividendeErhalten.Umrechnungskurs.GetValueOrDefault(0)>0; } }
@@ -247,6 +278,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
             Quellensteuer = null;
             Wechselkurs = null;
             RundungTyp = DividendenRundungTypes.Normal;
+            betrag = 0;
             this.RaisePropertyChanged();
         }
     }

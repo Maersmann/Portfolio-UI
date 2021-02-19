@@ -7,17 +7,17 @@ namespace Aktien.Data.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<double>(
-                name: "GesamtNettoUmgerechnet",
+                name: "GesamtNettoUmgerechnetErhalten",
                 table: "DividendeErhalten",
                 nullable: true);
 
             migrationBuilder.AddColumn<double>(
-                name: "GesamtNettoUmgerechnetUngerundet",
+                name: "GesamtNettoUmgerechnetErmittelt",
                 table: "DividendeErhalten",
                 nullable: true);
 
             migrationBuilder.AddColumn<int>(
-                name: "RundundArt",
+                name: "RundungArt",
                 table: "DividendeErhalten",
                 nullable: false,
                 defaultValue: 0);
@@ -26,15 +26,15 @@ namespace Aktien.Data.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "GesamtNettoUmgerechnet",
+                name: "GesamtNettoUmgerechnetErhalten",
                 table: "DividendeErhalten");
 
             migrationBuilder.DropColumn(
-                name: "GesamtNettoUmgerechnetUngerundet",
+                name: "GesamtNettoUmgerechnetErmittelt",
                 table: "DividendeErhalten");
 
             migrationBuilder.DropColumn(
-                name: "RundundArt",
+                name: "RundungArt",
                 table: "DividendeErhalten");
         }
     }

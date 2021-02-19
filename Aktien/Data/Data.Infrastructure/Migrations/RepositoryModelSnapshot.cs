@@ -198,16 +198,16 @@ namespace Aktien.Data.Infrastructure.Migrations
                     b.Property<double>("GesamtNetto")
                         .HasColumnType("double precision");
 
-                    b.Property<double?>("GesamtNettoUmgerechnet")
+                    b.Property<double?>("GesamtNettoUmgerechnetErhalten")
                         .HasColumnType("double precision");
 
-                    b.Property<double?>("GesamtNettoUmgerechnetUngerundet")
+                    b.Property<double?>("GesamtNettoUmgerechnetErmittelt")
                         .HasColumnType("double precision");
 
                     b.Property<double?>("Quellensteuer")
                         .HasColumnType("double precision");
 
-                    b.Property<int>("RundundArt")
+                    b.Property<int>("RundungArt")
                         .HasColumnType("integer");
 
                     b.Property<double?>("Umrechnungskurs")

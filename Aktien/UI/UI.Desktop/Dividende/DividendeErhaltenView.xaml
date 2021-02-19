@@ -226,17 +226,17 @@
                     </RowDefinition.Style>
                 </RowDefinition>
             </Grid.RowDefinitions>
-            <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Ermittelter Betrag</Label>
-            <Label Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" >Gerundeter Betrag</Label>
+            <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Brutto Betrag</Label>
+            <Label Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" >Netto Betrag</Label>
             
-            <Label Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" >Ermittelter Betrag (€)</Label>
-            <Label Grid.Row="6" HorizontalAlignment="Center" VerticalAlignment="Center" >Gerundeter Betrag (€)</Label>
+            <Label Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" >Ermittelter Netto Betrag (€)</Label>
+            <Label Grid.Row="6" HorizontalAlignment="Center" VerticalAlignment="Center" >Erhaltener Netto Betrag (€)</Label>
 
-            <TextBox Grid.Row="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding GesamtNettoUmgerechnetUngerundet, Mode=OneWay, UpdateSourceTrigger=PropertyChanged,  TargetNullValue='', StringFormat=N5,ConverterCulture='de-DE' }"  />
-            <TextBox Grid.Row="3" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding GesamtNettoUmgerechnet, Mode=OneWay, UpdateSourceTrigger=PropertyChanged,  TargetNullValue='', StringFormat=N5,ConverterCulture='de-DE' }"  />
+            <TextBox Grid.Row="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding GesamtBrutto, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2,ConverterCulture='de-DE' }" TextAlignment="Center"  />
+            <TextBox Grid.Row="3" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding GesamtNetto, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2,ConverterCulture='de-DE' }"  TextAlignment="Center" />
 
-            <TextBox Grid.Row="5" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding GesamtNettoUmgerechnetUngerundet, Mode=OneWay, UpdateSourceTrigger=PropertyChanged,  TargetNullValue='', StringFormat=N5,ConverterCulture='de-DE' }"  />
-            <TextBox Grid.Row="7" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding GesamtNettoUmgerechnet, Mode=OneWay, UpdateSourceTrigger=PropertyChanged,  TargetNullValue='', StringFormat=N5,ConverterCulture='de-DE' }"  />
+            <TextBox Grid.Row="5" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding GesamtNettoUmgerechnetUngerundet, Mode=OneWay, UpdateSourceTrigger=PropertyChanged,  StringFormat=N5,ConverterCulture='de-DE' }" TextAlignment="Center"  />
+            <TextBox Grid.Row="7" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding GesamtNettoUmgerechnet, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2,ConverterCulture='de-DE' }" TextAlignment="Center"  />
         </Grid>
         
     </Grid>

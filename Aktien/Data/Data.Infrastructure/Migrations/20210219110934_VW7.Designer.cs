@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Aktien.Data.Infrastructure.Migrations
 {
     [DbContext(typeof(Repository))]
-    [Migration("20210218194222_VW7")]
+    [Migration("20210219110934_VW7")]
     partial class VW7
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -200,16 +200,16 @@ namespace Aktien.Data.Infrastructure.Migrations
                     b.Property<double>("GesamtNetto")
                         .HasColumnType("double precision");
 
-                    b.Property<double?>("GesamtNettoUmgerechnet")
+                    b.Property<double?>("GesamtNettoUmgerechnetErhalten")
                         .HasColumnType("double precision");
 
-                    b.Property<double?>("GesamtNettoUmgerechnetUngerundet")
+                    b.Property<double?>("GesamtNettoUmgerechnetErmittelt")
                         .HasColumnType("double precision");
 
                     b.Property<double?>("Quellensteuer")
                         .HasColumnType("double precision");
 
-                    b.Property<int>("RundundArt")
+                    b.Property<int>("RundungArt")
                         .HasColumnType("integer");
 
                     b.Property<double?>("Umrechnungskurs")

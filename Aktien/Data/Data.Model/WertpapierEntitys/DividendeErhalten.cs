@@ -21,9 +21,9 @@ namespace Aktien.Data.Model.WertpapierEntitys
         public Double Bestand { get; set; }
 
         [EnumDataType(typeof(DividendenRundungTypes))]
-        public DividendenRundungTypes RundundArt { get; set; }
-        public Double? GesamtNettoUmgerechnet { get; set; }
-        public Double? GesamtNettoUmgerechnetUngerundet { get; set; }
+        public DividendenRundungTypes RundungArt { get; set; }
+        public Double? GesamtNettoUmgerechnetErhalten { get; set; }
+        public Double? GesamtNettoUmgerechnetErmittelt { get; set; }
         public int DividendeID { get; set; }
         public Dividende Dividende { get; set; }
         public int WertpapierID { get; set; }
