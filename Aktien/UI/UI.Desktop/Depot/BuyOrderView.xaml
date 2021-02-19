@@ -9,7 +9,7 @@
                     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
                     xmlns:command="http://www.galasoft.ch/mvvmlight"
                     mc:Ignorable="d"
-                    Height="400" Width="302.644"
+                    Height="auto" Width="450" SizeToContent="Height"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                     ResizeMode="NoResize"
                     WindowStartupLocation="CenterScreen"
@@ -26,23 +26,50 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="25px"/>
-            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="45px" />
         </Grid.RowDefinitions>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="6*"/>
+            <ColumnDefinition Width="4*"/>
+        </Grid.ColumnDefinitions>
 
-        <materialDesign:Card Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushHeaderBG}}">
+        <materialDesign:Card Grid.Row="0" Grid.ColumnSpan="2" Background="{Binding Mode=OneWay, Source={StaticResource brushHeaderBG}}">
             <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding Titel}" ></Label>
         </materialDesign:Card>
 
-        <Grid Grid.Row="1" Grid.ColumnSpan="2" >
+        <Grid Grid.Row="1" Grid.Column="0" >
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
+                <RowDefinition Height="45px"/>
+                <RowDefinition>
+                    <RowDefinition.Style>
+                        <Style TargetType="{x:Type RowDefinition}">
+                            <Setter Property="Height" Value="45px" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding isOrderTypSparplan}" Value="False">
+                                    <Setter Property="Height" Value="0" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
+                <RowDefinition>
+                    <RowDefinition.Style>
+                        <Style TargetType="{x:Type RowDefinition}">
+                            <Setter Property="Height" Value="45px" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding isOrderTypSparplan}" Value="True">
+                                    <Setter Property="Height" Value="0" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
+                <RowDefinition Height="45px" />
+                <RowDefinition Height="45px"/>
+                <RowDefinition Height="45px"/>
+                <RowDefinition Height="45px"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50*"/>
@@ -51,7 +78,7 @@
 
             <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Anzahl</Label>
             <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Preis</Label>
-            <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Gesamtbetrag</Label>
+            <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Betrag</Label>
             <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Fremdkosten</Label>
             <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Datum</Label>
             <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Order Art</Label>
@@ -98,7 +125,7 @@
                     </ControlTemplate>
                 </Validation.ErrorTemplate>
             </TextBox>
-            <TextBox Grid.Row="2"  Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Gesamtbetrag, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, TargetNullValue='', StringFormat=N3,ConverterCulture='de-DE' }" IsEnabled="{Binding EingabeGesamtbetragEnabled, Mode=OneWay}" >
+            <TextBox Grid.Row="2"  Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Betrag, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, TargetNullValue='', StringFormat=N3,ConverterCulture='de-DE' }" IsEnabled="{Binding EingabeGesamtbetragEnabled, Mode=OneWay}" >
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="PreviewTextInput" >
                         <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyBetragCommand"  />
@@ -147,9 +174,70 @@
 
         </Grid>
 
+        <Grid Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Background="{Binding Mode=OneWay, Source={StaticResource brushUebersicht}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30px" />
+                <RowDefinition Height="25px" />
+                <RowDefinition>
+                    <RowDefinition.Style>
+                        <Style TargetType="{x:Type RowDefinition}">
+                            <Setter Property="Height" Value="30px" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding isOrderTypSparplan}" Value="True">
+                                    <Setter Property="Height" Value="0" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
+                <RowDefinition>
+                    <RowDefinition.Style>
+                        <Style TargetType="{x:Type RowDefinition}">
+                            <Setter Property="Height" Value="25px" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding isOrderTypSparplan}" Value="True">
+                                    <Setter Property="Height" Value="0" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
+                <RowDefinition>
+                    <RowDefinition.Style>
+                        <Style TargetType="{x:Type RowDefinition}">
+                            <Setter Property="Height" Value="30px" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding BuySell}" Value="Sell">
+                                    <Setter Property="Height" Value="0" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
+                <RowDefinition>
+                    <RowDefinition.Style>
+                        <Style TargetType="{x:Type RowDefinition}">
+                            <Setter Property="Height" Value="25px" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding BuySell}" Value="Sell">
+                                    <Setter Property="Height" Value="0" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Gesamtbetrag</Label>
+            <Label Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" >Preis</Label>
+            <Label Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" >Buy-In</Label>
+
+            <TextBox Grid.Row="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding Gesamtbetrag, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2,ConverterCulture='de-DE' }" TextAlignment="Center"  />
+            <TextBox Grid.Row="3" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding PreisBerechnet, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2,ConverterCulture='de-DE' }"  TextAlignment="Center" />
+            <TextBox Grid.Row="5" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding BuyIn, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2,ConverterCulture='de-DE' }"  TextAlignment="Center" />
+        </Grid>
 
 
-        <materialDesign:Card Grid.Row="2">
+        <materialDesign:Card Grid.Row="2" Grid.ColumnSpan="2">
             <DockPanel  LastChildFill="False" >
                 <Button Grid.Row ="1" DockPanel.Dock="Right" Margin="5" HorizontalAlignment="Right" Width="100"  Command="{Binding SaveCommand, Mode=OneWay}"  Style="{DynamicResource MaterialDesignToolButton}" >Speichern</Button>
             </DockPanel>

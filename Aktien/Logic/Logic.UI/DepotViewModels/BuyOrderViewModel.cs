@@ -15,6 +15,7 @@ using Aktien.Data.Model.WertpapierEntitys;
 using Aktien.Logic.Core.DepotLogic.Exceptions;
 using Aktien.Data.Types;
 using Aktien.Logic.Core.WertpapierLogic.Exceptions;
+using Aktien.Logic.Core.DepotLogic.Classes;
 
 namespace Aktien.Logic.UI.DepotViewModels
 {
@@ -23,12 +24,30 @@ namespace Aktien.Logic.UI.DepotViewModels
         private OrderHistory data;
         private BuySell buySell;
         private WertpapierTypes typ;
-        private Double? gesamtbetrag;
+        private Double? betrag;
+        private Double gesamtbetrag;
+        private Double preisUebersicht;
+        private Double buyIn;
         public BuyOrderViewModel()
         {
             SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
 
             Cleanup();
+        }
+
+        public void BerechneWerte()
+        {
+            if (betrag.HasValue)
+                preisUebersicht = Math.Round(betrag.Value / data.Anzahl, 3, MidpointRounding.AwayFromZero);
+            else
+                preisUebersicht = data.Preis;
+            if (buySell.Equals(BuySell.Buy))
+                buyIn = new KaufBerechnungen().BuyInAktieGekauft(0, 0, data.Anzahl, preisUebersicht, data.Anzahl, data.Fremdkostenzuschlag);
+            gesamtbetrag = Math.Round(preisUebersicht * data.Anzahl, 3, MidpointRounding.AwayFromZero) + data.Fremdkostenzuschlag.GetValueOrDefault(0);
+
+            this.RaisePropertyChanged("Gesamtbetrag");
+            this.RaisePropertyChanged("PreisBerechnet");
+            this.RaisePropertyChanged("BuyIn");
         }
 
         protected override void ExecuteSaveCommand()
@@ -38,7 +57,7 @@ namespace Aktien.Logic.UI.DepotViewModels
             {
                 try
                 {
-                    Depot.WertpapierGekauft(data.Preis, data.Fremdkostenzuschlag, data.Orderdatum, WertpapierID, data.Anzahl, data.KaufartTyp, data.OrderartTyp, gesamtbetrag);
+                    Depot.WertpapierGekauft(data.Preis, data.Fremdkostenzuschlag, data.Orderdatum, WertpapierID, data.Anzahl, data.KaufartTyp, data.OrderartTyp, betrag);
                     Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewAusgabenUebersicht);
                 }
                 catch (NeuereOrderVorhandenException)
@@ -51,7 +70,7 @@ namespace Aktien.Logic.UI.DepotViewModels
             {
                 try
                 {
-                    Depot.WertpapierVerkauft(data.Preis, data.Fremdkostenzuschlag, data.Orderdatum, WertpapierID, data.Anzahl, data.KaufartTyp, data.OrderartTyp, gesamtbetrag);
+                    Depot.WertpapierVerkauft(data.Preis, data.Fremdkostenzuschlag, data.Orderdatum, WertpapierID, data.Anzahl, data.KaufartTyp, data.OrderartTyp, betrag);
                     Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewEinnahmenUebersicht);
                 }
                 catch (ZuVieleWertpapiereVerkaufException)
@@ -77,6 +96,7 @@ namespace Aktien.Logic.UI.DepotViewModels
             typ = inTypes;
             this.RaisePropertyChanged("KauftypBez");
             this.RaisePropertyChanged("Titel");
+            this.RaisePropertyChanged("BuySell");
         }
 
 
@@ -121,12 +141,12 @@ namespace Aktien.Logic.UI.DepotViewModels
                     if (value.Equals(Data.Types.WertpapierTypes.OrderTypes.Sparplan))
                     {
                         Preis = null;
-                        Gesamtbetrag = null;
+                        Betrag = null;
                         DeleteValidateInfo("Preis");
                     }
                     else if  (data.OrderartTyp.Equals(Data.Types.WertpapierTypes.OrderTypes.Sparplan))
                     {
-                        Gesamtbetrag = null;
+                        Betrag = null;
                         Preis = null;
                         DeleteValidateInfo("Gesamtbetrag");
                     }
@@ -135,6 +155,7 @@ namespace Aktien.Logic.UI.DepotViewModels
                     this.RaisePropertyChanged();
                     this.RaisePropertyChanged("EingabePreisEnabled");
                     this.RaisePropertyChanged("EingabeGesamtbetragEnabled");
+                    this.RaisePropertyChanged("isOrderTypSparplan");
                 }
             }
         }
@@ -152,6 +173,7 @@ namespace Aktien.Logic.UI.DepotViewModels
                     this.data.Anzahl = value.GetValueOrDefault();
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                    BerechneWerte();
                 }
             }
         }
@@ -168,6 +190,7 @@ namespace Aktien.Logic.UI.DepotViewModels
                     this.data.Fremdkostenzuschlag = value;
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                    BerechneWerte();
                 }
             }
         }
@@ -185,6 +208,7 @@ namespace Aktien.Logic.UI.DepotViewModels
                     this.data.Preis = value.GetValueOrDefault();
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                    BerechneWerte();
                 }
             }
         }
@@ -243,27 +267,34 @@ namespace Aktien.Logic.UI.DepotViewModels
             }
         }
         public int WertpapierID { get; set; }
-
-        public Double? Gesamtbetrag
+        public Double? Betrag
         {
             get
             {
-                return gesamtbetrag;
+                return betrag;
             }
             set
             {
-                if (LoadAktie || (this.gesamtbetrag != value))
+                if (LoadAktie || (this.betrag != value))
                 {
-                    ValidateBetrag(value, KaufTyp, "Gesamtbetrag");
-                    this.gesamtbetrag = value.GetValueOrDefault();
+                    ValidateBetrag(value, KaufTyp, "Betrag");
+                    this.betrag = value.GetValueOrDefault();
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                    BerechneWerte();
                 }
             }
         }
 
         public bool EingabePreisEnabled { get { return data.OrderartTyp != Data.Types.WertpapierTypes.OrderTypes.Sparplan; } }
         public bool EingabeGesamtbetragEnabled { get { return data.OrderartTyp == Data.Types.WertpapierTypes.OrderTypes.Sparplan; } }
+        public bool isOrderTypSparplan { get { return data.OrderartTyp != Data.Types.WertpapierTypes.OrderTypes.Sparplan; } }
+        public BuySell BuySell { get { return buySell; } }
+
+
+        public double Gesamtbetrag { get { return gesamtbetrag; } }
+        public double PreisBerechnet { get { return preisUebersicht; } }
+        public double BuyIn { get { return buyIn; } }
 
         #endregion
 
@@ -311,7 +342,10 @@ namespace Aktien.Logic.UI.DepotViewModels
             Preis = null;
             Datum = DateTime.Now;
             Fremdkosten = null;
-            Gesamtbetrag = null;
+            Betrag = null;
+            preisUebersicht = 0;
+            gesamtbetrag = 0;
+            buyIn = 0;
         }
     }
 }
