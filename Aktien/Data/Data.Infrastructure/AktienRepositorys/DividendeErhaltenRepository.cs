@@ -1,5 +1,6 @@
 ﻿using Aktien.Data.Infrastructure.Base;
 using Aktien.Data.Model.WertpapierEntitys;
+using Aktien.Data.Types.DividendenTypes;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,7 +11,7 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
 {
     public class DividendeErhaltenRepository: BaseRepository
     {
-        public void Speichern(int? inID, DateTime inDatum, Double? inQuellensteuer, Double? inUmrechnungskurs, Double inGesamtBrutto, Double inGesamtNetto, Double inBestand, int inDividendeID, int inWertpapierID)
+        public void Speichern(int? inID, DateTime inDatum, Double? inQuellensteuer, Double? inUmrechnungskurs, Double inGesamtBrutto, Double inGesamtNetto, Double inBestand, int inDividendeID, int inWertpapierID, DividendenRundungTypes inTyp, Double? inGesamtNettoUmgerechnetErhalten, Double? inGesamtNettoUmgerechnetErmittelt)
         {
             var Entity = new DividendeErhalten();
                 
@@ -25,6 +26,9 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
             Entity.Bestand = inBestand;
             Entity.DividendeID = inDividendeID;
             Entity.WertpapierID = inWertpapierID;
+            Entity.RundungArt = inTyp;
+            Entity.GesamtNettoUmgerechnetErhalten = inGesamtNettoUmgerechnetErhalten;
+            Entity.GesamtNettoUmgerechnetErmittelt = inGesamtNettoUmgerechnetErmittelt;
 
             if (!inID.HasValue)
                 repo.ErhaltendeDividenden.Add(Entity);

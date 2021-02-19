@@ -51,7 +51,7 @@ namespace Aktien.Logic.Core.KonvertierungLogic
                 var EuroBetrag = e.GesamtNetto;
                 if (!e.Dividende.Waehrung.Equals(Waehrungen.Euro))
                 {
-                    EuroBetrag = new DividendenBerechnungen().BetragUmgerechnet(EuroBetrag, e.Umrechnungskurs);
+                    EuroBetrag = new DividendenBerechnungen().BetragUmgerechnet(EuroBetrag, e.Umrechnungskurs,true, Data.Types.DividendenTypes.DividendenRundungTypes.Normal);
                 }
 
                 depotAPI.NeueEinnahme(Math.Round(EuroBetrag, 2, MidpointRounding.AwayFromZero), e.Datum, EinnahmeArtTypes.Dividende, 1, e.ID, "");
