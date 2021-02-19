@@ -38,11 +38,20 @@ namespace Aktien.Logic.UI.DepotViewModels
         public void BerechneWerte()
         {
             if (betrag.HasValue)
-                preisUebersicht = Math.Round(betrag.Value / data.Anzahl, 3, MidpointRounding.AwayFromZero);
+            {
+                if (betrag.Value.Equals(0))
+                    preisUebersicht = 0;
+                else
+                    preisUebersicht = Math.Round(betrag.Value / data.Anzahl, 3, MidpointRounding.AwayFromZero);
+            }              
             else
-                preisUebersicht = data.Preis;
-            if (buySell.Equals(BuySell.Buy))
+                preisUebersicht = Preis.GetValueOrDefault(0);
+
+            if ((buySell.Equals(BuySell.Buy)) && (preisUebersicht != 0))
                 buyIn = new KaufBerechnungen().BuyInAktieGekauft(0, 0, data.Anzahl, preisUebersicht, data.Anzahl, data.Fremdkostenzuschlag);
+            else
+                buyIn = 0;
+
             gesamtbetrag = Math.Round(preisUebersicht * data.Anzahl, 3, MidpointRounding.AwayFromZero) + data.Fremdkostenzuschlag.GetValueOrDefault(0);
 
             this.RaisePropertyChanged("Gesamtbetrag");
@@ -148,7 +157,7 @@ namespace Aktien.Logic.UI.DepotViewModels
                     {
                         Betrag = null;
                         Preis = null;
-                        DeleteValidateInfo("Gesamtbetrag");
+                        DeleteValidateInfo("Betrag");
                     }
                     LoadAktie = false;
                     this.data.OrderartTyp = value;
