@@ -27,5 +27,11 @@ namespace Aktien.Data.Model.WertpapierEntitys
         [EnumDataType(typeof(Waehrungen))]
         public Waehrungen Waehrung { get; set; }
         public Double? BetragUmgerechnet { get; set; }
+
+
+        [NotMapped]
+        public Double Eurobetrag { get { var ret = Betrag; if (BetragUmgerechnet.HasValue) ret = BetragUmgerechnet.Value; return ret; } }
+        [NotMapped]
+        public Waehrungen EuroWaehrung { get { return Waehrungen.Euro; } }
     }
 }

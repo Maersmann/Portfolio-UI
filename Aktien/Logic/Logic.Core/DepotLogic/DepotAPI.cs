@@ -155,7 +155,7 @@ namespace Aktien.Logic.Core.Depot
 
             if( (!dividende.Waehrung.Equals(Waehrungen.Euro)) && ( !dividende.BetragUmgerechnet.HasValue ))
             {
-                dividende.BetragUmgerechnet = new DividendenBerechnungen().BetragUmgerechnet(dividende.Betrag, inDividendeErhalten.Umrechnungskurs,true, inDividendeErhalten.RundungArt);
+                dividende.BetragUmgerechnet = new DividendenBerechnungen().BetragUmgerechnet(dividende.Betrag, inDividendeErhalten.Umrechnungskurs,true, Data.Types.DividendenTypes.DividendenRundungTypes.Normal);
                 new DividendeRepository().Speichern(dividende.ID,dividende.Betrag, dividende.Datum, dividende.WertpapierID, dividende.Waehrung, dividende.BetragUmgerechnet);
             }
 
@@ -186,7 +186,7 @@ namespace Aktien.Logic.Core.Depot
 
             if ((!dividende.Waehrung.Equals(Waehrungen.Euro)))
             {
-                dividende.BetragUmgerechnet = new DividendenBerechnungen().BetragUmgerechnet(dividende.Betrag, inDividendeErhalten.Umrechnungskurs,true, inDividendeErhalten.RundungArt);
+                dividende.BetragUmgerechnet = new DividendenBerechnungen().BetragUmgerechnet(dividende.Betrag, inDividendeErhalten.Umrechnungskurs,true, Data.Types.DividendenTypes.DividendenRundungTypes.Normal);
                 new DividendeRepository().Speichern(dividende.ID, dividende.Betrag, dividende.Datum, dividende.WertpapierID, dividende.Waehrung, dividende.BetragUmgerechnet);
             }
 

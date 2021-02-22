@@ -16,20 +16,19 @@ using Aktien.Data.Model.WertpapierEntitys;
 
 namespace Aktien.Logic.UI.DividendeViewModels
 {
-    public class DividendenUebersichtViewModel : ViewModelBasis
+    public class DividendenUebersichtViewModel : ViewModelUebersicht<Dividende>
     {
-        private ObservableCollection<Dividende> dividenden;
-
-        private Dividende selectedDividende;
 
         private int wertpapierID;
 
         public DividendenUebersichtViewModel()
         {
-            dividenden = new ObservableCollection<Dividende>();
+            Title = "Übersicht aller Dividenden";
+            itemList = new ObservableCollection<Dividende>();
             NeuCommand = new RelayCommand(() => ExecuteNeuCommand());
             BearbeitenCommand = new DelegateCommand(this.ExecuteBearbeitenCommand, this.CanExecuteCommand);
             EntfernenCommand = new DelegateCommand(this.ExecuteEntfernenCommand, this.CanExecuteCommand);
+            RegisterAktualisereViewMessage(ViewType.viewDividendeUebersicht);
         }
 
         #region Commands
@@ -39,49 +38,42 @@ namespace Aktien.Logic.UI.DividendeViewModels
         }
         private void ExecuteBearbeitenCommand()
         {
-            Messenger.Default.Send<OpenDividendeStammdatenMessage>(new OpenDividendeStammdatenMessage { WertpapierID = wertpapierID, State = State.Bearbeiten, DividendeID = selectedDividende.ID });
+            Messenger.Default.Send<OpenDividendeStammdatenMessage>(new OpenDividendeStammdatenMessage { WertpapierID = wertpapierID, State = State.Bearbeiten, DividendeID = selectedItem.ID });
         }
 
-        public void LoadData(int inWertpapierID)
+        public override void LoadData(int id)
         {
-            wertpapierID = inWertpapierID;
-            dividenden = new DividendeAPI().LadeAlleFuerWertpapier(wertpapierID);
-            this.RaisePropertyChanged("Dividenden");
+            wertpapierID = id;
+            itemList = new DividendeAPI().LadeAlleFuerWertpapier(wertpapierID);
+            this.RaisePropertyChanged("ItemList");
         }
 
         private void ExecuteEntfernenCommand()
         {
-            new DividendeAPI().Entfernen(selectedDividende.ID);
-            dividenden.Remove(selectedDividende);
-            this.RaisePropertyChanged("Dividenden");
+            new DividendeAPI().Entfernen(selectedItem.ID);
+            itemList.Remove(selectedItem);
+            this.RaisePropertyChanged("ItemList");
             Messenger.Default.Send<DeleteDividendeErfolgreichMessage>(new DeleteDividendeErfolgreichMessage() );
         }
         private bool CanExecuteCommand()
         {
-            return selectedDividende != null;
+            return selectedItem != null;
         }
         #endregion
 
         #region Bindigs
-        public Dividende SelectedDividende
+        public override Dividende SelectedItem
         {
             get
             {
-                return selectedDividende;
+                return selectedItem;
             }
             set
             {
-                selectedDividende = value;
+                selectedItem = value;
                 this.RaisePropertyChanged();
                 ((DelegateCommand)BearbeitenCommand).RaiseCanExecuteChanged();
                 ((DelegateCommand)EntfernenCommand).RaiseCanExecuteChanged();
-            }
-        }
-        public IEnumerable<Dividende> Dividenden
-        {
-            get
-            {
-                return dividenden;
             }
         }
         public ICommand NeuCommand { get; private set; }

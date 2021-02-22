@@ -33,6 +33,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         protected override void ExecuteSaveCommand()
         {
+            var WertpapiedID = dividende.WertpapierID;
             var API = new DividendeAPI();
             if (state == State.Neu)
             {           
@@ -44,6 +45,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
                 API.Aktualisiere(dividende.Betrag, dividende.Datum, dividende.ID, dividende.Waehrung, dividende.BetragUmgerechnet);
                 Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Dividende aktualisiert." }, "DividendenStammdaten");
             }
+            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage { ID =  WertpapiedID }, ViewType.viewDividendeUebersicht);
         }
 
         #region Bindings

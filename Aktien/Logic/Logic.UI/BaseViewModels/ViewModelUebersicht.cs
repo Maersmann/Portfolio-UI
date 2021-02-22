@@ -18,15 +18,19 @@ namespace Aktien.Logic.UI.BaseViewModels
 
         public void RegisterAktualisereViewMessage( ViewType inViewType )
         {
-            Messenger.Default.Register<AktualisiereViewMessage>(this, inViewType, m => ReceiveAktualisiereViewMessage());
+            Messenger.Default.Register<AktualisiereViewMessage>(this, inViewType, m => ReceiveAktualisiereViewMessage(m));
         }
 
-        private void ReceiveAktualisiereViewMessage()
+        private void ReceiveAktualisiereViewMessage(AktualisiereViewMessage m)
         {
-            LoadData();
+            if (m.ID.HasValue)
+                LoadData(m.ID.Value);
+            else
+                LoadData();
         }
 
         public virtual void LoadData() { }
+        public virtual void LoadData(int id) { }
 
         public virtual T SelectedItem
         {
