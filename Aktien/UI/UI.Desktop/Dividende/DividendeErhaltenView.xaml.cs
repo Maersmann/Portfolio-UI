@@ -1,4 +1,5 @@
 ﻿using Aktien.Logic.Messages.AuswahlMessages;
+using Aktien.Logic.Messages.DividendeMessages;
 using Aktien.Logic.UI.AuswahlViewModels;
 using Aktien.Logic.UI.DividendeViewModels;
 using Aktien.UI.Desktop.Auswahl;
@@ -33,6 +34,18 @@ namespace Aktien.UI.Desktop.Dividende
             base.MessageWithToken("ErhalteneDividendeStammdaten");
             Messenger.Default.Register<OpenDividendenAuswahlMessage>(this, m => ReceiveOpenDividendeAuswahlMessage(m));
             Messenger.Default.Register<DividendeAusgewaehltMessage>(this, m => ReceiveDividendeAusgewaehltMessage(m));
+            Messenger.Default.Register<OpenDividendeProStueckAnpassenMessage>(this, m => ReceiveOpenDividendeProStueckAnpassenMessage(m));
+        }
+
+        private void ReceiveOpenDividendeProStueckAnpassenMessage(OpenDividendeProStueckAnpassenMessage m)
+        {
+            var View = new DividendeProStueckAnpassenView();
+            if (View.DataContext is DividendeProStueckAnpassenViewModel model)
+            {
+                model.LoadData(m.DividendeID, m.Umrechnungskurs);
+            }
+
+            View.ShowDialog();
         }
 
         private void ReceiveDividendeAusgewaehltMessage(DividendeAusgewaehltMessage m)
@@ -62,6 +75,7 @@ namespace Aktien.UI.Desktop.Dividende
             base.Window_Unloaded(sender,e);
             Messenger.Default.Unregister<OpenDividendenAuswahlMessage>(this);
             Messenger.Default.Unregister<DividendeAusgewaehltMessage>(this);
+            Messenger.Default.Unregister<OpenDividendeProStueckAnpassenMessage>(this);
         }
     }
 }

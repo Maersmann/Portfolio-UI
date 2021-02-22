@@ -7,6 +7,7 @@ using Aktien.Logic.Core.DividendeLogic.Classes;
 using Aktien.Logic.Core.Validierung;
 using Aktien.Logic.Messages.AuswahlMessages;
 using Aktien.Logic.Messages.Base;
+using Aktien.Logic.Messages.DividendeMessages;
 using Aktien.Logic.UI.BaseViewModels;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
@@ -31,9 +32,11 @@ namespace Aktien.Logic.UI.DividendeViewModels
         {
             SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
             OpenAuswahlCommand = new RelayCommand(this.ExecuteOpenAuswahlCommand);
+            OpenDividendeCommand = new DelegateCommand(this.ExecuteOpenDividendeCommand, this.CanExecuteOpenDividendeCommand);
             Cleanup();
         }
 
+      
         public void DividendeAusgewaehlt(int inID, double inBetrag, DateTime inDatum)
         {
             DateTimeFormatInfo fmt = (new CultureInfo("de-DE")).DateTimeFormat;
@@ -74,30 +77,11 @@ namespace Aktien.Logic.UI.DividendeViewModels
                 ValidateDividende(value);
                 this.RaisePropertyChanged("DividendeText");
                 ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                ((DelegateCommand)OpenDividendeCommand).RaiseCanExecuteChanged();
             } 
         }
 
-        private void ExecuteOpenAuswahlCommand()
-        {
-            Messenger.Default.Send<OpenDividendenAuswahlMessage>(new OpenDividendenAuswahlMessage { WertpapierID = dividendeErhalten.WertpapierID });
-        }
-        protected override void ExecuteSaveCommand()
-        {
-            var API = new DepotAPI();
-            if (state == State.Neu)
-            {
-                API.NeueDividendeErhalten(dividendeErhalten);
-                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Erhaltene Dividende gespeichert." }, "ErhalteneDividendeStammdaten");
-
-            }
-            else
-            {
-                API.AktualisiereDividendeErhalten(dividendeErhalten);
-                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Erhaltene Dividende aktualisiert." }, "ErhalteneDividendeStammdaten");
-            }
-            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewEinnahmenUebersicht);
-        }
-
+  
         public void WertpapierID(int inWertpapierID)
         {
             dividendeErhalten.WertpapierID = inWertpapierID;
@@ -120,6 +104,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         #region Bindings
         public ICommand OpenAuswahlCommand { get; set; }
+        public ICommand OpenDividendeCommand { get; set; }
         public Double? Bestand
         {
             get 
@@ -233,6 +218,39 @@ namespace Aktien.Logic.UI.DividendeViewModels
         }
 
         public bool WechsellkursHasValue { get { return this.dividendeErhalten.Umrechnungskurs.GetValueOrDefault(0)>0; } }
+        #endregion
+
+        #region Commands
+        private void ExecuteOpenAuswahlCommand()
+        {
+            Messenger.Default.Send<OpenDividendenAuswahlMessage>(new OpenDividendenAuswahlMessage { WertpapierID = dividendeErhalten.WertpapierID });
+        }
+        protected override void ExecuteSaveCommand()
+        {
+            var API = new DepotAPI();
+            if (state == State.Neu)
+            {
+                API.NeueDividendeErhalten(dividendeErhalten);
+                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Erhaltene Dividende gespeichert." }, "ErhalteneDividendeStammdaten");
+
+            }
+            else
+            {
+                API.AktualisiereDividendeErhalten(dividendeErhalten);
+                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Erhaltene Dividende aktualisiert." }, "ErhalteneDividendeStammdaten");
+            }
+            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewEinnahmenUebersicht);
+        }
+        private bool CanExecuteOpenDividendeCommand()
+        {
+            return (dividendeErhalten.DividendeID != -1) && (dividendeErhalten.Umrechnungskurs.GetValueOrDefault(0)>0);
+        }
+        private void ExecuteOpenDividendeCommand()
+        {
+            Messenger.Default.Send<OpenDividendeProStueckAnpassenMessage>(new OpenDividendeProStueckAnpassenMessage { DividendeID = dividendeErhalten.DividendeID,  Umrechnungskurs = dividendeErhalten.Umrechnungskurs.Value });
+        }
+
+
         #endregion
 
         #region Validate

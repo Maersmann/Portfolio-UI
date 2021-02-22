@@ -1,6 +1,7 @@
 ﻿using Aktien.Data.Infrastructure.Base;
 using Aktien.Data.Model.WertpapierEntitys;
 using Aktien.Data.Types.DividendenTypes;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -55,7 +56,7 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
 
         public DividendeErhalten LadeByID(int inID)
         {
-            return repo.ErhaltendeDividenden.Where(d => d.ID == inID).First();
+            return repo.ErhaltendeDividenden.Include(d => d.Dividende).Where(d => d.ID == inID).First();
         }
 
         public DividendeErhalten LadeByDividendeID(int inID)

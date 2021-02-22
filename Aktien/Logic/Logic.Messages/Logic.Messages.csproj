@@ -55,6 +55,7 @@
     <Compile Include="DividendeMessages\DeleteErhalteneDividendenErfolgreichMessage.cs" />
     <Compile Include="DividendeMessages\OpenDividendeErhaltenUebersichtViewMessage.cs" />
     <Compile Include="DividendeMessages\OpenDividendenUebersichtAuswahlMessage.cs" />
+    <Compile Include="DividendeMessages\OpenDividendeProStueckAnpassenMessage.cs" />
     <Compile Include="DividendeMessages\OpenErhaltendeDividendeStammdatenMessage.cs" />
     <Compile Include="EinnahmenMessages\OpenEinnahmeStammdatenMessage.cs" />
     <Compile Include="ETFMessages\DeleteEtfErfolgreichMessage.cs" />

@@ -16,9 +16,9 @@ namespace Aktien.Logic.UI.BaseViewModels
 
         protected T selectedItem;
 
-        public void RegisterAktualisereViewMessage( ViewType inViewType )
+        public void RegisterAktualisereViewMessage( ViewType viewType )
         {
-            Messenger.Default.Register<AktualisiereViewMessage>(this, inViewType, m => ReceiveAktualisiereViewMessage(m));
+            Messenger.Default.Register<AktualisiereViewMessage>(this, viewType, m => ReceiveAktualisiereViewMessage(m));
         }
 
         private void ReceiveAktualisiereViewMessage(AktualisiereViewMessage m)

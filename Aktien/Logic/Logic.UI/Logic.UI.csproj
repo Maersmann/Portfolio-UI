@@ -165,6 +165,7 @@
     <Compile Include="DepotViewModels\Page\DepotUebersichtPageViewModel.cs" />
     <Compile Include="DerivateViewModels\DerivateGesamtUebersichtViewModel.cs" />
     <Compile Include="DerivateViewModels\DerivateStammdatenViewModel.cs" />
+    <Compile Include="DividendeViewModels\DividendeProStueckAnpassenViewModel.cs" />
     <Compile Include="ETFViewModels\Page\ETFUebersichtPageViewModel.cs" />
     <Compile Include="WertpapierViewModels\OrderUebersichtViewModel.cs" />
     <Compile Include="AktieViewModels\AktieStammdatenViewModel.cs" />

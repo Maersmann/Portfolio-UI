@@ -27,7 +27,7 @@
         </Grid.RowDefinitions>
 
         <materialDesign:Card Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushHeaderBG}}"   >
-            <Label HorizontalAlignment="Center" Width="auto" >Informationen Dividende</Label>
+            <Label HorizontalAlignment="Center" Width="auto" Content="{Binding Title, Mode=OneWay}" />
         </materialDesign:Card>
 
         <Grid Grid.Row="1" >

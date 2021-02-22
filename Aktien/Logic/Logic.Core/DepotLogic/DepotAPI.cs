@@ -155,8 +155,8 @@ namespace Aktien.Logic.Core.Depot
 
             if( (!dividende.Waehrung.Equals(Waehrungen.Euro)) && ( !dividende.BetragUmgerechnet.HasValue ))
             {
-                dividende.BetragUmgerechnet = new DividendenBerechnungen().BetragUmgerechnet(dividende.Betrag, inDividendeErhalten.Umrechnungskurs,true, Data.Types.DividendenTypes.DividendenRundungTypes.Normal);
-                new DividendeRepository().Speichern(dividende.ID,dividende.Betrag, dividende.Datum, dividende.WertpapierID, dividende.Waehrung, dividende.BetragUmgerechnet);
+                dividende.BetragUmgerechnet = new DividendenBerechnungen().BetragUmgerechnet(dividende.Betrag, inDividendeErhalten.Umrechnungskurs,true, dividende.RundungArt);
+                new DividendeRepository().Speichern(dividende.ID,dividende.Betrag, dividende.Datum, dividende.WertpapierID, dividende.Waehrung, dividende.BetragUmgerechnet, dividende.RundungArt);
             }
 
             var Eurobetrag = inDividendeErhalten.GesamtNetto;
@@ -186,8 +186,8 @@ namespace Aktien.Logic.Core.Depot
 
             if ((!dividende.Waehrung.Equals(Waehrungen.Euro)))
             {
-                dividende.BetragUmgerechnet = new DividendenBerechnungen().BetragUmgerechnet(dividende.Betrag, inDividendeErhalten.Umrechnungskurs,true, Data.Types.DividendenTypes.DividendenRundungTypes.Normal);
-                new DividendeRepository().Speichern(dividende.ID, dividende.Betrag, dividende.Datum, dividende.WertpapierID, dividende.Waehrung, dividende.BetragUmgerechnet);
+                dividende.BetragUmgerechnet = new DividendenBerechnungen().BetragUmgerechnet(dividende.Betrag, inDividendeErhalten.Umrechnungskurs,true, dividende.RundungArt);
+                new DividendeRepository().Speichern(dividende.ID, dividende.Betrag, dividende.Datum, dividende.WertpapierID, dividende.Waehrung, dividende.BetragUmgerechnet, dividende.RundungArt);
             }
 
             var EuroBetrag = inDividendeErhalten.GesamtNetto;

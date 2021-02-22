@@ -60,9 +60,9 @@ namespace Aktien.Logic.UI.WertpapierViewModels
             LoadData(wertpapierID);
         }
 
-        public void LoadData(int inWertpapierID)
+        public override void LoadData(int id)
         {
-            wertpapierID = inWertpapierID;
+            wertpapierID = id;
             itemList = new AktieAPI().LadeAlleOrdersDerAktie(wertpapierID);
             this.RaisePropertyChanged("ItemList");
             ((DelegateCommand)AktieGekauftCommand).RaiseCanExecuteChanged();

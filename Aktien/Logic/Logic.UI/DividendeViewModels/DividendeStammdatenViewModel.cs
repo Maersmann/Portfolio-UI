@@ -23,12 +23,9 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         public DividendeStammdatenViewModel()
         {
-            dividende = new Dividende();
+            Title = "Informationen Dividende";
             SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
-            Datum = DateTime.Now;
-            state = State.Neu;
-            Betrag = null;
-            Waehrung = Data.Types.WertpapierTypes.Waehrungen.Euro;
+            Cleanup();
         }
 
         protected override void ExecuteSaveCommand()
@@ -37,12 +34,12 @@ namespace Aktien.Logic.UI.DividendeViewModels
             var API = new DividendeAPI();
             if (state == State.Neu)
             {           
-                API.Speichern(dividende.Betrag, dividende.Datum, dividende.WertpapierID, dividende.Waehrung, dividende.BetragUmgerechnet);
+                API.Speichern(dividende.Betrag, dividende.Datum, dividende.WertpapierID, dividende.Waehrung, dividende.BetragUmgerechnet, dividende.RundungArt);
                 Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Dividende gespeichert." }, "DividendenStammdaten");
             }
             else
             {
-                API.Aktualisiere(dividende.Betrag, dividende.Datum, dividende.ID, dividende.Waehrung, dividende.BetragUmgerechnet);
+                API.Aktualisiere(dividende.Betrag, dividende.Datum, dividende.ID, dividende.Waehrung, dividende.BetragUmgerechnet, dividende.RundungArt);
                 Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Dividende aktualisiert." }, "DividendenStammdaten");
             }
             Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage { ID =  WertpapiedID }, ViewType.viewDividendeUebersicht);
@@ -129,7 +126,8 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
             dividende = new Dividende
             {
-                ID = _dividende.ID
+                ID = _dividende.ID,
+                RundungArt = _dividende.RundungArt
              };
 
             WertpapierID = _dividende.WertpapierID;
@@ -166,11 +164,12 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         public override void Cleanup()
         {
-            state = State.Neu;
             dividende = new Dividende();
-            this.RaisePropertyChanged();
             Datum = DateTime.Now;
+            state = State.Neu;
             Betrag = null;
+            Waehrung = Data.Types.WertpapierTypes.Waehrungen.Euro;
+            this.RaisePropertyChanged();
         }
 
     }
