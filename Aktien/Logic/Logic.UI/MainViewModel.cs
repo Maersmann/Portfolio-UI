@@ -18,12 +18,12 @@ namespace Aktien.Logic.UI
         {
             Title = "Aktienübersicht";
             OpenConnectionCommand = new RelayCommand(() => ExecuteOpenConnectionCommand());
-            OpenAktienUebersichtCommand = new RelayCommand(() => ExecuteOpenAktienUebersichtCommand());
-            OpenDepotUebersichtCommand = new RelayCommand(() => ExecuteOpenDepotUebersichtCommand());
-            OpenETFUebersichtCommand = new RelayCommand(() => ExecuteOpenETFUebersichtCommand());
-            OpenWertpapierUebersichtCommand = new RelayCommand(() => ExecuteOpenWertpapierUebersichtCommand());
-            OpenDerivateUebersichtCommand = new RelayCommand(() => ExecutOpenDerivateUebersichtCommand());
-            OpenEinAusgabenUebersichtCommand = new RelayCommand(() => ExecuteOpenEinAusgabenUebersichtCommand());
+            OpenAktienUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand( ViewType.viewAktienUebersicht));
+            OpenDepotUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewDepotUebersicht));
+            OpenETFUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewETFUebersicht));
+            OpenWertpapierUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewWertpapierUebersicht));
+            OpenDerivateUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewDerivateUebersicht));
+            OpenEinAusgabenUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewEinAusgabenUebersicht));
         }
 
         public ICommand OpenAktienUebersichtCommand { get; private set; }
@@ -34,29 +34,9 @@ namespace Aktien.Logic.UI
         public ICommand OpenEinAusgabenUebersichtCommand { get; private set; }
         public ICommand OpenConnectionCommand { get; private set; }
 
-        private void ExecuteOpenAktienUebersichtCommand()
+        private void ExecuteOpenViewCommand(ViewType viewType)
         {
-            Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = ViewType.viewAktienUebersicht  });
-        }
-        private void ExecuteOpenDepotUebersichtCommand()
-        {
-            Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = ViewType.viewDepotUebersicht });
-        }
-        private void ExecuteOpenETFUebersichtCommand()
-        {
-            Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = ViewType.viewETFUebersicht });
-        }
-        private void ExecuteOpenWertpapierUebersichtCommand()
-        {
-            Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = ViewType.viewWertpapierUebersicht });
-        }
-        private void ExecutOpenDerivateUebersichtCommand()
-        {
-            Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = ViewType.viewDerivateUebersicht });
-        }
-        private void ExecuteOpenEinAusgabenUebersichtCommand()
-        {
-            Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = ViewType.viewEinAusgabenUebersicht });
+            Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = viewType });
         }
 
         private void ExecuteOpenConnectionCommand()
