@@ -11,29 +11,29 @@ namespace Aktien.Logic.Core.Validierung
 {
     public class AktieGekauftValidierung : BaseValidierung
     {
-        public bool ValidateAnzahl(Double? inAnzahl, out ICollection<string> validationErrors)
+        public bool ValidateAnzahl(Double? anzahl, out ICollection<string> validationErrors)
         {
             validationErrors = new List<String>();
 
-            if (!inAnzahl.HasValue)
+            if (!anzahl.HasValue)
                 validationErrors.Add("Keine Anzahl hinterlegt");
 
-            if (inAnzahl == 0)
+            if (anzahl == 0)
                 validationErrors.Add("Die Anzahl darf nicht 0 sein");
 
-            if (inAnzahl < 0)
+            if (anzahl < 0)
                 validationErrors.Add("Die Anzahl zu niedrig");
 
             return validationErrors.Count == 0;
         }
-        public bool ValidateBetrag(Double? inBetrag, KaufTypes inKaufTyp,  out ICollection<string> validatonErrors)
+        public bool ValidateBetrag(Double? betrag, KaufTypes kauftyp,  out ICollection<string> validatonErrors)
         {
             validatonErrors = new List<String>();
 
-            if (!inBetrag.HasValue)
+            if (!betrag.HasValue)
                 validatonErrors.Add("Kein Betrag hinterlegt");
 
-            if ((inBetrag == 0) && (!inKaufTyp.Equals(KaufTypes.SpinOff)) )
+            if ((betrag == 0) && (!kauftyp.Equals(KaufTypes.SpinOff)) )
                 validatonErrors.Add("Der Betrag darf nicht 0 sein");
 
             return validatonErrors.Count == 0;

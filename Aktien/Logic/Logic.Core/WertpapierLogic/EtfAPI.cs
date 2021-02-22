@@ -14,26 +14,26 @@ namespace Aktien.Logic.Core.WertpapierLogic
 {
     public class EtfAPI
     {
-        public void Speichern(Wertpapier inWertpapier)
+        public void Speichern(Wertpapier wertpapier)
         {
-            if (IstAkieVorhanden(inWertpapier.ISIN))
+            if (IstAkieVorhanden(wertpapier.ISIN))
                 throw new WertpapierSchonVorhandenException();
 
-            inWertpapier.WertpapierTyp = WertpapierTypes.ETF;
+            wertpapier.WertpapierTyp = WertpapierTypes.ETF;
 
-            new WertpapierRepository().Speichern(inWertpapier);
-            new ETFInfoRepository().Speichern(null, inWertpapier.ETFInfo.Emittent, inWertpapier.ETFInfo.ProfitTyp, inWertpapier.ID);
+            new WertpapierRepository().Speichern(wertpapier);
+            new ETFInfoRepository().Speichern(null, wertpapier.ETFInfo.Emittent, wertpapier.ETFInfo.ProfitTyp, wertpapier.ID);
         }
 
-        public void Aktualisieren(Wertpapier inWertpapier)
+        public void Aktualisieren(Wertpapier wertpapier)
         {
-            new WertpapierRepository().Speichern(inWertpapier.ID, inWertpapier.Name, inWertpapier.ISIN, inWertpapier.WKN, WertpapierTypes.ETF);
-            new ETFInfoRepository().Speichern(inWertpapier.ETFInfo.ID, inWertpapier.ETFInfo.Emittent, inWertpapier.ETFInfo.ProfitTyp, inWertpapier.ID);
+            new WertpapierRepository().Speichern(wertpapier.ID, wertpapier.Name, wertpapier.ISIN, wertpapier.WKN, WertpapierTypes.ETF);
+            new ETFInfoRepository().Speichern(wertpapier.ETFInfo.ID, wertpapier.ETFInfo.Emittent, wertpapier.ETFInfo.ProfitTyp, wertpapier.ID);
         }
 
-        public bool IstAkieVorhanden(String inISIN)
+        public bool IstAkieVorhanden(String isin)
         {
-            return new WertpapierRepository().IstVorhanden(inISIN);
+            return new WertpapierRepository().IstVorhanden(isin);
         }
 
         public ObservableCollection<Wertpapier> LadeAlle()
@@ -41,17 +41,17 @@ namespace Aktien.Logic.Core.WertpapierLogic
             return new WertpapierRepository().LadeAlleByWertpapierTyp(WertpapierTypes.ETF);
         }
 
-        public Wertpapier LadeAnhandID(int inID)
+        public Wertpapier LadeAnhandID(int id)
         {
-            return new WertpapierRepository().LadeAnhandID(inID);
+            return new WertpapierRepository().LadeAnhandID(id);
         }
 
-        public void Entfernen(Wertpapier inWertpapier)
+        public void Entfernen(Wertpapier wertpapier)
         {
-            if (new DepotWertpapierRepository().IstWertpapierInDepotVorhanden(inWertpapier.ID))
+            if (new DepotWertpapierRepository().IstWertpapierInDepotVorhanden(wertpapier.ID))
                 throw new WertpapierInDepotVorhandenException();
 
-            new WertpapierRepository().Entfernen(inWertpapier);
+            new WertpapierRepository().Entfernen(wertpapier);
         }
     }
 }

@@ -8,40 +8,40 @@ namespace Aktien.Data.Infrastructure.DepotRepositorys
 {
     public class DepotRepository : BaseRepository
     {
-        public void Speichern(int? inID, string inBezeichnung, Double? inGesamtAusgaben, Double? inGesamtEinnahmen)
+        public void Speichern(int? iD, string bezeichnung, Double? gesamtAusgaben, Double? gesamtEinnahmen)
         {
             var Entity = new Depot();
 
-            if (inID.GetValueOrDefault(0).Equals(0))
-                inID = null;
+            if (iD.GetValueOrDefault(0).Equals(0))
+                iD = null;
 
-            if (inID.HasValue)
-                Entity = repo.Depots.Find(inID.Value);
+            if (iD.HasValue)
+                Entity = repo.Depots.Find(iD.Value);
 
-            Entity.Bezeichnung = inBezeichnung;
-            Entity.GesamtAusgaben = Math.Round(inGesamtAusgaben.GetValueOrDefault(0), 2, MidpointRounding.AwayFromZero);
-            Entity.GesamtEinahmen = Math.Round(inGesamtEinnahmen.GetValueOrDefault(0), 2, MidpointRounding.AwayFromZero);
+            Entity.Bezeichnung = bezeichnung;
+            Entity.GesamtAusgaben = Math.Round(gesamtAusgaben.GetValueOrDefault(0), 2, MidpointRounding.AwayFromZero);
+            Entity.GesamtEinahmen = Math.Round(gesamtEinnahmen.GetValueOrDefault(0), 2, MidpointRounding.AwayFromZero);
 
-            if (!inID.HasValue)
+            if (!iD.HasValue)
                 repo.Depots.Add(Entity);
 
             repo.SaveChanges();
         }
 
-        public void Speichern(Depot inDepot)
+        public void Speichern(Depot depot)
         {
-            if (inDepot.ID == 0)
-                repo.Depots.Add(inDepot);
+            if (depot.ID == 0)
+                repo.Depots.Add(depot);
 
-            inDepot.GesamtAusgaben = Math.Round(inDepot.GesamtAusgaben.GetValueOrDefault(0), 2, MidpointRounding.AwayFromZero);
-            inDepot.GesamtEinahmen = Math.Round(inDepot.GesamtEinahmen.GetValueOrDefault(0), 2, MidpointRounding.AwayFromZero);
+            depot.GesamtAusgaben = Math.Round(depot.GesamtAusgaben.GetValueOrDefault(0), 2, MidpointRounding.AwayFromZero);
+            depot.GesamtEinahmen = Math.Round(depot.GesamtEinahmen.GetValueOrDefault(0), 2, MidpointRounding.AwayFromZero);
 
             repo.SaveChanges();
         }
 
-        public Depot LoadByID( int inID )
+        public Depot LoadByID( int iD )
         {
-            return repo.Depots.Find(inID);
+            return repo.Depots.Find(iD);
         }
     }
 }

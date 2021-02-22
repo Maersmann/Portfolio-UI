@@ -11,43 +11,43 @@ namespace Aktien.Data.Infrastructure.DepotRepositorys
 {
     public class DepotWertpapierRepository : BaseRepository
     {
-        public DepotWertpapier LadeByWertpapierID(int inWertpapierID)
+        public DepotWertpapier LadeByWertpapierID(int wertpapierID)
         {
-            return repo.AktienInDepots.Where(a => a.WertpapierID == inWertpapierID).FirstOrDefault();
+            return repo.AktienInDepots.Where(a => a.WertpapierID == wertpapierID).FirstOrDefault();
         }
 
-        public Boolean IstWertpapierInDepotVorhanden( int inWertpapierID)
+        public Boolean IstWertpapierInDepotVorhanden( int wertpapierID)
         {
-            return repo.AktienInDepots.Where(a => a.WertpapierID == inWertpapierID).FirstOrDefault() != null;
+            return repo.AktienInDepots.Where(a => a.WertpapierID == wertpapierID).FirstOrDefault() != null;
         }
 
-        public void Speichern(int? inID, Double inAnzahl, Double inBuyIn, int inWertpapierID, int inDepotID)
+        public void Speichern(int? id, Double anzahl, Double buyIn, int wertpapierID, int depotID)
         {
             var Entity = new DepotWertpapier();
 
-            if (inID.GetValueOrDefault(0).Equals(0))
-                inID = null;
+            if (id.GetValueOrDefault(0).Equals(0))
+                id = null;
 
-            if (inID.HasValue)
-                Entity = repo.AktienInDepots.Find(inID.Value);
+            if (id.HasValue)
+                Entity = repo.AktienInDepots.Find(id.Value);
 
-            Entity.BuyIn = Math.Round(inBuyIn, 3, MidpointRounding.AwayFromZero);
+            Entity.BuyIn = Math.Round(buyIn, 3, MidpointRounding.AwayFromZero);
 
-            Entity.Anzahl = inAnzahl;
-            Entity.WertpapierID = inWertpapierID;
-            Entity.DepotID = inDepotID;
+            Entity.Anzahl = anzahl;
+            Entity.WertpapierID = wertpapierID;
+            Entity.DepotID = depotID;
 
-            if (!inID.HasValue)
+            if (!id.HasValue)
                 repo.AktienInDepots.Add(Entity);
 
             repo.SaveChanges();
         }
-        public void Speichern(DepotWertpapier inWertpapier)
+        public void Speichern(DepotWertpapier wertpapier)
         {
-            if (inWertpapier.ID == 0)
-                repo.AktienInDepots.Add(inWertpapier);
+            if (wertpapier.ID == 0)
+                repo.AktienInDepots.Add(wertpapier);
 
-            inWertpapier.BuyIn = Math.Round(inWertpapier.BuyIn, 4, MidpointRounding.AwayFromZero);
+            wertpapier.BuyIn = Math.Round(wertpapier.BuyIn, 4, MidpointRounding.AwayFromZero);
 
             repo.SaveChanges();
         }

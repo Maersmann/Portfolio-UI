@@ -120,21 +120,21 @@ namespace Aktien.Logic.UI.DepotViewModels
         #endregion
 
         #region Validate
-        private bool ValidateBetrag(Double? inBetrag )
+        private bool ValidateBetrag(Double? betrag )
         {
             var Validierung = new BaseValidierung();
 
-            bool isValid = Validierung.ValidateBetrag(inBetrag, out ICollection<string> validationErrors);
+            bool isValid = Validierung.ValidateBetrag(betrag, out ICollection<string> validationErrors);
 
             AddValidateInfo(isValid, "Betrag", validationErrors);
             return isValid;
         }
 
-        private bool ValidateDatum(DateTime? value)
+        private bool ValidateDatum(DateTime? datum)
         {
             var Validierung = new BaseValidierung();
 
-            bool isValid = Validierung.ValidateDatum(value, out ICollection<string> validationErrors);
+            bool isValid = Validierung.ValidateDatum(datum, out ICollection<string> validationErrors);
 
             AddValidateInfo(isValid, "Datum", validationErrors);
             return isValid;

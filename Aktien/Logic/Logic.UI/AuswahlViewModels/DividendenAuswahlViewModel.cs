@@ -35,13 +35,13 @@ namespace Aktien.Logic.UI.AuswahlViewModels
 
         public bool OhneHinterlegteDividende { set { ohneHinterlegteDividende = value; } }
 
-        public void LoadData(int inWertpapierID)
+        public void LoadData(int wertpapierID)
         {
-            wertpapierID = inWertpapierID;
+            this.wertpapierID = wertpapierID;
             if (ohneHinterlegteDividende)
-                dividenden = new DividendeAPI().LadeAlleNichtErhaltendeFuerWertpapier(inWertpapierID);
+                dividenden = new DividendeAPI().LadeAlleNichtErhaltendeFuerWertpapier(wertpapierID);
             else
-                dividenden = new DividendeAPI().LadeAlleFuerWertpapier(wertpapierID);
+                dividenden = new DividendeAPI().LadeAlleFuerWertpapier(this.wertpapierID);
             this.RaisePropertyChanged("Dividenden");
         }
 

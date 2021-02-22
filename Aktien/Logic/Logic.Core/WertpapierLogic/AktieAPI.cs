@@ -16,22 +16,22 @@ namespace Aktien.Logic.Core.WertpapierLogic
 {
     public class AktieAPI
     {
-        public void Speichern(Wertpapier inAktie)
+        public void Speichern(Wertpapier aktie)
         {
-            if (IstAkieVorhanden( inAktie.ISIN ))
+            if (IstAkieVorhanden( aktie.ISIN ))
                 throw new WertpapierSchonVorhandenException();
 
-            new WertpapierRepository().Speichern(null, inAktie.Name, inAktie.ISIN, inAktie.WKN, WertpapierTypes.Aktie);
+            new WertpapierRepository().Speichern(null, aktie.Name, aktie.ISIN, aktie.WKN, WertpapierTypes.Aktie);
         }
 
-        public void Aktualisieren(Wertpapier inAktie)
+        public void Aktualisieren(Wertpapier aktie)
         {
-            new WertpapierRepository().Speichern(inAktie.ID, inAktie.Name, inAktie.ISIN, inAktie.WKN, WertpapierTypes.Aktie);
+            new WertpapierRepository().Speichern(aktie.ID, aktie.Name, aktie.ISIN, aktie.WKN, WertpapierTypes.Aktie);
         }
 
-        public bool IstAkieVorhanden(String inISIN)
+        public bool IstAkieVorhanden(String isin)
         {
-            return new WertpapierRepository().IstVorhanden(inISIN);
+            return new WertpapierRepository().IstVorhanden(isin);
         }
 
         public ObservableCollection<Wertpapier> LadeAlle()
@@ -39,43 +39,43 @@ namespace Aktien.Logic.Core.WertpapierLogic
             return new WertpapierRepository().LadeAlleByWertpapierTyp(WertpapierTypes.Aktie);
         }
 
-        public Wertpapier LadeAnhandID(int inID)
+        public Wertpapier LadeAnhandID(int id)
         {
-            return new WertpapierRepository().LadeAnhandID(inID);
+            return new WertpapierRepository().LadeAnhandID(id);
         }
 
-        public void Entfernen(Wertpapier inAktie)
+        public void Entfernen(Wertpapier aktie)
         {
-            if (new DepotWertpapierRepository().IstWertpapierInDepotVorhanden( inAktie.ID) )
+            if (new DepotWertpapierRepository().IstWertpapierInDepotVorhanden(aktie.ID) )
                 throw new WertpapierInDepotVorhandenException();
 
-            new WertpapierRepository().Entfernen(inAktie);
+            new WertpapierRepository().Entfernen(aktie);
         }
 
-        public ObservableCollection<Dividende> LadeAlleDividendenDerAktie(int inWertpapierID)
+        public ObservableCollection<Dividende> LadeAlleDividendenDerAktie(int wertpapierID)
         {
-            return new DividendeAPI().LadeAlleFuerWertpapier(inWertpapierID);
+            return new DividendeAPI().LadeAlleFuerWertpapier(wertpapierID);
         }
 
-        public Dividende LadeDividendeDerAktie(int inID)
+        public Dividende LadeDividendeDerAktie(int id)
         {
-            return new DividendeAPI().LadeAnhandID(inID);
+            return new DividendeAPI().LadeAnhandID(id);
         }
 
-        public ObservableCollection<OrderHistory> LadeAlleOrdersDerAktie(int inWertpapierID)
+        public ObservableCollection<OrderHistory> LadeAlleOrdersDerAktie(int wertpapierID)
         {
-            return new OrderHistoryRepository().LadeAlleByWertpapierID(inWertpapierID);
+            return new OrderHistoryRepository().LadeAlleByWertpapierID(wertpapierID);
         }
 
-        public OrderHistory LadeOrderDerAktie(int OrderID)
+        public OrderHistory LadeOrderDerAktie(int orderID)
         {
-            return new OrderHistoryRepository().LadeByID(OrderID);
+            return new OrderHistoryRepository().LadeByID(orderID);
         }
 
-        public ObservableCollection<DividendeErhalten> LadeAlleErhalteneDividenden(int inWertpapierID)
+        public ObservableCollection<DividendeErhalten> LadeAlleErhalteneDividenden(int wertpapierID)
         {
-            new DividendeRepository().LadeAlleFuerAktie(inWertpapierID);
-            return new DividendeErhaltenRepository().LadeAllByWertpapierID(inWertpapierID);
+            new DividendeRepository().LadeAlleFuerAktie(wertpapierID);
+            return new DividendeErhaltenRepository().LadeAllByWertpapierID(wertpapierID);
         }
     }
 }

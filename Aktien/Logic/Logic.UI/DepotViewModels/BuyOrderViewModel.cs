@@ -99,10 +99,10 @@ namespace Aktien.Logic.UI.DepotViewModels
             Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewOrderUebersicht);
         }
 
-        public void SetTitle(BuySell inBuySell, WertpapierTypes inTypes)
+        public void SetTitle(BuySell buySell, WertpapierTypes types)
         {
-            buySell = inBuySell;
-            typ = inTypes;
+            this.buySell = buySell;
+            typ = types;
             this.RaisePropertyChanged("KauftypBez");
             this.RaisePropertyChanged("Titel");
             this.RaisePropertyChanged("BuySell");
@@ -309,31 +309,31 @@ namespace Aktien.Logic.UI.DepotViewModels
 
         #region Validierung
 
-        private bool ValidateAnzahl(double? inAnzahl)
+        private bool ValidateAnzahl(double? anzahl)
         {
             var Validierung = new AktieGekauftValidierung();
 
-            bool isValid = Validierung.ValidateAnzahl(inAnzahl, out ICollection<string> validationErrors);
+            bool isValid = Validierung.ValidateAnzahl(anzahl, out ICollection<string> validationErrors);
 
             AddValidateInfo(isValid, "Anzahl", validationErrors);
             return isValid;
         }
 
-        private bool ValidateBetrag(Double? inBetrag, KaufTypes inKaufTyp, string inPropertyKey)
+        private bool ValidateBetrag(Double? betrag, KaufTypes kaufTyp, string propertyKey)
         {
             var Validierung = new AktieGekauftValidierung();
 
-            bool isValid = Validierung.ValidateBetrag(inBetrag, inKaufTyp, out ICollection<string> validationErrors);
+            bool isValid = Validierung.ValidateBetrag(betrag, kaufTyp, out ICollection<string> validationErrors);
 
-            AddValidateInfo(isValid, inPropertyKey, validationErrors);
+            AddValidateInfo(isValid, propertyKey, validationErrors);
             return isValid;
         }
 
-        private bool ValidateDatum(DateTime? value)
+        private bool ValidateDatum(DateTime? datum)
         {
             var Validierung = new AktieGekauftValidierung();
 
-            bool isValid = Validierung.ValidateDatum(value, out ICollection<string> validationErrors);
+            bool isValid = Validierung.ValidateDatum(datum, out ICollection<string> validationErrors);
 
             AddValidateInfo(isValid, "Datum", validationErrors);
             return isValid;

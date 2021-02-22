@@ -120,9 +120,9 @@ namespace Aktien.Logic.UI.DividendeViewModels
         {
             set { dividende.WertpapierID = value; }
         }
-        public void Bearbeiten(int inID)
+        public void Bearbeiten(int id)
         {
-            var _dividende = new DividendeAPI().LadeAnhandID(inID);
+            var _dividende = new DividendeAPI().LadeAnhandID(id);
 
             dividende = new Dividende
             {
@@ -138,24 +138,22 @@ namespace Aktien.Logic.UI.DividendeViewModels
             state = State.Bearbeiten;
         }
 
-
-
         #region Validate
-        private bool ValidateDatum(DateTime? inDatum)
+        private bool ValidateDatum(DateTime? datun)
         {
             var Validierung = new DividendeStammdatenValidierung();
 
-            bool isValid = Validierung.ValidateDatum(inDatum, out ICollection<string> validationErrors);
+            bool isValid = Validierung.ValidateDatum(datun, out ICollection<string> validationErrors);
 
             AddValidateInfo(isValid, "Datum", validationErrors);
             return isValid;
         }
 
-        private bool ValidateBetrag(Double? inBetrag)
+        private bool ValidateBetrag(Double? betrag)
         {
             var Validierung = new DividendeStammdatenValidierung();
 
-            bool isValid = Validierung.ValidateBetrag(inBetrag, out ICollection<string> validationErrors);
+            bool isValid = Validierung.ValidateBetrag(betrag, out ICollection<string> validationErrors);
 
             AddValidateInfo(isValid, "Betrag", validationErrors);
             return isValid;

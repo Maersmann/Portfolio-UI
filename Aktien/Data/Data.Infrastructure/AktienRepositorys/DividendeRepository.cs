@@ -13,30 +13,30 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
 {
     public class DividendeRepository : BaseRepository
     {
-        public void Speichern(int? inID, Double inBetrag, DateTime inDatum, int? inWertpapierID, Waehrungen inWaehrung, Double? inBetragUmgerechnet, DividendenRundungTypes rundungTypes )
+        public void Speichern(int? iD, Double betrag, DateTime datum, int? wertpapierID, Waehrungen waehrung, Double? betragUmgerechnet, DividendenRundungTypes rundungTypes )
         {
             var dividende = new Dividende();
 
-            if (inID.HasValue)
-                dividende = repo.Dividenden.Find(inID);
+            if (iD.HasValue)
+                dividende = repo.Dividenden.Find(iD);
             else
                 repo.Dividenden.Add(dividende);
 
-            dividende.Betrag = inBetrag;
-            dividende.Datum = inDatum;
-            dividende.Waehrung = inWaehrung;
+            dividende.Betrag = betrag;
+            dividende.Datum = datum;
+            dividende.Waehrung = waehrung;
             dividende.RundungArt = rundungTypes;
-            if (inBetragUmgerechnet.HasValue)
-                dividende.BetragUmgerechnet = Math.Round(inBetragUmgerechnet.GetValueOrDefault(0), 2, MidpointRounding.AwayFromZero);
+            if (betragUmgerechnet.HasValue)
+                dividende.BetragUmgerechnet = Math.Round(betragUmgerechnet.GetValueOrDefault(0), 2, MidpointRounding.AwayFromZero);
 
-            if (inWertpapierID.HasValue)
-                dividende.WertpapierID = inWertpapierID.Value;
+            if (wertpapierID.HasValue)
+                dividende.WertpapierID = wertpapierID.Value;
             repo.SaveChanges();
         }
 
-        public ObservableCollection<Dividende> LadeAlleFuerAktie( int inWertpapierID )
+        public ObservableCollection<Dividende> LadeAlleFuerAktie( int wertpapierID )
         {
-            return new ObservableCollection<Dividende>(repo.Dividenden.Where(d=>d.WertpapierID == inWertpapierID).OrderByDescending( d=>d.Datum ).ToList());
+            return new ObservableCollection<Dividende>(repo.Dividenden.Where(d=>d.WertpapierID == wertpapierID).OrderByDescending( d=>d.Datum ).ToList());
         }
 
         public void Speichern(Dividende dividende)
@@ -52,20 +52,20 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
             return new ObservableCollection<Dividende>(repo.Dividenden.OrderBy(o => o.ID).ToList());
         }
 
-        public Dividende LadeAnhandID(int inID)
+        public Dividende LadeAnhandID(int iD)
         {
-            return repo.Dividenden.Where(a => a.ID == inID).First();
+            return repo.Dividenden.Where(a => a.ID == iD).First();
         }
 
-        public void Entfernen(int inID)
+        public void Entfernen(int iD)
         {
-            repo.Dividenden.Remove( repo.Dividenden.Find( inID ) );
+            repo.Dividenden.Remove( repo.Dividenden.Find( iD ) );
             repo.SaveChanges();
         }
 
-        public ObservableCollection<Dividende> LadeAlleNichtErhaltendeFuerWertpapier(int inWertpapierID)
+        public ObservableCollection<Dividende> LadeAlleNichtErhaltendeFuerWertpapier(int wertpapierID)
         {
-            return new ObservableCollection<Dividende>(repo.Dividenden.Where(d => (d.WertpapierID == inWertpapierID)).Where( d=> (!repo.ErhaltendeDividenden.Select(e => e.DividendeID).Contains(d.ID))).OrderByDescending(d => d.Datum).ToList());
+            return new ObservableCollection<Dividende>(repo.Dividenden.Where(d => (d.WertpapierID == wertpapierID)).Where( d=> (!repo.ErhaltendeDividenden.Select(e => e.DividendeID).Contains(d.ID))).OrderByDescending(d => d.Datum).ToList());
         }
 
     }

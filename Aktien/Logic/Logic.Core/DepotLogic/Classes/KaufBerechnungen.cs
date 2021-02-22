@@ -8,23 +8,23 @@ namespace Aktien.Logic.Core.DepotLogic.Classes
 {
     public class KaufBerechnungen
     { 
-        public Double BuyInAktieGekauft(Double inBuyIn, double inAlteAnzahl, double inNeueGesamtAnzahl, double inPreis, double inNeueAnzahl, double? inFremdkosten)
+        public Double BuyInAktieGekauft(Double buyIn, double alteAnzahl, double neueGesamtAnzahl, double preis, double neueAnzahl, double? fremdkosten)
         {
-            var BuyIn = Math.Round(((inBuyIn * inAlteAnzahl) + ((inPreis * inNeueAnzahl) + inFremdkosten.GetValueOrDefault(0))) / inNeueGesamtAnzahl, 3, MidpointRounding.AwayFromZero);
+            var BuyIn = Math.Round(((buyIn * alteAnzahl) + ((preis * neueAnzahl) + fremdkosten.GetValueOrDefault(0))) / neueGesamtAnzahl, 3, MidpointRounding.AwayFromZero);
 
             if ( BuyIn >= 2 ) 
                 
-                BuyIn = Math.Round(((inBuyIn * inAlteAnzahl) + ((inPreis * inNeueAnzahl) + inFremdkosten.GetValueOrDefault(0))) / inNeueGesamtAnzahl, 2, MidpointRounding.AwayFromZero);
+                BuyIn = Math.Round(((buyIn * alteAnzahl) + ((preis * neueAnzahl) + fremdkosten.GetValueOrDefault(0))) / neueGesamtAnzahl, 2, MidpointRounding.AwayFromZero);
             return BuyIn;
         }
 
-        public Double BuyInAktieEntfernt(Double inBuyIn, double inAlteAnzahl, double inNeueGesamtAnzahl, double inPreis, double inNeueAnzahl, double? inFremdkosten)
+        public Double BuyInAktieEntfernt(Double buyIn, double alteAnzahl, double neueGesamtAnzahl, double preis, double neueAnzahl, double? fremdkosten)
         {
-            var BuyIn = Math.Round(((inBuyIn * inAlteAnzahl) - ((inPreis * inNeueAnzahl) - inFremdkosten.GetValueOrDefault(0))) / inNeueGesamtAnzahl, 3, MidpointRounding.AwayFromZero);
+            var BuyIn = Math.Round(((buyIn * alteAnzahl) - ((preis * neueAnzahl) - fremdkosten.GetValueOrDefault(0))) / neueGesamtAnzahl, 3, MidpointRounding.AwayFromZero);
 
             if (BuyIn >= 2)
 
-                BuyIn = Math.Round(((inBuyIn * inAlteAnzahl) - ((inPreis * inNeueAnzahl) - inFremdkosten.GetValueOrDefault(0))) / inNeueGesamtAnzahl, 2, MidpointRounding.AwayFromZero);
+                BuyIn = Math.Round(((buyIn * alteAnzahl) - ((preis * neueAnzahl) - fremdkosten.GetValueOrDefault(0))) / neueGesamtAnzahl, 2, MidpointRounding.AwayFromZero);
             return BuyIn;
         }
     }

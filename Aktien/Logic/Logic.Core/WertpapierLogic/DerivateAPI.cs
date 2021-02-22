@@ -14,22 +14,22 @@ namespace Aktien.Logic.Core.WertpapierLogic
 {
     public class DerivateAPI
     {
-        public void Speichern(Wertpapier inWertpapier)
+        public void Speichern(Wertpapier wertpapier)
         {
-            if (IstAkieVorhanden(inWertpapier.ISIN))
+            if (IstAkieVorhanden(wertpapier.ISIN))
                 throw new WertpapierSchonVorhandenException();
 
-            new WertpapierRepository().Speichern(null, inWertpapier.Name, inWertpapier.ISIN, inWertpapier.WKN, WertpapierTypes.Derivate);
+            new WertpapierRepository().Speichern(null, wertpapier.Name, wertpapier.ISIN, wertpapier.WKN, WertpapierTypes.Derivate);
         }
 
-        public void Aktualisieren(Wertpapier inWertpapier)
+        public void Aktualisieren(Wertpapier wertpapier)
         {
-            new WertpapierRepository().Speichern(inWertpapier.ID, inWertpapier.Name, inWertpapier.ISIN, inWertpapier.WKN, WertpapierTypes.Derivate);
+            new WertpapierRepository().Speichern(wertpapier.ID, wertpapier.Name, wertpapier.ISIN, wertpapier.WKN, WertpapierTypes.Derivate);
         }
 
-        public bool IstAkieVorhanden(String inISIN)
+        public bool IstAkieVorhanden(String isin)
         {
-            return new WertpapierRepository().IstVorhanden(inISIN);
+            return new WertpapierRepository().IstVorhanden(isin);
         }
 
         public ObservableCollection<Wertpapier> LadeAlle()
@@ -37,17 +37,17 @@ namespace Aktien.Logic.Core.WertpapierLogic
             return new WertpapierRepository().LadeAlleByWertpapierTyp( WertpapierTypes.Derivate);
         }
 
-        public Wertpapier LadeAnhandID(int inID)
+        public Wertpapier LadeAnhandID(int id)
         {
-            return new WertpapierRepository().LadeAnhandID(inID);
+            return new WertpapierRepository().LadeAnhandID(id);
         }
 
-        public void Entfernen(Wertpapier inWertpapier)
+        public void Entfernen(Wertpapier wertpapier)
         {
-            if (new DepotWertpapierRepository().IstWertpapierInDepotVorhanden(inWertpapier.ID))
+            if (new DepotWertpapierRepository().IstWertpapierInDepotVorhanden(wertpapier.ID))
                 throw new WertpapierInDepotVorhandenException();
 
-            new WertpapierRepository().Entfernen(inWertpapier);
+            new WertpapierRepository().Entfernen(wertpapier);
         }
     }
 }

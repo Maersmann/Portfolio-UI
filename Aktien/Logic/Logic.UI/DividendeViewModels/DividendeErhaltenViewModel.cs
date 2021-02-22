@@ -37,19 +37,19 @@ namespace Aktien.Logic.UI.DividendeViewModels
         }
 
       
-        public void DividendeAusgewaehlt(int inID, double inBetrag, DateTime inDatum)
+        public void DividendeAusgewaehlt(int id, double betrag, DateTime datum)
         {
             DateTimeFormatInfo fmt = (new CultureInfo("de-DE")).DateTimeFormat;
-            dividendetext = inDatum.ToString("d", fmt) + " (" + inBetrag.ToString("N2") + ")";
+            dividendetext = datum.ToString("d", fmt) + " (" + betrag.ToString("N2") + ")";
             this.RaisePropertyChanged("DividendeText");
-            DividendeID = inID;
-            betrag = inBetrag;
+            DividendeID = id;
+            this.betrag = betrag;
             BerechneGesamtWerte();
         }
 
-        public void Bearbeiten(int inID)
+        public void Bearbeiten(int id)
         {
-            var dividendeLoad = new DividendeErhaltenAPI().LadeAnhandID(inID);
+            var dividendeLoad = new DividendeErhaltenAPI().LadeAnhandID(id);
 
             dividendeErhalten = new DividendeErhalten
             {
@@ -82,9 +82,9 @@ namespace Aktien.Logic.UI.DividendeViewModels
         }
 
   
-        public void WertpapierID(int inWertpapierID)
+        public void WertpapierID(int wertpapierID)
         {
-            dividendeErhalten.WertpapierID = inWertpapierID;
+            dividendeErhalten.WertpapierID = wertpapierID;
         }
 
         public void BerechneGesamtWerte()
@@ -254,31 +254,31 @@ namespace Aktien.Logic.UI.DividendeViewModels
         #endregion
 
         #region Validate
-        private bool ValidateBestand(Double? inBestand)
+        private bool ValidateBestand(Double? bestand)
         {
             var Validierung = new DividendeErhaltenValidierung();
 
-            bool isValid = Validierung.ValidateBestand(inBestand, out ICollection<string> validationErrors);
+            bool isValid = Validierung.ValidateBestand(bestand, out ICollection<string> validationErrors);
 
             AddValidateInfo(isValid, "Bestand", validationErrors);
             return isValid;
         }
 
-        private bool ValidateDatum(DateTime? inDatum)
+        private bool ValidateDatum(DateTime? datum)
         {
             var Validierung = new DividendeErhaltenValidierung();
 
-            bool isValid = Validierung.ValidateDatum(inDatum, out ICollection<string> validationErrors);
+            bool isValid = Validierung.ValidateDatum(datum, out ICollection<string> validationErrors);
 
             AddValidateInfo(isValid, "Datum", validationErrors);
             return isValid;
         }
 
-        private bool ValidateDividende(int inID)
+        private bool ValidateDividende(int id)
         {
             var Validierung = new DividendeErhaltenValidierung();
 
-            bool isValid = Validierung.ValidateDividende(inID, out ICollection<string> validationErrors);
+            bool isValid = Validierung.ValidateDividende(id, out ICollection<string> validationErrors);
 
             AddValidateInfo(isValid, "DividendeText", validationErrors);
             return isValid;

@@ -10,21 +10,20 @@ namespace Aktien.Data.Infrastructure.OptionRepositorys
 {
     public class KonvertierungRepository : BaseRepository
     {
-        public void Speichern(KonvertierungTypes inTyp)
+        public void Speichern(KonvertierungTypes typ)
         {
             var Entity = new Konvertierung
             {
-                Typ = inTyp
+                Typ = typ
             };
 
-
             repo.Konvertierungen.Add(Entity);
-           repo.SaveChanges();
+            repo.SaveChanges();
         }
 
-        public bool IstVorhanden(KonvertierungTypes inTyp)
+        public bool IstVorhanden(KonvertierungTypes typ)
         {
-            var Aktie = repo.Konvertierungen.Where(k => k.Typ.Equals(inTyp)).FirstOrDefault();
+            var Aktie = repo.Konvertierungen.Where(k => k.Typ.Equals(typ)).FirstOrDefault();
 
             return (Aktie != null);
         }

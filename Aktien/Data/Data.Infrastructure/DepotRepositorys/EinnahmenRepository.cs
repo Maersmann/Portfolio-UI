@@ -11,24 +11,24 @@ namespace Aktien.Data.Infrastructure.DepotRepositorys
 {
     public class EinnahmenRepository : BaseRepository
     {
-        public void Speichern(int? inID, Double inBetrag, DateTime inDatum, EinnahmeArtTypes inTyp, int inDepotID, int? inHerkunftID, string inBeschreibung)
+        public void Speichern(int? id, Double betrag, DateTime datum, EinnahmeArtTypes typ, int depotID, int? herkunftID, string beschreibung)
         {
             var Entity = new Einnahme();
 
-            if (inID.GetValueOrDefault(0).Equals(0))
-                inID = null;
+            if (id.GetValueOrDefault(0).Equals(0))
+                id = null;
 
-            if (inID.HasValue)
-                Entity = repo.Einnahmen.Find(inID.Value);
+            if (id.HasValue)
+                Entity = repo.Einnahmen.Find(id.Value);
 
-            Entity.Art = inTyp;
-            Entity.Betrag = Math.Round(inBetrag, 2, MidpointRounding.AwayFromZero);
-            Entity.Datum = inDatum;
-            Entity.DepotID = inDepotID;
-            Entity.HerkunftID = inHerkunftID;
-            Entity.Beschreibung = inBeschreibung;
+            Entity.Art = typ;
+            Entity.Betrag = Math.Round(betrag, 2, MidpointRounding.AwayFromZero);
+            Entity.Datum = datum;
+            Entity.DepotID = depotID;
+            Entity.HerkunftID = herkunftID;
+            Entity.Beschreibung = beschreibung;
 
-            if (!inID.HasValue)
+            if (!id.HasValue)
                 repo.Einnahmen.Add(Entity);
 
             repo.SaveChanges();
@@ -39,19 +39,19 @@ namespace Aktien.Data.Infrastructure.DepotRepositorys
             return new ObservableCollection<Einnahme>(repo.Einnahmen.OrderByDescending(o => o.Datum).ToList());
         }
 
-        public void Speichern(Einnahme inEinnahme)
+        public void Speichern(Einnahme einnahme)
         {
-            if (inEinnahme.ID == 0)
-                repo.Einnahmen.Add(inEinnahme);
+            if (einnahme.ID == 0)
+                repo.Einnahmen.Add(einnahme);
 
-            inEinnahme.Betrag = Math.Round(inEinnahme.Betrag, 2, MidpointRounding.AwayFromZero);
+            einnahme.Betrag = Math.Round(einnahme.Betrag, 2, MidpointRounding.AwayFromZero);
 
             repo.SaveChanges();
         }
 
-        public void Entfernen( Einnahme inEinahme )
+        public void Entfernen( Einnahme einnahme)
         {
-            repo.Einnahmen.Remove(inEinahme);
+            repo.Einnahmen.Remove(einnahme);
             repo.SaveChanges();
         }
 
@@ -61,14 +61,14 @@ namespace Aktien.Data.Infrastructure.DepotRepositorys
             repo.SaveChanges();
         }
 
-        public Einnahme LoadByID(int inID)
+        public Einnahme LoadByID(int id)
         {
-            return repo.Einnahmen.Find(inID);
+            return repo.Einnahmen.Find(id);
         }
 
-        public Einnahme LoadByHerkunftIDAndArt(int inHerkunftID, EinnahmeArtTypes inTyp)
+        public Einnahme LoadByHerkunftIDAndArt(int herkunftID, EinnahmeArtTypes typ)
         {
-            return repo.Einnahmen.Where(e => e.HerkunftID.HasValue).Where(e => e.HerkunftID.Value.Equals(inHerkunftID)).Where(e => e.Art.Equals(inTyp)).FirstOrDefault();
+            return repo.Einnahmen.Where(e => e.HerkunftID.HasValue).Where(e => e.HerkunftID.Value.Equals(herkunftID)).Where(e => e.Art.Equals(typ)).FirstOrDefault();
         }
     }
 }
