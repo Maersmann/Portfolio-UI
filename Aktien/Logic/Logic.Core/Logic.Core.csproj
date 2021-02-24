@@ -46,9 +46,11 @@
     </Compile>
     <Compile Include="DepotLogic\AusgabeAPI.cs" />
     <Compile Include="DepotLogic\Classes\DepotWertpapierFunctions.cs" />
+    <Compile Include="DepotLogic\EinnahmeAusgabeAuswertungAPI.cs" />
     <Compile Include="DepotLogic\Models\DepotGesamtUebersichtItem.cs" />
     <Compile Include="DepotLogic\EinnahmenAPI.cs" />
     <Compile Include="DepotLogic\Exceptions\ZuVieleWertpapiereVerkaufException.cs" />
+    <Compile Include="DepotLogic\Models\EinnahmenAusgabenGesamtModel.cs" />
     <Compile Include="KonvertierungLogic\KonvertierungEinnahmenAusgaben.cs" />
     <Compile Include="KonvertierungLogic\KonvertierungRunden.cs" />
     <Compile Include="Validierungen\Base\BaseValidierung.cs" />

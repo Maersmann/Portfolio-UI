@@ -10,27 +10,11 @@ using System.Threading.Tasks;
 
 namespace Aktien.Logic.UI.BaseViewModels
 {
-    public class ViewModelUebersicht<T> : ViewModelBasis
+    public class ViewModelUebersicht<T> : ViewModelLoadData
     {
         protected ObservableCollection<T> itemList;
 
         protected T selectedItem;
-
-        public void RegisterAktualisereViewMessage( ViewType viewType )
-        {
-            Messenger.Default.Register<AktualisiereViewMessage>(this, viewType, m => ReceiveAktualisiereViewMessage(m));
-        }
-
-        private void ReceiveAktualisiereViewMessage(AktualisiereViewMessage m)
-        {
-            if (m.ID.HasValue)
-                LoadData(m.ID.Value);
-            else
-                LoadData();
-        }
-
-        public virtual void LoadData() { }
-        public virtual void LoadData(int id) { }
 
         public virtual T SelectedItem
         {

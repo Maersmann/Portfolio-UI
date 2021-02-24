@@ -1,0 +1,174 @@
+﻿<UserControl x:Class="Aktien.UI.Desktop.Depot.EinnahmenAusgabenGesamtUebersichtView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Aktien.UI.Desktop.Depot"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d"  Height="auto"         
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             Background="{DynamicResource MaterialDesignPaper}"
+             DataContext="{Binding EinnahmenAusgaben, Source={StaticResource Locator}}" Width="auto">
+    <Grid >
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25px"/>
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+
+        <materialDesign:Card  Width="auto" Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushHeaderBG}}">
+            <Label HorizontalAlignment="Center" Width="auto" Content="{Binding Title}" />
+        </materialDesign:Card>
+
+        <Grid Grid.Row="1" Width="900" MinWidth="900" Height="120">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition  Width="*"/>
+                <ColumnDefinition  Width="*"/>
+                <ColumnDefinition  Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" BorderBrush="Gainsboro" BorderThickness="1">
+                <Grid >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0">
+                        <Label  FontWeight="SemiBold" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" >Einnahmen</Label>
+                    </Grid>
+
+                    <Grid Grid.Row="1">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold">Einzahlung</Label>
+                            <Label Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding EinnahmeEinzahlung, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  ContentStringFormat="N2"  Language="de-DE" ></Label>
+                        </Grid>
+
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold">Verkauf</Label>
+                            <Label Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding EinnahmeVerkauf, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  ContentStringFormat="N2"  Language="de-DE"></Label>
+                        </Grid>
+
+                        <Grid Grid.Column="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold">Dividende</Label>
+                            <Label Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding EinnahmeDividende, Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"  ContentStringFormat="N2"  Language="de-DE" ></Label>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <Border BorderBrush="Gainsboro" BorderThickness="1" Grid.Column="1">
+                <Grid >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0">
+                        <Label  FontWeight="SemiBold" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" >Ausgaben</Label>
+                    </Grid>
+
+                    <Grid Grid.Row="1">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold">Auszahlung</Label>
+                            <Label Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding AusgabeAuszahlung, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  ContentStringFormat="N2"  Language="de-DE" ></Label>
+                        </Grid>
+
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold">Kauf</Label>
+                            <Label Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding AusgabeKauf, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  ContentStringFormat="N2"  Language="de-DE" ></Label>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <Border BorderBrush="Gainsboro" BorderThickness="1" Grid.Column="2">
+                <Grid >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0">
+                        <Label  FontWeight="SemiBold" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" >Gesamt</Label>
+                    </Grid>
+
+                    <Grid Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold">Gesamteinnahmen</Label>
+                            <Label Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding EinnahmeGesamt, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat="N2"  Language="de-DE" ></Label>
+
+                        </Grid>
+
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold">Gesamtausgaben</Label>
+                            <Label Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding AusgabeGesamt, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  ContentStringFormat="N2"  Language="de-DE"></Label>
+
+                        </Grid>
+
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold">Differenz</Label>
+                            <Label Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding Differenz, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  ContentStringFormat="N2"  Language="de-DE" ></Label>
+
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -10,21 +10,34 @@
 
     <Grid>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="5px"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-        <Grid Grid.Column="0">
-            <Frame x:Name="ContainerLeft"  NavigationUIVisibility="Hidden"  />
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="5px"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <Frame x:Name="ContainerLeft"  NavigationUIVisibility="Hidden"  />
+            </Grid>
+
+            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"/>
+
+            <Grid Grid.Column="2">
+                <Frame x:Name="ContainerRight"  NavigationUIVisibility="Hidden"  />
+            </Grid>
         </Grid>
 
-        <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"/>
-
-        <Grid Grid.Column="2">
-            <Frame x:Name="ContainerRight"  NavigationUIVisibility="Hidden"  />
+        <Grid Grid.Row="0">
+            <Frame x:Name="ContainerUp"  NavigationUIVisibility="Hidden"  />
         </Grid>
+
+
 
     </Grid>
 </Page>
