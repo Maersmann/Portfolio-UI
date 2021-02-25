@@ -23,47 +23,67 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         public DividendeStammdatenViewModel()
         {
-            dividende = new Dividende();
+            Title = "Informationen Dividende";
             SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
-            Datum = DateTime.Now;
-            state = State.Neu;
-            Betrag = null;
-            Waehrung = Data.Types.WertpapierTypes.Waehrungen.Euro;
+            Cleanup();
         }
 
         protected override void ExecuteSaveCommand()
         {
+            var WertpapiedID = dividende.WertpapierID;
             var API = new DividendeAPI();
             if (state == State.Neu)
             {           
-                API.Speichern(dividende.Betrag, dividende.Datum, dividende.WertpapierID, dividende.Waehrung, dividende.BetragUmgerechnet);
+                API.Speichern(dividende.Betrag, dividende.Zahldatum, dividende.Exdatum, dividende.WertpapierID, dividende.Waehrung, dividende.BetragUmgerechnet, dividende.RundungArt);
                 Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Dividende gespeichert." }, "DividendenStammdaten");
             }
             else
             {
-                API.Aktualisiere(dividende.Betrag, dividende.Datum, dividende.ID, dividende.Waehrung, dividende.BetragUmgerechnet);
+                API.Aktualisiere(dividende.Betrag, dividende.Zahldatum, dividende.Exdatum, dividende.ID, dividende.Waehrung, dividende.BetragUmgerechnet, dividende.RundungArt);
                 Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Dividende aktualisiert." }, "DividendenStammdaten");
             }
+            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage { ID =  WertpapiedID }, ViewType.viewDividendeUebersicht);
         }
 
         #region Bindings
-        public DateTime? Datum
+        public DateTime? Exdatum
         {
             get
             {
-                return dividende.Datum;
+                return dividende.Exdatum;
             }
             set
             {
-                if ( !DateTime.Equals(this.dividende.Datum, value))
+                if ( !DateTime.Equals(this.dividende.Exdatum, value))
                 {
-                    ValidateDatum(value);
-                    this.dividende.Datum = value.GetValueOrDefault();
+                    this.dividende.Exdatum = value;
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
+
+        public DateTime? Zahldatum
+        {
+            get
+            {
+                if (dividende.Zahldatum.Equals(DateTime.MinValue))
+                    return null;
+                else
+                    return dividende.Zahldatum;
+            }
+            set
+            {
+                if (LoadAktie ||!DateTime.Equals(this.dividende.Zahldatum, value))
+                {
+                    ValidateDatum(value);
+                    this.dividende.Zahldatum = value.GetValueOrDefault();
+                    this.RaisePropertyChanged();
+                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         public Double? Betrag
         {
             get
@@ -121,41 +141,43 @@ namespace Aktien.Logic.UI.DividendeViewModels
         {
             set { dividende.WertpapierID = value; }
         }
-        public void Bearbeiten(int inID)
+        public void Bearbeiten(int id)
         {
-            var _dividende = new DividendeAPI().LadeAnhandID(inID);
+            LoadAktie = true;
+            var _dividende = new DividendeAPI().LadeAnhandID(id);
 
             dividende = new Dividende
             {
-                ID = _dividende.ID
+                ID = _dividende.ID,
+                RundungArt = _dividende.RundungArt
              };
 
             WertpapierID = _dividende.WertpapierID;
-            Datum = _dividende.Datum;
+            Exdatum = _dividende.Exdatum;
+            Zahldatum = _dividende.Zahldatum;
             Betrag = _dividende.Betrag;
             Waehrung = _dividende.Waehrung;
             BetragUmgerechnet = _dividende.BetragUmgerechnet;
             state = State.Bearbeiten;
+            LoadAktie = false;
         }
 
-
-
         #region Validate
-        private bool ValidateDatum(DateTime? inDatum)
+        private bool ValidateDatum(DateTime? datun)
         {
             var Validierung = new DividendeStammdatenValidierung();
 
-            bool isValid = Validierung.ValidateDatum(inDatum, out ICollection<string> validationErrors);
+            bool isValid = Validierung.ValidateDatum(datun, out ICollection<string> validationErrors);
 
-            AddValidateInfo(isValid, "Datum", validationErrors);
+            AddValidateInfo(isValid, "Zahldatum", validationErrors);
             return isValid;
         }
 
-        private bool ValidateBetrag(Double? inBetrag)
+        private bool ValidateBetrag(Double? betrag)
         {
             var Validierung = new DividendeStammdatenValidierung();
 
-            bool isValid = Validierung.ValidateBetrag(inBetrag, out ICollection<string> validationErrors);
+            bool isValid = Validierung.ValidateBetrag(betrag, out ICollection<string> validationErrors);
 
             AddValidateInfo(isValid, "Betrag", validationErrors);
             return isValid;
@@ -164,11 +186,13 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         public override void Cleanup()
         {
-            state = State.Neu;
             dividende = new Dividende();
-            this.RaisePropertyChanged();
-            Datum = DateTime.Now;
+            Zahldatum = DateTime.Now;
+            Exdatum = null;
+            state = State.Neu;
             Betrag = null;
+            Waehrung = Data.Types.WertpapierTypes.Waehrungen.Euro;
+            this.RaisePropertyChanged();
         }
 
     }

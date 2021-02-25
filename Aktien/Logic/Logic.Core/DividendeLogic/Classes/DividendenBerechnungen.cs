@@ -9,22 +9,22 @@ namespace Aktien.Logic.Core.DividendeLogic.Classes
 {
     public class DividendenBerechnungen
     {
-        public Double GesamtBrutto(double inBetrag, Double inBestand)
+        public Double GesamtBrutto(double betrag, Double bestand)
         {
-            return Math.Round((inBetrag * inBestand),2, MidpointRounding.AwayFromZero);
+            return Math.Round((betrag * bestand),2, MidpointRounding.AwayFromZero);
         }
 
-        public Double GesamtNetto(double inGesamtBrutto, Double? inQuellensteuer)
+        public Double GesamtNetto(double gesamtBrutto, Double? quellensteuer)
         {
-            return Math.Round(inGesamtBrutto - inQuellensteuer.GetValueOrDefault(0),2, MidpointRounding.AwayFromZero);
+            return Math.Round(gesamtBrutto - quellensteuer.GetValueOrDefault(0),2, MidpointRounding.AwayFromZero);
         }
 
-        public Double BetragUmgerechnet( Double inBetrag, Double? inUmrechnungskurs, bool inMitRunden, DividendenRundungTypes inTyp )
+        public Double BetragUmgerechnet( Double betrag, Double? umrechnungskurs, bool mitRunden, DividendenRundungTypes typ )
         {
-            var betrag = (inBetrag / inUmrechnungskurs.GetValueOrDefault(1));
-            if (inMitRunden)
+            betrag /= umrechnungskurs.GetValueOrDefault(1);
+            if (mitRunden)
             {
-                switch (inTyp)
+                switch (typ)
                 {
                     case DividendenRundungTypes.Normal:
                         betrag = Math.Round(betrag, 2, MidpointRounding.AwayFromZero);

@@ -11,18 +11,18 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
 {
     public class ETFInfoRepository : BaseRepository
     {
-        public void Speichern(int? inID, ErmittentTypes inEmittend, ProfitTypes inProfitTyp, int inWertpapierID)
+        public void Speichern(int? iD, ErmittentTypes emittend, ProfitTypes profitTyp, int wertpapierID)
         {
             var Entity = new ETFInfo();
-            if (inID.GetValueOrDefault(0) == 0) inID = null;
-            if (inID.HasValue)
-                Entity = repo.ETFInfos.Find(inID.Value);
+            if (iD.GetValueOrDefault(0) == 0) iD = null;
+            if (iD.HasValue)
+                Entity = repo.ETFInfos.Find(iD.Value);
 
-            Entity.Emittent = inEmittend;
-            Entity.ProfitTyp = inProfitTyp;
-            Entity.WertpapierID = inWertpapierID;
+            Entity.Emittent = emittend;
+            Entity.ProfitTyp = profitTyp;
+            Entity.WertpapierID = wertpapierID;
 
-            if (!inID.HasValue)
+            if (!iD.HasValue)
                 repo.ETFInfos.Add(Entity);
 
             repo.SaveChanges();
@@ -33,9 +33,9 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
             return new ObservableCollection<ETFInfo>(repo.ETFInfos.OrderBy(o => o.ID).ToList());
         }
 
-        public ETFInfo LadeAnhandID(int inID)
+        public ETFInfo LadeAnhandID(int iD)
         {
-            return repo.ETFInfos.Where(a => a.ID == inID).First();
+            return repo.ETFInfos.Where(a => a.ID == iD).First();
         }
     }
 }

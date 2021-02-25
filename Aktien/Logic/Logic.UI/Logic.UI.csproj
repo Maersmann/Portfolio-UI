@@ -157,14 +157,17 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AktieViewModels\AktienUebersichtViewModel.cs" />
+    <Compile Include="BaseViewModels\ViewModelLoadData.cs" />
     <Compile Include="BaseViewModels\ViewModelUebersicht.cs" />
     <Compile Include="DepotViewModels\AusgabenUebersichtViewModel.cs" />
     <Compile Include="DepotViewModels\AusgabeStammdatenViewModel.cs" />
+    <Compile Include="DepotViewModels\EinnahmenAusgabenUebersichtViewModel.cs" />
     <Compile Include="DepotViewModels\EinnahmenUebersichtViewModel.cs" />
     <Compile Include="DepotViewModels\EinnahmeStammdatenViewModel.cs" />
     <Compile Include="DepotViewModels\Page\DepotUebersichtPageViewModel.cs" />
     <Compile Include="DerivateViewModels\DerivateGesamtUebersichtViewModel.cs" />
     <Compile Include="DerivateViewModels\DerivateStammdatenViewModel.cs" />
+    <Compile Include="DividendeViewModels\DividendeProStueckAnpassenViewModel.cs" />
     <Compile Include="ETFViewModels\Page\ETFUebersichtPageViewModel.cs" />
     <Compile Include="WertpapierViewModels\OrderUebersichtViewModel.cs" />
     <Compile Include="AktieViewModels\AktieStammdatenViewModel.cs" />

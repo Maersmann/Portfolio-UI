@@ -34,7 +34,7 @@ namespace Aktien.Logic.Core.KonvertierungLogic
                 if (e.BetragUmgerechnet.HasValue)
                 {
                     e.BetragUmgerechnet = Math.Round(e.BetragUmgerechnet.Value, 2, MidpointRounding.AwayFromZero);
-                    dRepo.Speichern(e.ID, e.Betrag, e.Datum, e.WertpapierID, e.Waehrung, e.BetragUmgerechnet);
+                    dRepo.Speichern(e.ID, e.Betrag, e.Zahldatum, e.Exdatum, e.WertpapierID, e.Waehrung, e.BetragUmgerechnet, Data.Types.DividendenTypes.DividendenRundungTypes.Normal);
                 }
                 
             });

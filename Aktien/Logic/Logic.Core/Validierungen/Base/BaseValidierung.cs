@@ -8,24 +8,24 @@ namespace Aktien.Logic.Core.Validierung.Base
 {
     public class BaseValidierung
     {
-        public bool ValidateBetrag(Double? inBetrag, out ICollection<string> validatonErrors)
+        public bool ValidateBetrag(Double? betrag, out ICollection<string> validatonErrors)
         {
             validatonErrors = new List<String>();
 
-            if (!inBetrag.HasValue)
+            if (!betrag.HasValue)
                 validatonErrors.Add("Kein Betrag hinterlegt sein");
 
-            if ((inBetrag == 0))
+            if ((betrag == 0))
                 validatonErrors.Add("Der Betrag darf nicht 0 sein");
 
             return validatonErrors.Count == 0;
         }
 
-        public bool ValidateDatum(DateTime? inDate, out ICollection<string> validationErrors)
+        public bool ValidateDatum(DateTime? date, out ICollection<string> validationErrors)
         {
             validationErrors = new List<String>();
 
-            if (!inDate.HasValue)
+            if (date.GetValueOrDefault(DateTime.MinValue).Equals(DateTime.MinValue))
                 validationErrors.Add("Kein Datum hinterlegt");
 
             return validationErrors.Count == 0;

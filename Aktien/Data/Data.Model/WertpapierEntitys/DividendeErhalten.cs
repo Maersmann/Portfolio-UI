@@ -13,7 +13,6 @@ namespace Aktien.Data.Model.WertpapierEntitys
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
-        public DateTime Datum { get; set; }
         public Double? Quellensteuer { get; set; }
         public Double? Umrechnungskurs { get; set; }
         public Double GesamtNetto { get; set; }

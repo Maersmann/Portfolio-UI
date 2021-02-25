@@ -13,10 +13,10 @@ namespace Aktien.Logic.Core.DepotLogic.Classes
 {
     public class DepotWertpapierFunctions
     {
-        public void NeuBerechnen(int inWertpapierID)
+        public void NeuBerechnen(int wertpapierID)
         {
-            DepotWertpapier dw = new DepotWertpapier { DepotID = 1, WertpapierID = inWertpapierID, BuyIn = 0, Anzahl = 0 };
-            IList<OrderHistory> orders = new OrderHistoryRepository().LadeAlleByWertpapierID(inWertpapierID);
+            DepotWertpapier dw = new DepotWertpapier { DepotID = 1, WertpapierID = wertpapierID, BuyIn = 0, Anzahl = 0 };
+            IList<OrderHistory> orders = new OrderHistoryRepository().LadeAlleByWertpapierID(wertpapierID);
 
             orders.OrderBy(o => o.Orderdatum);
 

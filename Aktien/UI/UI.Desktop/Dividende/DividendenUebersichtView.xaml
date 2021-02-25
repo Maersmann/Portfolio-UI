@@ -19,14 +19,14 @@
         </Grid.RowDefinitions>
 
         <materialDesign:Card  Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushHeaderBG}}">
-            <Label HorizontalAlignment="Center" Width="auto" >Übersicht aller Dividenden</Label>
+            <Label HorizontalAlignment="Center" Width="auto" Content="{Binding Title, Mode=OneWay}" />
         </materialDesign:Card>
 
-        <DataGrid Grid.Row="1" Margin="5" Width="auto"  ItemsSource="{Binding Dividenden}" SelectedItem="{Binding SelectedDividende, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" Unloaded="DataGrid_Unloaded">
+        <DataGrid Grid.Row="1" Margin="5" Width="auto"  ItemsSource="{Binding ItemList}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" Unloaded="DataGrid_Unloaded">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Datum" Binding="{Binding Datum, StringFormat=dd.MM.yyyy}" Width="auto"/>
-                <DataGridTextColumn Header="Betrag" Binding="{Binding Betrag, StringFormat=N3, ConverterCulture='de-DE'}" Width="auto"/>
-                <DataGridTextColumn Header="Währung" Binding="{Binding Waehrung}" Width="auto"/>
+                <DataGridTextColumn Header="Zahltag" Binding="{Binding Zahldatum, StringFormat=dd.MM.yyyy}" Width="auto"/>
+                <DataGridTextColumn Header="Betrag" Binding="{Binding Eurobetrag, StringFormat=N3, ConverterCulture='de-DE'}" Width="auto"/>
+                <DataGridTextColumn Header="Währung" Binding="{Binding EuroWaehrung}" Width="auto"/>
             </DataGrid.Columns>
         </DataGrid>
 

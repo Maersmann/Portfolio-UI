@@ -12,25 +12,25 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
 {
     public class OrderHistoryRepository : BaseRepository
     {
-        public void Speichern(Double inPreis, Double? inFremdkosten, DateTime inDatum, int inWertpapierID, Double inAnzahl, KaufTypes inKauftyp, OrderTypes inOrderTyp, BuySell inBuySell)
+        public void Speichern(Double preis, Double? fremdkosten, DateTime datum, int wertpapierID, Double anzahl, KaufTypes kauftyp, OrderTypes orderTyp, BuySell buySell)
         {
-            repo.OrderHistories.Add(new OrderHistory { WertpapierID = inWertpapierID, Preis = inPreis, Orderdatum = inDatum, Anzahl = inAnzahl, Fremdkostenzuschlag = inFremdkosten, KaufartTyp = inKauftyp, OrderartTyp = inOrderTyp, BuySell = inBuySell });
+            repo.OrderHistories.Add(new OrderHistory { WertpapierID = wertpapierID, Preis = preis, Orderdatum = datum, Anzahl = anzahl, Fremdkostenzuschlag = fremdkosten, KaufartTyp = kauftyp, OrderartTyp = orderTyp, BuySell = buySell });
             repo.SaveChanges();
         }
-        public void Speichern(OrderHistory inHistory)
+        public void Speichern(OrderHistory orderhistory)
         {
-            repo.OrderHistories.Add(inHistory);
+            repo.OrderHistories.Add(orderhistory);
             repo.SaveChanges();
         }
 
-        public ObservableCollection<OrderHistory> LadeAlleByWertpapierID(int inWertpapierID)
+        public ObservableCollection<OrderHistory> LadeAlleByWertpapierID(int wertpapierID)
         {
-            return new ObservableCollection<OrderHistory>(repo.OrderHistories.Where(o => o.WertpapierID == inWertpapierID).OrderByDescending(o => o.ID ).ToList());
+            return new ObservableCollection<OrderHistory>(repo.OrderHistories.Where(o => o.WertpapierID == wertpapierID).OrderByDescending(o => o.ID ).ToList());
         }
 
-        public OrderHistory LadeByID(int inID)
+        public OrderHistory LadeByID(int iD)
         {
-            return repo.OrderHistories.Where(o => o.ID.Equals(inID)).FirstOrDefault();
+            return repo.OrderHistories.Where(o => o.ID.Equals(iD)).FirstOrDefault();
         }
 
         public void Entfernen(OrderHistory order)
@@ -44,9 +44,9 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
             return new ObservableCollection<OrderHistory>(repo.OrderHistories.OrderBy(o => o.ID).ToList());
         }
 
-        public bool IstNeuereOrderVorhanden(int inWertpapierID, DateTime inDatum)
+        public bool IstNeuereOrderVorhanden(int wertpapierID, DateTime datum)
         {
-            return repo.OrderHistories.Where(o => o.WertpapierID == inWertpapierID).Where(o => o.Orderdatum > inDatum).FirstOrDefault() != null;
+            return repo.OrderHistories.Where(o => o.WertpapierID == wertpapierID).Where(o => o.Orderdatum > datum).FirstOrDefault() != null;
         }
     }
 }

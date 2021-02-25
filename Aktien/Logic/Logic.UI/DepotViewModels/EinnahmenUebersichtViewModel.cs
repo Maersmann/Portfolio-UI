@@ -19,6 +19,7 @@ namespace Aktien.Logic.UI.DepotViewModels
     {
         public EinnahmenUebersichtViewModel()
         {
+            Title = "Übersicht aller Einnahmen";
             LoadData();
             AddAktieCommand = new RelayCommand(this.ExecuteAddAktieCommand);
             RegisterAktualisereViewMessage(ViewType.viewEinnahmenUebersicht);

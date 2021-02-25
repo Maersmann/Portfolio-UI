@@ -51,10 +51,10 @@ namespace Aktien.Logic.UI.ETFViewModels
             Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewWertpapierUebersicht);
         }
 
-        public void Bearbeiten(int inID)
+        public void Bearbeiten(int id)
         {
             LoadAktie = true;
-            var Loadaktie = new EtfAPI().LadeAnhandID(inID);
+            var Loadaktie = new EtfAPI().LadeAnhandID(id);
             etf = new Wertpapier
             {
                 ID = Loadaktie.ID,
@@ -169,21 +169,21 @@ namespace Aktien.Logic.UI.ETFViewModels
         #endregion
 
         #region Validate
-        private bool ValidateName(String inName)
+        private bool ValidateName(String name)
         {
             var Validierung = new WertpapierStammdatenValidierung();
 
-            bool isValid = Validierung.ValidateName(inName, out ICollection<string> validationErrors);
+            bool isValid = Validierung.ValidateName(name, out ICollection<string> validationErrors);
 
             AddValidateInfo(isValid, "Name", validationErrors);
             return isValid;
         }
 
-        private bool ValidateISIN(String inISIN)
+        private bool ValidateISIN(String isin)
         {
             var Validierung = new WertpapierStammdatenValidierung();
 
-            bool isValid = Validierung.ValidateISIN(inISIN, out ICollection<string> validationErrors);
+            bool isValid = Validierung.ValidateISIN(isin, out ICollection<string> validationErrors);
 
             AddValidateInfo(isValid, "ISIN", validationErrors);
             return isValid;

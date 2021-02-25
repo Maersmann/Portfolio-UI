@@ -1,4 +1,6 @@
-﻿using Aktien.Logic.Messages.DividendeMessages;
+﻿using Aktien.Data.Types;
+using Aktien.Logic.Messages.Base;
+using Aktien.Logic.Messages.DividendeMessages;
 using Aktien.Logic.UI.DividendeViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using System;
@@ -54,8 +56,7 @@ namespace Aktien.UI.Desktop.Dividende
             this.Close();
             var view = new DividendenUebersichtView();
 
-            if (view.DataContext is DividendenUebersichtViewModel model)
-                model.LoadData(m.WertpapierID);
+            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage {  ID = m.WertpapierID }, ViewType.viewDividendeUebersicht);
 
             Window window = new Window
             {

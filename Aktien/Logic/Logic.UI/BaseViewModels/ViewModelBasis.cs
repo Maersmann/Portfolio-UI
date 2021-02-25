@@ -32,9 +32,9 @@ namespace Aktien.Logic.UI.BaseViewModels
             Cleanup();
         }
 
-        public void SendExceptionMessage(string inException)
+        public void SendExceptionMessage(string exceptionMessage)
         {
-            Messenger.Default.Send<ExceptionMessage>(new ExceptionMessage { Message = inException });
+            Messenger.Default.Send<ExceptionMessage>(new ExceptionMessage { Message = exceptionMessage });
         }
 
 

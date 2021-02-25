@@ -54,7 +54,7 @@ namespace Aktien.Logic.Core.KonvertierungLogic
                     EuroBetrag = new DividendenBerechnungen().BetragUmgerechnet(EuroBetrag, e.Umrechnungskurs,true, Data.Types.DividendenTypes.DividendenRundungTypes.Normal);
                 }
 
-                depotAPI.NeueEinnahme(Math.Round(EuroBetrag, 2, MidpointRounding.AwayFromZero), e.Datum, EinnahmeArtTypes.Dividende, 1, e.ID, "");
+                depotAPI.NeueEinnahme(Math.Round(EuroBetrag, 2, MidpointRounding.AwayFromZero), e.Dividende.Zahldatum, EinnahmeArtTypes.Dividende, 1, e.ID, "");
             });
 
 

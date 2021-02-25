@@ -16,9 +16,9 @@ namespace Aktien.UI.Desktop.Base
             
         }
 
-        public void MessageWithToken(string inToken)
+        public void MessageWithToken(string token)
         {
-            Messenger.Default.Register<StammdatenGespeichertMessage>(this, inToken, m => ReceiveNeueDividendeGespeichertMessage(m));
+            Messenger.Default.Register<StammdatenGespeichertMessage>(this, token, m => ReceiveNeueDividendeGespeichertMessage(m));
         }
 
         private void ReceiveNeueDividendeGespeichertMessage(StammdatenGespeichertMessage m)

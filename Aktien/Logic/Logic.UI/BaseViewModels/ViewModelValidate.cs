@@ -32,32 +32,32 @@ namespace Aktien.Logic.UI.BaseViewModels
             get { return ValidationErrors.Count > 0; }
         }
 
-        protected void AddValidateInfo(Boolean inValid, String inPropertyKey, ICollection<string> inValidationErrors)
+        protected void AddValidateInfo(Boolean valid, String propertyKey, ICollection<string> validationErrors)
         {
-            if (!inValid)
+            if (!valid)
             {
 
-                ValidationErrors[inPropertyKey] = inValidationErrors;
+                ValidationErrors[propertyKey] = validationErrors;
 
-                RaiseErrorsChanged(inPropertyKey);
+                RaiseErrorsChanged(propertyKey);
             }
-            else if (ValidationErrors.ContainsKey(inPropertyKey))
+            else if (ValidationErrors.ContainsKey(propertyKey))
             {
 
-                ValidationErrors.Remove(inPropertyKey);
+                ValidationErrors.Remove(propertyKey);
 
-                RaiseErrorsChanged(inPropertyKey);
+                RaiseErrorsChanged(propertyKey);
             }
         }
 
-        protected void DeleteValidateInfo(string inPropertyKey)
+        protected void DeleteValidateInfo(string propertyKey)
         {
-            if (ValidationErrors.ContainsKey(inPropertyKey))
+            if (ValidationErrors.ContainsKey(propertyKey))
             {
 
-                ValidationErrors.Remove(inPropertyKey);
+                ValidationErrors.Remove(propertyKey);
 
-                RaiseErrorsChanged(inPropertyKey);
+                RaiseErrorsChanged(propertyKey);
             }
         }
     }

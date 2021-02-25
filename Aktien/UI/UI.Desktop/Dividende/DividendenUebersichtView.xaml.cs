@@ -47,12 +47,7 @@ namespace Aktien.UI.Desktop.Dividende
                     model.Bearbeiten( m.DividendeID.GetValueOrDefault() );
                 }
             }
-            bool? Result = view.ShowDialog();
-
-            if ((Result.GetValueOrDefault(false)) && (this.DataContext is DividendenUebersichtViewModel modelUebersicht))
-            {
-                modelUebersicht.LoadData( m.WertpapierID );
-            }
+            view.ShowDialog();
         }
 
         private void DataGrid_Unloaded(object sender, RoutedEventArgs e)

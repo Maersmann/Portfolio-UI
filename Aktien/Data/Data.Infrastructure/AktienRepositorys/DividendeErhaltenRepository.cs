@@ -1,6 +1,7 @@
 ﻿using Aktien.Data.Infrastructure.Base;
 using Aktien.Data.Model.WertpapierEntitys;
 using Aktien.Data.Types.DividendenTypes;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,35 +12,34 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
 {
     public class DividendeErhaltenRepository: BaseRepository
     {
-        public void Speichern(int? inID, DateTime inDatum, Double? inQuellensteuer, Double? inUmrechnungskurs, Double inGesamtBrutto, Double inGesamtNetto, Double inBestand, int inDividendeID, int inWertpapierID, DividendenRundungTypes inTyp, Double? inGesamtNettoUmgerechnetErhalten, Double? inGesamtNettoUmgerechnetErmittelt)
+        public void Speichern(int? iD, Double? quellensteuer, Double? umrechnungskurs, Double gesamtBrutto, Double gesamtNetto, Double bestand, int dividendeID, int wertpapierID, DividendenRundungTypes typ, Double? gesamtNettoUmgerechnetErhalten, Double? gesamtNettoUmgerechnetErmittelt)
         {
             var Entity = new DividendeErhalten();
                 
-            if (inID.HasValue)
-                Entity =repo.ErhaltendeDividenden.Find(inID.Value);
+            if (iD.HasValue)
+                Entity =repo.ErhaltendeDividenden.Find(iD.Value);
 
-            Entity.Datum = inDatum;
-            Entity.Quellensteuer = inQuellensteuer;
-            Entity.Umrechnungskurs = inUmrechnungskurs;
-            Entity.GesamtBrutto = inGesamtBrutto;
-            Entity.GesamtNetto = inGesamtNetto;
-            Entity.Bestand = inBestand;
-            Entity.DividendeID = inDividendeID;
-            Entity.WertpapierID = inWertpapierID;
-            Entity.RundungArt = inTyp;
-            Entity.GesamtNettoUmgerechnetErhalten = inGesamtNettoUmgerechnetErhalten;
-            Entity.GesamtNettoUmgerechnetErmittelt = inGesamtNettoUmgerechnetErmittelt;
+            Entity.Quellensteuer = quellensteuer;
+            Entity.Umrechnungskurs = umrechnungskurs;
+            Entity.GesamtBrutto = gesamtBrutto;
+            Entity.GesamtNetto = gesamtNetto;
+            Entity.Bestand = bestand;
+            Entity.DividendeID = dividendeID;
+            Entity.WertpapierID = wertpapierID;
+            Entity.RundungArt = typ;
+            Entity.GesamtNettoUmgerechnetErhalten = gesamtNettoUmgerechnetErhalten;
+            Entity.GesamtNettoUmgerechnetErmittelt = gesamtNettoUmgerechnetErmittelt;
 
-            if (!inID.HasValue)
+            if (!iD.HasValue)
                 repo.ErhaltendeDividenden.Add(Entity);
 
             repo.SaveChanges();
         }
 
-        public void Speichern(DividendeErhalten inDividendeErhalten)
+        public void Speichern(DividendeErhalten dividendeErhalten)
         {
-            if (inDividendeErhalten.ID == 0)
-                repo.ErhaltendeDividenden.Add(inDividendeErhalten);
+            if (dividendeErhalten.ID == 0)
+                repo.ErhaltendeDividenden.Add(dividendeErhalten);
             repo.SaveChanges();
         }
 
@@ -48,29 +48,29 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
             return new ObservableCollection<DividendeErhalten>(repo.ErhaltendeDividenden.OrderBy(o => o.ID).ToList());
         }
 
-        public ObservableCollection<DividendeErhalten> LadeAllByWertpapierID(int inWertpapierID)
+        public ObservableCollection<DividendeErhalten> LadeAllByWertpapierID(int wertpapierID)
         {
-            return new ObservableCollection<DividendeErhalten>(repo.ErhaltendeDividenden.Where(d => d.WertpapierID == inWertpapierID).OrderByDescending(o => o.Datum).ToList());
+            return new ObservableCollection<DividendeErhalten>(repo.ErhaltendeDividenden.Include(d => d.Dividende).Where(d => d.WertpapierID == wertpapierID).OrderByDescending(o => o.Dividende.Zahldatum).ToList());
         }
 
-        public DividendeErhalten LadeByID(int inID)
+        public DividendeErhalten LadeByID(int iD)
         {
-            return repo.ErhaltendeDividenden.Where(d => d.ID == inID).First();
+            return repo.ErhaltendeDividenden.Include(d => d.Dividende).Where(d => d.ID == iD).First();
         }
 
-        public DividendeErhalten LadeByDividendeID(int inID)
+        public DividendeErhalten LadeByDividendeID(int iD)
         {
-            return repo.ErhaltendeDividenden.Where(d => d.DividendeID == inID).First();
+            return repo.ErhaltendeDividenden.Where(d => d.DividendeID == iD).First();
         }
 
-        public bool IstDividendeErhalten(int inDividendeID)
+        public bool IstDividendeErhalten(int dividendeID)
         {
-            return repo.ErhaltendeDividenden.Where(a => a.DividendeID == inDividendeID).FirstOrDefault() != null;
+            return repo.ErhaltendeDividenden.Where(a => a.DividendeID == dividendeID).FirstOrDefault() != null;
         }
 
-        public void Entfernen(int inID)
+        public void Entfernen(int iD)
         {
-            repo.ErhaltendeDividenden.Remove(repo.ErhaltendeDividenden.Find(inID));
+            repo.ErhaltendeDividenden.Remove(repo.ErhaltendeDividenden.Find(iD));
             repo.SaveChanges();
         }
     }

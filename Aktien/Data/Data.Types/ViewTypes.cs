@@ -18,7 +18,8 @@ namespace Aktien.Data.Types
             viewDerivateUebersicht,
             viewEinAusgabenUebersicht,
             viewEinnahmenUebersicht,
-            viewAusgabenUebersicht
+            viewAusgabenUebersicht,
+            viewEinnahmeAusgabeGesamt
     }
 
 }

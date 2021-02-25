@@ -8,5 +8,6 @@ namespace Aktien.Logic.Messages.Base
 {
     public class AktualisiereViewMessage
     {
+        public int? ID { get; set; }
     }
 }

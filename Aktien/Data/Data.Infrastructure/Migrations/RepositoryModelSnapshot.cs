@@ -160,14 +160,20 @@ namespace Aktien.Data.Infrastructure.Migrations
                     b.Property<double?>("BetragUmgerechnet")
                         .HasColumnType("double precision");
 
-                    b.Property<DateTime>("Datum")
+                    b.Property<DateTime?>("Exdatum")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("RundungArt")
+                        .HasColumnType("integer");
 
                     b.Property<int>("Waehrung")
                         .HasColumnType("integer");
 
                     b.Property<int>("WertpapierID")
                         .HasColumnType("integer");
+
+                    b.Property<DateTime>("Zahldatum")
+                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("ID");
 
@@ -185,9 +191,6 @@ namespace Aktien.Data.Infrastructure.Migrations
 
                     b.Property<double>("Bestand")
                         .HasColumnType("double precision");
-
-                    b.Property<DateTime>("Datum")
-                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("DividendeID")
                         .HasColumnType("integer");

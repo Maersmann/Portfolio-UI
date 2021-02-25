@@ -7,6 +7,7 @@ using Aktien.Logic.Core.DividendeLogic.Classes;
 using Aktien.Logic.Core.Validierung;
 using Aktien.Logic.Messages.AuswahlMessages;
 using Aktien.Logic.Messages.Base;
+using Aktien.Logic.Messages.DividendeMessages;
 using Aktien.Logic.UI.BaseViewModels;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
@@ -31,22 +32,24 @@ namespace Aktien.Logic.UI.DividendeViewModels
         {
             SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
             OpenAuswahlCommand = new RelayCommand(this.ExecuteOpenAuswahlCommand);
+            OpenDividendeCommand = new DelegateCommand(this.ExecuteOpenDividendeCommand, this.CanExecuteOpenDividendeCommand);
             Cleanup();
         }
 
-        public void DividendeAusgewaehlt(int inID, double inBetrag, DateTime inDatum)
+      
+        public void DividendeAusgewaehlt(int id, double betrag, DateTime datum)
         {
             DateTimeFormatInfo fmt = (new CultureInfo("de-DE")).DateTimeFormat;
-            dividendetext = inDatum.ToString("d", fmt) + " (" + inBetrag.ToString("N2") + ")";
+            dividendetext = datum.ToString("d", fmt) + " (" + betrag.ToString("N2") + ")";
             this.RaisePropertyChanged("DividendeText");
-            DividendeID = inID;
-            betrag = inBetrag;
+            DividendeID = id;
+            this.betrag = betrag;
             BerechneGesamtWerte();
         }
 
-        public void Bearbeiten(int inID)
+        public void Bearbeiten(int id)
         {
-            var dividendeLoad = new DividendeErhaltenAPI().LadeAnhandID(inID);
+            var dividendeLoad = new DividendeErhaltenAPI().LadeAnhandID(id);
 
             dividendeErhalten = new DividendeErhalten
             {
@@ -58,11 +61,10 @@ namespace Aktien.Logic.UI.DividendeViewModels
             };
 
             Bestand = dividendeLoad.Bestand;
-            Datum = dividendeLoad.Datum;
             Quellensteuer = dividendeLoad.Quellensteuer;
             Wechselkurs = dividendeLoad.Umrechnungskurs;
             RundungTyp = dividendeLoad.RundungArt;
-            DividendeAusgewaehlt(dividendeLoad.Dividende.ID, dividendeLoad.Dividende.Betrag, dividendeLoad.Dividende.Datum);
+            DividendeAusgewaehlt(dividendeLoad.Dividende.ID, dividendeLoad.Dividende.Betrag, dividendeLoad.Dividende.Zahldatum);
             state = State.Bearbeiten;
         }
 
@@ -74,33 +76,14 @@ namespace Aktien.Logic.UI.DividendeViewModels
                 ValidateDividende(value);
                 this.RaisePropertyChanged("DividendeText");
                 ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                ((DelegateCommand)OpenDividendeCommand).RaiseCanExecuteChanged();
             } 
         }
 
-        private void ExecuteOpenAuswahlCommand()
+  
+        public void WertpapierID(int wertpapierID)
         {
-            Messenger.Default.Send<OpenDividendenAuswahlMessage>(new OpenDividendenAuswahlMessage { WertpapierID = dividendeErhalten.WertpapierID });
-        }
-        protected override void ExecuteSaveCommand()
-        {
-            var API = new DepotAPI();
-            if (state == State.Neu)
-            {
-                API.NeueDividendeErhalten(dividendeErhalten);
-                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Erhaltene Dividende gespeichert." }, "ErhalteneDividendeStammdaten");
-
-            }
-            else
-            {
-                API.AktualisiereDividendeErhalten(dividendeErhalten);
-                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Erhaltene Dividende aktualisiert." }, "ErhalteneDividendeStammdaten");
-            }
-            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewEinnahmenUebersicht);
-        }
-
-        public void WertpapierID(int inWertpapierID)
-        {
-            dividendeErhalten.WertpapierID = inWertpapierID;
+            dividendeErhalten.WertpapierID = wertpapierID;
         }
 
         public void BerechneGesamtWerte()
@@ -120,6 +103,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         #region Bindings
         public ICommand OpenAuswahlCommand { get; set; }
+        public ICommand OpenDividendeCommand { get; set; }
         public Double? Bestand
         {
             get 
@@ -138,26 +122,6 @@ namespace Aktien.Logic.UI.DividendeViewModels
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                     BerechneGesamtWerte();
-                }
-            }
-        }
-        public DateTime? Datum
-        {
-            get
-            {
-                if (dividendeErhalten.Datum == DateTime.MinValue)
-                    return null;
-                else
-                    return dividendeErhalten.Datum;
-            }
-            set
-            {
-                if (this.dividendeErhalten.Datum != value)
-                {
-                    ValidateDatum(value);
-                    this.dividendeErhalten.Datum = value.GetValueOrDefault(DateTime.MinValue);
-                    this.RaisePropertyChanged();
-                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
@@ -235,32 +199,55 @@ namespace Aktien.Logic.UI.DividendeViewModels
         public bool WechsellkursHasValue { get { return this.dividendeErhalten.Umrechnungskurs.GetValueOrDefault(0)>0; } }
         #endregion
 
+        #region Commands
+        private void ExecuteOpenAuswahlCommand()
+        {
+            Messenger.Default.Send<OpenDividendenAuswahlMessage>(new OpenDividendenAuswahlMessage { WertpapierID = dividendeErhalten.WertpapierID });
+        }
+        protected override void ExecuteSaveCommand()
+        {
+            var API = new DepotAPI();
+            if (state == State.Neu)
+            {
+                API.NeueDividendeErhalten(dividendeErhalten);
+                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Erhaltene Dividende gespeichert." }, "ErhalteneDividendeStammdaten");
+
+            }
+            else
+            {
+                API.AktualisiereDividendeErhalten(dividendeErhalten);
+                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Erhaltene Dividende aktualisiert." }, "ErhalteneDividendeStammdaten");
+            }
+            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewEinnahmenUebersicht);
+        }
+        private bool CanExecuteOpenDividendeCommand()
+        {
+            return (dividendeErhalten.DividendeID != -1) && (dividendeErhalten.Umrechnungskurs.GetValueOrDefault(0)>0);
+        }
+        private void ExecuteOpenDividendeCommand()
+        {
+            Messenger.Default.Send<OpenDividendeProStueckAnpassenMessage>(new OpenDividendeProStueckAnpassenMessage { DividendeID = dividendeErhalten.DividendeID,  Umrechnungskurs = dividendeErhalten.Umrechnungskurs.Value });
+        }
+
+
+        #endregion
+
         #region Validate
-        private bool ValidateBestand(Double? inBestand)
+        private bool ValidateBestand(Double? bestand)
         {
             var Validierung = new DividendeErhaltenValidierung();
 
-            bool isValid = Validierung.ValidateBestand(inBestand, out ICollection<string> validationErrors);
+            bool isValid = Validierung.ValidateBestand(bestand, out ICollection<string> validationErrors);
 
             AddValidateInfo(isValid, "Bestand", validationErrors);
             return isValid;
         }
 
-        private bool ValidateDatum(DateTime? inDatum)
+        private bool ValidateDividende(int id)
         {
             var Validierung = new DividendeErhaltenValidierung();
 
-            bool isValid = Validierung.ValidateDatum(inDatum, out ICollection<string> validationErrors);
-
-            AddValidateInfo(isValid, "Datum", validationErrors);
-            return isValid;
-        }
-
-        private bool ValidateDividende(int inID)
-        {
-            var Validierung = new DividendeErhaltenValidierung();
-
-            bool isValid = Validierung.ValidateDividende(inID, out ICollection<string> validationErrors);
+            bool isValid = Validierung.ValidateDividende(id, out ICollection<string> validationErrors);
 
             AddValidateInfo(isValid, "DividendeText", validationErrors);
             return isValid;
@@ -273,7 +260,6 @@ namespace Aktien.Logic.UI.DividendeViewModels
             dividendetext = "";
             DividendeID = -1;
             Bestand = -1;
-            Datum = DateTime.Now;
             state = State.Neu;
             Quellensteuer = null;
             Wechselkurs = null;

@@ -34,10 +34,10 @@ namespace Aktien.Logic.UI.DividendeViewModels
             EntfernenCommand = new DelegateCommand(this.ExecuteEntfernenCommand, this.CanExecuteCommand);
         }
 
-        public void LoadData(int inWertpapierID)
+        public void LoadData(int wertpapierID)
         {
-            wertpapierID = inWertpapierID;
-            dividenden = new AktieAPI().LadeAlleErhalteneDividenden(wertpapierID);
+            this.wertpapierID = wertpapierID;
+            dividenden = new AktieAPI().LadeAlleErhalteneDividenden(this.wertpapierID);
             this.RaisePropertyChanged("Dividenden");
         }
 

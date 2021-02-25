@@ -10,27 +10,27 @@ namespace Aktien.Logic.Core.Validierung
 {
     public class WertpapierStammdatenValidierung : BaseValidierung
     {
-        public bool ValidateName(String inName, out ICollection<string> validationErrors)
+        public bool ValidateName(String name, out ICollection<string> validationErrors)
         {
             validationErrors = new List<String>();
 
-            if (inName.Length > 250)
+            if (name.Length > 250)
                 validationErrors.Add("Der Name ist zu lang");
 
-            if (inName.Length == 0)
+            if (name.Length == 0)
                 validationErrors.Add("Der Name darf nicht leer sein");
 
             return validationErrors.Count == 0;
         }
 
-        public bool ValidateISIN(String inISIN, out ICollection<string> validationErrors)
+        public bool ValidateISIN(String isin, out ICollection<string> validationErrors)
         {
             validationErrors = new List<String>();
 
-            if (inISIN.Length > 250)
+            if (isin.Length > 250)
                 validationErrors.Add("Die ISIN ist zu lang");
 
-            if (inISIN.Length == 0)
+            if (isin.Length == 0)
                 validationErrors.Add("Die ISIN darf nicht leer sein");
 
             return validationErrors.Count == 0;
