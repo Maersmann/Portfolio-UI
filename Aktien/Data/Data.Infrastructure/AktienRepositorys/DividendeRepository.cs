@@ -13,7 +13,7 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
 {
     public class DividendeRepository : BaseRepository
     {
-        public void Speichern(int? iD, Double betrag, DateTime datum, int? wertpapierID, Waehrungen waehrung, Double? betragUmgerechnet, DividendenRundungTypes rundungTypes )
+        public void Speichern(int? iD, Double betrag, DateTime zahldatum, DateTime? exdatum, int? wertpapierID, Waehrungen waehrung, Double? betragUmgerechnet, DividendenRundungTypes rundungTypes )
         {
             var dividende = new Dividende();
 
@@ -23,7 +23,8 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
                 repo.Dividenden.Add(dividende);
 
             dividende.Betrag = betrag;
-            dividende.Datum = datum;
+            dividende.Exdatum = exdatum;
+            dividende.Zahldatum = zahldatum;
             dividende.Waehrung = waehrung;
             dividende.RundungArt = rundungTypes;
             if (betragUmgerechnet.HasValue)
@@ -36,7 +37,7 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
 
         public ObservableCollection<Dividende> LadeAlleFuerAktie( int wertpapierID )
         {
-            return new ObservableCollection<Dividende>(repo.Dividenden.Where(d=>d.WertpapierID == wertpapierID).OrderByDescending( d=>d.Datum ).ToList());
+            return new ObservableCollection<Dividende>(repo.Dividenden.Where(d=>d.WertpapierID == wertpapierID).OrderByDescending( d=>d.Exdatum ).ToList());
         }
 
         public void Speichern(Dividende dividende)
@@ -65,7 +66,7 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
 
         public ObservableCollection<Dividende> LadeAlleNichtErhaltendeFuerWertpapier(int wertpapierID)
         {
-            return new ObservableCollection<Dividende>(repo.Dividenden.Where(d => (d.WertpapierID == wertpapierID)).Where( d=> (!repo.ErhaltendeDividenden.Select(e => e.DividendeID).Contains(d.ID))).OrderByDescending(d => d.Datum).ToList());
+            return new ObservableCollection<Dividende>(repo.Dividenden.Where(d => (d.WertpapierID == wertpapierID)).Where( d=> (!repo.ErhaltendeDividenden.Select(e => e.DividendeID).Contains(d.ID))).OrderByDescending(d => d.Exdatum).ToList());
         }
 
     }

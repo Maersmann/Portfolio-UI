@@ -25,7 +25,7 @@ namespace Aktien.Logic.Core.Validierung.Base
         {
             validationErrors = new List<String>();
 
-            if (!date.HasValue)
+            if (date.GetValueOrDefault(DateTime.MinValue).Equals(DateTime.MinValue))
                 validationErrors.Add("Kein Datum hinterlegt");
 
             return validationErrors.Count == 0;

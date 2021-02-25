@@ -18,7 +18,8 @@ namespace Aktien.Data.Model.WertpapierEntitys
         
         public int ID { get; set; }
 
-        public DateTime Datum { get; set; }
+        public DateTime? Exdatum { get; set; }
+        public DateTime Zahldatum { get; set; }
         public Double Betrag { get; set; }
         public int WertpapierID { get; set; }
         public Wertpapier Wertpapier { get; set; }

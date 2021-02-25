@@ -59,7 +59,7 @@ namespace Aktien.Logic.UI.AuswahlViewModels
 
         private void ExecutAuswahlCommand()
         {
-            Messenger.Default.Send<DividendeAusgewaehltMessage>(new DividendeAusgewaehltMessage {  ID = selectedDividende.ID, Betrag = selectedDividende.Betrag, Datum = selectedDividende.Datum});
+            Messenger.Default.Send<DividendeAusgewaehltMessage>(new DividendeAusgewaehltMessage {  ID = selectedDividende.ID, Betrag = selectedDividende.Betrag, Datum = selectedDividende.Zahldatum});
         }
 
         #endregion

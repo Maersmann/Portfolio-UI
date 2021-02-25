@@ -13,9 +13,9 @@ namespace Aktien.Logic.Core.DividendeLogic
 {
     public class DividendeErhaltenAPI
     {
-        public void Speichern(int wertpapierID, int dividendeID, DateTime datum, Double? quellensteuer, Double? umrechnungskurs, int bestand, double gesamtBrutto, double gesamtNetto, DividendenRundungTypes typ, Double? gesamtNettoUmgerechnetErhalten, Double? gesamtNettoUmgerechnetErmittelt)
+        public void Speichern(int wertpapierID, int dividendeID,  Double? quellensteuer, Double? umrechnungskurs, int bestand, double gesamtBrutto, double gesamtNetto, DividendenRundungTypes typ, Double? gesamtNettoUmgerechnetErhalten, Double? gesamtNettoUmgerechnetErmittelt)
         {
-            new DividendeErhaltenRepository().Speichern(null, datum, quellensteuer, umrechnungskurs, gesamtBrutto, gesamtNetto, bestand, dividendeID, wertpapierID, typ, gesamtNettoUmgerechnetErhalten, gesamtNettoUmgerechnetErmittelt);
+            new DividendeErhaltenRepository().Speichern(null, quellensteuer, umrechnungskurs, gesamtBrutto, gesamtNetto, bestand, dividendeID, wertpapierID, typ, gesamtNettoUmgerechnetErhalten, gesamtNettoUmgerechnetErmittelt);
         }
 
         public ObservableCollection<DividendeErhalten> LadeAlleFuerAktie(int wertpapierID)

@@ -27,7 +27,7 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="25px" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Name="rowToHide">
                 <RowDefinition.Style>
                     <Style TargetType="{x:Type RowDefinition}">
@@ -58,17 +58,15 @@
                 <RowDefinition Height="40px" />
                 <RowDefinition Height="40px" />
                 <RowDefinition Height="40px" />
-                <RowDefinition Height="40px" />
             </Grid.RowDefinitions>
 
 
             <Grid Grid.Row="0" Grid.ColumnSpan="2" Background="{Binding Mode=OneWay, Source={StaticResource brushStammdatenBereich}}"/>
 
             <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Dividende</Label>
-            <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Erhalten am</Label>
-            <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Bestand</Label>
-            <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Quellensteuer</Label>
-            <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Wechselkurs</Label>
+            <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Bestand</Label>
+            <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Quellensteuer</Label>
+            <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Wechselkurs</Label>
 
             <Grid Grid.Row="0" Grid.Column="1"  >
                 <Grid.ColumnDefinitions>
@@ -94,25 +92,8 @@
                 <Button Grid.Column="1" Height="23" Width="23"  Command="{Binding OpenAuswahlCommand, Mode=OneWay}"  ></Button>
             </Grid>
             
-
-
-            <DatePicker  Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"  SelectedDate="{Binding Datum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" >
-                <Validation.ErrorTemplate>
-                    <ControlTemplate>
-                        <StackPanel>
-                            <AdornedElementPlaceholder x:Name="textBox"/>
-                            <ItemsControl ItemsSource="{Binding}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding ErrorContent}" Foreground="Red" FontSize="9" />
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </StackPanel>
-                    </ControlTemplate>
-                </Validation.ErrorTemplate>
-            </DatePicker>
-            <TextBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Bestand, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, FallbackValue='1', TargetNullValue='' }"  >
+     
+            <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Bestand, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, FallbackValue='1', TargetNullValue='' }"  >
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="PreviewTextInput" >
                         <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyNumbersCommand"  />
@@ -133,14 +114,14 @@
                     </ControlTemplate>
                 </Validation.ErrorTemplate>
             </TextBox>
-            <TextBox Grid.Row="3"  Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Quellensteuer, UpdateSourceTrigger=PropertyChanged, TargetNullValue='', StringFormat=N3,ConverterCulture='de-DE' }"  >
+            <TextBox Grid.Row="2"  Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Quellensteuer, UpdateSourceTrigger=PropertyChanged, TargetNullValue='', StringFormat=N3,ConverterCulture='de-DE' }"  >
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="PreviewTextInput" >
                         <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyBetragCommand"  />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </TextBox>
-            <TextBox Grid.Row="4"  Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Wechselkurs, UpdateSourceTrigger=PropertyChanged,  TargetNullValue='', StringFormat=N5,ConverterCulture='de-DE' }"  >
+            <TextBox Grid.Row="3"  Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Wechselkurs, UpdateSourceTrigger=PropertyChanged,  TargetNullValue='', StringFormat=N5,ConverterCulture='de-DE' }"  >
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="PreviewTextInput" >
                         <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyBetragCommand"  />
@@ -171,7 +152,7 @@
             </DockPanel>
         </materialDesign:Card>
 
-        <Grid Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Background="{Binding Mode=OneWay, Source={StaticResource brushUebersicht}}">
+        <Grid Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Height="250" Background="{Binding Mode=OneWay, Source={StaticResource brushUebersicht}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30px" />
                 <RowDefinition Height="25px" />

@@ -52,7 +52,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         public ICommand OKCommand { get; set; }
 
-        public DateTime Datum { get { return dividende.Datum; } }
+        public DateTime Datum { get { return dividende.Zahldatum; } }
         public Double Betrag { get { return dividende.Betrag; } }
         public Waehrungen Waehrung { get { return dividende.Waehrung; } }
         public Double Umrechnungskurs { get { return umrechnungskurs; } }

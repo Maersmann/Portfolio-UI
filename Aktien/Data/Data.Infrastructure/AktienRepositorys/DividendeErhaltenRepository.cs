@@ -12,14 +12,13 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
 {
     public class DividendeErhaltenRepository: BaseRepository
     {
-        public void Speichern(int? iD, DateTime datum, Double? quellensteuer, Double? umrechnungskurs, Double gesamtBrutto, Double gesamtNetto, Double bestand, int dividendeID, int wertpapierID, DividendenRundungTypes typ, Double? gesamtNettoUmgerechnetErhalten, Double? gesamtNettoUmgerechnetErmittelt)
+        public void Speichern(int? iD, Double? quellensteuer, Double? umrechnungskurs, Double gesamtBrutto, Double gesamtNetto, Double bestand, int dividendeID, int wertpapierID, DividendenRundungTypes typ, Double? gesamtNettoUmgerechnetErhalten, Double? gesamtNettoUmgerechnetErmittelt)
         {
             var Entity = new DividendeErhalten();
                 
             if (iD.HasValue)
                 Entity =repo.ErhaltendeDividenden.Find(iD.Value);
 
-            Entity.Datum = datum;
             Entity.Quellensteuer = quellensteuer;
             Entity.Umrechnungskurs = umrechnungskurs;
             Entity.GesamtBrutto = gesamtBrutto;
@@ -51,7 +50,7 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
 
         public ObservableCollection<DividendeErhalten> LadeAllByWertpapierID(int wertpapierID)
         {
-            return new ObservableCollection<DividendeErhalten>(repo.ErhaltendeDividenden.Where(d => d.WertpapierID == wertpapierID).OrderByDescending(o => o.Datum).ToList());
+            return new ObservableCollection<DividendeErhalten>(repo.ErhaltendeDividenden.Include(d => d.Dividende).Where(d => d.WertpapierID == wertpapierID).OrderByDescending(o => o.Dividende.Zahldatum).ToList());
         }
 
         public DividendeErhalten LadeByID(int iD)

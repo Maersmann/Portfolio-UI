@@ -14,16 +14,16 @@ namespace Aktien.Logic.Core.DividendeLogic
 {
     public class DividendeAPI
     {
-        public void Speichern(Double betrag, DateTime datum, int wertpapierID, Waehrungen waehrung, Double? betragUmgerechnet, DividendenRundungTypes rundungTypes)
+        public void Speichern(Double betrag, DateTime zahldatum, DateTime? exdatum, int wertpapierID, Waehrungen waehrung, Double? betragUmgerechnet, DividendenRundungTypes rundungTypes)
         {
             var DividendeRepo = new DividendeRepository();
-            DividendeRepo.Speichern(null, betrag, datum, wertpapierID, waehrung, betragUmgerechnet, rundungTypes);
+            DividendeRepo.Speichern(null, betrag, zahldatum, exdatum, wertpapierID, waehrung, betragUmgerechnet, rundungTypes);
         }
 
-        public void Aktualisiere(Double betrag, DateTime datum, int iD, Waehrungen waehrung, Double? betragUmgerechnet, DividendenRundungTypes rundungTypes)
+        public void Aktualisiere(Double betrag, DateTime zahldatum, DateTime? exdatum, int iD, Waehrungen waehrung, Double? betragUmgerechnet, DividendenRundungTypes rundungTypes)
         {
             var DividendeRepo = new DividendeRepository();
-            DividendeRepo.Speichern(iD, betrag, datum, null , waehrung, betragUmgerechnet, rundungTypes);
+            DividendeRepo.Speichern(iD, betrag, zahldatum,exdatum, null , waehrung, betragUmgerechnet, rundungTypes);
 
             if (new DividendeErhaltenRepository().IstDividendeErhalten(iD))
             {

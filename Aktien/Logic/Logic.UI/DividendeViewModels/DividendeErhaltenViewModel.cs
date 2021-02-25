@@ -61,11 +61,10 @@ namespace Aktien.Logic.UI.DividendeViewModels
             };
 
             Bestand = dividendeLoad.Bestand;
-            Datum = dividendeLoad.Datum;
             Quellensteuer = dividendeLoad.Quellensteuer;
             Wechselkurs = dividendeLoad.Umrechnungskurs;
             RundungTyp = dividendeLoad.RundungArt;
-            DividendeAusgewaehlt(dividendeLoad.Dividende.ID, dividendeLoad.Dividende.Betrag, dividendeLoad.Dividende.Datum);
+            DividendeAusgewaehlt(dividendeLoad.Dividende.ID, dividendeLoad.Dividende.Betrag, dividendeLoad.Dividende.Zahldatum);
             state = State.Bearbeiten;
         }
 
@@ -123,26 +122,6 @@ namespace Aktien.Logic.UI.DividendeViewModels
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                     BerechneGesamtWerte();
-                }
-            }
-        }
-        public DateTime? Datum
-        {
-            get
-            {
-                if (dividendeErhalten.Datum == DateTime.MinValue)
-                    return null;
-                else
-                    return dividendeErhalten.Datum;
-            }
-            set
-            {
-                if (this.dividendeErhalten.Datum != value)
-                {
-                    ValidateDatum(value);
-                    this.dividendeErhalten.Datum = value.GetValueOrDefault(DateTime.MinValue);
-                    this.RaisePropertyChanged();
-                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
@@ -264,16 +243,6 @@ namespace Aktien.Logic.UI.DividendeViewModels
             return isValid;
         }
 
-        private bool ValidateDatum(DateTime? datum)
-        {
-            var Validierung = new DividendeErhaltenValidierung();
-
-            bool isValid = Validierung.ValidateDatum(datum, out ICollection<string> validationErrors);
-
-            AddValidateInfo(isValid, "Datum", validationErrors);
-            return isValid;
-        }
-
         private bool ValidateDividende(int id)
         {
             var Validierung = new DividendeErhaltenValidierung();
@@ -291,7 +260,6 @@ namespace Aktien.Logic.UI.DividendeViewModels
             dividendetext = "";
             DividendeID = -1;
             Bestand = -1;
-            Datum = DateTime.Now;
             state = State.Neu;
             Quellensteuer = null;
             Wechselkurs = null;
