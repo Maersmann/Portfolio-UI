@@ -22,7 +22,7 @@
 
         <DataGrid Grid.Row="1" Margin="5" ItemsSource="{Binding Dividenden}" SelectedItem="{Binding SelectedDividende, Mode=TwoWay}" AutoGenerateColumns="false" IsReadOnly="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Datum" Binding="{Binding Datum, StringFormat=dd.MM.yyyy}" Width="auto"/>
+                <DataGridTextColumn Header="Zahltag" Binding="{Binding Zahldatum, StringFormat=dd.MM.yyyy}" Width="auto"/>
                 <DataGridTextColumn Header="Betrag" Binding="{Binding Betrag, StringFormat=N3, ConverterCulture='de-DE'}" Width="auto"/>
                 <DataGridTextColumn Header="Währung" Binding="{Binding Waehrung}" Width="auto"/>
             </DataGrid.Columns>

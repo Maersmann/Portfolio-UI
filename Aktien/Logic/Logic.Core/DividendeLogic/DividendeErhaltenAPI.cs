@@ -20,7 +20,6 @@ namespace Aktien.Logic.Core.DividendeLogic
 
         public ObservableCollection<DividendeErhalten> LadeAlleFuerAktie(int wertpapierID)
         {
-            new DividendeRepository().LadeAlleFuerAktie(wertpapierID);
             return new DividendeErhaltenRepository().LadeAllByWertpapierID(wertpapierID);
         }
 

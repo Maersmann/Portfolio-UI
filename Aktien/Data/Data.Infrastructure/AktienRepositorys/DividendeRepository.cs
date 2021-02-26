@@ -37,7 +37,7 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
 
         public ObservableCollection<Dividende> LadeAlleFuerAktie( int wertpapierID )
         {
-            return new ObservableCollection<Dividende>(repo.Dividenden.Where(d=>d.WertpapierID == wertpapierID).OrderByDescending( d=>d.Exdatum ).ToList());
+            return new ObservableCollection<Dividende>(repo.Dividenden.Where(d=>d.WertpapierID == wertpapierID).OrderByDescending( d=>d.Zahldatum ).ToList());
         }
 
         public void Speichern(Dividende dividende)
@@ -66,7 +66,7 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
 
         public ObservableCollection<Dividende> LadeAlleNichtErhaltendeFuerWertpapier(int wertpapierID)
         {
-            return new ObservableCollection<Dividende>(repo.Dividenden.Where(d => (d.WertpapierID == wertpapierID)).Where( d=> (!repo.ErhaltendeDividenden.Select(e => e.DividendeID).Contains(d.ID))).OrderByDescending(d => d.Exdatum).ToList());
+            return new ObservableCollection<Dividende>(repo.Dividenden.Where(d => (d.WertpapierID == wertpapierID)).Where( d=> (!repo.ErhaltendeDividenden.Select(e => e.DividendeID).Contains(d.ID))).OrderByDescending(d => d.Zahldatum).ToList());
         }
 
     }
