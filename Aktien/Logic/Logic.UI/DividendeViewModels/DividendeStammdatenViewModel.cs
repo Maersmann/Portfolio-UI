@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Aktien.Data.Model.WertpapierEntitys;
 using Aktien.Data.Types;
+using Aktien.Logic.Core.Validierung.Base;
 
 namespace Aktien.Logic.UI.DividendeViewModels
 {
@@ -165,7 +166,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
         #region Validate
         private bool ValidateDatum(DateTime? datun)
         {
-            var Validierung = new DividendeStammdatenValidierung();
+            var Validierung = new BaseValidierung();
 
             bool isValid = Validierung.ValidateDatum(datun, out ICollection<string> validationErrors);
 
@@ -175,7 +176,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         private bool ValidateBetrag(Double? betrag)
         {
-            var Validierung = new DividendeStammdatenValidierung();
+            var Validierung = new BaseValidierung();
 
             bool isValid = Validierung.ValidateBetrag(betrag, out ICollection<string> validationErrors);
 

@@ -18,13 +18,12 @@ namespace Aktien.Logic.UI.DepotViewModels
     {
         public AusgabenUebersichtViewModel()
         {
+            Title = "Übersicht aller Ausgaben";
             LoadData();
-            AddAktieCommand = new RelayCommand(this.ExecuteAddAktieCommand);
+            NeuCommand = new RelayCommand(this.ExecuteAddAktieCommand);
             RegisterAktualisereViewMessage(ViewType.viewAusgabenUebersicht);
         }
 
-
-        public string MessageToken { set { messageToken = value; } }
 
         public override void LoadData()
         {
@@ -33,11 +32,6 @@ namespace Aktien.Logic.UI.DepotViewModels
             this.RaisePropertyChanged("ItemList");
         }
 
-
-        #region Bindings
-
-        public ICommand AddAktieCommand { get; set; }
-        #endregion
 
         #region Commands
         private void ExecuteAddAktieCommand()

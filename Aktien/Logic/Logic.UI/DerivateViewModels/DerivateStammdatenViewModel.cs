@@ -1,6 +1,7 @@
 ﻿using Aktien.Data.Model.WertpapierEntitys;
 using Aktien.Data.Types;
 using Aktien.Logic.Core.Validierung;
+using Aktien.Logic.Core.Validierung.Base;
 using Aktien.Logic.Core.WertpapierLogic;
 using Aktien.Logic.Core.WertpapierLogic.Exceptions;
 using Aktien.Logic.Messages.Base;
@@ -128,9 +129,9 @@ namespace Aktien.Logic.UI.DerivateViewModels
         #region Validate
         private bool ValidateName(String name)
         {
-            var Validierung = new WertpapierStammdatenValidierung();
+            var Validierung = new BaseValidierung();
 
-            bool isValid = Validierung.ValidateName(name, out ICollection<string> validationErrors);
+            bool isValid = Validierung.ValidateString(name, "Name", out ICollection<string> validationErrors);
 
             AddValidateInfo(isValid, "Name", validationErrors);
             return isValid;
@@ -138,9 +139,9 @@ namespace Aktien.Logic.UI.DerivateViewModels
 
         private bool ValidateISIN(String isin)
         {
-            var Validierung = new WertpapierStammdatenValidierung();
+            var Validierung = new BaseValidierung();
 
-            bool isValid = Validierung.ValidateISIN(isin, out ICollection<string> validationErrors);
+            bool isValid = Validierung.ValidateString(isin, "ISIN", out ICollection<string> validationErrors);
 
             AddValidateInfo(isValid, "ISIN", validationErrors);
             return isValid;

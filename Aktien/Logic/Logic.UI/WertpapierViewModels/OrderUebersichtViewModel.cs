@@ -30,7 +30,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
 
         public OrderUebersichtViewModel()
         {
-            messagtoken = "";
+            Title = "Übersicht der Order";
             wertpapierID = 0;
             wertpapierTypes = WertpapierTypes.Aktie;
             AktieGekauftCommand = new DelegateCommand(this.ExecuteAktieGekauftCommand, this.CanExecuteCommand);
@@ -39,7 +39,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
             RegisterAktualisereViewMessage(ViewType.viewOrderUebersicht);
         }
 
-        public string MessageToken
+        public override string MessageToken
         {
             set
             {
@@ -74,22 +74,6 @@ namespace Aktien.Logic.UI.WertpapierViewModels
 
         public ICommand AktieGekauftCommand { get; set; }
         public ICommand AktieVerkauftCommand { get; set; }
-        public ICommand BearbeitenCommand { get; set; }
-        public ICommand EntfernenCommand{get;set;}
-
-        public override OrderHistory SelectedItem
-        {
-            get
-            {
-                return selectedItem;
-            }
-            set
-            {
-                selectedItem = value;
-                ((DelegateCommand)EntfernenCommand).RaiseCanExecuteChanged();
-                this.RaisePropertyChanged();
-            }
-        }
 
         #endregion
 
@@ -118,7 +102,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
             Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewDepotUebersicht);
         }
 
-        private bool CanExecuteCommand()
+        protected override bool CanExecuteCommand()
         {
             return wertpapierID != 0;
         }

@@ -1,12 +1,14 @@
 ﻿using Aktien.Data.Types;
 using Aktien.Logic.Messages.Base;
 using GalaSoft.MvvmLight.Messaging;
+using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Aktien.Logic.UI.BaseViewModels
 {
@@ -15,6 +17,11 @@ namespace Aktien.Logic.UI.BaseViewModels
         protected ObservableCollection<T> itemList;
 
         protected T selectedItem;
+
+        public ViewModelUebersicht()
+        {
+            itemList = new ObservableCollection<T>();
+        }
 
         public virtual T SelectedItem
         {
@@ -26,6 +33,9 @@ namespace Aktien.Logic.UI.BaseViewModels
             {
                 selectedItem = value;
                 this.RaisePropertyChanged();
+                if (BearbeitenCommand != null) ((DelegateCommand)BearbeitenCommand).RaiseCanExecuteChanged();
+                if (EntfernenCommand != null) ((DelegateCommand)EntfernenCommand).RaiseCanExecuteChanged();
+
             }
         }
 
@@ -36,5 +46,14 @@ namespace Aktien.Logic.UI.BaseViewModels
                 return itemList;
             }
         }
+
+        protected virtual bool CanExecuteCommand()
+        {
+            return selectedItem != null;
+        }
+
+        public  ICommand NeuCommand { get; protected set; }
+        public  ICommand BearbeitenCommand { get; protected set; }
+        public  ICommand EntfernenCommand { get; protected set; }
     }
 }

@@ -24,13 +24,12 @@ namespace Aktien.Logic.UI.DepotViewModels
 
         public DepotUebersichtViewModel()
         {
+            Title = "Übersicht der Aktien im Depot";
             LoadData();
             OpenDividendeCommand = new DelegateCommand(this.ExecuteOpenDividendeCommandCommand, this.CanExecuteCommand);
             RegisterAktualisereViewMessage(ViewType.viewDepotUebersicht);
         }
 
-
-        public string MessageToken { set { messageToken = value; } }
 
         public override void LoadData()
         {
@@ -65,9 +64,9 @@ namespace Aktien.Logic.UI.DepotViewModels
         #endregion
 
         #region Commands
-        private bool CanExecuteCommand()
+        protected  override bool CanExecuteCommand()
         {
-            return (selectedItem != null) && (selectedItem.WertpapierTyp.Equals(WertpapierTypes.Aktie));
+            return base.CanExecuteCommand() && (selectedItem.WertpapierTyp.Equals(WertpapierTypes.Aktie));
         }
 
         private void ExecuteOpenDividendeCommandCommand()

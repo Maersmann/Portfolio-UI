@@ -24,15 +24,13 @@ namespace Aktien.Logic.UI.DerivateViewModels
 
         public DerivateGesamtUebersichtViewModel()
         {
+            Title = "Übersicht aller Derivate";
             LoadData();
-            messageToken = "";
             BearbeitenCommand = new DelegateCommand(this.ExecuteBearbeitenCommand, this.CanExecuteCommand);
             EntfernenCommand = new DelegateCommand(this.ExecuteEntfernenCommand, this.CanExecuteCommand);
-            AddAktieCommand = new RelayCommand(this.ExecuteAddAktieCommand);
+            NeuCommand = new RelayCommand(this.ExecuteAddAktieCommand);
             RegisterAktualisereViewMessage(ViewType.viewDerivateUebersicht);
         }
-
-        public string MessageToken { set { messageToken = value; } }
 
         public override void LoadData()
         {
@@ -43,33 +41,20 @@ namespace Aktien.Logic.UI.DerivateViewModels
         #region Binding
         public override Wertpapier SelectedItem
         {
-            get
-            {
-                return selectedItem;
-            }
+            get => base.SelectedItem;
             set
             {
-                selectedItem = value;
-                this.RaisePropertyChanged();
-                ((DelegateCommand)BearbeitenCommand).RaiseCanExecuteChanged();
-                ((DelegateCommand)EntfernenCommand).RaiseCanExecuteChanged();
+                base.SelectedItem = value;
                 if (selectedItem != null)
                 {
                     Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = selectedItem.ID, WertpapierTyp = selectedItem.WertpapierTyp }, messageToken);
                 }
             }
         }
-
-        public ICommand BearbeitenCommand { get; protected set; }
-        public ICommand EntfernenCommand { get; protected set; }
-        public ICommand AddAktieCommand { get; set; }
         #endregion
 
         #region Commands
-        private bool CanExecuteCommand()
-        {
-            return selectedItem != null;
-        }
+
 
         private void ExecuteBearbeitenCommand()
         {

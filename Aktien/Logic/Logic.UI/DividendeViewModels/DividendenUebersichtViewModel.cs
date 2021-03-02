@@ -24,7 +24,6 @@ namespace Aktien.Logic.UI.DividendeViewModels
         public DividendenUebersichtViewModel()
         {
             Title = "Übersicht aller Dividenden";
-            itemList = new ObservableCollection<Dividende>();
             NeuCommand = new RelayCommand(() => ExecuteNeuCommand());
             BearbeitenCommand = new DelegateCommand(this.ExecuteBearbeitenCommand, this.CanExecuteCommand);
             EntfernenCommand = new DelegateCommand(this.ExecuteEntfernenCommand, this.CanExecuteCommand);
@@ -55,30 +54,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
             this.RaisePropertyChanged("ItemList");
             Messenger.Default.Send<DeleteDividendeErfolgreichMessage>(new DeleteDividendeErfolgreichMessage() );
         }
-        private bool CanExecuteCommand()
-        {
-            return selectedItem != null;
-        }
-        #endregion
 
-        #region Bindigs
-        public override Dividende SelectedItem
-        {
-            get
-            {
-                return selectedItem;
-            }
-            set
-            {
-                selectedItem = value;
-                this.RaisePropertyChanged();
-                ((DelegateCommand)BearbeitenCommand).RaiseCanExecuteChanged();
-                ((DelegateCommand)EntfernenCommand).RaiseCanExecuteChanged();
-            }
-        }
-        public ICommand NeuCommand { get; private set; }
-        public ICommand BearbeitenCommand { get; private set; }
-        public ICommand EntfernenCommand { get; private set; }
         #endregion
     }
 }
