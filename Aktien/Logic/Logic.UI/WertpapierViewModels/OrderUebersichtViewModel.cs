@@ -86,7 +86,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
         {
             Messenger.Default.Send<OpenAktieGekauftViewMessage>(new OpenAktieGekauftViewMessage { WertpapierID = wertpapierID, BuySell = BuySell.Sell, WertpapierTypes = wertpapierTypes }, messagtoken);
         }
-        private void ExecuteEntfernenCommand()
+        protected override void ExecuteEntfernenCommand()
         {
             if (selectedItem.BuySell == BuySell.Buy)
             {
@@ -96,10 +96,8 @@ namespace Aktien.Logic.UI.WertpapierViewModels
             {
                 new DepotAPI().EntferneVerkauftenWertpapier(selectedItem.ID);
             }
-            
-            itemList.Remove(selectedItem);
-            this.RaisePropertyChanged("SelectedItem");
             Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewDepotUebersicht);
+            base.ExecuteEntfernenCommand();
         }
 
         protected override bool CanExecuteCommand()

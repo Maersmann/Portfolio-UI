@@ -5,6 +5,7 @@ using Aktien.Logic.Core.Depot;
 using Aktien.Logic.Core.Validierung.Base;
 using Aktien.Logic.Messages.Base;
 using Aktien.Logic.UI.BaseViewModels;
+using Aktien.Logic.UI.InterfaceViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using Prism.Commands;
 using System;
@@ -15,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Aktien.Logic.UI.DepotViewModels
 {
-    public class AusgabeStammdatenViewModel : ViewModelStammdaten
+    public class AusgabeStammdatenViewModel : ViewModelStammdaten, IViewModelStammdaten
     {
         Ausgabe data;
         public AusgabeStammdatenViewModel()
@@ -149,6 +150,11 @@ namespace Aktien.Logic.UI.DepotViewModels
             Datum = DateTime.Now;
             DepotID = 1;
             Beschreibung = "";
+        }
+
+        public void ZeigeStammdatenAn(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

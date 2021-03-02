@@ -3,12 +3,11 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using Aktien.Logic.Core;
-using Aktien.Logic.Messages.Aktie;
-using Aktien.Logic.Messages.AktieMessages;
 using Aktien.Logic.UI.BaseViewModels;
 using System;
 using System.Windows.Input;
 using Aktien.Logic.Messages;
+using Aktien.Logic.Messages.Base;
 
 namespace Aktien.Logic.UI
 {

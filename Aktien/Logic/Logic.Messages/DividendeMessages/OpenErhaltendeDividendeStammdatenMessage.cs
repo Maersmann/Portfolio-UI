@@ -11,6 +11,5 @@ namespace Aktien.Logic.Messages.DividendeMessages
     public class OpenErhaltendeDividendeStammdatenMessage : BaseStammdatenMessage
     {
         public int WertpapierID { get; set; }
-        public int? ID { get; set; }
     }
 }

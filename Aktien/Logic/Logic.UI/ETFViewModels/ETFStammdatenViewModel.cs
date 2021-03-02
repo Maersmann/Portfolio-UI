@@ -7,6 +7,7 @@ using Aktien.Logic.Core.WertpapierLogic;
 using Aktien.Logic.Core.WertpapierLogic.Exceptions;
 using Aktien.Logic.Messages.Base;
 using Aktien.Logic.UI.BaseViewModels;
+using Aktien.Logic.UI.InterfaceViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using Prism.Commands;
 using System;
@@ -17,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace Aktien.Logic.UI.ETFViewModels
 {
-    public class ETFStammdatenViewModel : ViewModelStammdaten
+    public class ETFStammdatenViewModel : ViewModelStammdaten, IViewModelStammdaten
     {
         private Wertpapier etf;
 
@@ -50,9 +51,10 @@ namespace Aktien.Logic.UI.ETFViewModels
                 Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "ETF aktualisiert." }, "ETFStammdaten");
             }
             Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewWertpapierUebersicht);
+            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewETFUebersicht);
         }
 
-        public void Bearbeiten(int id)
+        public void ZeigeStammdatenAn(int id)
         {
             LoadAktie = true;
             var Loadaktie = new EtfAPI().LadeAnhandID(id);

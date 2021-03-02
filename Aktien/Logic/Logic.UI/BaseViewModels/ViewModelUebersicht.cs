@@ -1,5 +1,6 @@
 ﻿using Aktien.Data.Types;
 using Aktien.Logic.Messages.Base;
+using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Prism.Commands;
 using System;
@@ -21,7 +22,13 @@ namespace Aktien.Logic.UI.BaseViewModels
         public ViewModelUebersicht()
         {
             itemList = new ObservableCollection<T>();
+            EntfernenCommand = new DelegateCommand(this.ExecuteEntfernenCommand, this.CanExecuteCommand);
+            NeuCommand = new RelayCommand(() => ExecuteNeuCommand());
+            BearbeitenCommand = new DelegateCommand(this.ExecuteBearbeitenCommand, this.CanExecuteCommand);
         }
+
+        protected virtual int getID() { return 0; }
+        protected virtual ViewType getVStammdatenViewType() { return 0; }
 
         public virtual T SelectedItem
         {
@@ -50,6 +57,22 @@ namespace Aktien.Logic.UI.BaseViewModels
         protected virtual bool CanExecuteCommand()
         {
             return selectedItem != null;
+        }
+
+        protected virtual void ExecuteEntfernenCommand()
+        {
+            itemList.Remove(selectedItem);
+            this.RaisePropertyChanged("ItemList");
+        }
+
+        protected virtual void ExecuteBearbeitenCommand()
+        {
+            Messenger.Default.Send<BaseStammdatenMessage>(new BaseStammdatenMessage { State = State.Bearbeiten, ID = getID(), ViewType = getVStammdatenViewType() });
+        }
+
+        protected virtual void ExecuteNeuCommand()
+        {
+            Messenger.Default.Send<BaseStammdatenMessage>(new BaseStammdatenMessage { State = State.Neu, ID = null, ViewType = getVStammdatenViewType() });
         }
 
         public  ICommand NeuCommand { get; protected set; }

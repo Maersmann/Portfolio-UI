@@ -1,5 +1,4 @@
-﻿using Aktien.Logic.Messages.EinnahmenMessages;
-using Aktien.Logic.UI.DepotViewModels;
+﻿using Aktien.Logic.UI.DepotViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Generic;
@@ -26,7 +25,6 @@ namespace Aktien.UI.Desktop.Depot
         public EinnahmenUebersichtView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenEinnahmeStammdatenMessage>(this, m => ReceivOpenEinnahmeStammdatenMessage(m));
         }
 
         public string MessageToken
@@ -39,11 +37,6 @@ namespace Aktien.UI.Desktop.Depot
                     modelUebersicht.MessageToken = value;
                 }
             }
-        }
-
-        private void ReceivOpenEinnahmeStammdatenMessage(OpenEinnahmeStammdatenMessage m)
-        {
-            new EinnahmeStammdatenView().ShowDialog();
         }
     }
 }

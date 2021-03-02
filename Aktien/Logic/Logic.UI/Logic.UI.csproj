@@ -169,6 +169,7 @@
     <Compile Include="DerivateViewModels\DerivateStammdatenViewModel.cs" />
     <Compile Include="DividendeViewModels\DividendeProStueckAnpassenViewModel.cs" />
     <Compile Include="ETFViewModels\Page\ETFUebersichtPageViewModel.cs" />
+    <Compile Include="InterfaceViewModels\IViewModelStammdaten.cs" />
     <Compile Include="WertpapierViewModels\OrderUebersichtViewModel.cs" />
     <Compile Include="AktieViewModels\AktieStammdatenViewModel.cs" />
     <Compile Include="AktieViewModels\Page\AktieUebersichtPageViewModel.cs" />

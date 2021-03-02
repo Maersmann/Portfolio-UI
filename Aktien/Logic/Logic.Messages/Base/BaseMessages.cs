@@ -17,4 +17,9 @@ namespace Aktien.Logic.Messages.Base
     {
         public string Message { get; set; }
     }
+
+    public class InformationMessage
+    {
+        public string Message { get; set; }
+    }
 }

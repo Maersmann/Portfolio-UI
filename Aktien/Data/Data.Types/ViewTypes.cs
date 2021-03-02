@@ -19,7 +19,13 @@ namespace Aktien.Data.Types
             viewEinAusgabenUebersicht,
             viewEinnahmenUebersicht,
             viewAusgabenUebersicht,
-            viewEinnahmeAusgabeGesamt
+            viewEinnahmeAusgabeGesamt,
+            viewAktieStammdaten,
+            viewETFStammdaten,
+            viewDerivateStammdaten,
+            viewEinnahmenStammdaten,
+            viewAusgabenStammdaten,
+        viewDividendeStammdaten
     }
 
 }

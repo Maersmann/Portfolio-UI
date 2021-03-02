@@ -3,7 +3,6 @@ using Aktien.Data.Types;
 using Aktien.Logic.Core.WertpapierLogic;
 using Aktien.Logic.Core.WertpapierLogic.Exceptions;
 using Aktien.Logic.Messages.Base;
-using Aktien.Logic.Messages.ETFMessages;
 using Aktien.Logic.Messages.WertpapierMessages;
 using Aktien.Logic.UI.BaseViewModels;
 using GalaSoft.MvvmLight.CommandWpf;
@@ -25,13 +24,14 @@ namespace Aktien.Logic.UI.ETFViewModels
         public ETFGesamtUebersichtViewModel()
         {
             Title = "Übersicht aller ETF's";
-            LoadData(); 
-            BearbeitenCommand = new DelegateCommand(this.ExecuteBearbeitenCommand, this.CanExecuteCommand);
-            EntfernenCommand = new DelegateCommand(this.ExecuteEntfernenCommand, this.CanExecuteCommand);
-            NeuCommand = new RelayCommand(this.ExecuteAddAktieCommand);
+            LoadData();
+            RegisterAktualisereViewMessage(ViewType.viewETFUebersicht);
         }
 
-       
+        protected override int getID() { return selectedItem.ID; }
+        protected override ViewType getVStammdatenViewType() { return ViewType.viewETFStammdaten; }
+
+
         public override void LoadData()
         {
             itemList = new EtfAPI().LadeAlle();
@@ -55,12 +55,8 @@ namespace Aktien.Logic.UI.ETFViewModels
 
         #region Commands
 
-        private void ExecuteBearbeitenCommand()
-        {
-            Messenger.Default.Send<OpenETFStammdatenMessage>(new OpenETFStammdatenMessage { WertpapierID = selectedItem.ID, State = Data.Types.State.Bearbeiten });
-        }
 
-        private void ExecuteEntfernenCommand()
+        protected override void ExecuteEntfernenCommand()
         {
             try
             {
@@ -75,15 +71,11 @@ namespace Aktien.Logic.UI.ETFViewModels
             Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = 0, WertpapierTyp = selectedItem.WertpapierTyp }, messageToken);
             itemList.Remove(selectedItem);
             this.RaisePropertyChanged("ItemList");
-            Messenger.Default.Send<DeleteEtfErfolgreichMessage>(new DeleteEtfErfolgreichMessage());
+            SendInformationMessage("ETF gelöscht");
             Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewWertpapierUebersicht);
 
         }
 
-        private void ExecuteAddAktieCommand()
-        {
-            Messenger.Default.Send<OpenETFStammdatenMessage>(new OpenETFStammdatenMessage { State = Data.Types.State.Neu });
-        }
         #endregion
     }
 }

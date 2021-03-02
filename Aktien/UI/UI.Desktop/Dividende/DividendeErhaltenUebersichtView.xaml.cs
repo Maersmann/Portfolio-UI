@@ -28,12 +28,6 @@ namespace Aktien.UI.Desktop.Dividende
         {
             InitializeComponent();
             Messenger.Default.Register<OpenErhaltendeDividendeStammdatenMessage>(this, m => ReceiveOpenErhaltendeDividendeStammdatenMessage(m));
-            Messenger.Default.Register<DeleteErhalteneDividendenErfolgreichMessage>(this, m => ReceiveDeleteErhalteneDividendenErfolgreichMessage());
-        }
-
-        private void ReceiveDeleteErhalteneDividendenErfolgreichMessage()
-        {
-            MessageBox.Show("Erhaltene Dividende entfernt");
         }
 
         private void ReceiveOpenErhaltendeDividendeStammdatenMessage(OpenErhaltendeDividendeStammdatenMessage m)

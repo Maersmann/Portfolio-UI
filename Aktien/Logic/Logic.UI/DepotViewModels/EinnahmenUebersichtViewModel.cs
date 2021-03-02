@@ -1,7 +1,6 @@
 ﻿using Aktien.Data.Model.DepotEntitys;
 using Aktien.Data.Types;
 using Aktien.Logic.Core.DepotLogic;
-using Aktien.Logic.Messages.EinnahmenMessages;
 using Aktien.Logic.UI.BaseViewModels;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
@@ -21,9 +20,11 @@ namespace Aktien.Logic.UI.DepotViewModels
         {
             Title = "Übersicht aller Einnahmen";
             LoadData();
-            NeuCommand = new RelayCommand(this.ExecuteAddAktieCommand);
             RegisterAktualisereViewMessage(ViewType.viewEinnahmenUebersicht);
         }
+
+        protected override int getID() { return selectedItem.ID; }
+        protected override ViewType getVStammdatenViewType() { return ViewType.viewEinnahmenStammdaten; }
 
         public override void LoadData()
         {
@@ -33,11 +34,6 @@ namespace Aktien.Logic.UI.DepotViewModels
         }
 
 
-        #region Commands
-        private void ExecuteAddAktieCommand()
-        {
-            Messenger.Default.Send<OpenEinnahmeStammdatenMessage>(new OpenEinnahmeStammdatenMessage { State = Data.Types.State.Neu });
-        }
-        #endregion
+
     }
 }

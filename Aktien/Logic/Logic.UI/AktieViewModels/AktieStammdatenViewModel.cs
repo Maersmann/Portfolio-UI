@@ -1,7 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
-using Aktien.Logic.Messages.Aktie;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,10 +17,11 @@ using Aktien.Data.Model.WertpapierEntitys;
 using Aktien.Logic.Core.WertpapierLogic;
 using Aktien.Logic.Core.WertpapierLogic.Exceptions;
 using Aktien.Logic.Core.Validierung.Base;
+using Aktien.Logic.UI.InterfaceViewModels;
 
 namespace Aktien.Logic.UI.AktieViewModels
 {
-    public class AktieStammdatenViewModel : ViewModelStammdaten
+    public class AktieStammdatenViewModel : ViewModelStammdaten, IViewModelStammdaten
     {
 
         private Wertpapier aktie;
@@ -61,10 +61,11 @@ namespace Aktien.Logic.UI.AktieViewModels
                 Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Aktie aktualisiert." }, "AktieStammdaten");
             }
             Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewWertpapierUebersicht);
+            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewAktienUebersicht);
         }
 
 
-        public void Bearbeiten(int id) 
+        public void ZeigeStammdatenAn(int id) 
         { 
             LoadAktie = true;
             var Loadaktie = new AktieAPI().LadeAnhandID(id);

@@ -41,6 +41,11 @@ namespace Aktien.Logic.UI.BaseViewModels
             Messenger.Default.Send<ExceptionMessage>(new ExceptionMessage { Message = exceptionMessage });
         }
 
+        public void SendInformationMessage(string informationMessage)
+        {
+            Messenger.Default.Send<InformationMessage>(new InformationMessage { Message = informationMessage });
+        }
+
 
         public void OnlyNumbersCommand(object sender, TextCompositionEventArgs e)
         {

@@ -24,21 +24,12 @@ namespace Aktien.Logic.UI.DividendeViewModels
         public DividendenUebersichtViewModel()
         {
             Title = "Übersicht aller Dividenden";
-            NeuCommand = new RelayCommand(() => ExecuteNeuCommand());
-            BearbeitenCommand = new DelegateCommand(this.ExecuteBearbeitenCommand, this.CanExecuteCommand);
-            EntfernenCommand = new DelegateCommand(this.ExecuteEntfernenCommand, this.CanExecuteCommand);
             RegisterAktualisereViewMessage(ViewType.viewDividendeUebersicht);
         }
 
-        #region Commands
-        private void ExecuteNeuCommand()
-        {
-            Messenger.Default.Send<OpenDividendeStammdatenMessage>(new OpenDividendeStammdatenMessage { WertpapierID = wertpapierID, State = State.Neu });
-        }
-        private void ExecuteBearbeitenCommand()
-        {
-            Messenger.Default.Send<OpenDividendeStammdatenMessage>(new OpenDividendeStammdatenMessage { WertpapierID = wertpapierID, State = State.Bearbeiten, DividendeID = selectedItem.ID });
-        }
+        protected override int getID() { return selectedItem.ID; }
+        protected override ViewType getVStammdatenViewType() { return ViewType.viewDividendeStammdaten; }
+
 
         public override void LoadData(int id)
         {
@@ -47,12 +38,22 @@ namespace Aktien.Logic.UI.DividendeViewModels
             this.RaisePropertyChanged("ItemList");
         }
 
-        private void ExecuteEntfernenCommand()
+        #region Commands
+
+        protected override void ExecuteEntfernenCommand()
         {
             new DividendeAPI().Entfernen(selectedItem.ID);
-            itemList.Remove(selectedItem);
-            this.RaisePropertyChanged("ItemList");
-            Messenger.Default.Send<DeleteDividendeErfolgreichMessage>(new DeleteDividendeErfolgreichMessage() );
+            SendInformationMessage("Dividende gelöscht");
+            base.ExecuteEntfernenCommand();
+        }
+
+        protected override void ExecuteNeuCommand()
+        {
+            Messenger.Default.Send<OpenDividendeStammdatenMessage>(new OpenDividendeStammdatenMessage { WertpapierID = wertpapierID, State = State.Neu });
+        }
+        protected override void ExecuteBearbeitenCommand()
+        {
+            Messenger.Default.Send<OpenDividendeStammdatenMessage>(new OpenDividendeStammdatenMessage { WertpapierID = wertpapierID, State = State.Bearbeiten, DividendeID = selectedItem.ID });
         }
 
         #endregion

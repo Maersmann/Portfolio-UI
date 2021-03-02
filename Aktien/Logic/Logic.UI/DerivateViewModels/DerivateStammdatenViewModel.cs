@@ -6,6 +6,7 @@ using Aktien.Logic.Core.WertpapierLogic;
 using Aktien.Logic.Core.WertpapierLogic.Exceptions;
 using Aktien.Logic.Messages.Base;
 using Aktien.Logic.UI.BaseViewModels;
+using Aktien.Logic.UI.InterfaceViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using Prism.Commands;
 using System;
@@ -16,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace Aktien.Logic.UI.DerivateViewModels
 {
-    public class DerivateStammdatenViewModel : ViewModelStammdaten
+    public class DerivateStammdatenViewModel : ViewModelStammdaten, IViewModelStammdaten
     {
         private Wertpapier derivate;
 
@@ -58,7 +59,7 @@ namespace Aktien.Logic.UI.DerivateViewModels
             Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewDerivateUebersicht);
         }
 
-        public void Bearbeiten(int id)
+        public void ZeigeStammdatenAn(int id)
         {
             LoadAktie = true;
             var Loadaktie = new DerivateAPI().LadeAnhandID(id);

@@ -39,23 +39,20 @@ namespace Aktien.Logic.UI.DividendeViewModels
         }
 
         #region Commands
-        private void ExecuteNeuCommand()
+        protected override void ExecuteNeuCommand()
         {
             Messenger.Default.Send<OpenErhaltendeDividendeStammdatenMessage>(new OpenErhaltendeDividendeStammdatenMessage { WertpapierID = wertpapierID, State = State.Neu });
         }
-
-
-        private void ExecuteBearbeitenCommand()
+        protected override void ExecuteBearbeitenCommand()
         {
             Messenger.Default.Send<OpenErhaltendeDividendeStammdatenMessage>(new OpenErhaltendeDividendeStammdatenMessage { WertpapierID = wertpapierID, State = State.Bearbeiten, ID = selectedItem.ID });
         }
 
-        private void ExecuteEntfernenCommand()
+        protected override void ExecuteEntfernenCommand()
         {
             new DividendeErhaltenAPI().Entfernen(selectedItem.ID);
-            itemList.Remove(selectedItem);
-            this.RaisePropertyChanged("ItemList");
-            Messenger.Default.Send<DeleteErhalteneDividendenErfolgreichMessage>(new DeleteErhalteneDividendenErfolgreichMessage());
+            SendInformationMessage("Dividende gelöscht");
+            base.ExecuteEntfernenCommand();
         }
         #endregion
     }

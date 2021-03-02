@@ -16,7 +16,6 @@ using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
-using Aktien.Logic.Messages.Aktie;
 using Aktien.Logic.UI.AktieViewModels;
 using Aktien.Logic.UI.DepotViewModels;
 using Aktien.Logic.UI.DividendeViewModels;

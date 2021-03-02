@@ -3,7 +3,6 @@ using Aktien.Data.Types;
 using Aktien.Logic.Core.WertpapierLogic;
 using Aktien.Logic.Core.WertpapierLogic.Exceptions;
 using Aktien.Logic.Messages.Base;
-using Aktien.Logic.Messages.DerivateMessages;
 using Aktien.Logic.Messages.WertpapierMessages;
 using Aktien.Logic.UI.BaseViewModels;
 using GalaSoft.MvvmLight.Command;
@@ -26,11 +25,11 @@ namespace Aktien.Logic.UI.DerivateViewModels
         {
             Title = "Übersicht aller Derivate";
             LoadData();
-            BearbeitenCommand = new DelegateCommand(this.ExecuteBearbeitenCommand, this.CanExecuteCommand);
-            EntfernenCommand = new DelegateCommand(this.ExecuteEntfernenCommand, this.CanExecuteCommand);
-            NeuCommand = new RelayCommand(this.ExecuteAddAktieCommand);
             RegisterAktualisereViewMessage(ViewType.viewDerivateUebersicht);
         }
+
+        protected override int getID() { return selectedItem.ID; }
+        protected override ViewType getVStammdatenViewType() { return ViewType.viewDerivateStammdaten; }
 
         public override void LoadData()
         {
@@ -56,13 +55,7 @@ namespace Aktien.Logic.UI.DerivateViewModels
         #region Commands
 
 
-        private void ExecuteBearbeitenCommand()
-        {
-            Messenger.Default.Send<OpenDerivateStammdatenMessage>(new OpenDerivateStammdatenMessage { WertpapierID = selectedItem.ID, State = Data.Types.State.Bearbeiten });
-        }
-
-
-        private void ExecuteEntfernenCommand()
+        protected override void ExecuteEntfernenCommand()
         {
             try
             {
@@ -75,16 +68,11 @@ namespace Aktien.Logic.UI.DerivateViewModels
             }
 
             Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = 0, WertpapierTyp = selectedItem.WertpapierTyp }, messageToken);
-            itemList.Remove(SelectedItem);
-            this.RaisePropertyChanged("ItemList");
-            Messenger.Default.Send<DeleteDerivateErfolgreichMessage>(new DeleteDerivateErfolgreichMessage());
             Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewWertpapierUebersicht);
+            SendInformationMessage("Derivate gelöscht");
+            base.ExecuteEntfernenCommand();
         }
 
-        private void ExecuteAddAktieCommand()
-        {
-            Messenger.Default.Send<OpenDerivateStammdatenMessage>(new OpenDerivateStammdatenMessage { State = Data.Types.State.Neu });
-        }
         #endregion
     }
 }
