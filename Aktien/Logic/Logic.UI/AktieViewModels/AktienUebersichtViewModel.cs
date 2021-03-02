@@ -33,8 +33,8 @@ namespace Aktien.Logic.UI.AktieViewModels
             RegisterAktualisereViewMessage(ViewType.viewAktienUebersicht);
         }
 
-        protected override int getID() { return selectedItem.ID; }
-        protected override ViewType getVStammdatenViewType() { return ViewType.viewAktieStammdaten; }
+        protected override int GetID() { return selectedItem.ID; }
+        protected override ViewType GetStammdatenViewType() { return ViewType.viewAktieStammdaten; }
 
         public override void LoadData()
         {

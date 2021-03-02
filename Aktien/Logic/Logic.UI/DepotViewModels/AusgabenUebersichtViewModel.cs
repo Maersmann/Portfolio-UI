@@ -22,8 +22,8 @@ namespace Aktien.Logic.UI.DepotViewModels
             RegisterAktualisereViewMessage(ViewType.viewAusgabenUebersicht);
         }
 
-        protected override int getID() { return selectedItem.ID; }
-        protected override ViewType getVStammdatenViewType() { return ViewType.viewAusgabenStammdaten; }
+        protected override int GetID() { return selectedItem.ID; }
+        protected override ViewType GetStammdatenViewType() { return ViewType.viewAusgabenStammdaten; }
 
         public override void LoadData()
         {

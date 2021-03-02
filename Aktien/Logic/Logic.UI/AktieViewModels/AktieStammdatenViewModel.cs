@@ -28,14 +28,8 @@ namespace Aktien.Logic.UI.AktieViewModels
 
         public AktieStammdatenViewModel():base()
         {
-            aktie = new Wertpapier();
             SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
-
-            ISIN = "";
-            Name = "";
-            WKN = "";
-
-            state = State.Neu;
+            Cleanup();
         }
 
 

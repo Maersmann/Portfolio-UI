@@ -13,7 +13,6 @@
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                     ResizeMode="NoResize"
                     WindowStartupLocation="CenterScreen"
-                    Unloaded="Window_Unloaded"
                     DataContext="{Binding EinnahmeStammdaten ,Source={StaticResource Locator}}">
 
     <i:Interaction.Triggers>

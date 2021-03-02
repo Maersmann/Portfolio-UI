@@ -23,14 +23,8 @@ namespace Aktien.Logic.UI.DerivateViewModels
 
         public DerivateStammdatenViewModel() : base()
         {
-            derivate = new Wertpapier();
             SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
-
-            ISIN = "";
-            Name = "";
-            WKN = "";
-
-            state = State.Neu;
+            Cleanup();
         }
 
 

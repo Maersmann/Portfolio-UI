@@ -28,8 +28,8 @@ namespace Aktien.Logic.UI.DerivateViewModels
             RegisterAktualisereViewMessage(ViewType.viewDerivateUebersicht);
         }
 
-        protected override int getID() { return selectedItem.ID; }
-        protected override ViewType getVStammdatenViewType() { return ViewType.viewDerivateStammdaten; }
+        protected override int GetID() { return selectedItem.ID; }
+        protected override ViewType GetStammdatenViewType() { return ViewType.viewDerivateStammdaten; }
 
         public override void LoadData()
         {

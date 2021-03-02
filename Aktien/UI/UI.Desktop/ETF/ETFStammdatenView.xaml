@@ -10,7 +10,7 @@
                     mc:Ignorable="d" WindowStartupLocation="CenterScreen" Height="373.804" Width="348.584"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                     ResizeMode="NoResize"
-                    DataContext="{Binding ETFStammdaten ,Source={StaticResource Locator}}" Unloaded="Window_Unloaded">
+                    DataContext="{Binding ETFStammdaten ,Source={StaticResource Locator}}" >
 
 
     <i:Interaction.Triggers>

@@ -27,10 +27,6 @@ namespace Aktien.Logic.UI.DividendeViewModels
             RegisterAktualisereViewMessage(ViewType.viewDividendeUebersicht);
         }
 
-        protected override int getID() { return selectedItem.ID; }
-        protected override ViewType getVStammdatenViewType() { return ViewType.viewDividendeStammdaten; }
-
-
         public override void LoadData(int id)
         {
             wertpapierID = id;

@@ -23,12 +23,12 @@ namespace Aktien.Logic.UI.BaseViewModels
         {
             itemList = new ObservableCollection<T>();
             EntfernenCommand = new DelegateCommand(this.ExecuteEntfernenCommand, this.CanExecuteCommand);
-            NeuCommand = new RelayCommand(() => ExecuteNeuCommand());
             BearbeitenCommand = new DelegateCommand(this.ExecuteBearbeitenCommand, this.CanExecuteCommand);
+            NeuCommand = new RelayCommand(() => ExecuteNeuCommand());
         }
 
-        protected virtual int getID() { return 0; }
-        protected virtual ViewType getVStammdatenViewType() { return 0; }
+        protected virtual int GetID() { return 0; }
+        protected virtual ViewType GetStammdatenViewType() { return 0; }
 
         public virtual T SelectedItem
         {
@@ -67,12 +67,12 @@ namespace Aktien.Logic.UI.BaseViewModels
 
         protected virtual void ExecuteBearbeitenCommand()
         {
-            Messenger.Default.Send<BaseStammdatenMessage>(new BaseStammdatenMessage { State = State.Bearbeiten, ID = getID(), ViewType = getVStammdatenViewType() });
+            Messenger.Default.Send<BaseStammdatenMessage>(new BaseStammdatenMessage { State = State.Bearbeiten, ID = GetID(), ViewType = GetStammdatenViewType() });
         }
 
         protected virtual void ExecuteNeuCommand()
         {
-            Messenger.Default.Send<BaseStammdatenMessage>(new BaseStammdatenMessage { State = State.Neu, ID = null, ViewType = getVStammdatenViewType() });
+            Messenger.Default.Send<BaseStammdatenMessage>(new BaseStammdatenMessage { State = State.Neu, ID = null, ViewType = GetStammdatenViewType() });
         }
 
         public  ICommand NeuCommand { get; protected set; }

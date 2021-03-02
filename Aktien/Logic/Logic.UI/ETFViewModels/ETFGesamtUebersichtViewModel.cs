@@ -28,8 +28,8 @@ namespace Aktien.Logic.UI.ETFViewModels
             RegisterAktualisereViewMessage(ViewType.viewETFUebersicht);
         }
 
-        protected override int getID() { return selectedItem.ID; }
-        protected override ViewType getVStammdatenViewType() { return ViewType.viewETFStammdaten; }
+        protected override int GetID() { return selectedItem.ID; }
+        protected override ViewType GetStammdatenViewType() { return ViewType.viewETFStammdaten; }
 
 
         public override void LoadData()

@@ -26,9 +26,6 @@ namespace Aktien.Logic.UI.DividendeViewModels
         public DividendeErhaltenUebersichtViewModel()
         {
             Title = "Übersicht aller erhaltene Dividenden";
-            NeuCommand = new RelayCommand(() => ExecuteNeuCommand());
-            BearbeitenCommand = new DelegateCommand(this.ExecuteBearbeitenCommand, this.CanExecuteCommand);
-            EntfernenCommand = new DelegateCommand(this.ExecuteEntfernenCommand, this.CanExecuteCommand);
         }
 
         public override void LoadData(int id)
