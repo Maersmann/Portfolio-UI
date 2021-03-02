@@ -11,8 +11,4 @@ namespace Aktien.Logic.Messages.DividendeMessages
         public int WertpapierID { get; set; }
     }
 
-    public class DeleteDividendeErfolgreichMessage
-    {
-
-    }
 }

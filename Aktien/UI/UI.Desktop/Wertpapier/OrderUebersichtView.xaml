@@ -19,7 +19,7 @@
         </Grid.RowDefinitions>
 
         <materialDesign:Card  Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushHeaderBG}}">
-            <Label HorizontalAlignment="Center" Width="auto" >Übersicht der Order</Label>
+            <Label HorizontalAlignment="Center" Width="auto"  Content="{Binding Title, Mode=OneWay}"/>
         </materialDesign:Card>
 
         <DataGrid Grid.Row="1" Margin="5"  ItemsSource="{Binding ItemList}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow" >

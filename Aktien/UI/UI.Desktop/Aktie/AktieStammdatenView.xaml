@@ -12,7 +12,7 @@
                     Title="{Binding Title, Mode=OneWay}" Height="246.471" Width="348.584"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                     ResizeMode="NoResize"
-                    DataContext="{Binding AktieStammdaten ,Source={StaticResource Locator}}" Unloaded="Window_Unloaded">
+                    DataContext="{Binding AktieStammdaten ,Source={StaticResource Locator}}">
 
 
     <i:Interaction.Triggers>

@@ -28,13 +28,8 @@ namespace Aktien.UI.Desktop.Dividende
         {
             InitializeComponent();
             Messenger.Default.Register<OpenDividendeStammdatenMessage>(this, m => ReceiveOpenDividendeStammdatenMessage(m));
-            Messenger.Default.Register<DeleteDividendeErfolgreichMessage>(this, m => ReceiveDeleteDividendeErfolgreichMessage());
         }
 
-        private void ReceiveDeleteDividendeErfolgreichMessage()
-        {
-            MessageBox.Show("Dividende entfernt");          
-        }
 
         private void ReceiveOpenDividendeStammdatenMessage(OpenDividendeStammdatenMessage m)
         {
@@ -53,7 +48,6 @@ namespace Aktien.UI.Desktop.Dividende
         private void DataGrid_Unloaded(object sender, RoutedEventArgs e)
         {
             Messenger.Default.Unregister<OpenDividendeStammdatenMessage>(this);
-            Messenger.Default.Unregister<DeleteDividendeErfolgreichMessage>(this);
         }
     }
 }

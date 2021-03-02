@@ -21,10 +21,10 @@
          </Grid.RowDefinitions>
 
         <materialDesign:Card  Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushHeaderBG}}">
-            <Label HorizontalAlignment="Center" Width="auto" >Übersicht aller Aktien</Label>
+            <Label HorizontalAlignment="Center" Width="auto" Content="{Binding Title, Mode=OneWay}" />
         </materialDesign:Card>
 
-        <DataGrid Grid.Row="1" Margin="5"  ItemsSource="{Binding AlleAktien}" SelectedItem="{Binding SelectedAktie, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" SelectionUnit="FullRow" >
+        <DataGrid Grid.Row="1" Margin="5"  ItemsSource="{Binding ItemList}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" SelectionUnit="FullRow" >
             <DataGrid.Columns >
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="auto" FocusManager.IsFocusScope="False"/>
                 <DataGridTextColumn Header="ISIN" Binding="{Binding ISIN}" Width="auto"/>
@@ -32,7 +32,7 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Button Grid.Row="1"  DockPanel.Dock="Right" Style="{DynamicResource MaterialDesignFloatingActionButton}" Command="{Binding AddAktieCommand, Mode=OneWay}" Content="+" FontSize="35" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" FontWeight="Bold" HorizontalContentAlignment="Center" />
+        <Button Grid.Row="1"  DockPanel.Dock="Right" Style="{DynamicResource MaterialDesignFloatingActionButton}" Command="{Binding NeuCommand, Mode=OneWay}" Content="+" FontSize="35" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" FontWeight="Bold" HorizontalContentAlignment="Center" />
 
         <materialDesign:Card Grid.Row="2"  >
             <DockPanel  LastChildFill="False" >

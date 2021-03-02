@@ -19,10 +19,14 @@ namespace Aktien.Logic.UI.BaseViewModels
 
         public ViewModelBasis()
         {
+            messageToken = "";
             CloseCommand = new RelayCommand(() => ExecuteCloseCommand());
         }
 
         protected string messageToken;
+
+        public virtual string MessageToken { set { messageToken = value; } }
+
         public string Title { get; protected set; }
      
         public ICommand CloseCommand { get; private set; }
@@ -35,6 +39,11 @@ namespace Aktien.Logic.UI.BaseViewModels
         public void SendExceptionMessage(string exceptionMessage)
         {
             Messenger.Default.Send<ExceptionMessage>(new ExceptionMessage { Message = exceptionMessage });
+        }
+
+        public void SendInformationMessage(string informationMessage)
+        {
+            Messenger.Default.Send<InformationMessage>(new InformationMessage { Message = informationMessage });
         }
 
 

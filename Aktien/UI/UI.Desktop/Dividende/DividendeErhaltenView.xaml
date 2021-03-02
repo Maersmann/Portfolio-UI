@@ -11,7 +11,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              WindowStartupLocation="CenterScreen"
              mc:Ignorable="d"
-             DataContext="{Binding DividendeErhalten ,Source={StaticResource Locator}}" Unloaded="Window_Unloaded" Width="500" Height="auto" SizeToContent="Height">
+             DataContext="{Binding DividendeErhalten ,Source={StaticResource Locator}}" Width="500" Height="auto" SizeToContent="Height">
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closed">

@@ -1,5 +1,4 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
-using Aktien.Logic.Messages.Aktie;
 using Aktien.Logic.Messages.Base;
 using Aktien.Logic.Messages.DepotMessages;
 using Aktien.Logic.Messages.DividendeMessages;
@@ -34,11 +33,7 @@ namespace Aktien.UI.Desktop.Aktie
     {
         public AktienUebersichtView()
         {
-            InitializeComponent();
-            Messenger.Default.Register<OpenAktieStammdatenMessage>(this, m => ReceiveOpenAktieStammdatenMessage( m ));
-            Messenger.Default.Register<DeleteAktieErfolgreichMessage>(this, m => ReceiveDeleteAktieErfolgreich() );
-           
-           
+            InitializeComponent();  
         }
 
         public string MessageToken
@@ -60,30 +55,6 @@ namespace Aktien.UI.Desktop.Aktie
             if (view.DataContext is DividendenUebersichtAuswahlViewModel model)
                 model.WertpapierID = m.WertpapierID;
             view.ShowDialog();
-        }
-
-        private void ReceiveOpenAktieStammdatenMessage( OpenAktieStammdatenMessage message )
-        {
-            var view = new AktieStammdatenView();
-            if (view.DataContext is AktieStammdatenViewModel model)
-            {
-                if (message.State == Data.Types.State.Bearbeiten)
-                {
-                    model.Bearbeiten( message.WertpapierID );
-                }
-                
-            }
-            bool? Result = view.ShowDialog();
-
-            if (Result.GetValueOrDefault(false) && (this.DataContext is AktienUebersichtViewModel modelUebersicht))
-            {
-                modelUebersicht.LoadData();
-            }
-        }
-    
-        private void ReceiveDeleteAktieErfolgreich()
-        {
-            MessageBox.Show("Aktie gelöscht.");
         }
     }
 }

@@ -5,12 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aktien.Logic.Messages
+namespace Aktien.Logic.Messages.Base
 {
-
-    public class OpenAktieStammdatenMessage
-    {
-    }
 
     public class OpenViewMessage
     {

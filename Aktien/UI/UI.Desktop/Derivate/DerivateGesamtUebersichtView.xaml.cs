@@ -1,5 +1,4 @@
-﻿using Aktien.Logic.Messages.DerivateMessages;
-using Aktien.Logic.UI.DerivateViewModels;
+﻿using Aktien.Logic.UI.DerivateViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Generic;
@@ -26,8 +25,6 @@ namespace Aktien.UI.Desktop.Derivate
         public DerivateGesamtUebersichtView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenDerivateStammdatenMessage>(this, m => ReceiveOpenDerivateStammdatenMessage(m));
-            Messenger.Default.Register<DeleteDerivateErfolgreichMessage>(this, m => ReceiveDeleteDerivateErfolgreichMessage());
         }
 
         public string MessageToken
@@ -41,23 +38,5 @@ namespace Aktien.UI.Desktop.Derivate
             }
         }
 
-        private void ReceiveDeleteDerivateErfolgreichMessage()
-        {
-            MessageBox.Show("Derivate gelöscht.");
-        }
-
-        private void ReceiveOpenDerivateStammdatenMessage(OpenDerivateStammdatenMessage m)
-        {
-            var view = new DerivateStammdatenView();
-            if (view.DataContext is DerivateStammdatenViewModel model)
-            {
-                if (m.State == Data.Types.State.Bearbeiten)
-                {
-                    model.Bearbeiten(m.WertpapierID);
-                }
-
-            }
-            view.ShowDialog();
-        }
     }
 }

@@ -30,5 +30,34 @@ namespace Aktien.Logic.Core.Validierung.Base
 
             return validationErrors.Count == 0;
         }
+
+        public bool ValidateAnzahl(Double? anzahl, out ICollection<string> validationErrors)
+        {
+            validationErrors = new List<String>();
+
+            if (!anzahl.HasValue)
+                validationErrors.Add("Keine Anzahl hinterlegt");
+
+            if (anzahl == 0)
+                validationErrors.Add("Die Anzahl darf nicht 0 sein");
+
+            if (anzahl < 0)
+                validationErrors.Add("Die Anzahl zu niedrig");
+
+            return validationErrors.Count == 0;
+        }
+
+        public bool ValidateString(String name, String fieldname, out ICollection<string> validationErrors)
+        {
+            validationErrors = new List<String>();
+
+            if (name.Length > 250)
+                validationErrors.Add("Der "+ fieldname+" ist zu lang");
+
+            if (name.Length == 0)
+                validationErrors.Add("Der " + fieldname + " darf nicht leer sein");
+
+            return validationErrors.Count == 0;
+        }
     }
 }

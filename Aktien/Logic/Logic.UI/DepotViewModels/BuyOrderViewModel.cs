@@ -31,7 +31,6 @@ namespace Aktien.Logic.UI.DepotViewModels
         public BuyOrderViewModel()
         {
             SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
-
             Cleanup();
         }
 

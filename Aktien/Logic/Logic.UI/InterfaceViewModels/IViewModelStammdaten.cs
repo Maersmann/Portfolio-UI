@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aktien.Logic.Messages.DividendeMessages
+namespace Aktien.Logic.UI.InterfaceViewModels
 {
-    public class DeleteErhalteneDividendenErfolgreichMessage
+    public interface IViewModelStammdaten
     {
+        void ZeigeStammdatenAn(int id);
     }
 }

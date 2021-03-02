@@ -23,14 +23,12 @@ namespace Aktien.Logic.UI.WertpapierViewModels
 
         public WertpapierGesamtUebersichtViewModel()
         {
+            Title = "Übersicht aller Wertpapiere";
             LoadData();
-            messageToken = "";
             RegisterAktualisereViewMessage(ViewType.viewWertpapierUebersicht);
             OpenNeueDividendeCommand = new DelegateCommand(this.ExecuteOpenNeueDividendeCommand, this.CanExecuteCommand);
         }
 
-
-        public string MessageToken { set { messageToken = value; } }
         public override void LoadData()
         {
             itemList = new WertpapierAPI().LadeAlle();
@@ -39,16 +37,13 @@ namespace Aktien.Logic.UI.WertpapierViewModels
 
 
         #region Bindings
-        public override Wertpapier SelectedItem
-        {
-            get
+        public override Wertpapier SelectedItem 
+        { 
+            get => base.SelectedItem; 
+            set 
             {
-                return selectedItem;
-            }
-            set
-            {
-                selectedItem = value;
-                this.RaisePropertyChanged();
+                base.SelectedItem = value;
+                
                 ((DelegateCommand)OpenNeueDividendeCommand).RaiseCanExecuteChanged();
                 if (selectedItem != null)
                 {
@@ -57,13 +52,14 @@ namespace Aktien.Logic.UI.WertpapierViewModels
             }
         }
 
+
         public ICommand OpenNeueDividendeCommand { get; set; }
         #endregion
 
         #region commands
-        private bool CanExecuteCommand()
+        protected override bool CanExecuteCommand()
         {
-            return (selectedItem != null) && (selectedItem.WertpapierTyp.Equals( WertpapierTypes.Aktie ) );
+            return base.CanExecuteCommand() && (selectedItem.WertpapierTyp.Equals( WertpapierTypes.Aktie ) );
         }
 
         private void ExecuteOpenNeueDividendeCommand()

@@ -13,7 +13,7 @@ namespace Aktien.UI.Desktop.Base
     {
         public StammdatenView()
         {
-            
+            this.Unloaded += Window_Unloaded;
         }
 
         public void MessageWithToken(string token)

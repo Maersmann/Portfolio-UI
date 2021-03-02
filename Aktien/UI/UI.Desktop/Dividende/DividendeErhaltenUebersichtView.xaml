@@ -19,10 +19,10 @@
         </Grid.RowDefinitions>
 
         <materialDesign:Card  Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushHeaderBG}}">
-            <Label HorizontalAlignment="Center" Width="auto" >Übersicht aller erhaltene Dividenden</Label>
+            <Label HorizontalAlignment="Center" Width="auto" Content="{Binding Title, Mode=OneWay}" />
         </materialDesign:Card>
 
-        <DataGrid Grid.Row="1" Margin="5" Width="auto"  ItemsSource="{Binding Dividenden}" SelectedItem="{Binding SelectedDividende, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" >
+        <DataGrid Grid.Row="1" Margin="5" Width="auto"  ItemsSource="{Binding ItemList}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Ex-Tag" Binding="{Binding Dividende.Exdatum, StringFormat=dd.MM.yyyy}" Width="auto"/>
                 <DataGridTextColumn Header="Erhalten" Binding="{Binding Dividende.Zahldatum, StringFormat=dd.MM.yyyy}" Width="auto"/>

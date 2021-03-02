@@ -1,6 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
-using Aktien.Logic.Messages.Aktie;
 using Aktien.Logic.Messages.AktieMessages;
 using Aktien.Logic.Messages.Base;
 using Aktien.Logic.Messages.DepotMessages;
@@ -23,86 +22,56 @@ using Aktien.Data.Types.WertpapierTypes;
 
 namespace Aktien.Logic.UI.AktieViewModels
 {
-    public class AktienUebersichtViewModel : ViewModelBasis
+    public class AktienUebersichtViewModel : ViewModelUebersicht<Wertpapier>
     {
-        private ObservableCollection<Wertpapier> alleAktien;
-
-        private Wertpapier selectedAktie;
-        
-
+      
         public AktienUebersichtViewModel()
         {
+            Title = "Übersicht aller Aktien";
             LoadData();
-            messageToken = "";
-            BearbeitenCommand = new DelegateCommand(this.ExecuteBearbeitenCommand, this.CanExecuteCommand);
-            EntfernenCommand = new DelegateCommand(this.ExecuteEntfernenCommand, this.CanExecuteCommand);
             OpenNeueDividendeCommand = new DelegateCommand(this.ExecuteOpenNeueDividendeCommand, this.CanExecuteCommand);
-            AddAktieCommand = new RelayCommand(this.ExecuteAddAktieCommand);
+            RegisterAktualisereViewMessage(ViewType.viewAktienUebersicht);
         }
-        public string MessageToken { set { messageToken = value; } }
 
+        protected override int GetID() { return selectedItem.ID; }
+        protected override ViewType GetStammdatenViewType() { return ViewType.viewAktieStammdaten; }
 
-        public void LoadData()
+        public override void LoadData()
         {
-            alleAktien = new AktieAPI().LadeAlle();
-            this.RaisePropertyChanged("AlleAktien");
+            itemList = new AktieAPI().LadeAlle();
+            this.RaisePropertyChanged("ItemList");
         }
 
         #region Binding
-        public Wertpapier SelectedAktie 
+
+        public override Wertpapier SelectedItem
         {
-            get 
-            {
-                return selectedAktie; 
-            }              
+            get => base.SelectedItem;
             set
             {
-                selectedAktie = value;
-                this.RaisePropertyChanged();
-                ((DelegateCommand)BearbeitenCommand).RaiseCanExecuteChanged();
-                ((DelegateCommand)EntfernenCommand).RaiseCanExecuteChanged();
+                base.SelectedItem = value;
                 ((DelegateCommand)OpenNeueDividendeCommand).RaiseCanExecuteChanged();
-                if (selectedAktie != null)
+                if (selectedItem != null)
                 {
-                    Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = selectedAktie.ID, WertpapierTyp = WertpapierTypes.Aktie }, messageToken);
+                    Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = selectedItem.ID, WertpapierTyp = WertpapierTypes.Aktie }, messageToken);
                 }
-            } 
-        }
-        public IEnumerable<Wertpapier> AlleAktien 
-        {
-            get
-            {
-                return alleAktien;
             }
         }
-        public ICommand BearbeitenCommand { get; protected set; }
-        public ICommand EntfernenCommand { get; protected set; }
+
         public ICommand OpenNeueDividendeCommand { get; set; }
-        public ICommand AddAktieCommand { get; set; }
         #endregion
 
         #region Commands
-        private bool CanExecuteCommand()
-        {
-            return selectedAktie!=null;
-        }
-
-        private void ExecuteBearbeitenCommand()
-        {
-            Messenger.Default.Send<Messages.Aktie.OpenAktieStammdatenMessage>(new Messages.Aktie.OpenAktieStammdatenMessage { WertpapierID = selectedAktie.ID, State = Data.Types.State.Bearbeiten });
-        }
-
-
 
         private void ExecuteOpenNeueDividendeCommand()
         {
-            Messenger.Default.Send<OpenDividendenUebersichtAuswahlMessage>(new OpenDividendenUebersichtAuswahlMessage { WertpapierID = selectedAktie.ID }, messageToken);
+            Messenger.Default.Send<OpenDividendenUebersichtAuswahlMessage>(new OpenDividendenUebersichtAuswahlMessage { WertpapierID = selectedItem.ID }, messageToken);
         }
-        private void ExecuteEntfernenCommand()
+        protected override void ExecuteEntfernenCommand()
         {
             try
             {
-                new AktieAPI().Entfernen(selectedAktie);
+                new AktieAPI().Entfernen(selectedItem);
 
             }
             catch (WertpapierInDepotVorhandenException)
@@ -111,16 +80,11 @@ namespace Aktien.Logic.UI.AktieViewModels
                 return;
             }
             Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = 0, WertpapierTyp = WertpapierTypes.Aktie }, messageToken);
-            alleAktien.Remove(SelectedAktie);
-            this.RaisePropertyChanged("AlleAktien");
-            Messenger.Default.Send<DeleteAktieErfolgreichMessage>(new DeleteAktieErfolgreichMessage());
             Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewWertpapierUebersicht);
+            SendInformationMessage("Aktie gelöscht");
+            base.ExecuteEntfernenCommand();
         }
 
-        private void ExecuteAddAktieCommand()
-        {
-            Messenger.Default.Send<Messages.Aktie.OpenAktieStammdatenMessage>(new Messages.Aktie.OpenAktieStammdatenMessage { State = Data.Types.State.Neu });
-        }
         #endregion
     }
 }

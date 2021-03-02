@@ -3,7 +3,6 @@ using Aktien.Data.Types;
 using Aktien.Logic.Core.WertpapierLogic;
 using Aktien.Logic.Core.WertpapierLogic.Exceptions;
 using Aktien.Logic.Messages.Base;
-using Aktien.Logic.Messages.ETFMessages;
 using Aktien.Logic.Messages.WertpapierMessages;
 using Aktien.Logic.UI.BaseViewModels;
 using GalaSoft.MvvmLight.CommandWpf;
@@ -19,77 +18,49 @@ using System.Windows.Input;
 
 namespace Aktien.Logic.UI.ETFViewModels
 {
-    public class ETFGesamtUebersichtViewModel : ViewModelBasis
+    public class ETFGesamtUebersichtViewModel : ViewModelUebersicht<Wertpapier>
     {
-        private ObservableCollection<Wertpapier> alleETF;
-
-        private Wertpapier selectedETF;
 
         public ETFGesamtUebersichtViewModel()
         {
+            Title = "Übersicht aller ETF's";
             LoadData();
-            messageToken = "";
-            BearbeitenCommand = new DelegateCommand(this.ExecuteBearbeitenCommand, this.CanExecuteCommand);
-            EntfernenCommand = new DelegateCommand(this.ExecuteEntfernenCommand, this.CanExecuteCommand);
-            AddAktieCommand = new RelayCommand(this.ExecuteAddAktieCommand);
+            RegisterAktualisereViewMessage(ViewType.viewETFUebersicht);
         }
 
-        public string MessageToken { set { messageToken = value; } }
+        protected override int GetID() { return selectedItem.ID; }
+        protected override ViewType GetStammdatenViewType() { return ViewType.viewETFStammdaten; }
 
-        public void LoadData()
+
+        public override void LoadData()
         {
-            alleETF = new EtfAPI().LadeAlle();
-            this.RaisePropertyChanged("AlleETF");
+            itemList = new EtfAPI().LadeAlle();
+            this.RaisePropertyChanged("ItemList");
         }
 
         #region Binding
-        public Wertpapier SelectedETF
+        public override Wertpapier SelectedItem
         {
-            get
-            {
-                return selectedETF;
-            }
+            get => base.SelectedItem;
             set
             {
-                selectedETF = value;
-                this.RaisePropertyChanged();
-                ((DelegateCommand)BearbeitenCommand).RaiseCanExecuteChanged();
-                ((DelegateCommand)EntfernenCommand).RaiseCanExecuteChanged();
-                if (selectedETF != null)
+                base.SelectedItem = value;
+                if (selectedItem != null)
                 {
-                    Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = selectedETF.ID, WertpapierTyp = selectedETF.WertpapierTyp }, messageToken);
+                    Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = selectedItem.ID, WertpapierTyp = selectedItem.WertpapierTyp }, messageToken);
                 }
             }
         }
-        public IEnumerable<Wertpapier> AlleETF
-        {
-            get
-            {
-                return alleETF;
-            }
-        }
-        public ICommand BearbeitenCommand { get; protected set; }
-        public ICommand EntfernenCommand { get; protected set; }
-        public ICommand AddAktieCommand { get; set; }
         #endregion
 
         #region Commands
-        private bool CanExecuteCommand()
-        {
-            return selectedETF != null;
-        }
-
-        private void ExecuteBearbeitenCommand()
-        {
-            Messenger.Default.Send<OpenETFStammdatenMessage>(new OpenETFStammdatenMessage { WertpapierID = selectedETF.ID, State = Data.Types.State.Bearbeiten });
-        }
 
 
-        private void ExecuteEntfernenCommand()
+        protected override void ExecuteEntfernenCommand()
         {
             try
             {
-                new EtfAPI().Entfernen(selectedETF);
+                new EtfAPI().Entfernen(selectedItem);
             }
             catch (WertpapierInDepotVorhandenException)
             {
@@ -97,18 +68,14 @@ namespace Aktien.Logic.UI.ETFViewModels
                 return;
             }
 
-            Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = 0, WertpapierTyp = selectedETF.WertpapierTyp }, messageToken);
-            alleETF.Remove(SelectedETF);
-            this.RaisePropertyChanged("AlleAktien");
-            Messenger.Default.Send<DeleteEtfErfolgreichMessage>(new DeleteEtfErfolgreichMessage());
+            Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = 0, WertpapierTyp = selectedItem.WertpapierTyp }, messageToken);
+            itemList.Remove(selectedItem);
+            this.RaisePropertyChanged("ItemList");
+            SendInformationMessage("ETF gelöscht");
             Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewWertpapierUebersicht);
 
         }
 
-        private void ExecuteAddAktieCommand()
-        {
-            Messenger.Default.Send<OpenETFStammdatenMessage>(new OpenETFStammdatenMessage { State = Data.Types.State.Neu });
-        }
         #endregion
     }
 }

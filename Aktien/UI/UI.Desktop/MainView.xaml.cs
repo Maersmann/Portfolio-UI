@@ -1,5 +1,4 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
-using Aktien.Logic.Messages.Aktie;
 using Aktien.Logic.Messages.AktieMessages;
 using Aktien.Logic.Messages.Base;
 using System;
@@ -23,6 +22,9 @@ using Aktien.Logic.Messages;
 using Aktien.UI.Desktop.ETF;
 using Aktien.UI.Desktop.Wertpapier;
 using Aktien.UI.Desktop.Derivate;
+using Aktien.UI.Desktop.Base;
+using Aktien.Logic.UI.InterfaceViewModels;
+using Aktien.UI.Desktop.Dividende;
 
 namespace Aktien.UI.Desktop
 {
@@ -44,8 +46,15 @@ namespace Aktien.UI.Desktop
             InitializeComponent();
             Messenger.Default.Register<OpenViewMessage>(this, m => ReceiveOpenViewMessage(m));
             Messenger.Default.Register<ExceptionMessage>(this, m => ReceiveExceptionMessage(m));
+            Messenger.Default.Register<InformationMessage>(this, m => ReceiveInformationMessage(m));
+            Messenger.Default.Register<BaseStammdatenMessage>(this, m => ReceiceOpenStammdatenMessage(m));
 
             Naviagtion(ViewType.viewWertpapierUebersicht);
+        }
+
+        private void ReceiveInformationMessage(InformationMessage m)
+        {
+            MessageBox.Show(m.Message);
         }
 
         private void ReceiveExceptionMessage(ExceptionMessage m)
@@ -94,6 +103,35 @@ namespace Aktien.UI.Desktop
             }
         }
 
+
+        private void ReceiceOpenStammdatenMessage(BaseStammdatenMessage m)
+        {
+            StammdatenView view = null;
+            switch (m.ViewType)
+            {
+                case ViewType.viewAktieStammdaten:
+                    view = new AktieStammdatenView();
+                    break;
+                case ViewType.viewETFStammdaten:
+                    view = new ETFStammdatenView();
+                    break;
+                case ViewType.viewDerivateStammdaten:
+                    view = new DerivateStammdatenView();
+                    break;
+                default:
+                    break;
+            }
+
+            if (view.DataContext is IViewModelStammdaten model)
+            {
+                if (m.State == State.Bearbeiten)
+                {
+                    model.ZeigeStammdatenAn(m.ID.Value);
+                }
+
+            }
+            view.ShowDialog();
+        }
     }
 
 }

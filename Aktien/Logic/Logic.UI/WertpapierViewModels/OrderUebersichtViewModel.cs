@@ -30,7 +30,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
 
         public OrderUebersichtViewModel()
         {
-            messagtoken = "";
+            Title = "Übersicht der Order";
             wertpapierID = 0;
             wertpapierTypes = WertpapierTypes.Aktie;
             AktieGekauftCommand = new DelegateCommand(this.ExecuteAktieGekauftCommand, this.CanExecuteCommand);
@@ -39,7 +39,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
             RegisterAktualisereViewMessage(ViewType.viewOrderUebersicht);
         }
 
-        public string MessageToken
+        public override string MessageToken
         {
             set
             {
@@ -74,22 +74,6 @@ namespace Aktien.Logic.UI.WertpapierViewModels
 
         public ICommand AktieGekauftCommand { get; set; }
         public ICommand AktieVerkauftCommand { get; set; }
-        public ICommand BearbeitenCommand { get; set; }
-        public ICommand EntfernenCommand{get;set;}
-
-        public override OrderHistory SelectedItem
-        {
-            get
-            {
-                return selectedItem;
-            }
-            set
-            {
-                selectedItem = value;
-                ((DelegateCommand)EntfernenCommand).RaiseCanExecuteChanged();
-                this.RaisePropertyChanged();
-            }
-        }
 
         #endregion
 
@@ -102,7 +86,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
         {
             Messenger.Default.Send<OpenAktieGekauftViewMessage>(new OpenAktieGekauftViewMessage { WertpapierID = wertpapierID, BuySell = BuySell.Sell, WertpapierTypes = wertpapierTypes }, messagtoken);
         }
-        private void ExecuteEntfernenCommand()
+        protected override void ExecuteEntfernenCommand()
         {
             if (selectedItem.BuySell == BuySell.Buy)
             {
@@ -112,13 +96,11 @@ namespace Aktien.Logic.UI.WertpapierViewModels
             {
                 new DepotAPI().EntferneVerkauftenWertpapier(selectedItem.ID);
             }
-            
-            itemList.Remove(selectedItem);
-            this.RaisePropertyChanged("SelectedItem");
             Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewDepotUebersicht);
+            base.ExecuteEntfernenCommand();
         }
 
-        private bool CanExecuteCommand()
+        protected override bool CanExecuteCommand()
         {
             return wertpapierID != 0;
         }

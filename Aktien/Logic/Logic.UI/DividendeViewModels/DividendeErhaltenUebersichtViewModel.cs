@@ -18,81 +18,39 @@ using System.Windows.Input;
 
 namespace Aktien.Logic.UI.DividendeViewModels
 {
-    public class DividendeErhaltenUebersichtViewModel : ViewModelBasis
+    public class DividendeErhaltenUebersichtViewModel : ViewModelUebersicht<DividendeErhalten>
     {
-        private ObservableCollection<DividendeErhalten> dividenden;
-
-        private DividendeErhalten selectedDividende;
 
         private int wertpapierID;
 
         public DividendeErhaltenUebersichtViewModel()
         {
-            dividenden = new ObservableCollection<DividendeErhalten>();
-            NeuCommand = new RelayCommand(() => ExecuteNeuCommand());
-            BearbeitenCommand = new DelegateCommand(this.ExecuteBearbeitenCommand, this.CanExecuteCommand);
-            EntfernenCommand = new DelegateCommand(this.ExecuteEntfernenCommand, this.CanExecuteCommand);
+            Title = "Übersicht aller erhaltene Dividenden";
         }
 
-        public void LoadData(int wertpapierID)
+        public override void LoadData(int id)
         {
-            this.wertpapierID = wertpapierID;
-            dividenden = new AktieAPI().LadeAlleErhalteneDividenden(this.wertpapierID);
-            this.RaisePropertyChanged("Dividenden");
+            this.wertpapierID = id;
+            itemList = new AktieAPI().LadeAlleErhalteneDividenden(this.wertpapierID);
+            this.RaisePropertyChanged("ItemList");
         }
 
         #region Commands
-        private void ExecuteNeuCommand()
+        protected override void ExecuteNeuCommand()
         {
             Messenger.Default.Send<OpenErhaltendeDividendeStammdatenMessage>(new OpenErhaltendeDividendeStammdatenMessage { WertpapierID = wertpapierID, State = State.Neu });
         }
-
-        private bool CanExecuteCommand()
+        protected override void ExecuteBearbeitenCommand()
         {
-            return selectedDividende != null;
+            Messenger.Default.Send<OpenErhaltendeDividendeStammdatenMessage>(new OpenErhaltendeDividendeStammdatenMessage { WertpapierID = wertpapierID, State = State.Bearbeiten, ID = selectedItem.ID });
         }
 
-        private void ExecuteBearbeitenCommand()
+        protected override void ExecuteEntfernenCommand()
         {
-            Messenger.Default.Send<OpenErhaltendeDividendeStammdatenMessage>(new OpenErhaltendeDividendeStammdatenMessage { WertpapierID = wertpapierID, State = State.Bearbeiten, ID = selectedDividende.ID });
+            new DividendeErhaltenAPI().Entfernen(selectedItem.ID);
+            SendInformationMessage("Dividende gelöscht");
+            base.ExecuteEntfernenCommand();
         }
-
-        private void ExecuteEntfernenCommand()
-        {
-            new DividendeErhaltenAPI().Entfernen(selectedDividende.ID);
-            dividenden.Remove(selectedDividende);
-            this.RaisePropertyChanged("Dividenden");
-            Messenger.Default.Send<DeleteErhalteneDividendenErfolgreichMessage>(new DeleteErhalteneDividendenErfolgreichMessage());
-        }
-        #endregion
-
-
-        #region Binding
-        public DividendeErhalten SelectedDividende
-        {
-            get
-            {
-                return selectedDividende;
-            }
-            set
-            {
-                selectedDividende = value;
-                this.RaisePropertyChanged();
-                ((DelegateCommand)BearbeitenCommand).RaiseCanExecuteChanged();
-                ((DelegateCommand)EntfernenCommand).RaiseCanExecuteChanged();
-            }
-        }
-        public IEnumerable<DividendeErhalten> Dividenden
-        {
-            get
-            {
-                return dividenden;
-            }
-        }
-        public ICommand NeuCommand { get; private set; }
-        public ICommand BearbeitenCommand { get; set; }
-
-        public ICommand EntfernenCommand { get; set; }
         #endregion
     }
 }
