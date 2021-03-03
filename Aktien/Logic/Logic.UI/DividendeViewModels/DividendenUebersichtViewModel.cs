@@ -24,7 +24,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
         public DividendenUebersichtViewModel()
         {
             Title = "Übersicht aller Dividenden";
-            RegisterAktualisereViewMessage(ViewType.viewDividendeUebersicht);
+            RegisterAktualisereViewMessage(StammdatenTypes.dividende);
         }
 
         public override void LoadData(int id)

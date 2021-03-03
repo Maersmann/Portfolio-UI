@@ -9,7 +9,7 @@ namespace Aktien.Logic.Messages.Base
 {
     public class BaseStammdatenMessage
     {
-        public ViewType ViewType { get; set; }
+        public StammdatenTypes StammdatenTyp { get; set; }
         public State State { get; set; }
         public int? ID { get; set; }
     }

@@ -36,7 +36,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
             AktieGekauftCommand = new DelegateCommand(this.ExecuteAktieGekauftCommand, this.CanExecuteCommand);
             AktieVerkauftCommand = new DelegateCommand(this.ExecuteAktieVerkauftCommand, this.CanExecuteAktieVerkaufCommand);
             EntfernenCommand = new DelegateCommand(this.ExecuteEntfernenCommand, this.CanSelectedItemExecuteCommand);
-            RegisterAktualisereViewMessage(ViewType.viewOrderUebersicht);
+            RegisterAktualisereViewMessage(StammdatenTypes.buysell);
         }
 
         public override string MessageToken

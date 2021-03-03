@@ -36,14 +36,14 @@ namespace Aktien.Logic.UI.DividendeViewModels
             if (state == State.Neu)
             {           
                 API.Speichern(dividende.Betrag, dividende.Zahldatum, dividende.Exdatum, dividende.WertpapierID, dividende.Waehrung, dividende.BetragUmgerechnet, dividende.RundungArt);
-                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Dividende gespeichert." }, "DividendenStammdaten");
+                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Dividende gespeichert" }, "DividendenStammdaten");
             }
             else
             {
                 API.Aktualisiere(dividende.Betrag, dividende.Zahldatum, dividende.Exdatum, dividende.ID, dividende.Waehrung, dividende.BetragUmgerechnet, dividende.RundungArt);
-                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Dividende aktualisiert." }, "DividendenStammdaten");
+                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Dividende aktualisiert" }, "DividendenStammdaten");
             }
-            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage { ID =  WertpapiedID }, ViewType.viewDividendeUebersicht);
+            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage { ID =  WertpapiedID }, StammdatenTypes.dividende);
         }
 
         #region Bindings

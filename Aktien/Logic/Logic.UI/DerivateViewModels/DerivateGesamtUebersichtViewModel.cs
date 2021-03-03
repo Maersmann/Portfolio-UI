@@ -25,11 +25,11 @@ namespace Aktien.Logic.UI.DerivateViewModels
         {
             Title = "Übersicht aller Derivate";
             LoadData();
-            RegisterAktualisereViewMessage(ViewType.viewDerivateUebersicht);
+            RegisterAktualisereViewMessage(StammdatenTypes.derivate);
         }
 
         protected override int GetID() { return selectedItem.ID; }
-        protected override ViewType GetStammdatenViewType() { return ViewType.viewDerivateStammdaten; }
+        protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.derivate; }
 
         public override void LoadData()
         {

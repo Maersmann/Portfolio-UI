@@ -25,11 +25,10 @@ namespace Aktien.Logic.UI.ETFViewModels
         {
             Title = "Übersicht aller ETF's";
             LoadData();
-            RegisterAktualisereViewMessage(ViewType.viewETFUebersicht);
+            RegisterAktualisereViewMessage(StammdatenTypes.etf);
         }
-
         protected override int GetID() { return selectedItem.ID; }
-        protected override ViewType GetStammdatenViewType() { return ViewType.viewETFStammdaten; }
+        protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.etf ; }
 
 
         public override void LoadData()

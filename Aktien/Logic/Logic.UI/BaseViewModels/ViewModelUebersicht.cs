@@ -28,7 +28,7 @@ namespace Aktien.Logic.UI.BaseViewModels
         }
 
         protected virtual int GetID() { return 0; }
-        protected virtual ViewType GetStammdatenViewType() { return 0; }
+        protected virtual StammdatenTypes GetStammdatenType() { return 0; }
 
         public virtual T SelectedItem
         {
@@ -67,12 +67,12 @@ namespace Aktien.Logic.UI.BaseViewModels
 
         protected virtual void ExecuteBearbeitenCommand()
         {
-            Messenger.Default.Send<BaseStammdatenMessage>(new BaseStammdatenMessage { State = State.Bearbeiten, ID = GetID(), ViewType = GetStammdatenViewType() });
+            Messenger.Default.Send<BaseStammdatenMessage>(new BaseStammdatenMessage { State = State.Bearbeiten, ID = GetID(), StammdatenTyp = GetStammdatenType() });
         }
 
         protected virtual void ExecuteNeuCommand()
         {
-            Messenger.Default.Send<BaseStammdatenMessage>(new BaseStammdatenMessage { State = State.Neu, ID = null, ViewType = GetStammdatenViewType() });
+            Messenger.Default.Send<BaseStammdatenMessage>(new BaseStammdatenMessage { State = State.Neu, ID = null, StammdatenTyp = GetStammdatenType() });
         }
 
         public  ICommand NeuCommand { get; protected set; }

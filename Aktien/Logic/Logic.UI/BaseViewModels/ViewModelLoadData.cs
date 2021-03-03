@@ -11,9 +11,9 @@ namespace Aktien.Logic.UI.BaseViewModels
 {
     public class ViewModelLoadData : ViewModelBasis
     {
-        public void RegisterAktualisereViewMessage(ViewType viewType)
+        public void RegisterAktualisereViewMessage(StammdatenTypes stammdatenTypes)
         {
-            Messenger.Default.Register<AktualisiereViewMessage>(this, viewType, m => ReceiveAktualisiereViewMessage(m));
+            Messenger.Default.Register<AktualisiereViewMessage>(this, stammdatenTypes, m => ReceiveAktualisiereViewMessage(m));
         }
 
         private void ReceiveAktualisiereViewMessage(AktualisiereViewMessage m)

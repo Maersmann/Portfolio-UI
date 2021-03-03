@@ -115,7 +115,7 @@ namespace Aktien.Logic.UI.DepotViewModels
             Depot.NeueEinnahme(data.Betrag, data.Datum, data.Art, data.DepotID, null, data.Beschreibung);
 
             Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Einnahme gespeichert." }, "EinahmeStammdaten");
-            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewEinnahmenUebersicht);
+            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.einnahmen);
         }
 
         #endregion

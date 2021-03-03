@@ -30,11 +30,11 @@ namespace Aktien.Logic.UI.AktieViewModels
             Title = "Übersicht aller Aktien";
             LoadData();
             OpenNeueDividendeCommand = new DelegateCommand(this.ExecuteOpenNeueDividendeCommand, this.CanExecuteCommand);
-            RegisterAktualisereViewMessage(ViewType.viewAktienUebersicht);
+            RegisterAktualisereViewMessage(StammdatenTypes.aktien);
         }
 
         protected override int GetID() { return selectedItem.ID; }
-        protected override ViewType GetStammdatenViewType() { return ViewType.viewAktieStammdaten; }
+        protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.aktien; }
 
         public override void LoadData()
         {
