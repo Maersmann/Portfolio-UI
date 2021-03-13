@@ -9,7 +9,7 @@ using System.Windows;
 // die einer Assembly zugeordnet sind.
 [assembly: AssemblyTitle("Aktien Übersicht")]
 [assembly: AssemblyDescription("Übersicht und Verwaltung von Aktien")]
-[assembly: AssemblyVersion("1.4.2")]
+[assembly: AssemblyVersion("1.4.3")]
 
 
 // Durch Festlegen von ComVisible auf FALSE werden die Typen in dieser Assembly
