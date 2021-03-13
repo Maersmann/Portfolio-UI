@@ -50,6 +50,7 @@
     <Compile Include="DepotTypes\EinnahmeArtTypes.cs" />
     <Compile Include="DividendenTypes\DividendenRundungTypes.cs" />
     <Compile Include="OptionTypes\KonvertierungTypes.cs" />
+    <Compile Include="StammdatenTypes.cs" />
     <Compile Include="WertpapierTypes\ErmittentTypes.cs" />
     <Compile Include="WertpapierTypes\OrderTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

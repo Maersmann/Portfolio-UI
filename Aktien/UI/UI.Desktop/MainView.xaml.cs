@@ -107,16 +107,22 @@ namespace Aktien.UI.Desktop
         private void ReceiceOpenStammdatenMessage(BaseStammdatenMessage m)
         {
             StammdatenView view = null;
-            switch (m.ViewType)
+            switch (m.StammdatenTyp)
             {
-                case ViewType.viewAktieStammdaten:
+                case StammdatenTypes.aktien:
                     view = new AktieStammdatenView();
                     break;
-                case ViewType.viewETFStammdaten:
+                case StammdatenTypes.etf:
                     view = new ETFStammdatenView();
                     break;
-                case ViewType.viewDerivateStammdaten:
+                case StammdatenTypes.derivate:
                     view = new DerivateStammdatenView();
+                    break;
+                case StammdatenTypes.ausgaben:
+                    view = new AusgabeStammdatenView();
+                    break;
+                case StammdatenTypes.einnahmen:
+                    view = new EinnahmeStammdatenView();
                     break;
                 default:
                     break;

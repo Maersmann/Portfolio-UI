@@ -25,7 +25,9 @@ namespace Aktien.Logic.UI.WertpapierViewModels
         {
             Title = "Übersicht aller Wertpapiere";
             LoadData();
-            RegisterAktualisereViewMessage(ViewType.viewWertpapierUebersicht);
+            RegisterAktualisereViewMessage(StammdatenTypes.aktien);
+            RegisterAktualisereViewMessage(StammdatenTypes.derivate);
+            RegisterAktualisereViewMessage(StammdatenTypes.etf);
             OpenNeueDividendeCommand = new DelegateCommand(this.ExecuteOpenNeueDividendeCommand, this.CanExecuteCommand);
         }
 

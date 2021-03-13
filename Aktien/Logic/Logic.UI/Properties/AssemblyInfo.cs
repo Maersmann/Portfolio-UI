@@ -2,4 +2,4 @@
 
 [assembly: AssemblyTitle("Logic.UI")]
 [assembly: AssemblyDescription("")]
-[assembly: AssemblyVersion("1.4.2")]
+[assembly: AssemblyVersion("1.4.3")]

@@ -16,7 +16,9 @@ namespace Aktien.Data.Types.WertpapierTypes
         [Description("Spin-Off")]
         SpinOff = 1,
         [Description("Kapitalerhöhung")]
-        Kapitalerhoehung = 2
+        Kapitalerhoehung = 2,
+        [Description("Ausbuchung")]
+        Ausbuchung = 3
     }
 
     [TypeConverter(typeof(EnumDescriptionTypeConverter))]

@@ -27,7 +27,7 @@ namespace Aktien.Logic.UI.DepotViewModels
             Title = "Übersicht der Aktien im Depot";
             LoadData();
             OpenDividendeCommand = new DelegateCommand(this.ExecuteOpenDividendeCommandCommand, this.CanExecuteCommand);
-            RegisterAktualisereViewMessage(ViewType.viewDepotUebersicht);
+            RegisterAktualisereViewMessage(StammdatenTypes.buysell);
         }
 
 

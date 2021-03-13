@@ -19,11 +19,12 @@ namespace Aktien.Logic.UI.DepotViewModels
         {
             Title = "Übersicht aller Ausgaben";
             LoadData();
-            RegisterAktualisereViewMessage(ViewType.viewAusgabenUebersicht);
+            RegisterAktualisereViewMessage(StammdatenTypes.ausgaben);
+            RegisterAktualisereViewMessage(StammdatenTypes.buysell);
         }
 
         protected override int GetID() { return selectedItem.ID; }
-        protected override ViewType GetStammdatenViewType() { return ViewType.viewAusgabenStammdaten; }
+        protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.ausgaben; }
 
         public override void LoadData()
         {

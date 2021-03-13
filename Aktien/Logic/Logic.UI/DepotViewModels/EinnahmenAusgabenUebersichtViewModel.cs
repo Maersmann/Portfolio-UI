@@ -18,8 +18,10 @@ namespace Aktien.Logic.UI.DepotViewModels
         {
             Title = "Einnahmen & Ausgaben Gesamtwerte";
             LoadData();
-            RegisterAktualisereViewMessage(ViewType.viewAusgabenUebersicht);
-            RegisterAktualisereViewMessage(ViewType.viewEinnahmenUebersicht);
+            RegisterAktualisereViewMessage(StammdatenTypes.ausgaben);
+            RegisterAktualisereViewMessage(StammdatenTypes.einnahmen);
+            RegisterAktualisereViewMessage(StammdatenTypes.dividendeErhalten);
+            RegisterAktualisereViewMessage(StammdatenTypes.buysell);
         }
 
         public override void LoadData()

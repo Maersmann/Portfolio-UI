@@ -20,11 +20,13 @@ namespace Aktien.Logic.UI.DepotViewModels
         {
             Title = "Übersicht aller Einnahmen";
             LoadData();
-            RegisterAktualisereViewMessage(ViewType.viewEinnahmenUebersicht);
+            RegisterAktualisereViewMessage(StammdatenTypes.einnahmen);
+            RegisterAktualisereViewMessage(StammdatenTypes.dividendeErhalten);
+            RegisterAktualisereViewMessage(StammdatenTypes.buysell);
         }
 
         protected override int GetID() { return selectedItem.ID; }
-        protected override ViewType GetStammdatenViewType() { return ViewType.viewEinnahmenStammdaten; }
+        protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.einnahmen; }
 
         public override void LoadData()
         {
