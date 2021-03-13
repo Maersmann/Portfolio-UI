@@ -18,7 +18,7 @@ namespace Aktien.Logic.Core.Validierung
             if (!betrag.HasValue)
                 validatonErrors.Add("Kein Betrag hinterlegt");
 
-            if ((betrag == 0) && (!kauftyp.Equals(KaufTypes.SpinOff)) )
+            if ((betrag == 0) &&((!kauftyp.Equals(KaufTypes.SpinOff))&&(!kauftyp.Equals(KaufTypes.Ausbuchung))))
                 validatonErrors.Add("Der Betrag darf nicht 0 sein");
 
             return validatonErrors.Count == 0;
