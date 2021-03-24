@@ -17,46 +17,33 @@ using System.Threading.Tasks;
 
 namespace Aktien.Logic.UI.DerivateViewModels
 {
-    public class DerivateStammdatenViewModel : ViewModelStammdaten, IViewModelStammdaten
+    public class DerivateStammdatenViewModel : ViewModelStammdaten<Wertpapier>,IViewModelStammdaten
     {
-        private Wertpapier derivate;
 
-        public DerivateStammdatenViewModel() : base()
+        public DerivateStammdatenViewModel() : base(new DerivateAPI())
         {
-            SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
             Cleanup();
         }
 
-
         protected override void ExecuteSaveCommand()
         {
-            var api = new DerivateAPI();
-            if (state.Equals(State.Neu))
+            try
             {
-                try
-                {
-                    api.Speichern(new Wertpapier() { ISIN = derivate.ISIN, Name = derivate.Name, WKN = derivate.WKN });
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Derivate gespeichert." }, "DerivateStammdaten");
-                }
-                catch (WertpapierSchonVorhandenException)
-                {
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = false, Message = "Derivate ist schon vorhanden." }, "DerivateStammdaten");
-                    return;
-                }
+                base.ExecuteSaveCommand();
             }
-            else
+            catch (WertpapierSchonVorhandenException)
             {
-                api.Aktualisieren(derivate);
-                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Derivate aktualisiert." }, "DerivateStammdaten");
+                SendExceptionMessage("Derivate ist schon vorhanden");
+                return;
             }
-            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.derivate);
         }
+        protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.derivate;
 
         public void ZeigeStammdatenAn(int id)
         {
             LoadAktie = true;
-            var Loadaktie = new DerivateAPI().LadeAnhandID(id);
-            derivate = new Wertpapier
+            var Loadaktie = new DerivateAPI().Lade(id);
+            data = new Wertpapier
             {
                 ID = Loadaktie.ID
             };
@@ -78,14 +65,14 @@ namespace Aktien.Logic.UI.DerivateViewModels
         #region Bindings   
         public string ISIN
         {
-            get { return this.derivate.ISIN; }
+            get { return this.data.ISIN; }
             set
             {
 
-                if (LoadAktie || !string.Equals(this.derivate.ISIN, value))
+                if (LoadAktie || !string.Equals(this.data.ISIN, value))
                 {
                     ValidateISIN(value);
-                    this.derivate.ISIN = value;
+                    this.data.ISIN = value;
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
@@ -93,13 +80,13 @@ namespace Aktien.Logic.UI.DerivateViewModels
         }
         public string Name
         {
-            get { return this.derivate.Name; }
+            get { return this.data.Name; }
             set
             {
-                if (LoadAktie || !string.Equals(this.derivate.Name, value))
+                if (LoadAktie || !string.Equals(this.data.Name, value))
                 {
                     ValidateName(value);
-                    this.derivate.Name = value;
+                    this.data.Name = value;
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
@@ -107,13 +94,13 @@ namespace Aktien.Logic.UI.DerivateViewModels
         }
         public string WKN
         {
-            get { return this.derivate.WKN; }
+            get { return this.data.WKN; }
             set
             {
 
-                if (LoadAktie || !string.Equals(this.derivate.WKN, value))
+                if (LoadAktie || !string.Equals(this.data.WKN, value))
                 {
-                    this.derivate.WKN = value;
+                    this.data.WKN = value;
                     this.RaisePropertyChanged();
                 }
             }
@@ -145,7 +132,7 @@ namespace Aktien.Logic.UI.DerivateViewModels
         public override void Cleanup()
         {
             state = State.Neu;
-            derivate = new Wertpapier();
+            data = new Wertpapier();
             ISIN = "";
             Name = "";
             WKN = "";

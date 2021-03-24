@@ -3,6 +3,7 @@ using Aktien.Data.Model.WertpapierEntitys;
 using Aktien.Data.Types.DividendenTypes;
 using Aktien.Data.Types.WertpapierTypes;
 using Aktien.Logic.Core.Depot;
+using Aktien.Logic.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Aktien.Logic.Core.DividendeLogic
 {
-    public class DividendeAPI
+    public class DividendeAPI : IAPI<Dividende>
     {
         public void Speichern(Double betrag, DateTime zahldatum, DateTime? exdatum, int wertpapierID, Waehrungen waehrung, Double? betragUmgerechnet, DividendenRundungTypes rundungTypes)
         {
@@ -53,10 +54,20 @@ namespace Aktien.Logic.Core.DividendeLogic
             return new DividendeRepository().LadeAlleNichtErhaltendeFuerWertpapier(wertpapierID) ;
         }
 
-        public Dividende LadeAnhandID(int iD)
+        public Dividende Lade(int iD)
         {
             var DividendeRepo = new DividendeRepository();
             return DividendeRepo.LadeAnhandID(iD);
+        }
+
+        public void Aktualisieren(Dividende entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ObservableCollection<Dividende> LadeAlle()
+        {
+            throw new NotImplementedException();
         }
     }
 }

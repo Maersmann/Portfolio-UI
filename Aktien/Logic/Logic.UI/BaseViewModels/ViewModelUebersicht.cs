@@ -63,6 +63,7 @@ namespace Aktien.Logic.UI.BaseViewModels
         {
             itemList.Remove(selectedItem);
             this.RaisePropertyChanged("ItemList");
+            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenType());
         }
 
         protected virtual void ExecuteBearbeitenCommand()

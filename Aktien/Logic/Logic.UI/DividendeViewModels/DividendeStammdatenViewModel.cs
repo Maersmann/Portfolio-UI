@@ -17,47 +17,43 @@ using Aktien.Logic.Core.Validierung.Base;
 
 namespace Aktien.Logic.UI.DividendeViewModels
 {
-    public class DividendeStammdatenViewModel : ViewModelStammdaten
+    public class DividendeStammdatenViewModel : ViewModelStammdaten<Dividende>
     {
 
-        private Dividende dividende;
 
-        public DividendeStammdatenViewModel()
+        public DividendeStammdatenViewModel() : base(new DividendeAPI())
         {
             Title = "Informationen Dividende";
-            SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
             Cleanup();
         }
 
         protected override void ExecuteSaveCommand()
         {
-            var WertpapiedID = dividende.WertpapierID;
-            var API = new DividendeAPI();
-            if (state == State.Neu)
-            {           
-                API.Speichern(dividende.Betrag, dividende.Zahldatum, dividende.Exdatum, dividende.WertpapierID, dividende.Waehrung, dividende.BetragUmgerechnet, dividende.RundungArt);
-                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Dividende gespeichert" }, "DividendenStammdaten");
-            }
-            else
+            try
             {
-                API.Aktualisiere(dividende.Betrag, dividende.Zahldatum, dividende.Exdatum, dividende.ID, dividende.Waehrung, dividende.BetragUmgerechnet, dividende.RundungArt);
-                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Dividende aktualisiert" }, "DividendenStammdaten");
+                base.ExecuteSaveCommand();
             }
-            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage { ID =  WertpapiedID }, StammdatenTypes.dividende);
+            catch (Exception)
+            {
+                SendExceptionMessage("Fehler - Dividende");
+                return;
+            }
         }
+        protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.dividende;
+
 
         #region Bindings
         public DateTime? Exdatum
         {
             get
             {
-                return dividende.Exdatum;
+                return data.Exdatum;
             }
             set
             {
-                if ( !DateTime.Equals(this.dividende.Exdatum, value))
+                if ( !DateTime.Equals(this.data.Exdatum, value))
                 {
-                    this.dividende.Exdatum = value;
+                    this.data.Exdatum = value;
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
@@ -68,17 +64,17 @@ namespace Aktien.Logic.UI.DividendeViewModels
         {
             get
             {
-                if (dividende.Zahldatum.Equals(DateTime.MinValue))
+                if (data.Zahldatum.Equals(DateTime.MinValue))
                     return null;
                 else
-                    return dividende.Zahldatum;
+                    return data.Zahldatum;
             }
             set
             {
-                if (LoadAktie ||!DateTime.Equals(this.dividende.Zahldatum, value))
+                if (LoadAktie ||!DateTime.Equals(this.data.Zahldatum, value))
                 {
                     ValidateDatum(value);
-                    this.dividende.Zahldatum = value.GetValueOrDefault();
+                    this.data.Zahldatum = value.GetValueOrDefault();
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
@@ -89,14 +85,14 @@ namespace Aktien.Logic.UI.DividendeViewModels
         {
             get
             {
-                return dividende.Betrag;
+                return data.Betrag;
             }
             set
             {
-                if (this.dividende.Betrag != value)
+                if (this.data.Betrag != value)
                 {
                     ValidateBetrag(value);
-                    this.dividende.Betrag = value.GetValueOrDefault();
+                    this.data.Betrag = value.GetValueOrDefault();
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
@@ -106,25 +102,25 @@ namespace Aktien.Logic.UI.DividendeViewModels
         {
             get
             {
-                return dividende.BetragUmgerechnet;
+                return data.BetragUmgerechnet;
             }
             set
             {
-                if (this.dividende.BetragUmgerechnet != value)
+                if (this.data.BetragUmgerechnet != value)
                 {
-                    this.dividende.BetragUmgerechnet = value;
+                    this.data.BetragUmgerechnet = value;
                     this.RaisePropertyChanged();
                 }
             }
         }
         public Waehrungen Waehrung
         {
-            get { return dividende.Waehrung; }
+            get { return data.Waehrung; }
             set
             {
-                if (LoadAktie || (this.dividende.Waehrung != value))
+                if (LoadAktie || (this.data.Waehrung != value))
                 {
-                    this.dividende.Waehrung = value;
+                    this.data.Waehrung = value;
                     this.RaisePropertyChanged();
                 }
             }
@@ -140,14 +136,14 @@ namespace Aktien.Logic.UI.DividendeViewModels
         #endregion
         public int WertpapierID
         {
-            set { dividende.WertpapierID = value; }
+            set { data.WertpapierID = value; }
         }
         public void Bearbeiten(int id)
         {
             LoadAktie = true;
-            var _dividende = new DividendeAPI().LadeAnhandID(id);
+            var _dividende = new DividendeAPI().Lade(id);
 
-            dividende = new Dividende
+            data = new Dividende
             {
                 ID = _dividende.ID,
                 RundungArt = _dividende.RundungArt
@@ -187,7 +183,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         public override void Cleanup()
         {
-            dividende = new Dividende();
+            data = new Dividende();
             Zahldatum = DateTime.Now;
             Exdatum = null;
             state = State.Neu;

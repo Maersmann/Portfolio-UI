@@ -2,6 +2,7 @@
 using Aktien.Data.Infrastructure.DepotRepositorys;
 using Aktien.Data.Model.WertpapierEntitys;
 using Aktien.Data.Types.WertpapierTypes;
+using Aktien.Logic.Core.Interfaces;
 using Aktien.Logic.Core.WertpapierLogic.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Aktien.Logic.Core.WertpapierLogic
 {
-    public class EtfAPI
+    public class EtfAPI : IAPI<Wertpapier>
     {
         public void Speichern(Wertpapier wertpapier)
         {
@@ -41,7 +42,7 @@ namespace Aktien.Logic.Core.WertpapierLogic
             return new WertpapierRepository().LadeAlleByWertpapierTyp(WertpapierTypes.ETF);
         }
 
-        public Wertpapier LadeAnhandID(int id)
+        public Wertpapier Lade(int id)
         {
             return new WertpapierRepository().LadeAnhandID(id);
         }
@@ -52,6 +53,11 @@ namespace Aktien.Logic.Core.WertpapierLogic
                 throw new WertpapierInDepotVorhandenException();
 
             new WertpapierRepository().Entfernen(wertpapier);
+        }
+
+        public void Entfernen(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

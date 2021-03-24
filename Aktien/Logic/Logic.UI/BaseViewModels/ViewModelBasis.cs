@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows;
 
 namespace Aktien.Logic.UI.BaseViewModels
 {
@@ -21,26 +22,32 @@ namespace Aktien.Logic.UI.BaseViewModels
         {
             messageToken = "";
             CloseCommand = new RelayCommand(() => ExecuteCloseCommand());
+            this.CloseWindowCommand = new RelayCommand<Window>(this.ExecuteCloseWindowCommand);
         }
 
         protected string messageToken;
-
         public virtual string MessageToken { set { messageToken = value; } }
-
         public string Title { get; protected set; }
      
         public ICommand CloseCommand { get; private set; }
+        public RelayCommand<Window> CloseWindowCommand { get; private set; }
 
         protected virtual void ExecuteCloseCommand()
         {
             Cleanup();
+        }
+        protected void ExecuteCloseWindowCommand(Window window)
+        {
+            if (window != null)
+            {
+                window.Close();
+            }
         }
 
         public void SendExceptionMessage(string exceptionMessage)
         {
             Messenger.Default.Send<ExceptionMessage>(new ExceptionMessage { Message = exceptionMessage });
         }
-
         public void SendInformationMessage(string informationMessage)
         {
             Messenger.Default.Send<InformationMessage>(new InformationMessage { Message = informationMessage });

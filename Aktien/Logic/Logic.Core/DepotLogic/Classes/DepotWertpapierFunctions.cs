@@ -26,7 +26,7 @@ namespace Aktien.Logic.Core.DepotLogic.Classes
                 {
                     var AlteAnzahl = dw.Anzahl;
                     dw.Anzahl += o.Anzahl;
-                    dw.BuyIn = new KaufBerechnungen().BuyInAktieGekauft(dw.BuyIn, AlteAnzahl, dw.Anzahl, o.Preis, o.Anzahl, o.Fremdkostenzuschlag);
+                    dw.BuyIn = new KaufBerechnungen().BuyInAktieGekauft(dw.BuyIn, AlteAnzahl, dw.Anzahl, o.Preis, o.Anzahl, o.Fremdkostenzuschlag, o.OrderartTyp);
                 }             
                 else
                     dw.Anzahl -= o.Anzahl;

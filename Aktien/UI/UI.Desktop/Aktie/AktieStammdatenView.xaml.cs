@@ -24,7 +24,7 @@ namespace Aktien.UI.Desktop.Aktie
         public AktieStammdatenView()
         {
             InitializeComponent();
-            base.MessageWithToken("AktieStammdaten");
+            base.RegisterStammdatenGespeichertMessage(Data.Types.StammdatenTypes.aktien);
         }
 
     }

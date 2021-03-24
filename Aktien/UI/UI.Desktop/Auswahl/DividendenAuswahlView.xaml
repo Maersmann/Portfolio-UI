@@ -20,7 +20,7 @@
             <Label HorizontalAlignment="Center" Width="auto" >Auswahl Dividende</Label>
         </materialDesign:Card>
 
-        <DataGrid Grid.Row="1" Margin="5" ItemsSource="{Binding Dividenden}" SelectedItem="{Binding SelectedDividende, Mode=TwoWay}" AutoGenerateColumns="false" IsReadOnly="True">
+        <DataGrid Grid.Row="1" Margin="5" ItemsSource="{Binding ItemList}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="false" IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Zahltag" Binding="{Binding Zahldatum, StringFormat=dd.MM.yyyy}" Width="auto"/>
                 <DataGridTextColumn Header="Betrag" Binding="{Binding Betrag, StringFormat=N3, ConverterCulture='de-DE'}" Width="auto"/>

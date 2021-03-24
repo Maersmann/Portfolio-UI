@@ -11,8 +11,11 @@ namespace Aktien.Logic.UI.BaseViewModels
 {
     public class ViewModelLoadData : ViewModelBasis
     {
+        private StammdatenTypes typ;
+
         public void RegisterAktualisereViewMessage(StammdatenTypes stammdatenTypes)
         {
+            typ = stammdatenTypes;
             Messenger.Default.Register<AktualisiereViewMessage>(this, stammdatenTypes, m => ReceiveAktualisiereViewMessage(m));
         }
 
@@ -24,7 +27,13 @@ namespace Aktien.Logic.UI.BaseViewModels
                 LoadData();
         }
 
-        public virtual void LoadData() { }
-        public virtual void LoadData(int id) { }
+        public virtual void LoadData() { this.RaisePropertyChanged("ItemList"); }
+        public virtual void LoadData(int id) { this.RaisePropertyChanged("ItemList"); }
+
+        public override void Cleanup()
+        {
+            Messenger.Default.Unregister<AktualisiereViewMessage>(this, typ);
+            base.Cleanup();
+        }
     }
 }

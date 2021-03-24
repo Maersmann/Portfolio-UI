@@ -19,9 +19,8 @@ using Aktien.Logic.Core.DepotLogic.Classes;
 
 namespace Aktien.Logic.UI.DepotViewModels
 {
-    public class BuyOrderViewModel : ViewModelStammdaten
+    public class BuyOrderViewModel : ViewModelStammdaten<OrderHistory>
     {
-        private OrderHistory data;
         private BuySell buySell;
         private WertpapierTypes typ;
         private Double? betrag;
@@ -47,7 +46,7 @@ namespace Aktien.Logic.UI.DepotViewModels
                 preisUebersicht = Preis.GetValueOrDefault(0);
 
             if ((buySell.Equals(BuySell.Buy)) && (preisUebersicht != 0))
-                buyIn = new KaufBerechnungen().BuyInAktieGekauft(0, 0, data.Anzahl, preisUebersicht, data.Anzahl, data.Fremdkostenzuschlag);
+                buyIn = new KaufBerechnungen().BuyInAktieGekauft(0, 0, data.Anzahl, preisUebersicht, data.Anzahl, data.Fremdkostenzuschlag, data.OrderartTyp);
             else
                 buyIn = 0;
 
@@ -93,7 +92,7 @@ namespace Aktien.Logic.UI.DepotViewModels
                 }
 
             }
-            Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Buy-Order gespeichert." }, "BuyOrder");
+            Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Buy-Order gespeichert." }, StammdatenTypes.buysell);
             Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.buysell);
         }
 
@@ -151,7 +150,7 @@ namespace Aktien.Logic.UI.DepotViewModels
                         Betrag = null;
                         DeleteValidateInfo("Preis");
                     }
-                    else if  (data.OrderartTyp.Equals(Data.Types.WertpapierTypes.OrderTypes.Sparplan))
+                    else if (data.OrderartTyp.Equals(Data.Types.WertpapierTypes.OrderTypes.Sparplan))
                     {
                         Betrag = null;
                         Preis = null;
@@ -159,6 +158,7 @@ namespace Aktien.Logic.UI.DepotViewModels
                     }
                     LoadAktie = false;
                     this.data.OrderartTyp = value;
+                    BerechneWerte();
                     this.RaisePropertyChanged();
                     this.RaisePropertyChanged("EingabePreisEnabled");
                     this.RaisePropertyChanged("EingabeGesamtbetragEnabled");
@@ -341,6 +341,7 @@ namespace Aktien.Logic.UI.DepotViewModels
 
         public override void Cleanup()
         {
+            DeleteValidateInfo("Betrag");
             state = State.Neu;
             data = new OrderHistory();
             KaufTyp = Data.Types.WertpapierTypes.KaufTypes.Kauf;

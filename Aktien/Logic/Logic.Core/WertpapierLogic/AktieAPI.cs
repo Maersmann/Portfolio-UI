@@ -11,10 +11,11 @@ using System.Threading.Tasks;
 using Aktien.Data.Types.WertpapierTypes;
 using Aktien.Data.Infrastructure.DepotRepositorys;
 using Aktien.Logic.Core.WertpapierLogic.Exceptions;
+using Aktien.Logic.Core.Interfaces;
 
 namespace Aktien.Logic.Core.WertpapierLogic
 {
-    public class AktieAPI
+    public class AktieAPI : IAPI<Wertpapier>
     {
         public void Speichern(Wertpapier aktie)
         {
@@ -39,7 +40,7 @@ namespace Aktien.Logic.Core.WertpapierLogic
             return new WertpapierRepository().LadeAlleByWertpapierTyp(WertpapierTypes.Aktie);
         }
 
-        public Wertpapier LadeAnhandID(int id)
+        public Wertpapier Lade(int id)
         {
             return new WertpapierRepository().LadeAnhandID(id);
         }
@@ -51,6 +52,11 @@ namespace Aktien.Logic.Core.WertpapierLogic
 
             new WertpapierRepository().Entfernen(aktie);
         }
+        public void Entfernen(int id)
+        {
+            throw new NotImplementedException();
+        }
+
 
         public ObservableCollection<Dividende> LadeAlleDividendenDerAktie(int wertpapierID)
         {
@@ -59,7 +65,7 @@ namespace Aktien.Logic.Core.WertpapierLogic
 
         public Dividende LadeDividendeDerAktie(int id)
         {
-            return new DividendeAPI().LadeAnhandID(id);
+            return new DividendeAPI().Lade(id);
         }
 
         public ObservableCollection<OrderHistory> LadeAlleOrdersDerAktie(int wertpapierID)
@@ -77,5 +83,6 @@ namespace Aktien.Logic.Core.WertpapierLogic
             new DividendeRepository().LadeAlleFuerAktie(wertpapierID);
             return new DividendeErhaltenRepository().LadeAllByWertpapierID(wertpapierID);
         }
+
     }
 }

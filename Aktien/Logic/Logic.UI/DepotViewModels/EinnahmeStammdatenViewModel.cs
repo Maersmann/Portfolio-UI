@@ -16,9 +16,8 @@ using System.Threading.Tasks;
 
 namespace Aktien.Logic.UI.DepotViewModels
 {
-    public class EinnahmeStammdatenViewModel : ViewModelStammdaten, IViewModelStammdaten
+    public class EinnahmeStammdatenViewModel : ViewModelStammdaten<Einnahme>, IViewModelStammdaten
     {
-        Einnahme data;
         public EinnahmeStammdatenViewModel()
         {
             SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
@@ -26,6 +25,7 @@ namespace Aktien.Logic.UI.DepotViewModels
         }
 
         public int DepotID{ set { data.DepotID = value; } }
+        protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.einnahmen;
 
         #region Bindings
         public IEnumerable<EinnahmeArtTypes> EinnahmeTypes
@@ -114,7 +114,7 @@ namespace Aktien.Logic.UI.DepotViewModels
             var Depot = new DepotAPI();
             Depot.NeueEinnahme(data.Betrag, data.Datum, data.Art, data.DepotID, null, data.Beschreibung);
 
-            Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Einnahme gespeichert." }, "EinahmeStammdaten");
+            Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Einnahme gespeichert." }, GetStammdatenTyp());
             Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.einnahmen);
         }
 

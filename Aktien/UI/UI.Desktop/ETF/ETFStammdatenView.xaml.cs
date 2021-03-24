@@ -24,7 +24,7 @@ namespace Aktien.UI.Desktop.ETF
         public ETFStammdatenView()
         {
             InitializeComponent();
-            base.MessageWithToken("ETFStammdaten");
+            base.RegisterStammdatenGespeichertMessage(Data.Types.StammdatenTypes.etf); 
         }
     }
 }

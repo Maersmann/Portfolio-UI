@@ -17,32 +17,31 @@ using System.Windows.Input;
 
 namespace Aktien.Logic.UI.AuswahlViewModels
 {
-    public class DividendenAuswahlViewModel : ViewModelBasis
+    public class DividendenAuswahlViewModel : ViewModelAuswahl<Dividende>
     {
         private int wertpapierID;
-        private ObservableCollection<Dividende> dividenden;
 
-        private Dividende selectedDividende;
         private bool ohneHinterlegteDividende;
 
         public DividendenAuswahlViewModel()
         {
-            dividenden = new ObservableCollection<Dividende>();
             AuswahlCommand = new DelegateCommand(this.ExecutAuswahlCommand, this.CanExecuteCommand);
             AddCommand = new RelayCommand(this.ExcecuteAddCommand);
             OhneHinterlegteDividende = false;
         }
 
+        protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.dividende; }
+
         public bool OhneHinterlegteDividende { set { ohneHinterlegteDividende = value; } }
 
-        public void LoadData(int wertpapierID)
+        public override void LoadData(int wertpapierID)
         {
             this.wertpapierID = wertpapierID;
             if (ohneHinterlegteDividende)
-                dividenden = new DividendeAPI().LadeAlleNichtErhaltendeFuerWertpapier(wertpapierID);
+                itemList = new DividendeAPI().LadeAlleNichtErhaltendeFuerWertpapier(wertpapierID);
             else
-                dividenden = new DividendeAPI().LadeAlleFuerWertpapier(this.wertpapierID);
-            this.RaisePropertyChanged("Dividenden");
+                itemList = new DividendeAPI().LadeAlleFuerWertpapier(this.wertpapierID);
+            this.RaisePropertyChanged("ItemList");
         }
 
         #region Commands
@@ -54,35 +53,24 @@ namespace Aktien.Logic.UI.AuswahlViewModels
        
         private bool CanExecuteCommand()
         {
-            return selectedDividende != null;
+            return selectedItem != null;
         }
 
         private void ExecutAuswahlCommand()
         {
-            Messenger.Default.Send<DividendeAusgewaehltMessage>(new DividendeAusgewaehltMessage {  ID = selectedDividende.ID, Betrag = selectedDividende.Betrag, Datum = selectedDividende.Zahldatum});
+            Messenger.Default.Send<DividendeAusgewaehltMessage>(new DividendeAusgewaehltMessage {  ID = selectedItem.ID, Betrag = selectedItem.Betrag, Datum = selectedItem.Zahldatum});
         }
 
         #endregion
 
         #region Bindings
-        public Dividende SelectedDividende
+        public override Dividende SelectedItem
         {
-            get
-            {
-                return selectedDividende;
-            }
+            get => base.SelectedItem;
             set
             {
-                selectedDividende = value;
-                this.RaisePropertyChanged();
                 ((DelegateCommand)AuswahlCommand).RaiseCanExecuteChanged();
-            }
-        }
-        public IEnumerable<Dividende> Dividenden
-        {
-            get
-            {
-                return dividenden;
+                base.SelectedItem = value;
             }
         }
         public ICommand AuswahlCommand { get; set; }

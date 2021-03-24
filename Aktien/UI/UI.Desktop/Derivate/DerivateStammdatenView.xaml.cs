@@ -24,7 +24,7 @@ namespace Aktien.UI.Desktop.Derivate
         public DerivateStammdatenView()
         {
             InitializeComponent();
-            base.MessageWithToken("DerivateStammdaten");
+            base.RegisterStammdatenGespeichertMessage(Data.Types.StammdatenTypes.derivate);
         }
     }
 }

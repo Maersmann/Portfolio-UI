@@ -24,7 +24,7 @@ namespace Aktien.UI.Desktop.Depot
         public EinnahmeStammdatenView()
         {
             InitializeComponent();
-            base.MessageWithToken("EinahmeStammdaten");
+            base.RegisterStammdatenGespeichertMessage(Data.Types.StammdatenTypes.einnahmen);
         }
     }
 }
