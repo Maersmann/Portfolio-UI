@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:command="http://www.galasoft.ch/mvvmlight"
+        x:Name="Main"
         xmlns:local="clr-namespace:Aktien.UI.Desktop"
         xmlns:Fluent="urn:fluent-ribbon"
         xmlns:UI="clr-namespace:Aktien.Logic.UI;assembly=Logic.UI"
@@ -27,6 +28,18 @@
         </Grid.RowDefinitions>
 
         <Fluent:Ribbon Grid.Row="0">
+
+            <Fluent:Ribbon.Menu>
+                <Fluent:Backstage >
+                    <Fluent:BackstageTabControl>
+                        <Fluent:BackstageTabItem Header="Daten Anpassungen">
+                            <Frame x:Name="DatenAnpassungFrame" NavigationUIVisibility="Hidden"  />
+                        </Fluent:BackstageTabItem>
+                        <Fluent:SeparatorTabItem/>
+                        <Fluent:Button Header="Schliessen" Command="{Binding CloseWindowCommand}" CommandParameter="{Binding ElementName=Main}"/>
+                    </Fluent:BackstageTabControl> 
+                </Fluent:Backstage>
+            </Fluent:Ribbon.Menu>
 
             <!--Tabs-->
             <Fluent:RibbonTabItem Header="Allgemein">

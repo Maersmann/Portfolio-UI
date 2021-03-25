@@ -127,7 +127,12 @@ namespace Aktien.Logic.Core.Depot
             OrderRepo.Entfernen(Order);
 
             if(DepotAktie == null)
-                new DepotWertpapierFunctions().NeuBerechnen(Order.WertpapierID);
+            {
+                DepotAktie = new DepotWertpapier { DepotID = 1, WertpapierID = Order.WertpapierID, BuyIn = 0, Anzahl = 0 };
+                new DepotWertpapierFunctions().NeuBerechnen(DepotAktie);
+                new DepotWertpapierRepository().Speichern(DepotAktie);
+            }
+                
 
         }
        

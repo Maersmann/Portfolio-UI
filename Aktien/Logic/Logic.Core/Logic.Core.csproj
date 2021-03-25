@@ -46,6 +46,7 @@
     </Compile>
     <Compile Include="DepotLogic\AusgabeAPI.cs" />
     <Compile Include="DepotLogic\Classes\DepotWertpapierFunctions.cs" />
+    <Compile Include="DepotLogic\DepotWertpapierAPI.cs" />
     <Compile Include="DepotLogic\EinnahmeAusgabeAuswertungAPI.cs" />
     <Compile Include="DepotLogic\Models\DepotGesamtUebersichtItem.cs" />
     <Compile Include="DepotLogic\EinnahmenAPI.cs" />

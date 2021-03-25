@@ -27,13 +27,11 @@ namespace Aktien.UI.Desktop.Dividende
     /// </summary>
     public partial class DividendeErhaltenView : StammdatenView
     {
-        private DividendenAuswahlView view;
         public DividendeErhaltenView()
         {
             InitializeComponent();
             base.RegisterStammdatenGespeichertMessage(Data.Types.StammdatenTypes.dividendeErhalten);
             Messenger.Default.Register<OpenDividendenAuswahlMessage>(this, m => ReceiveOpenDividendeAuswahlMessage(m));
-            Messenger.Default.Register<DividendeAusgewaehltMessage>(this, m => ReceiveDividendeAusgewaehltMessage(m));
             Messenger.Default.Register<OpenDividendeProStueckAnpassenMessage>(this, m => ReceiveOpenDividendeProStueckAnpassenMessage(m));
         }
 
@@ -48,33 +46,23 @@ namespace Aktien.UI.Desktop.Dividende
             View.ShowDialog();
         }
 
-        private void ReceiveDividendeAusgewaehltMessage(DividendeAusgewaehltMessage m)
-        {
-            view.Close();
-            if (this.DataContext is DividendeErhaltenViewModel model)
-            {
-                model.DividendeAusgewaehlt(m.ID, m.Betrag, m.Datum);
-            }
-        }
 
         private void ReceiveOpenDividendeAuswahlMessage(OpenDividendenAuswahlMessage m)
         {
-            view = new DividendenAuswahlView();
+            var view = new DividendenAuswahlView();
             if (view.DataContext is DividendenAuswahlViewModel model)
             {
                 model.OhneHinterlegteDividende = true;
                 model.LoadData( m.WertpapierID );
+                model.SetCallback(m.Callback);
+                view.ShowDialog();
             }
-            
-            view.ShowDialog();
-
         }
 
         public override void Window_Unloaded(object sender, RoutedEventArgs e)
         {
             base.Window_Unloaded(sender,e);
             Messenger.Default.Unregister<OpenDividendenAuswahlMessage>(this);
-            Messenger.Default.Unregister<DividendeAusgewaehltMessage>(this);
             Messenger.Default.Unregister<OpenDividendeProStueckAnpassenMessage>(this);
         }
     }

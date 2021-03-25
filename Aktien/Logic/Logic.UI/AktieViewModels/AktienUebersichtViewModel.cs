@@ -80,7 +80,6 @@ namespace Aktien.Logic.UI.AktieViewModels
                 return;
             }
             Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = 0, WertpapierTyp = WertpapierTypes.Aktie }, messageToken);
-            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewWertpapierUebersicht);
             SendInformationMessage("Aktie gelöscht");
             base.ExecuteEntfernenCommand();
         }

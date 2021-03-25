@@ -13,7 +13,7 @@ namespace Aktien.Logic.Core.DepotLogic.Classes
         {
             var BuyIn = Math.Round(((buyIn * alteAnzahl) + ((preis * neueAnzahl) + fremdkosten.GetValueOrDefault(0))) / neueGesamtAnzahl, 3, MidpointRounding.AwayFromZero);
 
-            if ( BuyIn >= 2 && orderTypes != OrderTypes.Sparplan )            
+            if ( BuyIn >= 3 && orderTypes != OrderTypes.Sparplan )            
                 BuyIn = Math.Round(((buyIn * alteAnzahl) + ((preis * neueAnzahl) + fremdkosten.GetValueOrDefault(0))) / neueGesamtAnzahl, 2, MidpointRounding.AwayFromZero);
 
             return BuyIn;

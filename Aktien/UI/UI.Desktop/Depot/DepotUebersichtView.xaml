@@ -26,7 +26,7 @@
             <DataGrid.Columns >
                 <DataGridTextColumn Header="Name" Binding="{Binding Bezeichnung}" Width="auto" />
                 <DataGridTextColumn Header="Anzahl" Binding="{Binding Anzahl, ConverterCulture='de-DE'}" Width="auto"/>
-                <DataGridTextColumn Header="Buy-In" Binding="{Binding BuyIn , StringFormat=N2, ConverterCulture='de-DE'}"  Width="auto"/>
+                <DataGridTextColumn Header="Buy-In" Binding="{Binding BuyIn , StringFormat=N3, ConverterCulture='de-DE'}"  Width="auto"/>
                 <DataGridTextColumn Header="Gesamt" Binding="{Binding Gesamt , StringFormat=N2, ConverterCulture='de-DE'}"  Width="auto">
                 </DataGridTextColumn>
                 <DataGridTextColumn Header="Wertpapier-Art" Binding="{Binding WertpapierTyp }"  Width="auto"/>

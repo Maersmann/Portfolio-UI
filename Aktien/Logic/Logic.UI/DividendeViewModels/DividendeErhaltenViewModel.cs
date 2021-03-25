@@ -204,7 +204,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
         #region Commands
         private void ExecuteOpenAuswahlCommand()
         {
-            Messenger.Default.Send<OpenDividendenAuswahlMessage>(new OpenDividendenAuswahlMessage { WertpapierID = data.WertpapierID });
+            Messenger.Default.Send<OpenDividendenAuswahlMessage>(new OpenDividendenAuswahlMessage(OpenDividendenAuswahlMessageCallback,data.WertpapierID), "DatenAnpassung");
         }
         protected override void ExecuteSaveCommand()
         {
@@ -230,8 +230,14 @@ namespace Aktien.Logic.UI.DividendeViewModels
         {
             Messenger.Default.Send<OpenDividendeProStueckAnpassenMessage>(new OpenDividendeProStueckAnpassenMessage { DividendeID = data.DividendeID,  Umrechnungskurs = data.Umrechnungskurs.Value });
         }
+        #endregion
 
-
+        #region Callbacks
+        private void OpenDividendenAuswahlMessageCallback(bool confirmed, int id, double betrag, DateTime date)
+        {
+            if (confirmed)
+                DividendeAusgewaehlt(id, betrag, date);
+        }
         #endregion
 
         #region Validate

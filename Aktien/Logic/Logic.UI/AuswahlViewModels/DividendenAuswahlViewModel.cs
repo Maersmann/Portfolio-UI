@@ -13,6 +13,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Aktien.Logic.UI.AuswahlViewModels
@@ -22,17 +23,20 @@ namespace Aktien.Logic.UI.AuswahlViewModels
         private int wertpapierID;
 
         private bool ohneHinterlegteDividende;
+        private Action<bool, int, Double, DateTime> Callback;
 
         public DividendenAuswahlViewModel()
         {
-            AuswahlCommand = new DelegateCommand(this.ExecutAuswahlCommand, this.CanExecuteCommand);
             AddCommand = new RelayCommand(this.ExcecuteAddCommand);
             OhneHinterlegteDividende = false;
-        }
+        } 
 
         protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.dividende; }
-
         public bool OhneHinterlegteDividende { set { ohneHinterlegteDividende = value; } }
+        public void SetCallback(Action<bool, int, Double, DateTime> callback)
+        {
+            Callback = callback;
+        }
 
         public override void LoadData(int wertpapierID)
         {
@@ -50,30 +54,20 @@ namespace Aktien.Logic.UI.AuswahlViewModels
         {
             Messenger.Default.Send<OpenDividendeStammdatenMessage>(new OpenDividendeStammdatenMessage { WertpapierID = wertpapierID, State = State.Neu });
         }
-       
-        private bool CanExecuteCommand()
-        {
-            return selectedItem != null;
-        }
 
-        private void ExecutAuswahlCommand()
+        protected override void ExecuteCloseWindowCommand(Window window)
         {
-            Messenger.Default.Send<DividendeAusgewaehltMessage>(new DividendeAusgewaehltMessage {  ID = selectedItem.ID, Betrag = selectedItem.Betrag, Datum = selectedItem.Zahldatum});
+            base.ExecuteCloseWindowCommand(window);
+
+            if (selectedItem != null)
+                Callback(true, selectedItem.ID, selectedItem.Betrag, selectedItem.Zahldatum);
+            else
+                Callback(false, 0, 0, DateTime.MinValue);      
         }
 
         #endregion
 
         #region Bindings
-        public override Dividende SelectedItem
-        {
-            get => base.SelectedItem;
-            set
-            {
-                ((DelegateCommand)AuswahlCommand).RaiseCanExecuteChanged();
-                base.SelectedItem = value;
-            }
-        }
-        public ICommand AuswahlCommand { get; set; }
         public ICommand AddCommand { get; set; }
 
         #endregion

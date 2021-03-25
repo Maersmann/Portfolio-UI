@@ -13,26 +13,25 @@ namespace Aktien.Logic.Core.DepotLogic.Classes
 {
     public class DepotWertpapierFunctions
     {
-        public void NeuBerechnen(int wertpapierID)
+        public void NeuBerechnen(DepotWertpapier depotWertpapier)
         {
-            DepotWertpapier dw = new DepotWertpapier { DepotID = 1, WertpapierID = wertpapierID, BuyIn = 0, Anzahl = 0 };
-            IList<OrderHistory> orders = new OrderHistoryRepository().LadeAlleByWertpapierID(wertpapierID);
+            depotWertpapier.BuyIn = 0;
+            depotWertpapier.Anzahl = 0;
+            IList<OrderHistory> orders = new OrderHistoryRepository().LadeAlleByWertpapierID(depotWertpapier.WertpapierID);
 
             orders.OrderBy(o => o.Orderdatum);
 
-            orders.ToList().ForEach(o => 
+            orders.ToList().ForEach(o =>
             {
                 if (o.BuySell == BuySell.Buy)
                 {
-                    var AlteAnzahl = dw.Anzahl;
-                    dw.Anzahl += o.Anzahl;
-                    dw.BuyIn = new KaufBerechnungen().BuyInAktieGekauft(dw.BuyIn, AlteAnzahl, dw.Anzahl, o.Preis, o.Anzahl, o.Fremdkostenzuschlag, o.OrderartTyp);
-                }             
+                    var AlteAnzahl = depotWertpapier.Anzahl;
+                    depotWertpapier.Anzahl += o.Anzahl;
+                    depotWertpapier.BuyIn = new KaufBerechnungen().BuyInAktieGekauft(depotWertpapier.BuyIn, AlteAnzahl, depotWertpapier.Anzahl, o.Preis, o.Anzahl, o.Fremdkostenzuschlag, o.OrderartTyp);
+                }
                 else
-                    dw.Anzahl -= o.Anzahl;
+                    depotWertpapier.Anzahl -= o.Anzahl;
             });
-
-            new DepotWertpapierRepository().Speichern(dw);
         }
     }
 }
