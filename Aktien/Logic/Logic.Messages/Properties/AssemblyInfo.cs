@@ -3,5 +3,5 @@
 
 [assembly: AssemblyTitle("Logic.Messages")]
 [assembly: AssemblyDescription("")]
-[assembly: AssemblyVersion("1.4.3")]
+[assembly: AssemblyVersion("1.4.4")]
 

@@ -22,9 +22,8 @@ using System.Windows.Input;
 
 namespace Aktien.Logic.UI.DividendeViewModels
 {
-    public class DividendeErhaltenViewModel : ViewModelStammdaten
+    public class DividendeErhaltenViewModel : ViewModelStammdaten<DividendeErhalten>
     {
-        private DividendeErhalten dividendeErhalten;
         private string dividendetext;
         private Double betrag;
 
@@ -36,7 +35,9 @@ namespace Aktien.Logic.UI.DividendeViewModels
             Cleanup();
         }
 
-      
+        protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.dividendeErhalten;
+
+
         public void DividendeAusgewaehlt(int id, double betrag, DateTime datum)
         {
             DateTimeFormatInfo fmt = (new CultureInfo("de-DE")).DateTimeFormat;
@@ -51,7 +52,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
         {
             var dividendeLoad = new DividendeErhaltenAPI().LadeAnhandID(id);
 
-            dividendeErhalten = new DividendeErhalten
+            data = new DividendeErhalten
             {
                 ID = dividendeLoad.ID,
                 WertpapierID = dividendeLoad.WertpapierID,
@@ -72,30 +73,31 @@ namespace Aktien.Logic.UI.DividendeViewModels
         { 
             set 
             {
-                dividendeErhalten.DividendeID = value;
+                data.DividendeID = value;
                 ValidateDividende(value);
                 this.RaisePropertyChanged("DividendeText");
                 ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-                ((DelegateCommand)OpenDividendeCommand).RaiseCanExecuteChanged();
+                if (OpenDividendeCommand != null)
+                    ((DelegateCommand)OpenDividendeCommand).RaiseCanExecuteChanged();
             } 
         }
 
   
         public void WertpapierID(int wertpapierID)
         {
-            dividendeErhalten.WertpapierID = wertpapierID;
+            data.WertpapierID = wertpapierID;
         }
 
         public void BerechneGesamtWerte()
         {
-            dividendeErhalten.GesamtBrutto = new DividendenBerechnungen().GesamtBrutto(betrag, dividendeErhalten.Bestand);
-            dividendeErhalten.GesamtNetto = new DividendenBerechnungen().GesamtNetto(dividendeErhalten.GesamtBrutto, dividendeErhalten.Quellensteuer.GetValueOrDefault(0));
+            data.GesamtBrutto = new DividendenBerechnungen().GesamtBrutto(betrag, data.Bestand);
+            data.GesamtNetto = new DividendenBerechnungen().GesamtNetto(data.GesamtBrutto, data.Quellensteuer.GetValueOrDefault(0));
             this.RaisePropertyChanged("GesamtNetto");
             this.RaisePropertyChanged("GesamtBrutto");
             if (WechsellkursHasValue)
             {
-                dividendeErhalten.GesamtNettoUmgerechnetErhalten = new DividendenBerechnungen().BetragUmgerechnet(dividendeErhalten.GesamtNetto, dividendeErhalten.Umrechnungskurs,true, dividendeErhalten.RundungArt);
-                dividendeErhalten.GesamtNettoUmgerechnetErmittelt = new DividendenBerechnungen().BetragUmgerechnet(dividendeErhalten.GesamtNetto, dividendeErhalten.Umrechnungskurs, false, dividendeErhalten.RundungArt);
+                data.GesamtNettoUmgerechnetErhalten = new DividendenBerechnungen().BetragUmgerechnet(data.GesamtNetto, data.Umrechnungskurs,true, data.RundungArt);
+                data.GesamtNettoUmgerechnetErmittelt = new DividendenBerechnungen().BetragUmgerechnet(data.GesamtNetto, data.Umrechnungskurs, false, data.RundungArt);
                 this.RaisePropertyChanged("GesamtNettoUmgerechnet");
                 this.RaisePropertyChanged("GesamtNettoUmgerechnetUngerundet");
             }
@@ -108,17 +110,17 @@ namespace Aktien.Logic.UI.DividendeViewModels
         {
             get 
             {
-                if (dividendeErhalten.Bestand == -1)
+                if (data.Bestand == -1)
                     return null;
                 else
-                    return dividendeErhalten.Bestand; 
+                    return data.Bestand; 
             }
             set 
             {
-                if (this.dividendeErhalten.Bestand != value)
+                if (this.data.Bestand != value)
                 {
                     ValidateBestand(value);
-                    this.dividendeErhalten.Bestand = value.GetValueOrDefault(-1);
+                    this.data.Bestand = value.GetValueOrDefault(-1);
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                     BerechneGesamtWerte();
@@ -131,25 +133,25 @@ namespace Aktien.Logic.UI.DividendeViewModels
         }
         public Double? Quellensteuer
         {
-            get { return dividendeErhalten.Quellensteuer; }
+            get { return data.Quellensteuer; }
             set
             {
-                if (this.dividendeErhalten.Quellensteuer != value)
+                if (this.data.Quellensteuer != value)
                 {
                     BerechneGesamtWerte();
-                    this.dividendeErhalten.Quellensteuer = value;
+                    this.data.Quellensteuer = value;
                     this.RaisePropertyChanged();
                 }
             }
         }
         public Double? Wechselkurs
         {
-            get { return dividendeErhalten.Umrechnungskurs; }
+            get { return data.Umrechnungskurs; }
             set
             {
-                if (this.dividendeErhalten.Umrechnungskurs != value)
+                if (this.data.Umrechnungskurs != value)
                 {
-                    this.dividendeErhalten.Umrechnungskurs = value;
+                    this.data.Umrechnungskurs = value;
                     this.RaisePropertyChanged();
                     this.RaisePropertyChanged("WechsellkursHasValue");
                 }
@@ -166,12 +168,12 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         public DividendenRundungTypes RundungTyp
         {
-            get { return dividendeErhalten.RundungArt; }
+            get { return data.RundungArt; }
             set
             {
-                if (LoadAktie || (this.dividendeErhalten.RundungArt != value))
+                if (LoadAktie || (this.data.RundungArt != value))
                 {
-                    this.dividendeErhalten.RundungArt = value;
+                    this.data.RundungArt = value;
                     this.RaisePropertyChanged();
                     BerechneGesamtWerte();
                 }
@@ -180,56 +182,62 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         public Double? GesamtBrutto
         {
-            get { return dividendeErhalten.GesamtBrutto; }
+            get { return data.GesamtBrutto; }
         }
         public Double? GesamtNetto
         {
-            get { return dividendeErhalten.GesamtNetto; }
+            get { return data.GesamtNetto; }
         }
         public Double? GesamtNettoUmgerechnet
         {
-            get { return dividendeErhalten.GesamtNettoUmgerechnetErhalten.GetValueOrDefault(0); }
+            get { return data.GesamtNettoUmgerechnetErhalten.GetValueOrDefault(0); }
         }
 
         public Double? GesamtNettoUmgerechnetUngerundet
         {
-            get { return dividendeErhalten.GesamtNettoUmgerechnetErmittelt.GetValueOrDefault(0); }
+            get { return data.GesamtNettoUmgerechnetErmittelt.GetValueOrDefault(0); }
         }
 
-        public bool WechsellkursHasValue { get { return this.dividendeErhalten.Umrechnungskurs.GetValueOrDefault(0)>0; } }
+        public bool WechsellkursHasValue { get { return this.data.Umrechnungskurs.GetValueOrDefault(0)>0; } }
         #endregion
 
         #region Commands
         private void ExecuteOpenAuswahlCommand()
         {
-            Messenger.Default.Send<OpenDividendenAuswahlMessage>(new OpenDividendenAuswahlMessage { WertpapierID = dividendeErhalten.WertpapierID });
+            Messenger.Default.Send<OpenDividendenAuswahlMessage>(new OpenDividendenAuswahlMessage(OpenDividendenAuswahlMessageCallback,data.WertpapierID), "DividendeErhalten");
         }
         protected override void ExecuteSaveCommand()
         {
             var API = new DepotAPI();
             if (state == State.Neu)
             {
-                API.NeueDividendeErhalten(dividendeErhalten);
-                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Erhaltene Dividende gespeichert." }, "ErhalteneDividendeStammdaten");
+                API.NeueDividendeErhalten(data);
+                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Erhaltene Dividende gespeichert." }, GetStammdatenTyp());
 
             }
             else
             {
-                API.AktualisiereDividendeErhalten(dividendeErhalten);
-                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Erhaltene Dividende aktualisiert." }, "ErhalteneDividendeStammdaten");
+                API.AktualisiereDividendeErhalten(data);
+                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Erhaltene Dividende aktualisiert." }, GetStammdatenTyp());
             }
             Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.dividendeErhalten);
         }
         private bool CanExecuteOpenDividendeCommand()
         {
-            return (dividendeErhalten.DividendeID != -1) && (dividendeErhalten.Umrechnungskurs.GetValueOrDefault(0)>0);
+            return (data.DividendeID != -1) && (data.Umrechnungskurs.GetValueOrDefault(0)>0);
         }
         private void ExecuteOpenDividendeCommand()
         {
-            Messenger.Default.Send<OpenDividendeProStueckAnpassenMessage>(new OpenDividendeProStueckAnpassenMessage { DividendeID = dividendeErhalten.DividendeID,  Umrechnungskurs = dividendeErhalten.Umrechnungskurs.Value });
+            Messenger.Default.Send<OpenDividendeProStueckAnpassenMessage>(new OpenDividendeProStueckAnpassenMessage { DividendeID = data.DividendeID,  Umrechnungskurs = data.Umrechnungskurs.Value });
         }
+        #endregion
 
-
+        #region Callbacks
+        private void OpenDividendenAuswahlMessageCallback(bool confirmed, int id, double betrag, DateTime date)
+        {
+            if (confirmed)
+                DividendeAusgewaehlt(id, betrag, date);
+        }
         #endregion
 
         #region Validate
@@ -256,7 +264,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         public override void Cleanup()
         {
-            dividendeErhalten = new DividendeErhalten();
+            data = new DividendeErhalten();
             dividendetext = "";
             DividendeID = -1;
             Bestand = -1;

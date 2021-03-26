@@ -46,8 +46,8 @@
             </DataGrid.RowStyle>
         </DataGrid>
 
-        <Button Grid.Row="1" DockPanel.Dock="Right" Style="{DynamicResource MaterialDesignFloatingActionButton}" Command="{Binding AktieGekauftCommand, Mode=OneWay}" Content="Buy" FontSize="25" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" FontWeight="Bold" HorizontalContentAlignment="Center" />
-        <Button Grid.Row="1" DockPanel.Dock="Right" Style="{DynamicResource MaterialDesignFloatingActionButton}" Command="{Binding AktieVerkauftCommand, Mode=OneWay}" Content="Sell" FontSize="25" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,71,10" FontWeight="Bold" HorizontalContentAlignment="Center" />
+        <Button Grid.Row="1" DockPanel.Dock="Right" Style="{DynamicResource MaterialDesignFloatingActionButton}" Command="{Binding AktieGekauftCommand, Mode=OneWay}" Content="Buy" FontSize="25" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,25,25" FontWeight="Bold" HorizontalContentAlignment="Center" />
+        <Button Grid.Row="1" DockPanel.Dock="Right" Style="{DynamicResource MaterialDesignFloatingActionButton}" Command="{Binding AktieVerkauftCommand, Mode=OneWay}" Content="Sell" FontSize="25" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,85,25" FontWeight="Bold" HorizontalContentAlignment="Center" />
 
         <materialDesign:Card  Grid.Row="2">
             <DockPanel  LastChildFill="False" />

@@ -18,46 +18,37 @@ using System.Threading.Tasks;
 
 namespace Aktien.Logic.UI.ETFViewModels
 {
-    public class ETFStammdatenViewModel : ViewModelStammdaten, IViewModelStammdaten
+    public class ETFStammdatenViewModel : ViewModelStammdaten<Wertpapier>, IViewModelStammdaten
     {
-        private Wertpapier etf;
 
-        public ETFStammdatenViewModel() : base()
+        public ETFStammdatenViewModel() : base(new EtfAPI())
         {
             SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
             Cleanup();
         }
 
-
         protected override void ExecuteSaveCommand()
         {
-            var api = new EtfAPI();
-            if (state.Equals(State.Neu))
+            try
             {
-                try
-                {
-                    api.Speichern(new Wertpapier() { ISIN = etf.ISIN, Name = etf.Name, WKN = etf.WKN, ETFInfo = new ETFInfo { Emittent = etf.ETFInfo.Emittent, ProfitTyp = etf.ETFInfo.ProfitTyp } });
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "ETF gespeichert." }, "ETFStammdaten");
-                }
-                catch (WertpapierSchonVorhandenException)
-                {
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = false, Message = "ETF ist schon vorhanden." }, "ETFStammdaten");
-                    return;
-                }
+                base.ExecuteSaveCommand();
             }
-            else
+            catch (WertpapierSchonVorhandenException)
             {
-                api.Aktualisieren(etf);
-                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "ETF aktualisiert." }, "ETFStammdaten");
+                SendExceptionMessage("ETF ist schon vorhanden");
+                return;
             }
-            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.etf);
         }
+        protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.etf;
+
+
+
 
         public void ZeigeStammdatenAn(int id)
         {
             LoadAktie = true;
-            var Loadaktie = new EtfAPI().LadeAnhandID(id);
-            etf = new Wertpapier
+            var Loadaktie = new EtfAPI().Lade(id);
+            data = new Wertpapier
             {
                 ID = Loadaktie.ID,
                 ETFInfo = new ETFInfo()
@@ -66,7 +57,7 @@ namespace Aktien.Logic.UI.ETFViewModels
             {
                 ProfitTyp = Loadaktie.ETFInfo.ProfitTyp;
                 ErmittentTyp = Loadaktie.ETFInfo.Emittent; 
-                etf.ETFInfo.ID = Loadaktie.ETFInfo.ID;
+                data.ETFInfo.ID = Loadaktie.ETFInfo.ID;
             }
             WKN = Loadaktie.WKN;
             Name = Loadaktie.Name;
@@ -87,14 +78,14 @@ namespace Aktien.Logic.UI.ETFViewModels
         #region Bindings   
         public string ISIN
         {
-            get { return this.etf.ISIN; }
+            get { return this.data.ISIN; }
             set
             {
 
-                if (LoadAktie || !string.Equals(this.etf.ISIN, value))
+                if (LoadAktie || !string.Equals(this.data.ISIN, value))
                 {
                     ValidateISIN(value);
-                    this.etf.ISIN = value;
+                    this.data.ISIN = value;
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
@@ -102,13 +93,13 @@ namespace Aktien.Logic.UI.ETFViewModels
         }
         public string Name
         {
-            get { return this.etf.Name; }
+            get { return this.data.Name; }
             set
             {
-                if (LoadAktie || !string.Equals(this.etf.Name, value))
+                if (LoadAktie || !string.Equals(this.data.Name, value))
                 {
                     ValidateName(value);
-                    this.etf.Name = value;
+                    this.data.Name = value;
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
@@ -116,13 +107,13 @@ namespace Aktien.Logic.UI.ETFViewModels
         }
         public string WKN
         {
-            get { return this.etf.WKN; }
+            get { return this.data.WKN; }
             set
             {
 
-                if (LoadAktie || !string.Equals(this.etf.WKN, value))
+                if (LoadAktie || !string.Equals(this.data.WKN, value))
                 {
-                    this.etf.WKN = value;
+                    this.data.WKN = value;
                     this.RaisePropertyChanged();
                 }
             }
@@ -137,12 +128,12 @@ namespace Aktien.Logic.UI.ETFViewModels
         }
         public ProfitTypes ProfitTyp
         {
-            get { return etf.ETFInfo.ProfitTyp; }
+            get { return data.ETFInfo.ProfitTyp; }
             set
             {
-                if (LoadAktie || (this.etf.ETFInfo.ProfitTyp != value))
+                if (LoadAktie || (this.data.ETFInfo.ProfitTyp != value))
                 {
-                    this.etf.ETFInfo.ProfitTyp = value;
+                    this.data.ETFInfo.ProfitTyp = value;
                     this.RaisePropertyChanged();
                 }
             }
@@ -157,12 +148,12 @@ namespace Aktien.Logic.UI.ETFViewModels
         }
         public ErmittentTypes ErmittentTyp
         {
-            get { return etf.ETFInfo.Emittent; }
+            get { return data.ETFInfo.Emittent; }
             set
             {
-                if (LoadAktie || (this.etf.ETFInfo.Emittent != value))
+                if (LoadAktie || (this.data.ETFInfo.Emittent != value))
                 {
-                    this.etf.ETFInfo.Emittent = value;
+                    this.data.ETFInfo.Emittent = value;
                     this.RaisePropertyChanged();
                 }
             }
@@ -195,7 +186,7 @@ namespace Aktien.Logic.UI.ETFViewModels
         public override void Cleanup()
         {
             state = State.Neu;
-            etf = new Wertpapier
+            data = new Wertpapier
             {
                 ETFInfo = new ETFInfo()
             };

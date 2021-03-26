@@ -21,48 +21,33 @@ using Aktien.Logic.UI.InterfaceViewModels;
 
 namespace Aktien.Logic.UI.AktieViewModels
 {
-    public class AktieStammdatenViewModel : ViewModelStammdaten, IViewModelStammdaten
+    public class AktieStammdatenViewModel : ViewModelStammdaten<Wertpapier>, IViewModelStammdaten
     {
 
-        private Wertpapier aktie;
-
-        public AktieStammdatenViewModel():base()
+        public AktieStammdatenViewModel():base(new AktieAPI())
         {
-            SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
             Cleanup();
         }
 
 
         protected override void ExecuteSaveCommand()
         {
-            var api = new AktieAPI();
-            if (state.Equals( State.Neu ))
-            {            
-                try
-                { 
-                    api.Speichern(new Wertpapier() { ISIN = aktie.ISIN, Name = aktie.Name, WKN = aktie.WKN });
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Aktie gespeichert." }, "AktieStammdaten");
-                }
-                catch( WertpapierSchonVorhandenException)
-                {
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = false, Message = "Aktie ist schon vorhanden." }, "AktieStammdaten");
-                    return;
-                }
-            }
-            else
+            try
             {
-                api.Aktualisieren(aktie);
-                Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Aktie aktualisiert." }, "AktieStammdaten");
+                base.ExecuteSaveCommand();
             }
-            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.aktien);
+            catch (WertpapierSchonVorhandenException)
+            {
+                SendExceptionMessage("Aktie ist schon vorhanden");
+                return;
+            }
         }
-
-
+        protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.aktien;
         public void ZeigeStammdatenAn(int id) 
         { 
             LoadAktie = true;
-            var Loadaktie = new AktieAPI().LadeAnhandID(id);
-            aktie = new Wertpapier
+            var Loadaktie = new AktieAPI().Lade(id);
+            data = new Wertpapier
             {
                 ID = Loadaktie.ID
             };
@@ -81,27 +66,27 @@ namespace Aktien.Logic.UI.AktieViewModels
         public bool ISIN_isEnabled { get{ return state == State.Neu; } }
         public string ISIN
         {
-            get { return this.aktie.ISIN; }
+            get { return this.data.ISIN; }
             set
             {
 
-                if (LoadAktie || !string.Equals(this.aktie.ISIN, value))
+                if (LoadAktie || !string.Equals(this.data.ISIN, value))
                 {
                     ValidateISIN(value);
-                    this.aktie.ISIN = value;
+                    this.data.ISIN = value;
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
         public string Name{
-            get { return this.aktie.Name; }
+            get { return this.data.Name; }
             set
             {               
-                if (LoadAktie || !string.Equals(this.aktie.Name, value))
+                if (LoadAktie || !string.Equals(this.data.Name, value))
                 {
                     ValidateName(value);
-                    this.aktie.Name = value;
+                    this.data.Name = value;
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
@@ -109,13 +94,13 @@ namespace Aktien.Logic.UI.AktieViewModels
         }
         public string WKN
         {
-            get { return this.aktie.WKN; }
+            get { return this.data.WKN; }
             set
             {
 
-                if (LoadAktie || !string.Equals(this.aktie.WKN, value))
+                if (LoadAktie || !string.Equals(this.data.WKN, value))
                 {
-                    this.aktie.WKN = value;
+                    this.data.WKN = value;
                     this.RaisePropertyChanged();
                 }
             }
@@ -147,7 +132,7 @@ namespace Aktien.Logic.UI.AktieViewModels
         public override void Cleanup()
         {
             state = State.Neu;
-            aktie = new Wertpapier();
+            data = new Wertpapier();
             ISIN = "";
             Name = "";
             WKN = "";

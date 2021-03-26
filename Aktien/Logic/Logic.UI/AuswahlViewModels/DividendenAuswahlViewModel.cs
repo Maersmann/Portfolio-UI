@@ -13,80 +13,56 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Aktien.Logic.UI.AuswahlViewModels
 {
-    public class DividendenAuswahlViewModel : ViewModelBasis
+    public class DividendenAuswahlViewModel : ViewModelAuswahl<Dividende>
     {
         private int wertpapierID;
-        private ObservableCollection<Dividende> dividenden;
 
-        private Dividende selectedDividende;
         private bool ohneHinterlegteDividende;
+        private Action<bool, int, Double, DateTime> Callback;
 
         public DividendenAuswahlViewModel()
         {
-            dividenden = new ObservableCollection<Dividende>();
-            AuswahlCommand = new DelegateCommand(this.ExecutAuswahlCommand, this.CanExecuteCommand);
-            AddCommand = new RelayCommand(this.ExcecuteAddCommand);
             OhneHinterlegteDividende = false;
+        } 
+
+        protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.dividende; }
+        public bool OhneHinterlegteDividende { set { ohneHinterlegteDividende = value; } }
+        public void SetCallback(Action<bool, int, Double, DateTime> callback)
+        {
+            Callback = callback;
         }
 
-        public bool OhneHinterlegteDividende { set { ohneHinterlegteDividende = value; } }
-
-        public void LoadData(int wertpapierID)
+        public override void LoadData(int wertpapierID)
         {
             this.wertpapierID = wertpapierID;
             if (ohneHinterlegteDividende)
-                dividenden = new DividendeAPI().LadeAlleNichtErhaltendeFuerWertpapier(wertpapierID);
+                itemList = new DividendeAPI().LadeAlleNichtErhaltendeFuerWertpapier(wertpapierID);
             else
-                dividenden = new DividendeAPI().LadeAlleFuerWertpapier(this.wertpapierID);
-            this.RaisePropertyChanged("Dividenden");
+                itemList = new DividendeAPI().LadeAlleFuerWertpapier(wertpapierID);
+            this.RaisePropertyChanged("ItemList");
         }
 
         #region Commands
 
-        private void ExcecuteAddCommand()
+        protected override void ExcecuteNewItemCommand()
         {
             Messenger.Default.Send<OpenDividendeStammdatenMessage>(new OpenDividendeStammdatenMessage { WertpapierID = wertpapierID, State = State.Neu });
         }
-       
-        private bool CanExecuteCommand()
-        {
-            return selectedDividende != null;
-        }
 
-        private void ExecutAuswahlCommand()
+        protected override void ExecuteCloseWindowCommand(Window window)
         {
-            Messenger.Default.Send<DividendeAusgewaehltMessage>(new DividendeAusgewaehltMessage {  ID = selectedDividende.ID, Betrag = selectedDividende.Betrag, Datum = selectedDividende.Zahldatum});
-        }
+            base.ExecuteCloseWindowCommand(window);
 
-        #endregion
-
-        #region Bindings
-        public Dividende SelectedDividende
-        {
-            get
-            {
-                return selectedDividende;
-            }
-            set
-            {
-                selectedDividende = value;
-                this.RaisePropertyChanged();
-                ((DelegateCommand)AuswahlCommand).RaiseCanExecuteChanged();
-            }
+            if (selectedItem != null)
+                Callback(true, selectedItem.ID, selectedItem.Betrag, selectedItem.Zahldatum);
+            else
+                Callback(false, 0, 0, DateTime.MinValue);      
         }
-        public IEnumerable<Dividende> Dividenden
-        {
-            get
-            {
-                return dividenden;
-            }
-        }
-        public ICommand AuswahlCommand { get; set; }
-        public ICommand AddCommand { get; set; }
 
         #endregion
     }

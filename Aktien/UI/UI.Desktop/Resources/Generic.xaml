@@ -6,6 +6,9 @@
     <Color R="111" G="126" B="149" A="255" x:Key="colorHeaderBG" />
     <SolidColorBrush Color="{StaticResource colorHeaderBG}" x:Key="brushHeaderBG" />
 
+    <Color R="111" G="126" B="89" A="255" x:Key="colorDetailBG" />
+    <SolidColorBrush Color="{StaticResource colorDetailBG}" x:Key="brushDetailBG" />
+
     <Color R="190" G="190" B="190" A="255" x:Key="colorStammdatenBereich" />
     <SolidColorBrush Color="{StaticResource colorStammdatenBereich}" x:Key="brushStammdatenBereich" />
 

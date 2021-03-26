@@ -9,5 +9,12 @@ namespace Aktien.Logic.Messages.AuswahlMessages
     public class OpenDividendenAuswahlMessage
     {
         public int WertpapierID { get; set; }
+        public Action<bool, int, Double, DateTime> Callback { get; private set; }
+
+        public OpenDividendenAuswahlMessage(Action<bool, int, Double, DateTime> callback, int wertpapierid)
+        {
+            Callback = callback;
+            WertpapierID = wertpapierid;
+        }
     }
 }

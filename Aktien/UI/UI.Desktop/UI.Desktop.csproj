@@ -207,6 +207,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Auswahl\WertpapierAuswahlView.xaml.cs">
+      <DependentUpon>WertpapierAuswahlView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Depot\AusgabenUebersichtView.xaml.cs">
       <DependentUpon>AusgabenUebersichtView.xaml</DependentUpon>
     </Compile>
@@ -237,6 +240,9 @@
     <Compile Include="Dividende\DividendeProStueckAnpassenView.xaml.cs">
       <DependentUpon>DividendeProStueckAnpassenView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Optionen\DatenAnpassungView.xaml.cs">
+      <DependentUpon>DatenAnpassungView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Wertpapier\WertpapierGesamtUebersichtPage.xaml.cs">
       <DependentUpon>WertpapierGesamtUebersichtPage.xaml</DependentUpon>
     </Compile>
@@ -244,6 +250,10 @@
       <DependentUpon>WertpapierGesamtUebersichtView.xaml</DependentUpon>
     </Compile>
     <Page Include="Aktie\AktienUebersichtView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Auswahl\WertpapierAuswahlView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -296,6 +306,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ETF\ETFUebersichtPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Optionen\DatenAnpassungView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -491,6 +505,11 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\derivate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\add.png" />
+    <Resource Include="Resources\bearbeiten.png" />
+    <Resource Include="Resources\entfernen.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

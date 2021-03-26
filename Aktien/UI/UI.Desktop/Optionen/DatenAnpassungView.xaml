@@ -1,0 +1,99 @@
+﻿<UserControl x:Class="Aktien.UI.Desktop.Optionen.DatenAnpassungView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Aktien.UI.Desktop.Optionen"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="750" d:DesignWidth="1000"   
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             Background="{DynamicResource MaterialDesignPaper}"
+             DataContext="{Binding DatenAnpassung, Source={StaticResource Locator}}" Unloaded="UserControl_Unloaded">
+
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25px"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="45px" />
+        </Grid.RowDefinitions>
+
+        <materialDesign:Card  Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushHeaderBG}}">
+            <Label HorizontalAlignment="Center" Width="auto" Content="{Binding Title, Mode=OneWay}" />
+        </materialDesign:Card>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300px"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="250px"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <materialDesign:Card Grid.Row="0" Grid.Column="0" Margin="5">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25px"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="45px" />
+                    </Grid.RowDefinitions>
+
+                    <materialDesign:Card  Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushDetailBG}}">
+                        <Label HorizontalAlignment="Center" Width="auto" Content="Buy-In Preis für Wertpapier neu berechnen" />
+                    </materialDesign:Card>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Grid.Column="0">
+                            
+                        </Grid>
+                        <Grid Grid.Column="1" Background="{Binding Mode=OneWay, Source={StaticResource brushUebersicht}}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <Label Grid.Row="0" Content="Alter Betrag" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                            <Label Grid.Row="2" Content="Neuer Betrag" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+
+                            <Label Grid.Row="1" Content="{Binding WertpapierBuyInModel.AlterBuyIn, Mode=OneWay }"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center"  FontWeight="Bold"/>
+                            <Label Grid.Row="3" Content="{Binding WertpapierBuyInModel.NeuerBuyIn, Mode=OneWay }"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center"  FontWeight="Bold"/>
+                        </Grid>
+
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50px" />
+                                <RowDefinition Height=" 50px"/>
+                            </Grid.RowDefinitions>
+
+                            <Label Content="{Binding WertpapierBuyInModel.WertpapierName, Mode=OneWay}" Grid.Row="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                            <Button Content="Auswahl" Command="{Binding AuswahlBuyInAktie}" Grid.Row="1" Style="{DynamicResource MaterialDesignOutlinedButton}" MaxWidth="100" />
+                        </Grid>
+                    
+                    </Grid>
+
+                    <materialDesign:Card Grid.Row="2"  >
+                        <DockPanel  LastChildFill="False" >
+                            <Button DockPanel.Dock="Right" Width="100" Margin="3"  Style="{DynamicResource MaterialDesignToolForegroundButton}" Command="{Binding SpeicherBuyInCommand, Mode=OneWay}" Content="Speichern" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </DockPanel>
+                    </materialDesign:Card>
+
+                </Grid>
+            </materialDesign:Card>
+        </Grid>
+    
+        <materialDesign:Card Grid.Row="2"  >
+            <DockPanel  LastChildFill="False" >
+              </DockPanel>
+        </materialDesign:Card>
+
+    </Grid>
+</UserControl>

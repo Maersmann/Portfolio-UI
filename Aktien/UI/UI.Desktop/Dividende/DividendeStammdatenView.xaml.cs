@@ -26,7 +26,7 @@ namespace Aktien.UI.Desktop.Dividende
         public DividendeStammdatenView()
         {
             InitializeComponent();
-            base.MessageWithToken("DividendenStammdaten");
+            base.RegisterStammdatenGespeichertMessage(Data.Types.StammdatenTypes.dividende);
         }
 
     }

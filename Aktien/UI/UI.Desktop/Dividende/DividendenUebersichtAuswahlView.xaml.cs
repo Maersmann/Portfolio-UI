@@ -56,7 +56,7 @@ namespace Aktien.UI.Desktop.Dividende
             this.Close();
             var view = new DividendenUebersichtView();
 
-            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage {  ID = m.WertpapierID }, ViewType.viewDividendeUebersicht);
+            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage {  ID = m.WertpapierID }, StammdatenTypes.dividende);
 
             Window window = new Window
             {

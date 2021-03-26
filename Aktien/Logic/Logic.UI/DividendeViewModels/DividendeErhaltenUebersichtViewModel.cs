@@ -34,6 +34,10 @@ namespace Aktien.Logic.UI.DividendeViewModels
             itemList = new AktieAPI().LadeAlleErhalteneDividenden(this.wertpapierID);
             this.RaisePropertyChanged("ItemList");
         }
+        public override void LoadData()
+        {
+            LoadData(wertpapierID);
+        }
 
         #region Commands
         protected override void ExecuteNeuCommand()

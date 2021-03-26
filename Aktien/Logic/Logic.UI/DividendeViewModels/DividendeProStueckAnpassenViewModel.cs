@@ -16,15 +16,14 @@ using System.Windows.Input;
 
 namespace Aktien.Logic.UI.DividendeViewModels
 {
-    public class DividendeProStueckAnpassenViewModel : ViewModelStammdaten
+    public class DividendeProStueckAnpassenViewModel : ViewModelStammdaten<Dividende>
     {
-        Dividende dividende;
         private double umrechnungskurs;
 
         public DividendeProStueckAnpassenViewModel()
         {
             Title = "Dividende pro Stück";
-            dividende = new Dividende();
+            data = new Dividende();
             RundungTyp = DividendenRundungTypes.Normal;
             umrechnungskurs = 0;
             OKCommand = new RelayCommand(() => ExecuteOKCommand());
@@ -32,13 +31,13 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         private void ExecuteOKCommand()
         {
-            new DividendeAPI().Speichern(dividende);
+            new DividendeAPI().Speichern(data);
             Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Dividende aktualisiert." }, "DividendeProStueckAnpassen");
         }
 
         public void LoadData(int dividendeErhaltenID, double umrechungskurs)
         {
-            dividende = new DividendeAPI().LadeAnhandID(dividendeErhaltenID);
+            data = new DividendeAPI().Lade(dividendeErhaltenID);
             umrechnungskurs = umrechungskurs;
             this.RaisePropertyChanged("Datum");
             this.RaisePropertyChanged("Betrag");
@@ -52,13 +51,13 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         public ICommand OKCommand { get; set; }
 
-        public DateTime Datum { get { return dividende.Zahldatum; } }
-        public Double Betrag { get { return dividende.Betrag; } }
-        public Waehrungen Waehrung { get { return dividende.Waehrung; } }
+        public DateTime Datum { get { return data.Zahldatum; } }
+        public Double Betrag { get { return data.Betrag; } }
+        public Waehrungen Waehrung { get { return data.Waehrung; } }
         public Double Umrechnungskurs { get { return umrechnungskurs; } }
 
-        public Double ErmittelterBetrag { get { return new DividendenBerechnungen().BetragUmgerechnet(dividende.Betrag, umrechnungskurs, false, DividendenRundungTypes.Normal); } }
-        public Double ErhaltenerBetrag { get { return new DividendenBerechnungen().BetragUmgerechnet(dividende.Betrag, umrechnungskurs, true, dividende.RundungArt); } }
+        public Double ErmittelterBetrag { get { return new DividendenBerechnungen().BetragUmgerechnet(data.Betrag, umrechnungskurs, false, DividendenRundungTypes.Normal); } }
+        public Double ErhaltenerBetrag { get { return new DividendenBerechnungen().BetragUmgerechnet(data.Betrag, umrechnungskurs, true, data.RundungArt); } }
 
         public IEnumerable<DividendenRundungTypes> RundungTypes
         {
@@ -69,12 +68,12 @@ namespace Aktien.Logic.UI.DividendeViewModels
         }
         public DividendenRundungTypes RundungTyp
         {
-            get { return dividende.RundungArt; }
+            get { return data.RundungArt; }
             set
             {
-                if ((this.dividende.RundungArt != value))
+                if ((this.data.RundungArt != value))
                 {
-                    this.dividende.RundungArt = value;
+                    this.data.RundungArt = value;
                     this.RaisePropertyChanged();
                     this.RaisePropertyChanged("ErhaltenerBetrag");
                 }

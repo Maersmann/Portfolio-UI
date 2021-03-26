@@ -45,7 +45,7 @@ namespace Aktien.Logic.Core.Depot
 
             
 
-            depotAktie.BuyIn = new KaufBerechnungen().BuyInAktieGekauft(depotAktie.BuyIn, AlteAnzahl, depotAktie.Anzahl, preis, anzahl, fremdkosten);
+            depotAktie.BuyIn = new KaufBerechnungen().BuyInAktieGekauft(depotAktie.BuyIn, AlteAnzahl, depotAktie.Anzahl, preis, anzahl, fremdkosten, orderTyp);
             DepotAktieRepo.Speichern(depotAktie.ID, depotAktie.Anzahl, depotAktie.BuyIn, depotAktie.WertpapierID, depotAktie.DepotID);
 
             var Betrag = (preis * anzahl) + fremdkosten.GetValueOrDefault(0);
@@ -69,7 +69,7 @@ namespace Aktien.Logic.Core.Depot
             }
             else
             {
-                DepotAktie.BuyIn = new KaufBerechnungen().BuyInAktieEntfernt(DepotAktie.BuyIn, AlteAnzahl, DepotAktie.Anzahl, Order.Preis, Order.Anzahl , Order.Fremdkostenzuschlag);
+                DepotAktie.BuyIn = new KaufBerechnungen().BuyInAktieEntfernt(DepotAktie.BuyIn, AlteAnzahl, DepotAktie.Anzahl, Order.Preis, Order.Anzahl , Order.Fremdkostenzuschlag, Order.OrderartTyp);
                 DepotAktieRepo.Speichern(DepotAktie.ID, DepotAktie.Anzahl, DepotAktie.BuyIn, DepotAktie.WertpapierID, DepotAktie.DepotID);
             }
 
@@ -127,7 +127,12 @@ namespace Aktien.Logic.Core.Depot
             OrderRepo.Entfernen(Order);
 
             if(DepotAktie == null)
-                new DepotWertpapierFunctions().NeuBerechnen(Order.WertpapierID);
+            {
+                DepotAktie = new DepotWertpapier { DepotID = 1, WertpapierID = Order.WertpapierID, BuyIn = 0, Anzahl = 0 };
+                new DepotWertpapierFunctions().NeuBerechnen(DepotAktie);
+                new DepotWertpapierRepository().Speichern(DepotAktie);
+            }
+                
 
         }
        

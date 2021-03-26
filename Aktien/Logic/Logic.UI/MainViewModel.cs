@@ -8,6 +8,7 @@ using System;
 using System.Windows.Input;
 using Aktien.Logic.Messages;
 using Aktien.Logic.Messages.Base;
+using Aktien.Logic.Core.DepotLogic.Classes;
 
 namespace Aktien.Logic.UI
 {
@@ -37,6 +38,8 @@ namespace Aktien.Logic.UI
         {
             Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = viewType });
         }
+
+
 
         private void ExecuteOpenConnectionCommand()
         {

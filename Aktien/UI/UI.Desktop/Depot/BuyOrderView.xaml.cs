@@ -23,7 +23,7 @@ namespace Aktien.UI.Desktop.Depot
         public BuyOrderView()
         {
             InitializeComponent();
-            base.MessageWithToken("BuyOrder");
+            base.RegisterStammdatenGespeichertMessage(Data.Types.StammdatenTypes.buysell);
         }
     }
 }

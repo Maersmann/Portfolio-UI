@@ -16,14 +16,15 @@ using System.Threading.Tasks;
 
 namespace Aktien.Logic.UI.DepotViewModels
 {
-    public class AusgabeStammdatenViewModel : ViewModelStammdaten, IViewModelStammdaten
+    public class AusgabeStammdatenViewModel : ViewModelStammdaten<Ausgabe>, IViewModelStammdaten
     {
-        Ausgabe data;
         public AusgabeStammdatenViewModel()
         {
             SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
             Cleanup();
         }
+
+        protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.ausgaben;
 
         public int DepotID { set { data.DepotID = value; } }
 
@@ -35,7 +36,6 @@ namespace Aktien.Logic.UI.DepotViewModels
                 return Enum.GetValues(typeof(AusgabenArtTypes)).Cast<AusgabenArtTypes>();
             }
         }
-
         public AusgabenArtTypes AusgabeTyp
         {
             get
@@ -52,7 +52,6 @@ namespace Aktien.Logic.UI.DepotViewModels
             }
 
         }
-
         public DateTime? Datum
         {
             get
@@ -70,7 +69,6 @@ namespace Aktien.Logic.UI.DepotViewModels
                 }
             }
         }
-
         public double? Betrag
         {
             get
@@ -88,7 +86,6 @@ namespace Aktien.Logic.UI.DepotViewModels
                 }
             }
         }
-
         public String Beschreibung
         {
             get
@@ -104,8 +101,6 @@ namespace Aktien.Logic.UI.DepotViewModels
                 }
             }
         }
-
-
         #endregion
 
         #region Commands
@@ -114,7 +109,7 @@ namespace Aktien.Logic.UI.DepotViewModels
             var Depot = new DepotAPI();
             Depot.NeueAusgabe(data.Betrag, data.Datum, data.Art, data.DepotID, null, data.Beschreibung);
 
-            Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Ausgabe gespeichert." }, "AusgabeStammdaten");
+            Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Ausgabe gespeichert." }, GetStammdatenTyp());
             Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.ausgaben);
         }
 

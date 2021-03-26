@@ -26,6 +26,7 @@ using Aktien.Logic.UI.WertpapierViewModels;
 using Aktien.Logic.UI.ETFViewModels.Page;
 using Aktien.Logic.UI.DepotViewModels.Page;
 using Aktien.Logic.UI.DerivateViewModels;
+using Aktien.Logic.UI.OptionenViewModels;
 
 namespace Aktien.Logic.UI
 {
@@ -75,6 +76,7 @@ namespace Aktien.Logic.UI
             SimpleIoc.Default.Register<AusgabenUebersichtViewModel>();
             SimpleIoc.Default.Register<DividendeProStueckAnpassenViewModel>();
             SimpleIoc.Default.Register<EinnahmenAusgabenUebersichtViewModel>();
+            SimpleIoc.Default.Register<DatenAnpassungViewModel>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
@@ -82,7 +84,7 @@ namespace Aktien.Logic.UI
         public AktienUebersichtViewModel AktienUebersicht => ServiceLocator.Current.GetInstance<AktienUebersichtViewModel>();
         public DividendeStammdatenViewModel DividendeStammdaten => ServiceLocator.Current.GetInstance<DividendeStammdatenViewModel>();
         public DividendenUebersichtViewModel DividendenUebersicht => ServiceLocator.Current.GetInstance<DividendenUebersichtViewModel>();
-        public BuyOrderViewModel BuyOrder => ServiceLocator.Current.GetInstance<BuyOrderViewModel>();
+        public BuyOrderViewModel BuyOrder => new BuyOrderViewModel();
         public DepotUebersichtViewModel DepotUebersicht => ServiceLocator.Current.GetInstance<DepotUebersichtViewModel>();
         public OrderUebersichtViewModel OrderUebersicht => new OrderUebersichtViewModel();
         public AktieUebersichtPageViewModel AktieUebersichtPage => ServiceLocator.Current.GetInstance<AktieUebersichtPageViewModel>();
@@ -103,6 +105,8 @@ namespace Aktien.Logic.UI
         public AusgabenUebersichtViewModel AusgabenUebersicht => ServiceLocator.Current.GetInstance<AusgabenUebersichtViewModel>();
         public DividendeProStueckAnpassenViewModel DividendeProStueckAnpassen => ServiceLocator.Current.GetInstance<DividendeProStueckAnpassenViewModel>();
         public EinnahmenAusgabenUebersichtViewModel EinnahmenAusgaben => ServiceLocator.Current.GetInstance<EinnahmenAusgabenUebersichtViewModel>();
+        public DatenAnpassungViewModel DatenAnpassung => new DatenAnpassungViewModel();
+        public WertpapierAuswahlViewModel WertpapierAuswahl => new WertpapierAuswahlViewModel();
         public static void Cleanup()
         {
 

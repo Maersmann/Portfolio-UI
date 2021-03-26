@@ -25,6 +25,7 @@ using Aktien.UI.Desktop.Derivate;
 using Aktien.UI.Desktop.Base;
 using Aktien.Logic.UI.InterfaceViewModels;
 using Aktien.UI.Desktop.Dividende;
+using Aktien.UI.Desktop.Optionen;
 
 namespace Aktien.UI.Desktop
 {
@@ -50,16 +51,18 @@ namespace Aktien.UI.Desktop
             Messenger.Default.Register<BaseStammdatenMessage>(this, m => ReceiceOpenStammdatenMessage(m));
 
             Naviagtion(ViewType.viewWertpapierUebersicht);
+
+            DatenAnpassungFrame.Navigate(new DatenAnpassungView());
         }
 
         private void ReceiveInformationMessage(InformationMessage m)
         {
-            MessageBox.Show(m.Message);
+            MessageBox.Show(m.Message, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void ReceiveExceptionMessage(ExceptionMessage m)
         {
-            MessageBox.Show(m.Message);
+            MessageBox.Show(m.Message, "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         private void ReceiveOpenViewMessage(OpenViewMessage m)

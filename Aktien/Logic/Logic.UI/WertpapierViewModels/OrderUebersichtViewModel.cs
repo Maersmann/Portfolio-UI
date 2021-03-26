@@ -96,7 +96,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
             {
                 new DepotAPI().EntferneVerkauftenWertpapier(selectedItem.ID);
             }
-            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewDepotUebersicht);
+            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.buysell);
             base.ExecuteEntfernenCommand();
         }
 

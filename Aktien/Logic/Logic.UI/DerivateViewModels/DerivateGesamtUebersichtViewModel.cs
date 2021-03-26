@@ -68,7 +68,6 @@ namespace Aktien.Logic.UI.DerivateViewModels
             }
 
             Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = 0, WertpapierTyp = selectedItem.WertpapierTyp }, messageToken);
-            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewWertpapierUebersicht);
             SendInformationMessage("Derivate gelöscht");
             base.ExecuteEntfernenCommand();
         }

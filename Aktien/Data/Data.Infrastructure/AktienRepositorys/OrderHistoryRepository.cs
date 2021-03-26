@@ -25,7 +25,7 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
 
         public ObservableCollection<OrderHistory> LadeAlleByWertpapierID(int wertpapierID)
         {
-            return new ObservableCollection<OrderHistory>(repo.OrderHistories.Where(o => o.WertpapierID == wertpapierID).OrderByDescending(o => o.ID ).ToList());
+            return new ObservableCollection<OrderHistory>(repo.OrderHistories.Where(o => o.WertpapierID == wertpapierID).OrderByDescending(o => o.Orderdatum ).ToList());
         }
 
         public OrderHistory LadeByID(int iD)

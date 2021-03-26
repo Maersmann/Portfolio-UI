@@ -11,6 +11,7 @@ namespace Aktien.Logic.Core.DividendeLogic.Classes
     {
         public Double GesamtBrutto(double betrag, Double bestand)
         {
+            if (bestand < 0) return 0;
             return Math.Round((betrag * bestand),2, MidpointRounding.AwayFromZero);
         }
 

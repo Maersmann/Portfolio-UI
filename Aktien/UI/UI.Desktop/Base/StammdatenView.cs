@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Aktien.Data.Types;
 
 namespace Aktien.UI.Desktop.Base
 {
@@ -16,12 +17,12 @@ namespace Aktien.UI.Desktop.Base
             this.Unloaded += Window_Unloaded;
         }
 
-        public void MessageWithToken(string token)
+        public void RegisterStammdatenGespeichertMessage(StammdatenTypes types)
         {
-            Messenger.Default.Register<StammdatenGespeichertMessage>(this, token, m => ReceiveNeueDividendeGespeichertMessage(m));
+            Messenger.Default.Register<StammdatenGespeichertMessage>(this, types, m => ReceiveStmmdatenGespeichertMessage(m));
         }
 
-        private void ReceiveNeueDividendeGespeichertMessage(StammdatenGespeichertMessage m)
+        private void ReceiveStmmdatenGespeichertMessage(StammdatenGespeichertMessage m)
         {
             if (m.Erfolgreich)
             {
@@ -32,6 +33,11 @@ namespace Aktien.UI.Desktop.Base
             {
                 MessageBox.Show(m.Message);
             }
+        }
+
+        internal void MessageWithToken(string token)
+        {
+            Messenger.Default.Register<StammdatenGespeichertMessage>(this, token, m => ReceiveStmmdatenGespeichertMessage(m));
         }
 
         public virtual void Window_Unloaded(object sender, RoutedEventArgs e)

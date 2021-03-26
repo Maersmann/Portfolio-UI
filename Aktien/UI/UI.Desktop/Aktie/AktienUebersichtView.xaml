@@ -18,7 +18,7 @@
             <RowDefinition Height="25px"/>
             <RowDefinition Height="*" />
             <RowDefinition Height="45px" />
-         </Grid.RowDefinitions>
+        </Grid.RowDefinitions>
 
         <materialDesign:Card  Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushHeaderBG}}">
             <Label HorizontalAlignment="Center" Width="auto" Content="{Binding Title, Mode=OneWay}" />
@@ -32,12 +32,18 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Button Grid.Row="1"  DockPanel.Dock="Right" Style="{DynamicResource MaterialDesignFloatingActionButton}" Command="{Binding NeuCommand, Mode=OneWay}" Content="+" FontSize="35" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" FontWeight="Bold" HorizontalContentAlignment="Center" />
+        <Button Grid.Row="1" DockPanel.Dock="Right" Style="{DynamicResource MaterialDesignFloatingActionButton}" Command="{Binding NeuCommand, Mode=OneWay}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,25,25">
+            <Image Source="../Resources/add.png" Stretch="None"/>
+        </Button>
+        <Button Grid.Row="1" DockPanel.Dock="Right" Style="{DynamicResource MaterialDesignFloatingActionButton}" Command="{Binding BearbeitenCommand, Mode=OneWay}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,85,25" >
+            <Image Source="../Resources/bearbeiten.png" Stretch="None"/>
+        </Button>
+        <Button Grid.Row="1" DockPanel.Dock="Right" Style="{DynamicResource MaterialDesignFloatingActionButton}" Command="{Binding EntfernenCommand, Mode=OneWay}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,145,25" >
+            <Image Source="../Resources/entfernen.png" Stretch="None"/>
+        </Button>
 
         <materialDesign:Card Grid.Row="2"  >
             <DockPanel  LastChildFill="False" >
-                <Button DockPanel.Dock="Left" Width="100" Margin="3"  Style="{DynamicResource MaterialDesignToolForegroundButton}" Command="{Binding BearbeitenCommand, Mode=OneWay}" Content="Bearbeiten" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <Button DockPanel.Dock="Left" Width="100" Margin="3"  Style="{DynamicResource MaterialDesignToolForegroundButton}" Command="{Binding EntfernenCommand, Mode=OneWay}" Content="Löschen" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <Button DockPanel.Dock="Left" Width="100" Margin="3"  Style="{DynamicResource MaterialDesignToolForegroundButton}" Command="{Binding OpenNeueDividendeCommand, Mode=OneWay}" Content="Dividende" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </DockPanel>
         </materialDesign:Card>
