@@ -4,8 +4,8 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Aktien.Data.Infrastructure</RootNamespace>
     <Company>Märsmann</Company>
-    <AssemblyVersion>1.4.0.0</AssemblyVersion>
-    <Version>1.4.0</Version>
+    <AssemblyVersion>1.4.4.0</AssemblyVersion>
+    <Version>1.4.4</Version>
   </PropertyGroup>
 
   <ItemGroup>
