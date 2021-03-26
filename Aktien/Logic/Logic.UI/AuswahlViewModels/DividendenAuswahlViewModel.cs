@@ -27,7 +27,6 @@ namespace Aktien.Logic.UI.AuswahlViewModels
 
         public DividendenAuswahlViewModel()
         {
-            AddCommand = new RelayCommand(this.ExcecuteAddCommand);
             OhneHinterlegteDividende = false;
         } 
 
@@ -44,13 +43,13 @@ namespace Aktien.Logic.UI.AuswahlViewModels
             if (ohneHinterlegteDividende)
                 itemList = new DividendeAPI().LadeAlleNichtErhaltendeFuerWertpapier(wertpapierID);
             else
-                itemList = new DividendeAPI().LadeAlleFuerWertpapier(this.wertpapierID);
+                itemList = new DividendeAPI().LadeAlleFuerWertpapier(wertpapierID);
             this.RaisePropertyChanged("ItemList");
         }
 
         #region Commands
 
-        private void ExcecuteAddCommand()
+        protected override void ExcecuteNewItemCommand()
         {
             Messenger.Default.Send<OpenDividendeStammdatenMessage>(new OpenDividendeStammdatenMessage { WertpapierID = wertpapierID, State = State.Neu });
         }
@@ -64,11 +63,6 @@ namespace Aktien.Logic.UI.AuswahlViewModels
             else
                 Callback(false, 0, 0, DateTime.MinValue);      
         }
-
-        #endregion
-
-        #region Bindings
-        public ICommand AddCommand { get; set; }
 
         #endregion
     }

@@ -31,7 +31,7 @@ namespace Aktien.UI.Desktop.Dividende
         {
             InitializeComponent();
             base.RegisterStammdatenGespeichertMessage(Data.Types.StammdatenTypes.dividendeErhalten);
-            Messenger.Default.Register<OpenDividendenAuswahlMessage>(this, m => ReceiveOpenDividendeAuswahlMessage(m));
+            Messenger.Default.Register<OpenDividendenAuswahlMessage>(this, "DividendeErhalten", m => ReceiveOpenDividendeAuswahlMessage(m));
             Messenger.Default.Register<OpenDividendeProStueckAnpassenMessage>(this, m => ReceiveOpenDividendeProStueckAnpassenMessage(m));
         }
 

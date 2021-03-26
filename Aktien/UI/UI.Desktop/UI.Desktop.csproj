@@ -506,6 +506,11 @@
   <ItemGroup>
     <Resource Include="Resources\derivate.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\add.png" />
+    <Resource Include="Resources\bearbeiten.png" />
+    <Resource Include="Resources\entfernen.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

@@ -204,7 +204,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
         #region Commands
         private void ExecuteOpenAuswahlCommand()
         {
-            Messenger.Default.Send<OpenDividendenAuswahlMessage>(new OpenDividendenAuswahlMessage(OpenDividendenAuswahlMessageCallback,data.WertpapierID), "DatenAnpassung");
+            Messenger.Default.Send<OpenDividendenAuswahlMessage>(new OpenDividendenAuswahlMessage(OpenDividendenAuswahlMessageCallback,data.WertpapierID), "DividendeErhalten");
         }
         protected override void ExecuteSaveCommand()
         {

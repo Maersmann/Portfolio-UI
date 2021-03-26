@@ -19,8 +19,6 @@ namespace Aktien.Logic.UI.DividendeViewModels
 {
     public class DividendeStammdatenViewModel : ViewModelStammdaten<Dividende>
     {
-
-
         public DividendeStammdatenViewModel() : base(new DividendeAPI())
         {
             Title = "Informationen Dividende";
@@ -40,7 +38,6 @@ namespace Aktien.Logic.UI.DividendeViewModels
             }
         }
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.dividende;
-
 
         #region Bindings
         public DateTime? Exdatum

@@ -30,12 +30,18 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Button Grid.Row="1"  DockPanel.Dock="Right" Style="{DynamicResource MaterialDesignFloatingActionButton}" Command="{Binding NeuCommand, Mode=OneWay}" Content="+" FontSize="35" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" FontWeight="Bold" HorizontalContentAlignment="Center" />
+        <Button Grid.Row="1" DockPanel.Dock="Right" Style="{DynamicResource MaterialDesignFloatingActionButton}" Command="{Binding NeuCommand, Mode=OneWay}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,25,10">
+            <Image Source="../Resources/add.png" Stretch="None"/>
+        </Button>
+        <Button Grid.Row="1" DockPanel.Dock="Right" Style="{DynamicResource MaterialDesignFloatingActionButton}" Command="{Binding BearbeitenCommand, Mode=OneWay}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,85,10" >
+            <Image Source="../Resources/bearbeiten.png" Stretch="None"/>
+        </Button>
+        <Button Grid.Row="1" DockPanel.Dock="Right" Style="{DynamicResource MaterialDesignFloatingActionButton}" Command="{Binding EntfernenCommand, Mode=OneWay}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,145,10" >
+            <Image Source="../Resources/entfernen.png" Stretch="None"/>
+        </Button>
 
         <materialDesign:Card  Grid.Row="2">
             <DockPanel  LastChildFill="False" >
-                <Button DockPanel.Dock="Left" Width="100" Margin="3"  Style="{DynamicResource MaterialDesignToolForegroundButton}" Command="{Binding BearbeitenCommand, Mode=OneWay}" Content="Bearbeiten" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <Button DockPanel.Dock="Left" Width="100" Margin="3"  Style="{DynamicResource MaterialDesignToolForegroundButton}" Command="{Binding EntfernenCommand, Mode=OneWay}" Content="Entfernen" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </DockPanel>
         </materialDesign:Card>
     </Grid>

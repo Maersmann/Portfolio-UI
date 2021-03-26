@@ -62,7 +62,12 @@ namespace Aktien.Logic.Core.DividendeLogic
 
         public void Aktualisieren(Dividende entity)
         {
-            throw new NotImplementedException();
+            new DividendeRepository().Speichern(entity.ID, entity.Betrag, entity.Zahldatum, entity.Exdatum, entity.WertpapierID, entity.Waehrung, entity.BetragUmgerechnet, entity.RundungArt);
+
+            if (new DividendeErhaltenRepository().IstDividendeErhalten(entity.ID))
+            {
+                new DepotAPI().AktualisiereDividendeErhalten(new DividendeErhaltenRepository().LadeByDividendeID(entity.ID));
+            }
         }
 
         public ObservableCollection<Dividende> LadeAlle()
