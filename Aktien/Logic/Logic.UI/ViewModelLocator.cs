@@ -107,6 +107,7 @@ namespace Aktien.Logic.UI
         public EinnahmenAusgabenUebersichtViewModel EinnahmenAusgaben => ServiceLocator.Current.GetInstance<EinnahmenAusgabenUebersichtViewModel>();
         public DatenAnpassungViewModel DatenAnpassung => new DatenAnpassungViewModel();
         public WertpapierAuswahlViewModel WertpapierAuswahl => new WertpapierAuswahlViewModel();
+        public ReverseSplitEintragenViewModel ReverseSplitEintragen => new ReverseSplitEintragenViewModel();
         public static void Cleanup()
         {
 

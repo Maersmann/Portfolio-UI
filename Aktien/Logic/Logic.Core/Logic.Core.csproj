@@ -56,6 +56,7 @@
     <Compile Include="KonvertierungLogic\KonvertierungEinnahmenAusgaben.cs" />
     <Compile Include="KonvertierungLogic\KonvertierungRunden.cs" />
     <Compile Include="Validierungen\Base\BaseValidierung.cs" />
+    <Compile Include="Validierungen\ReverseSplitEintragenValidierung.cs" />
     <Compile Include="WertpapierLogic\AktieAPI.cs" />
     <Compile Include="DatabaseAPI.cs" />
     <Compile Include="DepotLogic\Classes\KaufBerechnungen.cs" />

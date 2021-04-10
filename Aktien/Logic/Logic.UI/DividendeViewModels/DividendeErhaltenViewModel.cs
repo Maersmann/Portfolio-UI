@@ -151,9 +151,11 @@ namespace Aktien.Logic.UI.DividendeViewModels
             {
                 if (this.data.Umrechnungskurs != value)
                 {
+                    BerechneGesamtWerte();
                     this.data.Umrechnungskurs = value;
                     this.RaisePropertyChanged();
                     this.RaisePropertyChanged("WechsellkursHasValue");
+                    ((DelegateCommand)OpenDividendeCommand).RaiseCanExecuteChanged();
                 }
             }
         }

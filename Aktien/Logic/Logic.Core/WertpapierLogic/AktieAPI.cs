@@ -45,6 +45,11 @@ namespace Aktien.Logic.Core.WertpapierLogic
             return new WertpapierRepository().LadeAnhandID(id);
         }
 
+        public ObservableCollection<Wertpapier> LadeAlleAktiven()
+        {
+            return new WertpapierRepository().LadeAlleAktivenByWertpapierTyp(WertpapierTypes.Aktie);
+        }
+
         public void Entfernen(Wertpapier aktie)
         {
             if (new DepotWertpapierRepository().IstWertpapierInDepotVorhanden(aktie.ID) )

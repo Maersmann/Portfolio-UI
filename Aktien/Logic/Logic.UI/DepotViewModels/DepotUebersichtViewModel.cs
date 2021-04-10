@@ -7,6 +7,7 @@ using Aktien.Logic.Messages.Base;
 using Aktien.Logic.Messages.DividendeMessages;
 using Aktien.Logic.Messages.WertpapierMessages;
 using Aktien.Logic.UI.BaseViewModels;
+using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using Prism.Commands;
 using System;
@@ -27,9 +28,9 @@ namespace Aktien.Logic.UI.DepotViewModels
             Title = "Übersicht der Aktien im Depot";
             LoadData();
             OpenDividendeCommand = new DelegateCommand(this.ExecuteOpenDividendeCommandCommand, this.CanExecuteCommand);
+            OpenReverseSplitCommand = new RelayCommand(() => ExecuteOpenReverseSplitCommand());
             RegisterAktualisereViewMessage(StammdatenTypes.buysell);
         }
-
 
         public override void LoadData()
         {
@@ -61,6 +62,7 @@ namespace Aktien.Logic.UI.DepotViewModels
 
 
         public ICommand OpenDividendeCommand { get; set; }
+        public ICommand OpenReverseSplitCommand { get; set; }
         #endregion
 
         #region Commands
@@ -72,6 +74,11 @@ namespace Aktien.Logic.UI.DepotViewModels
         private void ExecuteOpenDividendeCommandCommand()
         {
             Messenger.Default.Send<OpenDividendenUebersichtAuswahlMessage>(new OpenDividendenUebersichtAuswahlMessage { WertpapierID = selectedItem.WertpapierID }, "DepotUebersicht");
+        }
+
+        private void ExecuteOpenReverseSplitCommand()
+        {
+            Messenger.Default.Send<OpenReverseSplitEintragenMessage>(new OpenReverseSplitEintragenMessage { DepotWertpapierID = selectedItem.WertpapierID}, "DepotUebersicht");
         }
         #endregion
     }

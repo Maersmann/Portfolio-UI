@@ -194,6 +194,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BaseViewModels\ViewModelBasis.cs" />
     <Compile Include="ViewModelLocator.cs" />
+    <Compile Include="WertpapierViewModels\ReverseSplitEintragenViewModel.cs" />
     <Compile Include="WertpapierViewModels\WertpapierGesamtUebersichtViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

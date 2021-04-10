@@ -38,7 +38,7 @@ namespace Aktien.Logic.UI.AktieViewModels
 
         public override void LoadData()
         {
-            itemList = new AktieAPI().LadeAlle();
+            itemList = new AktieAPI().LadeAlleAktiven();
             this.RaisePropertyChanged("ItemList");
         }
 

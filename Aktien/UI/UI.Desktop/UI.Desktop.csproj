@@ -243,6 +243,9 @@
     <Compile Include="Optionen\DatenAnpassungView.xaml.cs">
       <DependentUpon>DatenAnpassungView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Wertpapier\ReverseSplitEintragenView.xaml.cs">
+      <DependentUpon>ReverseSplitEintragenView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Wertpapier\WertpapierGesamtUebersichtPage.xaml.cs">
       <DependentUpon>WertpapierGesamtUebersichtPage.xaml</DependentUpon>
     </Compile>
@@ -428,6 +431,10 @@
     <Page Include="Resources\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wertpapier\ReverseSplitEintragenView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Wertpapier\WertpapierGesamtUebersichtPage.xaml">
       <SubType>Designer</SubType>

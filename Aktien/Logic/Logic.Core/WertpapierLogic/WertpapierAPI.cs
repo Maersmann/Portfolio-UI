@@ -36,5 +36,10 @@ namespace Aktien.Logic.Core.WertpapierLogic
         {
             throw new NotImplementedException();
         }
+
+        public ObservableCollection<Wertpapier> LadeAlleAktiven()
+        {
+            return new WertpapierRepository().LadeAlleAktiven();
+        }
     }
 }
