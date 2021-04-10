@@ -16,4 +16,14 @@
     <SolidColorBrush Color="{StaticResource colorUebersicht}" x:Key="brushUebersicht" />
 
 
+    <Style x:Key="verticalCenter" TargetType="{x:Type TextBlock}">
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style x:Key="verticalHorizontalCenter" TargetType="{x:Type TextBlock}">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
+
+
+
 </ResourceDictionary>

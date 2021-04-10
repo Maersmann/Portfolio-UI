@@ -33,7 +33,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
 
         public override void LoadData()
         {
-            itemList = new WertpapierAPI().LadeAlle();
+            itemList = new WertpapierAPI().LadeAlleAktiven();
             this.RaisePropertyChanged("ItemList");
         }
 

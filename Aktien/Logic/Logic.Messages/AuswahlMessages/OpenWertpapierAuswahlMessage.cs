@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Aktien.Data.Types.WertpapierTypes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,9 +11,12 @@ namespace Aktien.Logic.Messages.AuswahlMessages
     {
         public Action<bool, int> Callback { get; private set; }
 
+        public WertpapierTypes WertpapierTypes { get; set; }
+
         public OpenWertpapierAuswahlMessage(Action<bool, int> callback)
         {
             Callback = callback;
+            WertpapierTypes = WertpapierTypes.none;
         }
     }
 }

@@ -21,5 +21,6 @@ namespace Aktien.Data.Model.DepotEntitys
         public Wertpapier Wertpapier { get; set; }
         public int DepotID { get; set; }
         public Depot Depot { get; set; }
+
     }
 }

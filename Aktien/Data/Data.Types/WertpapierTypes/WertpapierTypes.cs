@@ -11,6 +11,7 @@ namespace Aktien.Data.Types.WertpapierTypes
     [TypeConverter(typeof(EnumDescriptionTypeConverter))]
     public enum WertpapierTypes
     {
+        none = -1,
         [Description("Aktie")]
         Aktie = 0,
         [Description("ETF")]

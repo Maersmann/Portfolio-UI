@@ -39,6 +39,11 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
             repo.SaveChanges();
         }
 
+        public ObservableCollection<Wertpapier> LadeAlleAktiven()
+        {
+            return new ObservableCollection<Wertpapier>(repo.Wertpapiere.Include(w => w.ETFInfo).Where(w => w.Aktiv).OrderBy(o => o.ID).ToList());
+        }
+
         public bool IstVorhanden( String isin )
         {
             var Aktie = repo.Wertpapiere.Where(a => a.ISIN.Equals(isin)).FirstOrDefault();
@@ -54,6 +59,11 @@ namespace Aktien.Data.Infrastructure.AktienRepositorys
         public ObservableCollection<Wertpapier> LadeAlleByWertpapierTyp( WertpapierTypes wertpapiertyp)
         {
             return new ObservableCollection<Wertpapier>(repo.Wertpapiere.Include(w => w.ETFInfo).Where(w => w.WertpapierTyp == wertpapiertyp).OrderBy(o => o.ID).ToList());
+        }
+
+        public ObservableCollection<Wertpapier> LadeAlleAktivenByWertpapierTyp(WertpapierTypes wertpapiertyp)
+        {
+            return new ObservableCollection<Wertpapier>(repo.Wertpapiere.Include(w => w.ETFInfo).Where(w => w.WertpapierTyp == wertpapiertyp && w.Aktiv).OrderBy(o => o.ID).ToList());
         }
 
         public Wertpapier LadeAnhandID( int iD )

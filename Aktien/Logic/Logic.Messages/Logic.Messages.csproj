@@ -49,6 +49,7 @@
     <Compile Include="AuswahlMessages\OpenWertpapierAuswahlMessage.cs" />
     <Compile Include="Base\AktualisiereViewMessage.cs" />
     <Compile Include="Base\BaseStammdatenMessage.cs" />
+    <Compile Include="Base\CloseViewMessage.cs" />
     <Compile Include="DividendeMessages\OpenDividendeErhaltenUebersichtViewMessage.cs" />
     <Compile Include="DividendeMessages\OpenDividendenUebersichtAuswahlMessage.cs" />
     <Compile Include="DividendeMessages\OpenDividendeProStueckAnpassenMessage.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="DividendeMessages\DividendeUebersichtViewMessages.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WertpapierMessages\LoadWertpapierOrderMessage.cs" />
+    <Compile Include="WertpapierMessages\OpenReverseSplitEintragenMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Data\Data.Types\Data.Types.csproj">

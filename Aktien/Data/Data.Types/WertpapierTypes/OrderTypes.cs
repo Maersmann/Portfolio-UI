@@ -18,7 +18,9 @@ namespace Aktien.Data.Types.WertpapierTypes
         [Description("Kapitalerhöhung")]
         Kapitalerhoehung = 2,
         [Description("Ausbuchung")]
-        Ausbuchung = 3
+        Ausbuchung = 3,
+        [Description("Einbuchung")]
+        Einbuchung = 4
     }
 
     [TypeConverter(typeof(EnumDescriptionTypeConverter))]
@@ -31,7 +33,10 @@ namespace Aktien.Data.Types.WertpapierTypes
         [Description("Stop-Order")]
         Stop = 2,
         [Description("Sparplan")]
-        Sparplan = 3
+        Sparplan = 3,
+        [Description("Reverse-Split")]
+        ReverseSplit = 4,
+
     }
 
     public enum BuySell

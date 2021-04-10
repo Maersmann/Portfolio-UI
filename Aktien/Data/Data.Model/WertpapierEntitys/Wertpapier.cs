@@ -18,6 +18,7 @@ namespace Aktien.Data.Model.WertpapierEntitys
         public string Name { get; set; }
         public string ISIN { get; set; }
         public string WKN { get; set; }
+        public bool Aktiv { get; set; }
 
         [EnumDataType(typeof(WertpapierTypes))]
         public WertpapierTypes WertpapierTyp { get; set; }
@@ -25,5 +26,7 @@ namespace Aktien.Data.Model.WertpapierEntitys
         public List<DividendeErhalten> ErhalteneDividenden { get; set; }
         public List<OrderHistory> OrderHistories { get; set; }
         public virtual ETFInfo ETFInfo { get; set; }
+
+        public Wertpapier() { Aktiv = true; }
     }
 }

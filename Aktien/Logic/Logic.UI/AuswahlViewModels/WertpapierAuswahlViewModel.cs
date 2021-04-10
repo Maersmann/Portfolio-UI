@@ -1,5 +1,6 @@
 ﻿using Aktien.Data.Model.WertpapierEntitys;
 using Aktien.Data.Types;
+using Aktien.Data.Types.WertpapierTypes;
 using Aktien.Logic.Core.WertpapierLogic;
 using Aktien.Logic.UI.BaseViewModels;
 using System;
@@ -14,9 +15,11 @@ namespace Aktien.Logic.UI.AuswahlViewModels
     public class WertpapierAuswahlViewModel : ViewModelAuswahl<Wertpapier>
     {
         private Action<bool, int> Callback;
+        private WertpapierTypes WertpapierTypes;  
         public WertpapierAuswahlViewModel()
         {
             Title = "Auswahl Wertpapier";
+            WertpapierTypes = WertpapierTypes.none;
             LoadData();
         }
 
@@ -24,21 +27,47 @@ namespace Aktien.Logic.UI.AuswahlViewModels
         {
             Callback = callback;
         }
-
-        public int? WertpapierID()
+        public void SetTyp(WertpapierTypes wertpapierTypes)
         {
-            if (selectedItem == null) return null;
-            else return selectedItem.ID;
+            WertpapierTypes = wertpapierTypes;
+            this.RaisePropertyChanged("CanAddNewItem");
+            LoadData();
         }
 
         protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.aktien; }
 
         public override void LoadData()
         {
-            itemList = new WertpapierAPI().LadeAlle();
+            switch (WertpapierTypes)
+            {
+                case WertpapierTypes.none:
+                    itemList = new WertpapierAPI().LadeAlle();
+                    break;
+                case WertpapierTypes.Aktie:
+                    RegisterAktualisereViewMessage(StammdatenTypes.aktien);
+                    itemList = new AktieAPI().LadeAlle();
+                    break;
+                case WertpapierTypes.ETF:
+                    itemList = new EtfAPI().LadeAlle();
+                    RegisterAktualisereViewMessage(StammdatenTypes.etf);
+                    break;
+                case WertpapierTypes.Derivate:
+                    itemList = new DerivateAPI().LadeAlle();
+                    RegisterAktualisereViewMessage(StammdatenTypes.derivate);
+                    break;
+                default:
+                    itemList = new WertpapierAPI().LadeAlle();
+                    break;
+            }
+            
             base.LoadData();
         }
 
+        #region Bindings
+        public bool CanAddNewItem => WertpapierTypes != WertpapierTypes.none;
+        #endregion
+
+        #region commands
         protected override void ExecuteCloseWindowCommand(Window window)
         {
             base.ExecuteCloseWindowCommand(window);
@@ -48,5 +77,8 @@ namespace Aktien.Logic.UI.AuswahlViewModels
             else
                 Callback(false, 0);
         }
+        #endregion
+
+
     }
 }

@@ -4,12 +4,13 @@
               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
               xmlns:local="clr-namespace:Aktien.UI.Desktop.Depot"
-              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"      
               mc:Ignorable="d" 
               d:DesignHeight="450" d:DesignWidth="800"
               TextElement.Foreground="{DynamicResource MaterialDesignBody}"
               Background="{DynamicResource MaterialDesignPaper}"
               DataContext="{Binding DepotUebersicht, Source={StaticResource Locator}}">
+   
 
     <Grid>
         <Grid.RowDefinitions>
@@ -24,12 +25,20 @@
 
         <DataGrid Grid.Row="1" Margin="5"  ItemsSource="{Binding ItemList}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" SelectionUnit="FullRow" >
             <DataGrid.Columns >
-                <DataGridTextColumn Header="Name" Binding="{Binding Bezeichnung}" Width="auto" />
-                <DataGridTextColumn Header="Anzahl" Binding="{Binding Anzahl, ConverterCulture='de-DE'}" Width="auto"/>
-                <DataGridTextColumn Header="Buy-In" Binding="{Binding BuyIn , StringFormat=N3, ConverterCulture='de-DE'}"  Width="auto"/>
-                <DataGridTextColumn Header="Gesamt" Binding="{Binding Gesamt , StringFormat=N2, ConverterCulture='de-DE'}"  Width="auto">
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="Wertpapier-Art" Binding="{Binding WertpapierTyp }"  Width="auto"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding Bezeichnung}" Width="auto" ElementStyle="{StaticResource verticalCenter}" />
+                <DataGridTextColumn Header="Anzahl" Binding="{Binding Anzahl, ConverterCulture=de-DE}" Width="auto" ElementStyle="{StaticResource verticalCenter}" />
+                <DataGridTextColumn Header="Buy-In" Binding="{Binding BuyIn, ConverterCulture=de-DE, StringFormat=N3}"  Width="auto" ElementStyle="{StaticResource verticalCenter}"/>
+                <DataGridTextColumn Header="Gesamt" Binding="{Binding Gesamt, ConverterCulture=de-DE, StringFormat=N2}"  Width="auto" ElementStyle="{StaticResource verticalCenter}"/>
+                <DataGridTextColumn Header="Wertpapier-Art" Binding="{Binding WertpapierTyp}"  Width="auto" ElementStyle="{StaticResource verticalHorizontalCenter}"/>
+
+
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Reverse-Split" Style="{DynamicResource MaterialDesignOutlinedButton}" Command="{Binding DataContext.OpenReverseSplitCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
 
