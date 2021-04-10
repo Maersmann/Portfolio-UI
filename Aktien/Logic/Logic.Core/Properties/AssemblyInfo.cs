@@ -7,4 +7,4 @@ using System.Runtime.InteropServices;
 // die einer Assembly zugeordnet sind.
 [assembly: AssemblyTitle("Logic.Core")]
 [assembly: AssemblyDescription("")]
-[assembly: AssemblyVersion("1.4.4")]
+[assembly: AssemblyVersion("1.5.0")]
