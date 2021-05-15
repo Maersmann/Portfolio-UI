@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="*" Name="Portfolio" Language="1033" Version="2.0.0" Manufacturer="Märsmann" UpgradeCode="127a1ee4-ee7d-4a65-9c41-3a6ec823378f">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." MigrateFeatures="yes" AllowSameVersionUpgrades="yes" />
+    <MediaTemplate EmbedCab="yes" />
+
+    <Icon Id="icon.ico" SourceFile="$(var.ProjectDir)icon.ico" />
+    <Property Id="ARPPRODUCTICON" Value="icon.ico" />
+
+    <WixVariable Id="WixUIBannerBmp" Value="Image\installer_top-banner.bmp" />
+    <WixVariable Id="WixUIDialogBmp" Value="Image\installer_background.bmp" />
+    <WixVariable Id="WixUILicenseRtf" Value="$(var.ProjectDir)\license.rtf" />
+
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+    <UIRef Id="WixUI_InstallDir" />
+    
+    <Property Id="INSTALLFOLDER">
+      <RegistrySearch Id='InstallPathRegistry' Type='raw'
+        Root='HKCU' Key='Software\Maersmann\Portfolio' Name='InstallDir' Win64='no'/>
+    </Property>
+
+    <Feature Id="ProductFeature" Title="Portfolio" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+      <ComponentRef Id="ApplicationShortcut" />
+      <ComponentRef Id="ApplicationShortcutDesktop" />
+      <ComponentRef Id="RegistryEntries" />
+      <ComponentGroupRef Id="RegistryGroup" />
+    </Feature>
+	</Product>
+
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="Portfolio" />
+      </Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationProgramsFolder" Name="Portfolio" />
+      </Directory>
+      <Directory Id="DesktopFolder" Name="Desktop" />
+    </Directory>
+  </Fragment>
+
+  <Fragment>
+    <DirectoryRef Id="ApplicationProgramsFolder">
+      <Component Id="ApplicationShortcut" Guid="9bd13330-6540-406f-a3a8-d7f7c69ae7f9">
+        <Shortcut Id="ApplicationStartMenuShortcut" Name="Portfolio" Description="Portfolio" Target="[INSTALLFOLDER]Portfolio.exe" WorkingDirectory="INSTALLFOLDER" />
+        <RemoveFolder Id="RemoveApplicationProgramsFolder" Directory="ApplicationProgramsFolder" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\Maersmann\Portfolio" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="DesktopFolder">
+      <Component Id="ApplicationShortcutDesktop" Guid="cde1e030-eb64-49a5-b7b8-400b379c2d1a">
+        <Shortcut Id="ApplicationDesktopShortcut" Name="Portfolio" Description="Portfolio" Target="[INSTALLFOLDER]Portfolio.exe" WorkingDirectory="INSTALLFOLDER" />
+        <RemoveFolder Id="RemoveDesktopFolder" Directory="DesktopFolder" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\Maersmann\Portfolio" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="TARGETDIR">
+      <Component Id="RegistryEntries" Guid="1e1b0de7-8273-41cf-ac78-d6ab99db4d87">
+        <RegistryValue Root="HKCU" Key="Software\Maersmann\Portfolio" Type="string" Name="InstallDir" Value="[INSTALLFOLDER]" Action="write" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+
+    <ComponentGroup Id="RegistryGroup">
+      <Component Id="_69CB4E7B_273F_4510_B885_4633736280D0" Guid="2EC2BF60-997B-44BB-BA82-C5760FB48A19" Transitive="no" Directory="TARGETDIR">
+        <RegistryKey Root="HKLM" Key="Software" ForceCreateOnInstall="no" ForceDeleteOnUninstall="no" />
+      </Component>
+      <Component Id="_A159385C_39DE_404D_833B_6F83828512C0" Guid="1D85B1A4-ABDD-4EB5-8E70-82C609462AEB" Transitive="no" Directory="TARGETDIR">
+        <RegistryKey Root="HKLM" Key="Software\Maersmann\Portfolio" ForceCreateOnInstall="no" ForceDeleteOnUninstall="no" />
+      </Component>
+      <Component Id="_AAF14A16_5774_4861_AD86_C21F01857F59" Guid="E5F8A3A2-209A-4297-8B01-F7BB4FC6603B" Transitive="no" Directory="TARGETDIR">
+        <RegistryValue Root="HKLM" Key="Software\Maersmann\Portfolio" Type="string" Name="License" Value="Free" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <Component Id="Portfolio.exe">
+        <File Source="$(var.UI.Desktop.TargetDir)Portfolio.exe"/>
+      </Component>
+      <Component Id="Portfolio.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Portfolio.dll"/>
+      </Component>
+      <Component Id="Portfolio.runtimeconfig">
+        <File Source="$(var.UI.Desktop.TargetDir)Portfolio.runtimeconfig.json"/>
+      </Component>         
+      <Component Id="CommonServiceLocator.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)CommonServiceLocator.dll" />
+      </Component>
+      <Component Id="ControlzEx.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)ControlzEx.dll" />
+      </Component>
+      <Component Id="Data.Model.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Data.Model.dll" />
+      </Component>
+      <Component Id="Data.Types.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Data.Types.dll" />
+      </Component>
+      <Component Id="GalaSoft.MvvmLight.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)GalaSoft.MvvmLight.dll" />
+      </Component>
+      <Component Id="GalaSoft.MvvmLight.Extras.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)GalaSoft.MvvmLight.Extras.dll" />
+      </Component>
+      <Component Id="GalaSoft.MvvmLight.Platform.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)GalaSoft.MvvmLight.Platform.dll" />
+      </Component>
+      <Component Id="Logic.Core.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Logic.Core.dll" />
+      </Component>
+      <Component Id="Logic.Messages.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Logic.Messages.dll" />
+      </Component>
+      <Component Id="Logic.UI.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Logic.UI.dll" />
+      </Component>
+      <Component Id="MaterialDesignColors.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)MaterialDesignColors.dll" />
+      </Component>
+      <Component Id="MaterialDesignThemes.Wpf.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)MaterialDesignThemes.Wpf.dll" />
+      </Component>
+      <Component Id="Microsoft.Expression.Interactions.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.Expression.Interactions.dll" />
+      </Component>
+      <Component Id="Microsoft.Xaml.Behaviors.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.Xaml.Behaviors.dll" />
+      </Component>
+      <Component Id="Prism.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Prism.dll" />
+      </Component>
+      <Component Id="System.Windows.Interactivity.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)System.Windows.Interactivity.dll" />
+      </Component>
+      <Component Id="Newtonsoft.Json.Bson.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Newtonsoft.Json.Bson.dll" />
+      </Component>
+      <Component Id="Newtonsoft.Json.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Newtonsoft.Json.dll" />
+      </Component>
+      <Component Id="System.Net.Http.Formatting.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)System.Net.Http.Formatting.dll" />
+      </Component>
+      <Component Id="System.Text.Json.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)System.Text.Json.dll" />
+      </Component>
+      <Component Id="Fluent.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Fluent.dll" />
+      </Component>
+
+    
+  </ComponentGroup>
+	</Fragment>
+</Wix>
