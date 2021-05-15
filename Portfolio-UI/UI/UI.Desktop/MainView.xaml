@@ -1,0 +1,65 @@
+﻿<Fluent:RibbonWindow
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:command="http://www.galasoft.ch/mvvmlight"
+        x:Name="Main"
+        xmlns:local="clr-namespace:Aktien.UI.Desktop"
+        xmlns:Fluent="urn:fluent-ribbon"
+        xmlns:UI="clr-namespace:Aktien.Logic.UI;assembly=Logic.UI"
+        x:Class="Aktien.UI.Desktop.MainView"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen" WindowState="Maximized"
+        Title="{Binding Title, Mode=OneWay}" Height="450" Width="800" 
+        DataContext="{Binding Main ,Source={StaticResource Locator}}" Icon="resource/Bank.ico">
+
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="ContentRendered">
+            <command:EventToCommand Command="{Binding OpenStartingViewCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Fluent:Ribbon Grid.Row="0">
+
+            <Fluent:Ribbon.Menu>
+                <Fluent:Backstage >
+                    <Fluent:BackstageTabControl>
+                        <Fluent:BackstageTabItem Header="Daten Anpassungen">
+                            <Frame x:Name="DatenAnpassungFrame" NavigationUIVisibility="Hidden" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}"  />
+                        </Fluent:BackstageTabItem>
+                        <Fluent:SeparatorTabItem/>
+                        <Fluent:Button Header="Schliessen" Command="{Binding CloseWindowCommand}" CommandParameter="{Binding ElementName=Main}"/>
+                    </Fluent:BackstageTabControl> 
+                </Fluent:Backstage>
+            </Fluent:Ribbon.Menu>
+
+            <!--Tabs-->
+            <Fluent:RibbonTabItem Header="Allgemein">
+                <Fluent:RibbonGroupBox Header="Übersicht" >
+                    <Fluent:Button Header="Gesamt" LargeIcon="/resource/gesamt.png"  Command="{Binding OpenWertpapierUebersichtCommand}" Width="60" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" />
+                    <Fluent:Button Header="Aktien" LargeIcon="/resource/aktien.png"  Command="{Binding OpenAktienUebersichtCommand}" Width="60" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" />
+                    <Fluent:Button Header="ETF's" LargeIcon="/resource/etf.png"  Command="{Binding OpenETFUebersichtCommand}" Width="60" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" />
+                    <Fluent:Button Header="Derivate" LargeIcon="/resource/derivate.png"  Command="{Binding OpenDerivateUebersichtCommand}" Width="60" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" />
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Depot">
+                    <Fluent:Button Header="Bestand" LargeIcon="/resource/depot.png" Command="{Binding OpenDepotUebersichtCommand}" Width="60" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" />
+                    <Fluent:Button Header="Einahmen Ausgaben" LargeIcon="/resource/depot.png" Command="{Binding OpenEinAusgabenUebersichtCommand}"  Width="60" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" />
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+        </Fluent:Ribbon>
+
+        <Grid Grid.Row="1">
+            <Frame x:Name="Container"  NavigationUIVisibility="Hidden"  />
+        </Grid>
+    </Grid>
+
+
+</Fluent:RibbonWindow>

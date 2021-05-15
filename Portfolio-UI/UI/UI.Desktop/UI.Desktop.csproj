@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>resource\bank.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="resource\add.png" />
+    <None Remove="resource\aktien.png" />
+    <None Remove="resource\bank.ico" />
+    <None Remove="resource\bearbeiten.png" />
+    <None Remove="resource\depot.png" />
+    <None Remove="resource\derivate.png" />
+    <None Remove="resource\entfernen.png" />
+    <None Remove="resource\etf.png" />
+    <None Remove="resource\gesamt.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="resource\add.png" />
+    <Resource Include="resource\aktien.png" />
+    <Resource Include="resource\bank.ico" />
+    <Resource Include="resource\bearbeiten.png" />
+    <Resource Include="resource\depot.png" />
+    <Resource Include="resource\derivate.png" />
+    <Resource Include="resource\entfernen.png" />
+    <Resource Include="resource\etf.png" />
+    <Resource Include="resource\gesamt.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Fluent.Ribbon" Version="8.0.3" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.0.0" />
+    <PackageReference Include="MvvmLight" Version="5.4.1.1" />
+    <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
+    <PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Data\Data.Types\Data.Types.csproj" />
+    <ProjectReference Include="..\..\Logic\Logic.Messages\Logic.Messages.csproj" />
+    <ProjectReference Include="..\..\Logic\Logic.UI\Logic.UI.csproj" />
+  </ItemGroup>
+
+</Project>
