@@ -35,6 +35,16 @@
     <Content Include="Image\installer_background.bmp" />
     <Content Include="Image\installer_top-banner.bmp" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\UI\UI.Desktop\UI.Desktop.csproj">
+      <Name>UI.Desktop</Name>
+      <Project>{b4033a60-6b87-40d8-8481-7bb8729a1bb0}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(WixTargetsPath)" Condition=" '$(WixTargetsPath)' != '' " />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets" Condition=" '$(WixTargetsPath)' == '' AND Exists('$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets') " />
   <Target Name="EnsureWixToolsetInstalled" Condition=" '$(WixTargetsImported)' != 'true' ">

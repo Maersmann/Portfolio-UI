@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="Portfolio" Language="1033" Version="1.5.0" Manufacturer="Märsmann" UpgradeCode="127a1ee4-ee7d-4a65-9c41-3a6ec823378f">
+	<Product Id="*" Name="Portfolio" Language="1033" Version="2.0.0" Manufacturer="Märsmann" UpgradeCode="127a1ee4-ee7d-4a65-9c41-3a6ec823378f">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." MigrateFeatures="yes" AllowSameVersionUpgrades="yes" />
@@ -18,7 +18,7 @@
     
     <Property Id="INSTALLFOLDER">
       <RegistrySearch Id='InstallPathRegistry' Type='raw'
-        Root='HKLM' Key='Software\Maersmann\Portfolio' Name='InstallDir' Win64='no'/>
+        Root='HKCU' Key='Software\Maersmann\Portfolio' Name='InstallDir' Win64='no'/>
     </Property>
 
     <Feature Id="ProductFeature" Title="Portfolio" Level="1">
@@ -79,8 +79,14 @@
 	<Fragment>
 		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
       <Component Id="Portfolio.exe">
-        <File Source="$(var.UI.Desktop.TargetPath)" />
+        <File Source="$(var.UI.Desktop.TargetDir)Portfolio.exe"/>
       </Component>
+      <Component Id="Portfolio.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Portfolio.dll"/>
+      </Component>
+      <Component Id="Portfolio.runtimeconfig">
+        <File Source="$(var.UI.Desktop.TargetDir)Portfolio.runtimeconfig.json"/>
+      </Component>         
       <Component Id="CommonServiceLocator.dll">
         <File Source="$(var.UI.Desktop.TargetDir)CommonServiceLocator.dll" />
       </Component>
@@ -117,56 +123,8 @@
       <Component Id="MaterialDesignThemes.Wpf.dll">
         <File Source="$(var.UI.Desktop.TargetDir)MaterialDesignThemes.Wpf.dll" />
       </Component>
-      <Component Id="Microsoft.Bcl.AsyncInterfaces.dll">
-        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.Bcl.AsyncInterfaces.dll" />
-      </Component>
-      <Component Id="Microsoft.Bcl.HashCode.dll">
-        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.Bcl.HashCode.dll" />
-      </Component>
-      <Component Id="Microsoft.EntityFrameworkCore.Design.dll">
-        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.EntityFrameworkCore.Design.dll" />
-      </Component>
-      <Component Id="Microsoft.EntityFrameworkCore.dll">
-        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.EntityFrameworkCore.dll" />
-      </Component>
-      <Component Id="Microsoft.EntityFrameworkCore.Relational.dll">
-        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.EntityFrameworkCore.Relational.dll" />
-      </Component>
       <Component Id="Microsoft.Expression.Interactions.dll">
         <File Source="$(var.UI.Desktop.TargetDir)Microsoft.Expression.Interactions.dll" />
-      </Component>
-      <Component Id="Microsoft.Extensions.Caching.Abstractions.dll">
-        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.Extensions.Caching.Abstractions.dll" />
-      </Component>
-      <Component Id="Microsoft.Extensions.Caching.Memory.dll">
-        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.Extensions.Caching.Memory.dll" />
-      </Component>
-      <Component Id="Microsoft.Extensions.Configuration.Abstractions.dll">
-        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.Extensions.Configuration.Abstractions.dll" />
-      </Component>
-      <Component Id="Microsoft.Extensions.Configuration.Binder.dll">
-        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.Extensions.Configuration.Binder.dll" />
-      </Component>
-      <Component Id="Microsoft.Extensions.Configuration.dll">
-        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.Extensions.Configuration.dll" />
-      </Component>
-      <Component Id="Microsoft.Extensions.DependencyInjection.Abstractions.dll">
-        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.Extensions.DependencyInjection.Abstractions.dll" />
-      </Component>
-      <Component Id="Microsoft.Extensions.DependencyInjection.dll">
-        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.Extensions.DependencyInjection.dll" />
-      </Component>
-      <Component Id="Microsoft.Extensions.Logging.Abstractions.dll">
-        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.Extensions.Logging.Abstractions.dll" />
-      </Component>
-      <Component Id="Microsoft.Extensions.Logging.dll">
-        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.Extensions.Logging.dll" />
-      </Component>
-      <Component Id="Microsoft.Extensions.Options.dll">
-        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.Extensions.Options.dll" />
-      </Component>
-      <Component Id="Microsoft.Extensions.Primitives.dll">
-        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.Extensions.Primitives.dll" />
       </Component>
       <Component Id="Microsoft.Xaml.Behaviors.dll">
         <File Source="$(var.UI.Desktop.TargetDir)Microsoft.Xaml.Behaviors.dll" />
@@ -174,43 +132,26 @@
       <Component Id="Prism.dll">
         <File Source="$(var.UI.Desktop.TargetDir)Prism.dll" />
       </Component>
-      <Component Id="System.Buffers.dll">
-        <File Source="$(var.UI.Desktop.TargetDir)System.Buffers.dll" />
-      </Component>
-      <Component Id="System.Collections.Immutable.dll">
-        <File Source="$(var.UI.Desktop.TargetDir)System.Collections.Immutable.dll" />
-      </Component>
-      <Component Id="System.Diagnostics.DiagnosticSource.dll">
-        <File Source="$(var.UI.Desktop.TargetDir)System.Diagnostics.DiagnosticSource.dll" />
-      </Component>
-      <Component Id="System.Memory.dll">
-        <File Source="$(var.UI.Desktop.TargetDir)System.Memory.dll" />
-      </Component>
-      <Component Id="System.Numerics.Vectors.dll">
-        <File Source="$(var.UI.Desktop.TargetDir)System.Numerics.Vectors.dll" />
-      </Component>
-      <Component Id="System.Runtime.CompilerServices.Unsafe.dll">
-        <File Source="$(var.UI.Desktop.TargetDir)System.Runtime.CompilerServices.Unsafe.dll" />
-      </Component>
-      <Component Id="System.Threading.Tasks.Extensions.dll">
-        <File Source="$(var.UI.Desktop.TargetDir)System.Threading.Tasks.Extensions.dll" />
-      </Component>
-      <Component Id="Portfolio.exe.config">
-        <File Source="$(var.UI.Desktop.TargetDir)Portfolio.exe.config" />
-      </Component>
-      <Component Id="Microsoft.EntityFrameworkCore.Abstractions.dll">
-        <File Source="$(var.UI.Desktop.TargetDir)Microsoft.EntityFrameworkCore.Abstractions.dll" />
-      </Component>
       <Component Id="System.Windows.Interactivity.dll">
         <File Source="$(var.UI.Desktop.TargetDir)System.Windows.Interactivity.dll" />
       </Component>
-      <Component Id="System.ComponentModel.Annotations.dll">
-        <File Source="$(var.UI.Desktop.TargetDir)System.ComponentModel.Annotations.dll" />
+      <Component Id="Newtonsoft.Json.Bson.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Newtonsoft.Json.Bson.dll" />
+      </Component>
+      <Component Id="Newtonsoft.Json.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)Newtonsoft.Json.dll" />
+      </Component>
+      <Component Id="System.Net.Http.Formatting.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)System.Net.Http.Formatting.dll" />
+      </Component>
+      <Component Id="System.Text.Json.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)System.Text.Json.dll" />
       </Component>
       <Component Id="Fluent.dll">
         <File Source="$(var.UI.Desktop.TargetDir)Fluent.dll" />
       </Component>
 
-    </ComponentGroup>
+    
+  </ComponentGroup>
 	</Fragment>
 </Wix>
