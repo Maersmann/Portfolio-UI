@@ -27,6 +27,7 @@ using Aktien.Logic.UI.ETFViewModels.Page;
 using Aktien.Logic.UI.DepotViewModels.Page;
 using Aktien.Logic.UI.DerivateViewModels;
 using Aktien.Logic.UI.OptionenViewModels;
+using Logic.UI.SteuerViewModels;
 
 namespace Aktien.Logic.UI
 {
@@ -77,6 +78,7 @@ namespace Aktien.Logic.UI
             SimpleIoc.Default.Register<DividendeProStueckAnpassenViewModel>();
             SimpleIoc.Default.Register<EinnahmenAusgabenUebersichtViewModel>();
             SimpleIoc.Default.Register<DatenAnpassungViewModel>();
+            SimpleIoc.Default.Register<SteuerartenUebersichtViewModel>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
@@ -109,6 +111,10 @@ namespace Aktien.Logic.UI
         public WertpapierAuswahlViewModel WertpapierAuswahl => new WertpapierAuswahlViewModel();
         public ReverseSplitEintragenViewModel ReverseSplitEintragen => new ReverseSplitEintragenViewModel();
         public StartingProgrammViewModel StartingProgramm => new StartingProgrammViewModel();
+        public SteuerartenUebersichtViewModel SteuerartenUebersicht => ServiceLocator.Current.GetInstance<SteuerartenUebersichtViewModel>();
+        public SteuerartStammdatenViewModel SteuerartStammdaten => new SteuerartStammdatenViewModel();
+        public SteuernUebersichtViewModel SteuernUebersicht => new SteuernUebersichtViewModel();
+        public SteuerStammdatenViewModel SteuerStammdaten => new SteuerStammdatenViewModel();
         public static void Cleanup()
         {
 

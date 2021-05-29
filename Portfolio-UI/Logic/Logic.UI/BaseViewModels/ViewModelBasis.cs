@@ -40,8 +40,6 @@ namespace Aktien.Logic.UI.BaseViewModels
         protected virtual void ExecuteCloseCommand()
         {
             Cleanup();
-
-            
         }
         protected virtual void ExecuteCloseWindowCommand( Window window)
         {              

@@ -10,8 +10,8 @@
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              WindowStartupLocation="CenterScreen"
-             mc:Ignorable="d"
-             DataContext="{Binding DividendeErhalten ,Source={StaticResource Locator}}" Width="500" Height="auto" SizeToContent="Height">
+             mc:Ignorable="d" ShowInTaskbar="False"
+             DataContext="{Binding DividendeErhalten ,Source={StaticResource Locator}}" Width="auto" Height="auto" SizeToContent="WidthAndHeight">
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closed">
@@ -21,30 +21,31 @@
     <Grid>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="6*"/>
-            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="300px"/>
+            <ColumnDefinition Width="200px"/>
+            <ColumnDefinition >
+                <ColumnDefinition.Style>
+                    <Style TargetType="{x:Type ColumnDefinition}">
+                        <Setter Property="Width" Value="200px" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding WechsellkursHasValue}" Value="false">
+                                <Setter Property="Width" Value="0" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ColumnDefinition.Style>
+            </ColumnDefinition>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="25px" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Name="rowToHide">
-                <RowDefinition.Style>
-                    <Style TargetType="{x:Type RowDefinition}">
-                        <Setter Property="Height" Value="auto" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding WechsellkursHasValue}" Value="False">
-                                <Setter Property="Height" Value="0" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </RowDefinition.Style>
-            </RowDefinition>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="40px"/>
             <RowDefinition Height="45px" />
         </Grid.RowDefinitions>
 
 
-        <materialDesign:Card Grid.Row="0" Grid.ColumnSpan="2" Background="{Binding Mode=OneWay, Source={StaticResource brushHeaderBG}}"   >
+        <materialDesign:Card Grid.Row="0" Grid.ColumnSpan="3" Background="{Binding Mode=OneWay, Source={StaticResource brushHeaderBG}}"   >
             <Label HorizontalAlignment="Center" Width="auto" >Informationen erhaltene Dividende</Label>
         </materialDesign:Card>
 
@@ -57,7 +58,6 @@
                 <RowDefinition Height="50px"/>
                 <RowDefinition Height="40px" />
                 <RowDefinition Height="40px" />
-                <RowDefinition Height="40px" />
             </Grid.RowDefinitions>
 
 
@@ -65,8 +65,7 @@
 
             <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Dividende</Label>
             <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Bestand</Label>
-            <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Quellensteuer</Label>
-            <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Wechselkurs</Label>
+            <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Wechselkurs</Label>
 
             <Grid Grid.Row="0" Grid.Column="1"  >
                 <Grid.ColumnDefinitions>
@@ -91,8 +90,7 @@
                 </TextBox>
                 <Button Grid.Column="1" Height="23" Width="23"  Command="{Binding OpenAuswahlCommand, Mode=OneWay}"  ></Button>
             </Grid>
-            
-     
+              
             <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Bestand, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, FallbackValue='1', TargetNullValue='' }"  >
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="PreviewTextInput" >
@@ -114,14 +112,7 @@
                     </ControlTemplate>
                 </Validation.ErrorTemplate>
             </TextBox>
-            <TextBox Grid.Row="2"  Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Quellensteuer, UpdateSourceTrigger=PropertyChanged, TargetNullValue='', StringFormat=N3,ConverterCulture='de-DE' }"  >
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="PreviewTextInput" >
-                        <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyBetragCommand"  />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </TextBox>
-            <TextBox Grid.Row="3"  Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Wechselkurs, UpdateSourceTrigger=PropertyChanged,  TargetNullValue='', StringFormat=N5,ConverterCulture='de-DE' }"  >
+            <TextBox Grid.Row="2"  Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Wechselkurs, UpdateSourceTrigger=PropertyChanged,  TargetNullValue='', StringFormat=N5,ConverterCulture='de-DE' }"  >
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="PreviewTextInput" >
                         <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyBetragCommand"  />
@@ -130,13 +121,24 @@
             </TextBox>
         </Grid>
 
-        <Grid Grid.Row="2" Grid.Column="0" >
+        <Grid Grid.Row="2" Grid.Column="0" Height="40px" VerticalAlignment="Top" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="40px" />
+                <RowDefinition >
+                    <RowDefinition.Style>
+                        <Style TargetType="{x:Type RowDefinition}">
+                            <Setter Property="Height" Value="40px" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding WechsellkursHasValue}" Value="false">
+                                    <Setter Property="Height" Value="0" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Rundung</Label>
@@ -145,80 +147,64 @@
 
         </Grid>
 
-        <materialDesign:Card Grid.Row="3" Grid.ColumnSpan="2"  >
+        <materialDesign:Card Grid.Row="3" Grid.ColumnSpan="3"  >
             <DockPanel  LastChildFill="False" >
                 <Button DockPanel.Dock="Right" Margin="5" HorizontalAlignment="Center" Width="100"  Command="{Binding SaveCommand, Mode=OneWay}"  Style="{DynamicResource MaterialDesignToolButton}" >Speichern</Button>
                 <Button DockPanel.Dock="Left" Margin="5" HorizontalAlignment="Center" Width="100"  Command="{Binding OpenDividendeCommand, Mode=OneWay}"  Style="{DynamicResource MaterialDesignToolButton}" >Dividende</Button>
+                <Button DockPanel.Dock="Left" Margin="5" HorizontalAlignment="Center" Width="100"  Command="{Binding OpenSteuernCommand, Mode=OneWay}"  Style="{DynamicResource MaterialDesignToolButton}" Cursor="Hand" >Steuern</Button>
             </DockPanel>
         </materialDesign:Card>
 
-        <Grid Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Height="250" Background="{Binding Mode=OneWay, Source={StaticResource brushUebersicht}}">
+        <Grid Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Height="300" Background="{Binding Mode=OneWay, Source={StaticResource brushUebersicht}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30px" />
                 <RowDefinition Height="25px" />
                 <RowDefinition Height="30px" />
                 <RowDefinition Height="25px" />
-                <RowDefinition>
-                    <RowDefinition.Style>
-                        <Style TargetType="{x:Type RowDefinition}">
-                            <Setter Property="Height" Value="30px" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding WechsellkursHasValue}" Value="False">
-                                    <Setter Property="Height" Value="0" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </RowDefinition.Style>
-                </RowDefinition>
-                <RowDefinition >
-                    <RowDefinition.Style>
-                        <Style TargetType="{x:Type RowDefinition}">
-                            <Setter Property="Height" Value="25px" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding WechsellkursHasValue}" Value="False">
-                                    <Setter Property="Height" Value="0" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </RowDefinition.Style>
-                </RowDefinition>
-                <RowDefinition >
-                    <RowDefinition.Style>
-                        <Style TargetType="{x:Type RowDefinition}">
-                            <Setter Property="Height" Value="30px" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding WechsellkursHasValue}" Value="False">
-                                    <Setter Property="Height" Value="0" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </RowDefinition.Style>
-                </RowDefinition>
-                <RowDefinition >
-                    <RowDefinition.Style>
-                        <Style TargetType="{x:Type RowDefinition}">
-                            <Setter Property="Height" Value="25px" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding WechsellkursHasValue}" Value="False">
-                                    <Setter Property="Height" Value="0" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </RowDefinition.Style>
-                </RowDefinition>
+                <RowDefinition Height="30px" />
+                <RowDefinition Height="25px" />
+                <RowDefinition Height="30px" />
+                <RowDefinition Height="25px" />
+                <RowDefinition Height="30px" />
+                <RowDefinition Height="25px" />
             </Grid.RowDefinitions>
-            <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Brutto Betrag</Label>
-            <Label Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" >Netto Betrag</Label>
+            <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Bemessungsgrundlage</Label>
+            <Label Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" >Steuern</Label>
             
-            <Label Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" >Ermittelter Netto Betrag (€)</Label>
-            <Label Grid.Row="6" HorizontalAlignment="Center" VerticalAlignment="Center" >Erhaltener Netto Betrag (€)</Label>
+            <Label Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" >Zwischensumme</Label>
+            <Label Grid.Row="6" HorizontalAlignment="Center" VerticalAlignment="Center" >Steuern</Label>
+            <Label Grid.Row="8" HorizontalAlignment="Center" VerticalAlignment="Center" >Erhalten</Label>
 
-            <TextBox Grid.Row="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding GesamtBrutto, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2,ConverterCulture='de-DE' }" TextAlignment="Center"  />
-            <TextBox Grid.Row="3" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding GesamtNetto, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2,ConverterCulture='de-DE' }"  TextAlignment="Center" />
+            <TextBox Grid.Row="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding Bemessungsgrundlage, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2,ConverterCulture='de-DE' }" TextAlignment="Center"  />
+            <TextBox Grid.Row="3" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding SteuerVorZwischensumme, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2,ConverterCulture='de-DE' }"  TextAlignment="Center" Cursor="IBeam" />
 
-            <TextBox Grid.Row="5" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding GesamtNettoUmgerechnetUngerundet, Mode=OneWay, UpdateSourceTrigger=PropertyChanged,  StringFormat=N5,ConverterCulture='de-DE' }" TextAlignment="Center"  />
-            <TextBox Grid.Row="7" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding GesamtNettoUmgerechnet, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2,ConverterCulture='de-DE' }" TextAlignment="Center"  />
+            <TextBox Grid.Row="5" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding ZwischensummeTxt, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }" TextAlignment="Center"  />
+            <TextBox Grid.Row="7" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding SteuerNachZwischensumme, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2,ConverterCulture='de-DE' }" TextAlignment="Center"  />
+            <TextBox Grid.Row="9" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding Erhalten, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2,ConverterCulture='de-DE' }" TextAlignment="Center"  />
         </Grid>
-        
+        <Grid Grid.Column="2" Grid.Row="1" Grid.RowSpan="2" Height="auto" Background="{Binding Mode=OneWay, Source={StaticResource brushUebersicht}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30px" />
+                <RowDefinition Height="25px" />
+                <RowDefinition Height="30px" />
+                <RowDefinition Height="25px" />
+                <RowDefinition Height="30px" />
+                <RowDefinition Height="25px" />
+                <RowDefinition Height="30px" />
+                <RowDefinition Height="25px" />
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Ermittelter Betrag (€)</Label>
+            <Label Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" >Erhaltener Betrag (€)</Label>
+            <Label Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" >Zwischensumme</Label>
+            <Label Grid.Row="6" HorizontalAlignment="Center" VerticalAlignment="Center" >Zwischensumme(€)</Label>
+
+            <TextBox Grid.Row="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding ErhaltenUmgerechnetUngerundet, Mode=OneWay, UpdateSourceTrigger=PropertyChanged,  StringFormat=N5,ConverterCulture='de-DE' }" TextAlignment="Center"  />
+            <TextBox Grid.Row="3" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding Erhalten, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2,ConverterCulture='de-DE' }" TextAlignment="Center"  />
+            <TextBox Grid.Row="5" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding Zwischensumme, Mode=OneWay, UpdateSourceTrigger=PropertyChanged,  StringFormat=N2,ConverterCulture='de-DE' }" TextAlignment="Center"  />
+            <TextBox Grid.Row="7" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding ZwischensummeUmgerechnet, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2,ConverterCulture='de-DE' }" TextAlignment="Center" Cursor="IBeam"  />
+
+        </Grid>
+
     </Grid>
 </src:StammdatenView>

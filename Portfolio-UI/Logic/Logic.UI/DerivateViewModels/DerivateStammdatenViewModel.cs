@@ -118,7 +118,7 @@ namespace Aktien.Logic.UI.DerivateViewModels
         {
             var Validierung = new BaseValidierung();
 
-            bool isValid = Validierung.ValidateString(name, "Name", out ICollection<string> validationErrors);
+            bool isValid = Validierung.ValidateString(name, "Der Name", out ICollection<string> validationErrors);
 
             AddValidateInfo(isValid, "Name", validationErrors);
             return isValid;
@@ -128,7 +128,7 @@ namespace Aktien.Logic.UI.DerivateViewModels
         {
             var Validierung = new BaseValidierung();
 
-            bool isValid = Validierung.ValidateString(isin, "ISIN", out ICollection<string> validationErrors);
+            bool isValid = Validierung.ValidateString(isin, "Die ISIN", out ICollection<string> validationErrors);
 
             AddValidateInfo(isValid, "ISIN", validationErrors);
             return isValid;

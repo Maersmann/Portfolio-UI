@@ -26,6 +26,7 @@ using Aktien.UI.Desktop.Base;
 using Aktien.Logic.UI.InterfaceViewModels;
 using Aktien.UI.Desktop.Dividende;
 using Aktien.UI.Desktop.Optionen;
+using UI.Desktop.Steuer;
 
 namespace Aktien.UI.Desktop
 {
@@ -49,7 +50,7 @@ namespace Aktien.UI.Desktop
             Messenger.Default.Register<ExceptionMessage>(this, m => ReceiveExceptionMessage(m));
             Messenger.Default.Register<InformationMessage>(this, m => ReceiveInformationMessage(m));
             Messenger.Default.Register<BaseStammdatenMessage>(this, m => ReceiceOpenStammdatenMessage(m));
-            Messenger.Default.Register<OpenStartingViewMessage>(this, m => ReceiceOpenStartingViewMessage(m));
+            Messenger.Default.Register<OpenStartingViewMessage>(this, m => ReceiceOpenStartingViewMessage());
      
             DatenAnpassungFrame.Navigate(new DatenAnpassungView());
         }
@@ -74,18 +75,18 @@ namespace Aktien.UI.Desktop
             switch (inType)
             {
                 case ViewType.viewAktienUebersicht:
-                    aktienUebersichtView = aktienUebersichtView ?? new AktieUebersichtPage();
+                    aktienUebersichtView ??= new AktieUebersichtPage();
                     Container.NavigationService.Navigate(aktienUebersichtView);
                     break;
                 case ViewType.viewAktieGekauft:
                     new BuyOrderView().ShowDialog();
                     break;
                 case ViewType.viewDepotUebersicht:
-                    depotUebersichtView = depotUebersichtView ?? new DepotUebersichtPage();
+                    depotUebersichtView ??= new DepotUebersichtPage();
                     Container.NavigationService.Navigate(depotUebersichtView);
                     break;
                 case ViewType.viewETFUebersicht:
-                    etfGesamtUebersicht = etfGesamtUebersicht ?? new ETFUebersichtPage();
+                    etfGesamtUebersicht ??= new ETFUebersichtPage();
                     Container.NavigationService.Navigate(etfGesamtUebersicht);
                     break;
                 case ViewType.viewWertpapierUebersicht:
@@ -93,11 +94,11 @@ namespace Aktien.UI.Desktop
                     Container.NavigationService.Navigate(wertpapierGesamtUebersichtPage);
                     break;
                 case ViewType.viewDerivateUebersicht:
-                    derivateGesamtUebersichtPage = derivateGesamtUebersichtPage ?? new DerivateUebersichtPage();
+                    derivateGesamtUebersichtPage ??= new DerivateUebersichtPage();
                     Container.NavigationService.Navigate(derivateGesamtUebersichtPage);
                     break;
                 case ViewType.viewEinAusgabenUebersicht:
-                    EinnahmenAusgabenUebersichtPage = EinnahmenAusgabenUebersichtPage ?? new EinnahmenAusgabenUebersichtPage();
+                    EinnahmenAusgabenUebersichtPage ??= new EinnahmenAusgabenUebersichtPage();
                     Container.NavigationService.Navigate(EinnahmenAusgabenUebersichtPage);
                     break;
                 default:
@@ -126,6 +127,9 @@ namespace Aktien.UI.Desktop
                 case StammdatenTypes.einnahmen:
                     view = new EinnahmeStammdatenView();
                     break;
+                case StammdatenTypes.steuerart:
+                    view = new SteuerartStammdatenView();
+                    break;
                 default:
                     break;
             }
@@ -141,14 +145,12 @@ namespace Aktien.UI.Desktop
             view.ShowDialog();
         }
 
-        private void ReceiceOpenStartingViewMessage(OpenStartingViewMessage m)
+        private void ReceiceOpenStartingViewMessage()
         {
             var view = new StartingProgrammView();
             view.ShowDialog();
 
         }
-
-        
     }
 
 }

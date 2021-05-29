@@ -26,6 +26,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
         public DividendeErhaltenUebersichtViewModel()
         {
             Title = "Übersicht aller erhaltene Dividenden";
+            RegisterAktualisereViewMessage(StammdatenTypes.steuergruppe);
         }
 
         public async override void LoadData(int id)

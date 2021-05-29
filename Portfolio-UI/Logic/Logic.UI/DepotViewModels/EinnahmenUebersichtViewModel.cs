@@ -24,6 +24,7 @@ namespace Aktien.Logic.UI.DepotViewModels
             LoadData();
             RegisterAktualisereViewMessage(StammdatenTypes.einnahmen);
             RegisterAktualisereViewMessage(StammdatenTypes.dividendeErhalten);
+            RegisterAktualisereViewMessage(StammdatenTypes.steuer);
             RegisterAktualisereViewMessage(StammdatenTypes.buysell);
         }
 
