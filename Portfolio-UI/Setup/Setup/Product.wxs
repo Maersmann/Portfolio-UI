@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="Portfolio" Language="1033" Version="2.0.0" Manufacturer="Märsmann" UpgradeCode="127a1ee4-ee7d-4a65-9c41-3a6ec823378f">
+	<Product Id="*" Name="Portfolio" Language="1033" Version="2.1.0" Manufacturer="Märsmann" UpgradeCode="127a1ee4-ee7d-4a65-9c41-3a6ec823378f">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." MigrateFeatures="yes" AllowSameVersionUpgrades="yes" />
@@ -150,8 +150,9 @@
       <Component Id="Fluent.dll">
         <File Source="$(var.UI.Desktop.TargetDir)Fluent.dll" />
       </Component>
-
-    
-  </ComponentGroup>
+      <Component Id="INIFileParser.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)INIFileParser.dll" />
+      </Component>
+    </ComponentGroup>
 	</Fragment>
 </Wix>
