@@ -72,7 +72,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
         #region commands
         protected override bool CanExecuteCommand()
         {
-            return base.CanExecuteCommand() && (selectedItem.WertpapierTyp.Equals( WertpapierTypes.Aktie ) );
+            return base.CanExecuteCommand() && ((selectedItem.WertpapierTyp.Equals( WertpapierTypes.Aktie )||(selectedItem.WertpapierTyp.Equals(WertpapierTypes.ETF))));
         }
 
         private void ExecuteOpenNeueDividendeCommand()

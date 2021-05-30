@@ -1,4 +1,7 @@
-﻿using Aktien.Logic.UI.ETFViewModels;
+﻿using Aktien.Logic.Messages.DividendeMessages;
+using Aktien.Logic.UI.DividendeViewModels;
+using Aktien.Logic.UI.ETFViewModels;
+using Aktien.UI.Desktop.Dividende;
 using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Generic;
@@ -34,9 +37,19 @@ namespace Aktien.UI.Desktop.ETF
             {
                 if (this.DataContext is ETFGesamtUebersichtViewModel modelUebersicht)
                 {
+                    Messenger.Default.Register<OpenDividendenUebersichtAuswahlMessage>(this, value, m => ReceiveOpenDividendeUebersichtMessage(m));
                     modelUebersicht.MessageToken = value;
                 }
             } 
+        }
+
+        private void ReceiveOpenDividendeUebersichtMessage(OpenDividendenUebersichtAuswahlMessage m)
+        {
+            var view = new DividendenUebersichtAuswahlView();
+
+            if (view.DataContext is DividendenUebersichtAuswahlViewModel model)
+                model.WertpapierID = m.WertpapierID;
+            view.ShowDialog();
         }
     }
 }

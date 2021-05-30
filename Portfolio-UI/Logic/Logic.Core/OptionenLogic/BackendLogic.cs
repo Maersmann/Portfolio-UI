@@ -72,14 +72,14 @@ namespace Logic.Core.OptionenLogic
         {
             this.ip = ip;
             this.typ = protokollTyp;
+            this.port = port;
 
             iniData = new IniData();
             iniData.Sections.AddSection("Backend-Settings");
 
             iniData.Sections.GetSectionData("Backend-Settings").Keys.AddKey("IP", ip);
             iniData.Sections.GetSectionData("Backend-Settings").Keys.AddKey("Protokoll", Convert.ToString ( Convert.ToInt32(protokollTyp) ) );
-            if(port.HasValue)
-                iniData.Sections.GetSectionData("Backend-Settings").Keys.AddKey("Port", Convert.ToString(port));
+            iniData.Sections.GetSectionData("Backend-Settings").Keys.AddKey("Port", Convert.ToString(port));
 
             parser.WriteFile(iniPath, iniData);
         }

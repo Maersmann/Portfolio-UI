@@ -1,6 +1,7 @@
 ﻿using Aktien.Data.Types;
 using Aktien.Logic.Core;
 using Aktien.Logic.Messages.Base;
+using Aktien.Logic.Messages.DividendeMessages;
 using Aktien.Logic.Messages.WertpapierMessages;
 using Aktien.Logic.UI.BaseViewModels;
 using Data.Model.ETFModels;
@@ -27,6 +28,7 @@ namespace Aktien.Logic.UI.ETFViewModels
             Title = "Übersicht aller ETF's";
             LoadData();
             RegisterAktualisereViewMessage(StammdatenTypes.etf);
+            OpenNeueDividendeCommand = new DelegateCommand(this.ExecuteOpenNeueDividendeCommand, this.CanExecuteCommand);
         }
         protected override int GetID() { return selectedItem.ID; }
         protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.etf ; }
@@ -50,16 +52,22 @@ namespace Aktien.Logic.UI.ETFViewModels
             set
             {
                 base.SelectedItem = value;
+                ((DelegateCommand)OpenNeueDividendeCommand).RaiseCanExecuteChanged();
                 if (selectedItem != null)
                 {
                     Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = selectedItem.ID, WertpapierTyp = selectedItem.WertpapierTyp }, messageToken);
                 }
             }
         }
+
+        public ICommand OpenNeueDividendeCommand { get; set; }
         #endregion
 
         #region Commands
-
+        private void ExecuteOpenNeueDividendeCommand()
+        {
+            Messenger.Default.Send<OpenDividendenUebersichtAuswahlMessage>(new OpenDividendenUebersichtAuswahlMessage { WertpapierID = selectedItem.ID }, messageToken);
+        }
 
         protected async override void ExecuteEntfernenCommand()
         {
