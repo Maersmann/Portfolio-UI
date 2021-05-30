@@ -44,8 +44,8 @@ namespace Aktien.UI.Desktop.Dividende
                 Content = view,
                 SizeToContent = SizeToContent.WidthAndHeight,
                 ResizeMode = ResizeMode.NoResize,
-                WindowStartupLocation = WindowStartupLocation.CenterScreen
-
+                WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                ShowInTaskbar = false
             };
 
             window.ShowDialog();

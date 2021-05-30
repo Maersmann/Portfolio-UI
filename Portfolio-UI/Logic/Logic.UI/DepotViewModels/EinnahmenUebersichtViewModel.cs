@@ -24,6 +24,7 @@ namespace Aktien.Logic.UI.DepotViewModels
             LoadData();
             RegisterAktualisereViewMessage(StammdatenTypes.einnahmen);
             RegisterAktualisereViewMessage(StammdatenTypes.dividendeErhalten);
+            RegisterAktualisereViewMessage(StammdatenTypes.steuer);
             RegisterAktualisereViewMessage(StammdatenTypes.buysell);
         }
 
@@ -34,7 +35,7 @@ namespace Aktien.Logic.UI.DepotViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp = await Client.GetAsync("https://localhost:5001/api/depot/Einnahmen");
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+"/api/depot/Einnahmen");
                 if (resp.IsSuccessStatusCode)
                     itemList = await resp.Content.ReadAsAsync<ObservableCollection<EinnahmeModel>>();
             }

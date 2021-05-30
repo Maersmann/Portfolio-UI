@@ -74,7 +74,7 @@
             </DatePicker>
 
             <Label Content="Betrag" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="2" VerticalAlignment="Top"/>
-            <TextBox HorizontalAlignment="Left" Height="26" Margin="61,10,0,20" Grid.Row="2" TextWrapping="NoWrap" VerticalAlignment="Top" Width="89" Text="{Binding Betrag, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, TargetNullValue='', StringFormat=N3,ConverterCulture='de-DE' }" >
+            <TextBox HorizontalAlignment="Left" Height="26" Margin="61,10,0,20" Grid.Row="2" TextWrapping="NoWrap" VerticalAlignment="Top" Width="89" Text="{Binding Betrag, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, TargetNullValue='', StringFormat=N4,ConverterCulture='de-DE' }" Cursor="IBeam" >
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="PreviewTextInput" >
                         <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyBetragCommand"  />

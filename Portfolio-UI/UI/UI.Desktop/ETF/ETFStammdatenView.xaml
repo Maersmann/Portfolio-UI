@@ -80,7 +80,7 @@
                 </Validation.ErrorTemplate>
             </TextBox>
             <Label Content="WKN" HorizontalAlignment="Center"  Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"/>
-            <TextBox HorizontalAlignment="Center" Height="26"  Grid.Row="2" Grid.Column="1" TextWrapping="NoWrap" VerticalAlignment="Center" Width="250" Text="{Binding WKN}"/>
+            <TextBox HorizontalAlignment="Center" Height="26"  Grid.Row="2" Grid.Column="1" TextWrapping="NoWrap" VerticalAlignment="Center" Width="250" Text="{Binding WKN}" />
 
             <Label Content="Ermittent" HorizontalAlignment="Center"  Grid.Row="3" Grid.Column="0" VerticalAlignment="Center"/>
             <ComboBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" ItemsSource="{Binding ErmittentTypes}" SelectedItem="{Binding ErmittentTyp}" Margin="12,10,0,8"/>

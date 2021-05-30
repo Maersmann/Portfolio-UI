@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aktien.Logic.UI.OptionenViewModels.Models
+namespace Data.Model.OptionenModels
 {
     public class WertpapierBuyInModel
     {

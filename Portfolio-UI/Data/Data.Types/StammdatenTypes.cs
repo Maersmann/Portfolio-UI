@@ -15,6 +15,9 @@ namespace Aktien.Data.Types
         derivate,
         etf,
         dividendeErhalten,
-        dividende
+        dividende,
+        steuerart,
+        steuer,
+        steuergruppe
     }
 }

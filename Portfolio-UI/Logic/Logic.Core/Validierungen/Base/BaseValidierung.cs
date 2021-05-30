@@ -52,10 +52,10 @@ namespace Aktien.Logic.Core.Validierung.Base
             validationErrors = new List<String>();
 
             if (name.Length > 250)
-                validationErrors.Add("Der "+ fieldname+" ist zu lang");
+                validationErrors.Add( fieldname+" ist zu lang");
 
             if (name.Length == 0)
-                validationErrors.Add("Der " + fieldname + " darf nicht leer sein");
+                validationErrors.Add( fieldname + " darf nicht leer sein");
 
             return validationErrors.Count == 0;
         }

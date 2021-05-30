@@ -6,7 +6,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:UI.Desktop"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="500"
+             d:DesignHeight="450" d:DesignWidth="800"
              Height="400" Width="auto"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              Background="{DynamicResource MaterialDesignPaper}"
@@ -27,9 +27,9 @@
                 <DataGridTextColumn Header="Ex-Tag" Binding="{Binding Exdatum, StringFormat=dd.MM.yyyy}" Width="auto"/>
                 <DataGridTextColumn Header="Erhalten" Binding="{Binding Zahldatum, StringFormat=dd.MM.yyyy}" Width="auto"/>
                 <DataGridTextColumn Header="Bestand" Binding="{Binding Bestand}" Width="auto"/>
-                <DataGridTextColumn Header="Brutto" Binding="{Binding GesamtBrutto, StringFormat=N2, ConverterCulture='de-DE'}" Width="auto"/>
-                <DataGridTextColumn Header="Quellensteuer" Binding="{Binding Quellensteuer,StringFormat=N2, ConverterCulture='de-DE', TargetNullValue='0,00'}" Width="auto"/>
-                <DataGridTextColumn Header="Netto" Binding="{Binding GesamtNetto, StringFormat=N2, ConverterCulture='de-DE'}" Width="auto"/>
+                <DataGridTextColumn Header="Bemessungsgrundlage" Binding="{Binding Bemessungsgrundlage, StringFormat=N2, ConverterCulture='de-DE'}" Width="auto"/>
+                <DataGridTextColumn Header="Steuern" Binding="{Binding Steuern,StringFormat=N2, ConverterCulture='de-DE', TargetNullValue='0,00'}" Width="auto"/>
+                <DataGridTextColumn Header="Erhalten" Binding="{Binding Erhalten, StringFormat=N2, ConverterCulture='de-DE'}" Width="auto"/>
                 <DataGridTextColumn Header="Währung" Binding="{Binding Waehrung}" Width="auto"/>
             </DataGrid.Columns>
         </DataGrid>

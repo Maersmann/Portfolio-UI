@@ -66,7 +66,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
         {
             wertpapierID = id;
 
-            HttpResponseMessage resp = await Client.GetAsync($"https://localhost:5001/api/Wertpapier/{wertpapierID}/Orders/");
+            HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Wertpapier/{wertpapierID}/Orders/");
             if (resp.IsSuccessStatusCode)
             {
                 itemList = await resp.Content.ReadAsAsync<ObservableCollection<OrderUebersichtModel>>();
@@ -80,7 +80,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
 
         public async void CheckCanExecuteAktieVerkaufCommand()
         {
-            HttpResponseMessage resp = await Client.GetAsync($"https://localhost:5001/api/Depot/Wertpapier/{wertpapierID}/Exist");
+            HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Depot/Wertpapier/{wertpapierID}/Exist");
             if (resp.IsSuccessStatusCode)
             {
                 canExecuteAktieVerkaufCommand = await resp.Content.ReadAsAsync<bool>();
@@ -110,7 +110,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp = await Client.DeleteAsync($" https://localhost:5001/api/Depot/Order/{selectedItem.ID}/Delete?buysell={selectedItem.BuySell}");
+                HttpResponseMessage resp = await Client.DeleteAsync($" GlobalVariables.BackendServer_URL/api/Depot/Order/{selectedItem.ID}/Delete?buysell={selectedItem.BuySell}");
                 if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
                 {            
                     return;

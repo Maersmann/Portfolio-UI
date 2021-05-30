@@ -1,4 +1,6 @@
 ﻿using Aktien.Data.Types.DividendenTypes;
+using Data.Model.SteuerModels;
+using Data.Types.SteuerTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,13 +11,13 @@ namespace Aktien.Logic.Core.DividendeLogic
 {
     public class DividendenBerechnungen
     {
-        public Double GesamtBrutto(double betrag, Double bestand)
+        public Double Bemessungsgrundlage(double betrag, Double bestand)
         {
             if (bestand < 0) return 0;
             return Math.Round((betrag * bestand),2, MidpointRounding.AwayFromZero);
         }
 
-        public Double GesamtNetto(double gesamtBrutto, Double? quellensteuer)
+        public Double Erhalten(double gesamtBrutto, Double? quellensteuer)
         {
             return Math.Round(gesamtBrutto - quellensteuer.GetValueOrDefault(0),2, MidpointRounding.AwayFromZero);
         }
@@ -43,6 +45,7 @@ namespace Aktien.Logic.Core.DividendeLogic
             return betrag;
         }
 
+        
 
         private static double RoundUp(double input, int places)
         {
@@ -56,9 +59,6 @@ namespace Aktien.Logic.Core.DividendeLogic
             return Math.Floor(input * multiplier) / multiplier;
         }
 
-        public double GesamtBrutto(double betrag, object bestand)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

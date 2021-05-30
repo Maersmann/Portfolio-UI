@@ -44,7 +44,7 @@
 
         <materialDesign:Card Grid.Row="2"  >
             <DockPanel  LastChildFill="False" >
-                <Button DockPanel.Dock="Left" Width="100" Margin="3"  Style="{DynamicResource MaterialDesignToolForegroundButton}" Command="{Binding OpenNeueDividendeCommand, Mode=OneWay}" Content="Dividende" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Button DockPanel.Dock="Left" Width="100" Margin="3"  Style="{DynamicResource MaterialDesignToolForegroundButton}" Command="{Binding OpenNeueDividendeCommand, Mode=OneWay}" Content="Dividende" HorizontalAlignment="Center" VerticalAlignment="Center" Cursor="Hand"/>
             </DockPanel>
         </materialDesign:Card>
 

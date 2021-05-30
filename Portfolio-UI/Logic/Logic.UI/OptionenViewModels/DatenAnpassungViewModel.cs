@@ -2,7 +2,6 @@
 using Aktien.Logic.Messages.AuswahlMessages;
 using Aktien.Logic.Messages.Base;
 using Aktien.Logic.UI.BaseViewModels;
-using Aktien.Logic.UI.OptionenViewModels.Models;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Prism.Commands;
@@ -17,6 +16,7 @@ using System.Net;
 using Aktien.Logic.Core;
 using System.Net.Http;
 using Data.Model.DepotModels;
+using Data.Model.OptionenModels;
 
 namespace Aktien.Logic.UI.OptionenViewModels
 {
@@ -43,7 +43,7 @@ namespace Aktien.Logic.UI.OptionenViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp = await Client.PostAsJsonAsync("https://localhost:5001/api/depot/wertpapier", new DepotWertpapierModel { 
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+"/api/depot/wertpapier", new DepotWertpapierModel { 
                     Anzahl = BuyInModel.Anzahl, 
                     BuyIn = BuyInModel.NeuerBuyIn, 
                     DepotID = BuyInModel.DepotID, 
@@ -83,7 +83,7 @@ namespace Aktien.Logic.UI.OptionenViewModels
             {
                 if (GlobalVariables.ServerIsOnline)
                 {
-                    HttpResponseMessage resp = await Client.GetAsync($"https://localhost:5001/api/depot/Wertpapier/{id}/BuyInNeuBerechnen");
+                    HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/depot/Wertpapier/{id}/BuyInNeuBerechnen");
                     if (resp.IsSuccessStatusCode)
                     {
                         BuyInModel = await resp.Content.ReadAsAsync<WertpapierBuyInModel>();

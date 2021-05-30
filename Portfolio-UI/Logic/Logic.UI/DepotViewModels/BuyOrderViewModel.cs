@@ -15,6 +15,12 @@ using Data.Model.DepotModels;
 using Aktien.Logic.Core;
 using System.Net.Http;
 using System.Net;
+using System.Collections.ObjectModel;
+using Data.Model.SteuerModels;
+using System.Windows.Input;
+using GalaSoft.MvvmLight.Command;
+using Logic.Messages.SteuernMessages;
+using Logic.Core.SteuernLogic;
 
 namespace Aktien.Logic.UI.DepotViewModels
 {
@@ -25,9 +31,13 @@ namespace Aktien.Logic.UI.DepotViewModels
         private Double? betrag;
         private Double preisUebersicht;
         private Double buyIn;
+        private bool neueOrderNichtGespeichert;
+        private double steuern;
+
         public BuyOrderViewModel()
         {
             SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
+            OpenSteuernCommand = new DelegateCommand(this.ExecuteOpenOpenSteuernCommand, this.CanExecuteOpenOpenSteuernCommand);
             Cleanup();
         }
 
@@ -50,27 +60,45 @@ namespace Aktien.Logic.UI.DepotViewModels
             else
                 buyIn = 0;
 
-            if (buySell.Equals(BuySell.Buy))
-                data.Gesamtbetrag = Math.Round(preisUebersicht * data.Anzahl, 3, MidpointRounding.AwayFromZero) + data.Fremdkostenzuschlag.GetValueOrDefault(0);
+            data.Bemessungsgrundlage = Math.Round(preisUebersicht * data.Anzahl, 3, MidpointRounding.AwayFromZero);
+            steuern = new SteuerBerechnen().SteuerGesamt(data.Steuer.Steuern);
+            if(BuySell.Equals(BuySell.Buy))
+                data.Gesamt = data.Bemessungsgrundlage + data.Fremdkostenzuschlag.GetValueOrDefault(0);
             else
-                data.Gesamtbetrag = Math.Round(preisUebersicht * data.Anzahl, 3, MidpointRounding.AwayFromZero) - data.Fremdkostenzuschlag.GetValueOrDefault(0);
+                data.Gesamt = data.Bemessungsgrundlage - data.Fremdkostenzuschlag.GetValueOrDefault(0) + steuern;
 
-            this.RaisePropertyChanged("Gesamtbetrag");
+            this.RaisePropertyChanged(nameof(Gesamt));
+            this.RaisePropertyChanged(nameof(Bemessungsgrundlage));
             this.RaisePropertyChanged("PreisBerechnet");
             this.RaisePropertyChanged("BuyIn");
+            this.RaisePropertyChanged(nameof(Steuern));
+        }
+        public void SetTitle(BuySell buySell, WertpapierTypes types)
+        {
+            this.buySell = buySell;
+            typ = types;
+            ((DelegateCommand)OpenSteuernCommand).RaiseCanExecuteChanged();
+            this.RaisePropertyChanged("KauftypBez");
+            this.RaisePropertyChanged("Titel");
+            this.RaisePropertyChanged("BuySell");
         }
 
+        #region Commands
+        private void ExecuteOpenOpenSteuernCommand()
+        {
+            Messenger.Default.Send<OpenSteuernUebersichtMessage>(new OpenSteuernUebersichtMessage(OpenSteuernUebersichtMessageCallback, data.SteuergruppeID, !neueOrderNichtGespeichert), "BuyOrder");
+        }
         protected async override void ExecuteSaveCommand()
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp = await Client.PostAsJsonAsync($"https://localhost:5001/api/Depot/Order/new?buysell={buySell}", data);
-
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/Depot/Order/new?buysell={buySell}", data);
 
                 if (resp.IsSuccessStatusCode)
                 {
+                    neueOrderNichtGespeichert = false;
                     Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Buy-Order gespeichert." }, GetStammdatenTyp());
-                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
+                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());              
                 }
                 else if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
                 {
@@ -80,15 +108,30 @@ namespace Aktien.Logic.UI.DepotViewModels
             }
         }
 
-        public void SetTitle(BuySell buySell, WertpapierTypes types)
+        protected override async void ExecuteCloseCommand()
         {
-            this.buySell = buySell;
-            typ = types;
-            this.RaisePropertyChanged("KauftypBez");
-            this.RaisePropertyChanged("Titel");
-            this.RaisePropertyChanged("BuySell");
+            if (data.SteuergruppeID.HasValue && state.Equals(State.Neu) && neueOrderNichtGespeichert)
+            {
+                if (GlobalVariables.ServerIsOnline)
+                {
+                    HttpResponseMessage resp = await Client.DeleteAsync($"https://localhost:5001/api/dividendeErhalten/Steuern/{data.SteuergruppeID}");
+                    if (!resp.IsSuccessStatusCode)
+                    {
+                        SendExceptionMessage(await resp.Content.ReadAsStringAsync());
+                        return;
+                    }
+
+                }
+            }
+            base.ExecuteCloseCommand();
         }
 
+
+        private bool CanExecuteOpenOpenSteuernCommand()
+        {
+            return buySell.Equals(BuySell.Sell);
+        }
+        #endregion
 
         #region Bindings
 
@@ -180,6 +223,7 @@ namespace Aktien.Logic.UI.DepotViewModels
                 {
                     this.data.Fremdkostenzuschlag = value;
                     this.RaisePropertyChanged();
+                    this.RaisePropertyChanged(nameof(FremdkostenNegativ));
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                     BerechneWerte();
                 }
@@ -283,9 +327,21 @@ namespace Aktien.Logic.UI.DepotViewModels
         public BuySell BuySell { get { return buySell; } }
 
 
-        public double Gesamtbetrag { get { return data.Gesamtbetrag.Value; } }
+        public double Gesamt { get { return data.Gesamt; } }
+        public double Bemessungsgrundlage { get { return data.Bemessungsgrundlage; } }
         public double PreisBerechnet { get { return preisUebersicht; } }
         public double BuyIn { get { return buyIn; } }
+        public double Steuern { get { return steuern; } }
+        public double FremdkostenNegativ 
+        { 
+            get 
+            {
+                if (!Fremdkosten.HasValue) return 0;
+                else return (Fremdkosten.GetValueOrDefault(0) * -1);
+            } 
+        } 
+
+        public ICommand OpenSteuernCommand { get; set; }
 
         #endregion
 
@@ -323,11 +379,31 @@ namespace Aktien.Logic.UI.DepotViewModels
 
         #endregion
 
+        #region Callbacks
+        private async void OpenSteuernUebersichtMessageCallback(bool confirmed, int id)
+        {
+            if (confirmed)
+            {
+                data.SteuergruppeID = id;
+                if (GlobalVariables.ServerIsOnline)
+                {
+                    HttpResponseMessage resp = await Client.GetAsync($"https://localhost:5001/api/Steuern?steuergruppeid={id}");
+                    if (resp.IsSuccessStatusCode)
+                        data.Steuer.Steuern = await resp.Content.ReadAsAsync<ObservableCollection<SteuerModel>>();
+                    else
+                        SendExceptionMessage(await resp.Content.ReadAsStringAsync());
+                }
+                BerechneWerte();
+            }
+        }
+        #endregion
+
         public override void Cleanup()
         {
             DeleteValidateInfo("Betrag");
+            neueOrderNichtGespeichert = true;
             state = State.Neu;
-            data = new BuyOrderModel();
+            data = new BuyOrderModel { Steuer = new SteuergruppeModel { Steuern = new List<SteuerModel>() } };
             KaufTyp = Data.Types.WertpapierTypes.KaufTypes.Kauf;
             OrderTyp = Data.Types.WertpapierTypes.OrderTypes.Normal;
             Anzahl = null;
@@ -336,8 +412,10 @@ namespace Aktien.Logic.UI.DepotViewModels
             Fremdkosten = null;
             Betrag = null;
             preisUebersicht = 0;
-            data.Gesamtbetrag = 0;
+            data.Gesamt = 0;
+            data.Bemessungsgrundlage = 0;
             buyIn = 0;
+            steuern = 0;
         }
     }
 }
