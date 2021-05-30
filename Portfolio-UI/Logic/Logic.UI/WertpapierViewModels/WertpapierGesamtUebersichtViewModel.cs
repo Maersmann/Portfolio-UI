@@ -40,7 +40,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
         {
             if ( GlobalVariables.ServerIsOnline)
             { 
-                HttpResponseMessage resp = await Client.GetAsync("https://localhost:5001/api/Wertpapier?aktiv=true");
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+"/api/Wertpapier?aktiv=true");
                 if (resp.IsSuccessStatusCode)
                     itemList = await resp.Content.ReadAsAsync<ObservableCollection<WertpapierModel>>();
             }

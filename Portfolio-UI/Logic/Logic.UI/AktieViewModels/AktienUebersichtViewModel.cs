@@ -41,7 +41,7 @@ namespace Aktien.Logic.UI.AktieViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp = await Client.GetAsync("https://localhost:5001/api/Wertpapier?aktiv=true&type=0");
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+"/api/Wertpapier?aktiv=true&type=0");
                 if (resp.IsSuccessStatusCode)
                     itemList = await resp.Content.ReadAsAsync<ObservableCollection<AktienModel>>();
             }
@@ -77,7 +77,7 @@ namespace Aktien.Logic.UI.AktieViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp = await Client.DeleteAsync($"https://localhost:5001/api/Wertpapier/{selectedItem.ID}");
+                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+$"/api/Wertpapier/{selectedItem.ID}");
                 if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
                 {
                     SendExceptionMessage("Aktie ist im Depot vorhanden.");

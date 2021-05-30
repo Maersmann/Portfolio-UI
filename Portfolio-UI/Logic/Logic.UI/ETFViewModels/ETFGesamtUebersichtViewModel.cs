@@ -36,7 +36,7 @@ namespace Aktien.Logic.UI.ETFViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp = await Client.GetAsync("https://localhost:5001/api/etf?aktiv=true");
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+"/api/etf?aktiv=true");
                 if (resp.IsSuccessStatusCode)
                     itemList = await resp.Content.ReadAsAsync<ObservableCollection<ETFModel>>();
             }
@@ -65,7 +65,7 @@ namespace Aktien.Logic.UI.ETFViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp = await Client.DeleteAsync($"https://localhost:5001/api/Wertpapier/{selectedItem.ID}");
+                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/Wertpapier/{selectedItem.ID}");
                 if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
                 {
                     SendExceptionMessage("ETF ist im Depot vorhanden.");

@@ -62,7 +62,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
             LoadAktie = true;
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp = await Client.GetAsync($"https://localhost:5001/api/DividendeErhalten/{id}");
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/DividendeErhalten/{id}");
                 if (resp.IsSuccessStatusCode)
                 {
                     data = await resp.Content.ReadAsAsync<DividendeErhaltenStammdatenModel>();
@@ -234,7 +234,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp = await Client.PostAsJsonAsync($"https://localhost:5001/api/DividendeErhalten?state={state}", data);
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/DividendeErhalten?state={state}", data);
 
                 if (resp.IsSuccessStatusCode)
                 {

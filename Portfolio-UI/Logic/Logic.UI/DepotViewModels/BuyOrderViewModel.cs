@@ -92,7 +92,7 @@ namespace Aktien.Logic.UI.DepotViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp = await Client.PostAsJsonAsync($"https://localhost:5001/api/Depot/Order/new?buysell={buySell}", data);
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/Depot/Order/new?buysell={buySell}", data);
 
                 if (resp.IsSuccessStatusCode)
                 {

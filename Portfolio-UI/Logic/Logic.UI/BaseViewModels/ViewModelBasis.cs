@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using Aktien.Logic.Core;
 
 namespace Aktien.Logic.UI.BaseViewModels
 {
@@ -78,11 +79,19 @@ namespace Aktien.Logic.UI.BaseViewModels
 
         private void SetConnection()
         {
-            Client = new HttpClient
+            string url;
+            if (GlobalVariables.BackendServer_IP == null || GlobalVariables.BackendServer_IP.Equals(""))
+                url = "https://localhost:5001";
+            else
+                url = GlobalVariables.BackendServer_URL;
+            HttpClientHandler clientHandler = new HttpClientHandler
             {
-                BaseAddress = new Uri("https://localhost:5001/")
+                ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }
             };
-            Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/json"));
+            Client = new HttpClient(clientHandler)
+            {
+                BaseAddress = new Uri(url + "/")
+            };
             Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/json"));
         }
 

@@ -9,6 +9,9 @@ using System.Windows.Input;
 using Aktien.Logic.Messages;
 using Aktien.Logic.Messages.Base;
 using System.Net.Sockets;
+using Logic.UI.Helper;
+using Logic.Core.OptionenLogic;
+using Logic.Messages.Base;
 
 namespace Aktien.Logic.UI
 {
@@ -18,6 +21,7 @@ namespace Aktien.Logic.UI
         {
             Title = "Aktienübersicht";
             GlobalVariables.ServerIsOnline = false;
+            GlobalVariables.BackendServer_URL = "";
             OpenStartingViewCommand = new RelayCommand(() => ExecuteOpenStartingViewCommand());
             OpenAktienUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand( ViewType.viewAktienUebersicht));
             OpenDepotUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewDepotUebersicht));
@@ -45,6 +49,16 @@ namespace Aktien.Logic.UI
         }
         private void ExecuteOpenStartingViewCommand()
         {
+            var backendlogic = new BackendLogic();
+            if(!backendlogic.istINIVorhanden())
+            {
+                Messenger.Default.Send<OpenKonfigurationViewMessage>(new OpenKonfigurationViewMessage { });
+            }
+            backendlogic.LoadData();
+            GlobalVariables.BackendServer_IP = backendlogic.getBackendIP();
+            GlobalVariables.BackendServer_URL = backendlogic.getBackendURL();
+            GlobalVariables.BackendServer_Port = backendlogic.getBackendPort();
+
             Messenger.Default.Send<OpenStartingViewMessage>(new OpenStartingViewMessage { });
         }
 

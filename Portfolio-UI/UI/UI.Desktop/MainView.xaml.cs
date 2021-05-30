@@ -27,6 +27,8 @@ using Aktien.Logic.UI.InterfaceViewModels;
 using Aktien.UI.Desktop.Dividende;
 using Aktien.UI.Desktop.Optionen;
 using UI.Desktop.Steuer;
+using Logic.Messages.Base;
+using UI.Desktop.Konfigruation;
 
 namespace Aktien.UI.Desktop
 {
@@ -51,7 +53,10 @@ namespace Aktien.UI.Desktop
             Messenger.Default.Register<InformationMessage>(this, m => ReceiveInformationMessage(m));
             Messenger.Default.Register<BaseStammdatenMessage>(this, m => ReceiceOpenStammdatenMessage(m));
             Messenger.Default.Register<OpenStartingViewMessage>(this, m => ReceiceOpenStartingViewMessage());
-     
+            Messenger.Default.Register<OpenKonfigurationViewMessage>(this, m => ReceiceOpenKonfigurationViewMessage());
+            Messenger.Default.Register<CloseApplicationMessage>(this, m => ReceiceCloseApplicationMessage());
+            
+
             DatenAnpassungFrame.Navigate(new DatenAnpassungView());
         }
 
@@ -149,8 +154,18 @@ namespace Aktien.UI.Desktop
         {
             var view = new StartingProgrammView();
             view.ShowDialog();
-
         }
+
+        private void ReceiceOpenKonfigurationViewMessage()
+        {
+            new KonfigurationView().ShowDialog();
+        }
+
+        private void ReceiceCloseApplicationMessage()
+        {
+            Application.Current.Shutdown();
+        }
+
     }
 
 }

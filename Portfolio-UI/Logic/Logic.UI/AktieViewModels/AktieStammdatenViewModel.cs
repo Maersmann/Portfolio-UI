@@ -36,7 +36,7 @@ namespace Aktien.Logic.UI.AktieViewModels
         {   
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp = await Client.PostAsJsonAsync("https://localhost:5001/api/Wertpapier", data);
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+"/api/Wertpapier", data);
 
 
                     if (resp.IsSuccessStatusCode)
@@ -57,7 +57,7 @@ namespace Aktien.Logic.UI.AktieViewModels
             LoadAktie = true;
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp = await Client.GetAsync("https://localhost:5001/api/Wertpapier/"+id.ToString());
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+"/api/Wertpapier/"+id.ToString());
                 if (resp.IsSuccessStatusCode)
                     data = await resp.Content.ReadAsAsync<AktienModel>();
             }

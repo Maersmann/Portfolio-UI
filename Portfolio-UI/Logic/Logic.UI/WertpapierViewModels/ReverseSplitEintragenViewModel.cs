@@ -25,7 +25,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
 {
     public class ReverseSplitEintragenViewModel : ViewModelValidate
     {
-        private ReverseSplitEintragenModel model;
+        private readonly ReverseSplitEintragenModel model;
         private int verhaeltnis;
         private int depotWertpapierID;
 
@@ -54,7 +54,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp = await Client.GetAsync($"https://localhost:5001/api/depot/Wertpapier/{id}");
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/depot/Wertpapier/{id}");
                 if (resp.IsSuccessStatusCode)
                     model.AltWertpapier = await resp.Content.ReadAsAsync<DepotWertpapierModel>();
             }             
@@ -108,7 +108,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp = await Client.PostAsJsonAsync($"https://localhost:5001/api/depot/wertpapier/{depotWertpapierID}/ReverseSplit", model);
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/depot/wertpapier/{depotWertpapierID}/ReverseSplit", model);
 
 
                 if (resp.IsSuccessStatusCode)
@@ -135,7 +135,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
             {
                 if (GlobalVariables.ServerIsOnline)
                 {
-                    HttpResponseMessage resp = await Client.GetAsync("https://localhost:5001/api/Wertpapier/" + id.ToString());
+                    HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+"/api/Wertpapier/" + id.ToString());
                     if (resp.IsSuccessStatusCode)
                     {
                         var aktie = await resp.Content.ReadAsAsync<AktienModel>();

@@ -114,7 +114,7 @@ namespace Aktien.Logic.UI.DepotViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp = await Client.PostAsJsonAsync("https://localhost:5001/api/depot/Einnahme", data);
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+"/api/depot/Einnahme", data);
 
 
                 if (resp.IsSuccessStatusCode)

@@ -33,7 +33,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
         {
             this.wertpapierID = id;
 
-            HttpResponseMessage resp = await Client.GetAsync($"https://localhost:5001/api/Wertpapier/{wertpapierID}/ErhalteneDividenden/");
+            HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Wertpapier/{wertpapierID}/ErhalteneDividenden/");
             if (resp.IsSuccessStatusCode)
             {
                 itemList = await resp.Content.ReadAsAsync<ObservableCollection<DividendeErhaltenUebersichtModel>>();
@@ -59,7 +59,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp = await Client.DeleteAsync($"https://localhost:5001/api/DividendeErhalten/{selectedItem.ID}");
+                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/DividendeErhalten/{selectedItem.ID}");
                 if (resp.IsSuccessStatusCode)
                 {
                     SendInformationMessage("Dividende Erhalten gelöscht");

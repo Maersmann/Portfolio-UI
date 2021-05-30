@@ -33,7 +33,7 @@ namespace Aktien.Logic.UI.ETFViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp = await Client.PostAsJsonAsync("https://localhost:5001/api/etf", data);
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+"/api/etf", data);
 
 
                 if (resp.IsSuccessStatusCode)
@@ -62,7 +62,7 @@ namespace Aktien.Logic.UI.ETFViewModels
             LoadAktie = true;
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp = await Client.GetAsync($"https://localhost:5001/api/etf/{id}");
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+$"/api/etf/{id}");
                 if (resp.IsSuccessStatusCode)
                     data = await resp.Content.ReadAsAsync<ETFModel>();
             }

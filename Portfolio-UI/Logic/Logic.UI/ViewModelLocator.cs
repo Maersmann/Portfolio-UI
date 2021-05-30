@@ -28,6 +28,7 @@ using Aktien.Logic.UI.DepotViewModels.Page;
 using Aktien.Logic.UI.DerivateViewModels;
 using Aktien.Logic.UI.OptionenViewModels;
 using Logic.UI.SteuerViewModels;
+using Logic.UI.KonfigurationViewModels;
 
 namespace Aktien.Logic.UI
 {
@@ -79,6 +80,7 @@ namespace Aktien.Logic.UI
             SimpleIoc.Default.Register<EinnahmenAusgabenUebersichtViewModel>();
             SimpleIoc.Default.Register<DatenAnpassungViewModel>();
             SimpleIoc.Default.Register<SteuerartenUebersichtViewModel>();
+            SimpleIoc.Default.Register<BackendSettingsViewModel>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
@@ -115,6 +117,8 @@ namespace Aktien.Logic.UI
         public SteuerartStammdatenViewModel SteuerartStammdaten => new SteuerartStammdatenViewModel();
         public SteuernUebersichtViewModel SteuernUebersicht => new SteuernUebersichtViewModel();
         public SteuerStammdatenViewModel SteuerStammdaten => new SteuerStammdatenViewModel();
+        public BackendSettingsViewModel BackendSettings => ServiceLocator.Current.GetInstance<BackendSettingsViewModel>();
+        public KonfigruationViewModel Konfigruation => new KonfigruationViewModel();
         public static void Cleanup()
         {
 

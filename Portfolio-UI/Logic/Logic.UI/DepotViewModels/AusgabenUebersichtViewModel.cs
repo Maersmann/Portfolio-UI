@@ -33,7 +33,7 @@ namespace Aktien.Logic.UI.DepotViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp = await Client.GetAsync("https://localhost:5001/api/depot/Ausgaben");
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+"/api/depot/Ausgaben");
                 if (resp.IsSuccessStatusCode)
                     itemList = await resp.Content.ReadAsAsync<ObservableCollection<AusgabeModel>>();
             }
