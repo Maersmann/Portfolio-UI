@@ -30,7 +30,7 @@ namespace Logic.UI.SteuerViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp = await Client.GetAsync("https://localhost:5001/api/Steuerarten");
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/Steuerarten");
                 if (resp.IsSuccessStatusCode)
                     itemList = await resp.Content.ReadAsAsync<ObservableCollection<SteuerartModel>>();
                 else
@@ -45,7 +45,7 @@ namespace Logic.UI.SteuerViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp = await Client.DeleteAsync($"https://localhost:5001/api/Steuerarten/{selectedItem.ID}");
+                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL + $"/api/Steuerarten/{selectedItem.ID}");
                 if (!resp.IsSuccessStatusCode)
                 {
                     SendExceptionMessage(await resp.Content.ReadAsStringAsync());

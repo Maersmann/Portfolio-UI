@@ -47,7 +47,7 @@ namespace Logic.UI.SteuerViewModels
 
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp = await Client.GetAsync($"https://localhost:5001/api/Steuern?steuergruppeid={steuergruppeID}");
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/Steuern?steuergruppeid={steuergruppeID}");
                 if (resp.IsSuccessStatusCode)
                     itemList = await resp.Content.ReadAsAsync<ObservableCollection<SteuerModel>>();
                 else
@@ -62,7 +62,7 @@ namespace Logic.UI.SteuerViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp = await Client.DeleteAsync($"https://localhost:5001/api/Steuern/{selectedItem.ID}");
+                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL + $"/api/Steuern/{selectedItem.ID}");
                 if (!resp.IsSuccessStatusCode)
                 {
                     SendExceptionMessage(await resp.Content.ReadAsStringAsync());
