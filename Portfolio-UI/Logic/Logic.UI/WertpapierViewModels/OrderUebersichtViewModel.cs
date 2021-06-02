@@ -110,7 +110,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp = await Client.DeleteAsync($" GlobalVariables.BackendServer_URL/api/Depot/Order/{selectedItem.ID}/Delete?buysell={Convert.ToInt32(selectedItem.BuySell)}");
+                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL + $"/api/Depot/Order/{selectedItem.ID}/Delete?buysell={selectedItem.BuySell}");
                 if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
                 {            
                     return;
