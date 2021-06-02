@@ -38,7 +38,7 @@ namespace Logic.UI.SteuerViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp = await Client.PostAsJsonAsync($"https://localhost:5001/api/Steuern?typ={this.herkunfttyp}&gruppeid={this.steuergruppeid}&istVerknuepfungGespeichert={istVerknuepfungGespeichert}", data);
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/Steuern?typ={this.herkunfttyp}&gruppeid={this.steuergruppeid}&istVerknuepfungGespeichert={istVerknuepfungGespeichert}", data);
 
 
                 if (resp.IsSuccessStatusCode)
@@ -56,11 +56,6 @@ namespace Logic.UI.SteuerViewModels
             }
         }
 
-        public void setGruppeInfos(int? steuergruppeID, SteuerHerkunftTyp typ, object neueSteuergruppe)
-        {
-            throw new NotImplementedException();
-        }
-
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.steuer;
         public void setGruppeInfos(int? id, SteuerHerkunftTyp typ, bool istVerknuepfungGespeichert)
         {
@@ -75,7 +70,7 @@ namespace Logic.UI.SteuerViewModels
             LoadAktie = true;
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp = await Client.GetAsync("https://localhost:5001/api/Steuern/" + id.ToString());
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/Steuern/" + id.ToString());
                 if (resp.IsSuccessStatusCode)
                     data = await resp.Content.ReadAsAsync<SteuerModel>();
             }
@@ -178,9 +173,9 @@ namespace Logic.UI.SteuerViewModels
             {
                 HttpResponseMessage resp;
                 if (steuergruppeid.HasValue)
-                     resp = await Client.GetAsync($"https://localhost:5001/api/Steuern/Gruppe/{steuergruppeid.Value}/FreieSteuerArten");
+                     resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/Steuern/Gruppe/{steuergruppeid.Value}/FreieSteuerArten");
                 else
-                    resp = await Client.GetAsync("https://localhost:5001/api/Steuerarten");
+                    resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/Steuerarten");
                 
                 if (resp.IsSuccessStatusCode)
                     steuerarts = await resp.Content.ReadAsAsync<ObservableCollection<SteuerartModel>>();

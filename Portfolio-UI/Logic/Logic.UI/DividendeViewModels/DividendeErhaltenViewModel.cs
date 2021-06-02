@@ -263,7 +263,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
             {
                 if (GlobalVariables.ServerIsOnline)
                 {
-                    HttpResponseMessage resp = await Client.DeleteAsync($"https://localhost:5001/api/dividendeErhalten/Steuern/{data.SteuergruppeID}");
+                    HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL + $"/api/dividendeErhalten/Steuern/{data.SteuergruppeID}");
                     if (!resp.IsSuccessStatusCode)
                     {
                         SendExceptionMessage(await resp.Content.ReadAsStringAsync());
@@ -290,7 +290,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
                 data.SteuergruppeID = id;
                 if (GlobalVariables.ServerIsOnline)
                 {
-                    HttpResponseMessage resp = await Client.GetAsync($"https://localhost:5001/api/Steuern?steuergruppeid={id}");
+                    HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/Steuern?steuergruppeid={id}");
                     if (resp.IsSuccessStatusCode)
                         data.Steuer.Steuern = await resp.Content.ReadAsAsync<ObservableCollection<SteuerModel>>();
                     else
