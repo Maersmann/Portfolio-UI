@@ -17,6 +17,7 @@ namespace Logic.Core.OptionenLogic
         private readonly string iniPath;
 
         private string ip;
+        private string url;
         private BackendProtokollTypes typ;
         public int? port;
         public BackendLogic()
@@ -24,6 +25,7 @@ namespace Logic.Core.OptionenLogic
             ip = "";
             iniPath = "";
             port = null;
+            url = "";
             typ = BackendProtokollTypes.http;
 
             iniPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\Portfolio\\";
@@ -38,15 +40,19 @@ namespace Logic.Core.OptionenLogic
             return ip;
         }
 
-        public string getBackendURL()
+        public string getURL()
         {
-            var url = "http://";
+            var URL = "http://";
             if (typ.Equals(BackendProtokollTypes.https))
-                url = "https://";
-            url += getBackendIP();
+                URL = "https://";
+            if (this.url.Length == 0)
+                URL += getBackendIP();
+            else
+                URL += GetBackendURL();
+
             if (port.HasValue)
-                url += ":" + port.Value;
-            return url;
+                URL += ":" + port.Value;
+            return URL;
         }
 
         public BackendProtokollTypes getProtokollTyp()
@@ -68,16 +74,18 @@ namespace Logic.Core.OptionenLogic
                 LoadBackendSettings();
             }
         }
-        public void SaveData(string ip, BackendProtokollTypes protokollTyp, int? port)
+        public void SaveData(string ip, BackendProtokollTypes protokollTyp, int? port, string url)
         {
             this.ip = ip;
             this.typ = protokollTyp;
             this.port = port;
+            this.url = url;
 
             iniData = new IniData();
             iniData.Sections.AddSection("Backend-Settings");
 
             iniData.Sections.GetSectionData("Backend-Settings").Keys.AddKey("IP", ip);
+            iniData.Sections.GetSectionData("Backend-Settings").Keys.AddKey("URL", url);
             iniData.Sections.GetSectionData("Backend-Settings").Keys.AddKey("Protokoll", Convert.ToString ( Convert.ToInt32(protokollTyp) ) );
             iniData.Sections.GetSectionData("Backend-Settings").Keys.AddKey("Port", Convert.ToString(port));
 
@@ -89,6 +97,8 @@ namespace Logic.Core.OptionenLogic
         {
             if (isFieldVorhanden("Backend-Settings", "IP"))
                 ip = iniData.Sections["Backend-Settings"].GetKeyData("IP").Value;
+            if (isFieldVorhanden("Backend-Settings", "URL"))
+                url = iniData.Sections["Backend-Settings"].GetKeyData("URL").Value;
 
             if ((isFieldVorhanden("Backend-Settings", "Protokoll")) && int.TryParse(iniData.Sections["Backend-Settings"].GetKeyData("Protokoll").Value, out _))
                 typ = (BackendProtokollTypes)int.Parse(iniData.Sections["Backend-Settings"].GetKeyData("Protokoll").Value);
@@ -100,7 +110,10 @@ namespace Logic.Core.OptionenLogic
         {
             return port;
         }
-
+        public string GetBackendURL()
+        {
+            return url;
+        }
         public bool isFieldVorhanden(string section, string key)
         {
             return (iniData.Sections[section].GetKeyData(key) != null);
