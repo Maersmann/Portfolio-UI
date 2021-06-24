@@ -107,7 +107,6 @@ namespace Aktien.Logic.UI.OptionenViewModels
             new BackendHelper().CheckServerIsOnline();
             ViewModelLocator locator = new ViewModelLocator();
             locator.Main.RaisePropertyChanged("MenuIsEnabled");
-            locator.Main.RaisePropertyChanged("CanLoadData");
 
         }
 
