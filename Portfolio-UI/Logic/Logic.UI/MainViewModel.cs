@@ -56,7 +56,7 @@ namespace Aktien.Logic.UI
             }
             backendlogic.LoadData();
             GlobalVariables.BackendServer_IP = backendlogic.getBackendIP();
-            GlobalVariables.BackendServer_URL = backendlogic.getBackendURL();
+            GlobalVariables.BackendServer_URL = backendlogic.getURL();
             GlobalVariables.BackendServer_Port = backendlogic.getBackendPort();
 
             Messenger.Default.Send<OpenStartingViewMessage>(new OpenStartingViewMessage { });

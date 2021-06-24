@@ -35,6 +35,7 @@ namespace Aktien.Logic.UI.OptionenViewModels
                 model.Backend_IP = backendLogic.getBackendIP();
                 model.ProtokollTyp = backendLogic.getProtokollTyp();
                 model.Port = backendLogic.getBackendPort();
+                model.Backend_URL = backendLogic.GetBackendURL();
             }
         }
 
@@ -43,13 +44,22 @@ namespace Aktien.Logic.UI.OptionenViewModels
         public ICommand TestConnectionCommand { get; set; }
         public String Backend_IP
         {
-            get 
-            { 
-                return model.Backend_IP; 
-            }
+            get => model.Backend_IP;
             set
             {
                 model.Backend_IP = value;
+                this.RaisePropertyChanged();
+            }
+        }
+        public string Backend_URL
+        {
+            get
+            {
+                return model.Backend_URL;
+            }
+            set
+            {
+                model.Backend_URL = value;
                 this.RaisePropertyChanged();
             }
         }
@@ -89,15 +99,14 @@ namespace Aktien.Logic.UI.OptionenViewModels
         private void ExecuteSpeicherSettingsCommand()
         {
             var backendlogic = new BackendLogic();
-            backendlogic.SaveData(model.Backend_IP, model.ProtokollTyp, model.Port);
+            backendlogic.SaveData(model.Backend_IP, model.ProtokollTyp, model.Port, model.Backend_URL);
             SendInformationMessage("Settings gespeichert");
             GlobalVariables.BackendServer_IP = backendlogic.getBackendIP();
-            GlobalVariables.BackendServer_URL = backendlogic.getBackendURL();
+            GlobalVariables.BackendServer_URL = backendlogic.getURL();
             GlobalVariables.BackendServer_Port = backendlogic.getBackendPort();
             new BackendHelper().CheckServerIsOnline();
             ViewModelLocator locator = new ViewModelLocator();
             locator.Main.RaisePropertyChanged("MenuIsEnabled");
-            locator.Main.RaisePropertyChanged("CanLoadData");
 
         }
 

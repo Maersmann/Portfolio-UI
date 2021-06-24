@@ -28,7 +28,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="250px"/>
+                <RowDefinition Height="300px"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
@@ -41,7 +41,7 @@
                     </Grid.RowDefinitions>
 
                     <materialDesign:Card  Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushDetailBG}}">
-                        <Label HorizontalAlignment="Center" Width="auto" Content="Serve" />
+                        <Label HorizontalAlignment="Center" Width="auto" Content="Server" />
                     </materialDesign:Card>
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
@@ -49,17 +49,19 @@
                             <ColumnDefinition Width="6*"/>
                         </Grid.ColumnDefinitions>
 
-                      
+
                         <Grid Grid.Column="0">
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="50px" />
                                 <RowDefinition Height="50px" />
                                 <RowDefinition Height="50px" />
                                 <RowDefinition Height="50px" />
                             </Grid.RowDefinitions>
 
                             <Label Content="IP" Grid.Row="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                            <Label Content="Protokoll" Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                            <Label Content="Port" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                            <Label Content="URL" Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                            <Label Content="Protokoll" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                            <Label Content="Port" Grid.Row="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                         </Grid>
 
                         <Grid Grid.Column="1" >
@@ -67,10 +69,12 @@
                                 <RowDefinition Height="50px" />
                                 <RowDefinition Height="50px" />
                                 <RowDefinition Height="50px" />
+                                <RowDefinition Height="50px" />
                             </Grid.RowDefinitions>
                             <TextBox Grid.Row="0" HorizontalAlignment="Center" TextWrapping="NoWrap" VerticalAlignment="Center" Width="120" Text="{Binding Backend_IP}" />
-                            <ComboBox Grid.Row="1" HorizontalAlignment="Center"  VerticalAlignment="Center"  Width="120" ItemsSource="{Binding BackendProtokollTypes}" SelectedItem="{Binding BackendProtokollTyp}" />
-                            <TextBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="120" Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}" Cursor="IBeam" >
+                            <TextBox Grid.Row="1" HorizontalAlignment="Center" TextWrapping="NoWrap" VerticalAlignment="Center" Width="120" Text="{Binding Backend_URL}" Cursor="IBeam" />
+                            <ComboBox Grid.Row="2" HorizontalAlignment="Center"  VerticalAlignment="Center"  Width="120" ItemsSource="{Binding BackendProtokollTypes}" SelectedItem="{Binding BackendProtokollTyp}" />
+                            <TextBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="120" Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}" Cursor="IBeam" >
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="PreviewTextInput" >
                                         <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyNumbersCommand"  />
@@ -93,9 +97,5 @@
                 </Grid>
             </materialDesign:Card>
         </Grid>
-
-
-
-
     </Grid>
 </UserControl>

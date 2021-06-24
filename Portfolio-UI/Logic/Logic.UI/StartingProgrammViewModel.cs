@@ -32,7 +32,6 @@ namespace Aktien.Logic.UI
             {
                 ViewModelLocator locator = new ViewModelLocator();
                 locator.Main.RaisePropertyChanged("MenuIsEnabled");
-                locator.Main.RaisePropertyChanged("CanLoadData");
                 Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = ViewType.viewWertpapierUebersicht });
             }
                 

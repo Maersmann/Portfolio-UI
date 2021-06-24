@@ -16,7 +16,9 @@ namespace Aktien.Data.Types.WertpapierTypes
         [Description("USD")]
         Dollar = 1,
         [Description("JPY")]
-        JapanYen = 2
+        JapanYen = 2,
+        [Description("GBP")]
+        Pfund = 3
     }
 
 
