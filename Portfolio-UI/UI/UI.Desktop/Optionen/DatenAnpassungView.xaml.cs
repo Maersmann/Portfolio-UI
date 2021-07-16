@@ -32,7 +32,10 @@ namespace Aktien.UI.Desktop.Optionen
 
         private void ReceiveOpenWertpapierAuswahlMessage(OpenWertpapierAuswahlMessage m)
         {
-            var view = new WertpapierAuswahlView();
+            var view = new WertpapierAuswahlView()
+            {
+                Owner = Application.Current.MainWindow
+            };
             if (view.DataContext is WertpapierAuswahlViewModel model)
             {
                 model.SetCallback(m.Callback);

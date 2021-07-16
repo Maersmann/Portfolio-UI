@@ -8,7 +8,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         WindowStartupLocation="CenterScreen"
         x:Name="Auswahl"
-        Height="400" SizeToContent="Width"
+        Height="400" SizeToContent="Width" ShowInTaskbar="False"
         DataContext="{Binding WertpapierAuswahl ,Source={StaticResource Locator}}">
     <Grid>
         <Grid.RowDefinitions>

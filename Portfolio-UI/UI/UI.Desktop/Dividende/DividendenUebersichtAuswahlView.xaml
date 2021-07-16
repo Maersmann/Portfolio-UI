@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Aktien.UI.Desktop.Dividende"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        mc:Ignorable="d" Height="101.324" Width="389.548" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        mc:Ignorable="d" Height="101.324" Width="389.548" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False"
         DataContext="{Binding DividendenUebersichtAuswahl ,Source={StaticResource Locator}}" Unloaded="Window_Unloaded">
     <Grid >
         <Grid.ColumnDefinitions>

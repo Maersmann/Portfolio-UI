@@ -12,7 +12,7 @@
                     Height="260" Width="302.644"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                     ResizeMode="NoResize"
-                    WindowStartupLocation="CenterScreen"
+                    WindowStartupLocation="CenterScreen" ShowInTaskbar="False"
                     DataContext="{Binding EinnahmeStammdaten ,Source={StaticResource Locator}}">
 
     <i:Interaction.Triggers>

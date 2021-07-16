@@ -10,6 +10,7 @@
                     mc:Ignorable="d" WindowStartupLocation="CenterScreen" Width="348.584" Height="225"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                     ResizeMode="NoResize"
+                    ShowInTaskbar="False"
                     DataContext="{Binding SteuerartStammdaten ,Source={StaticResource Locator}}" >
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closed">

@@ -45,7 +45,8 @@ namespace Aktien.UI.Desktop.Dividende
                 SizeToContent = SizeToContent.WidthAndHeight,
                 ResizeMode = ResizeMode.NoResize,
                 WindowStartupLocation = WindowStartupLocation.CenterScreen,
-                ShowInTaskbar = false
+                ShowInTaskbar = false,
+                Owner = Application.Current.MainWindow
             };
 
             window.ShowDialog();
@@ -63,8 +64,9 @@ namespace Aktien.UI.Desktop.Dividende
                 Content = view,
                 SizeToContent = SizeToContent.WidthAndHeight,
                 ResizeMode = ResizeMode.NoResize,
-                WindowStartupLocation = WindowStartupLocation.CenterScreen
-
+                WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                ShowInTaskbar = false,
+                Owner = Application.Current.MainWindow
             };
 
             window.ShowDialog();

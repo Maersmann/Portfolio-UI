@@ -10,7 +10,7 @@
                     xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                     mc:Ignorable="d" WindowStartupLocation="CenterScreen"
-                    Height="auto" Width="227" SizeToContent="Height"
+                    Height="auto" Width="227" SizeToContent="Height" ShowInTaskbar="False"
                     DataContext="{Binding DividendeStammdaten ,Source={StaticResource Locator}}" ResizeMode="NoResize">
 
     <i:Interaction.Triggers>

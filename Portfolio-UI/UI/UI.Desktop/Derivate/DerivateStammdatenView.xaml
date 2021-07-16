@@ -9,7 +9,7 @@
       xmlns:command="http://www.galasoft.ch/mvvmlight" 
       mc:Ignorable="d" WindowStartupLocation="CenterScreen" Height="246.471" Width="348.584"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-      ResizeMode="NoResize"
+      ResizeMode="NoResize" ShowInTaskbar="False"
       DataContext="{Binding DerivateStammdaten ,Source={StaticResource Locator}}">
 
 

@@ -11,7 +11,7 @@
                     mc:Ignorable="d" WindowStartupLocation="CenterScreen"
                     Height="246.471" Width="348.584"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-                    ResizeMode="NoResize"
+                    ResizeMode="NoResize" ShowInTaskbar="False"
                     DataContext="{Binding AktieStammdaten ,Source={StaticResource Locator}}">
 
 

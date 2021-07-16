@@ -30,7 +30,10 @@ namespace UI.Desktop.Steuer
 
         private void ReceiveOpenSteuerStammdatenMessage(OpenSteuerStammdatenMessage m)
         {
-            var view = new SteuerStammdatenView();
+            var view = new SteuerStammdatenView() 
+            { 
+                Owner = Application.Current.MainWindow 
+            };
             if (view.DataContext is SteuerStammdatenViewModel model)
             {
                 model.setGruppeInfos(m.SteuergruppeID, m.Typ, m.IstVerknuepfungGespeichert);

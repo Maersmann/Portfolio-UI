@@ -12,7 +12,7 @@
                     Height="auto" Width="630" SizeToContent="Height"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                     ResizeMode="NoResize"
-                    WindowStartupLocation="CenterScreen"
+                    WindowStartupLocation="CenterScreen" ShowInTaskbar="False"
                     Unloaded="Window_Unloaded"
                     DataContext="{Binding BuyOrder ,Source={StaticResource Locator}}">
 

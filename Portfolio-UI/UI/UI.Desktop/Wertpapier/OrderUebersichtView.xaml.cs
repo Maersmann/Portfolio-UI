@@ -49,8 +49,11 @@ namespace Aktien.UI.Desktop.Wertpapier
 
         private void ReceiveOpenAktieGekauftViewMessage(OpenWertpapierGekauftViewMessage m)
         {
-           
-            var view = new BuyOrderView();
+
+            var view = new BuyOrderView()
+            {
+                Owner = Application.Current.MainWindow
+            };
             if (view.DataContext is BuyOrderViewModel model)
             {
                 model.WertpapierID = m.WertpapierID;

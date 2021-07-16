@@ -147,6 +147,7 @@ namespace Aktien.UI.Desktop
                 }
 
             }
+            view.Owner = this;
             view.ShowDialog();
         }
 
