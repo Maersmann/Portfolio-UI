@@ -21,6 +21,7 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
 using Logic.Messages.SteuernMessages;
 using Logic.Core.SteuernLogic;
+using Logic.UI.DepotViewModels.Helper;
 
 namespace Aktien.Logic.UI.DepotViewModels
 {
@@ -81,6 +82,8 @@ namespace Aktien.Logic.UI.DepotViewModels
             this.RaisePropertyChanged("KauftypBez");
             this.RaisePropertyChanged("Titel");
             this.RaisePropertyChanged("BuySell");
+            this.RaisePropertyChanged("KaufTypes");
+            this.RaisePropertyChanged("OrderTypes");
         }
 
         #region Commands
@@ -135,20 +138,9 @@ namespace Aktien.Logic.UI.DepotViewModels
 
         #region Bindings
 
-        public IEnumerable<KaufTypes> KaufTypes
-        {
-            get
-            {
-                return Enum.GetValues(typeof(KaufTypes)).Cast<KaufTypes>();
-            }
-        }
-        public IEnumerable<OrderTypes> OrderTypes
-        {
-            get
-            {
-                return Enum.GetValues(typeof(OrderTypes)).Cast<OrderTypes>();
-            }
-        }
+        public IEnumerable<KaufTypes> KaufTypes => BuyOrderHelper.GetKaufTypes(buySell);
+        public IEnumerable<OrderTypes> OrderTypes => BuyOrderHelper.GetOrderTypes(buySell);
+
         public KaufTypes KaufTyp
         {
             get { return data.KaufartTyp; }
