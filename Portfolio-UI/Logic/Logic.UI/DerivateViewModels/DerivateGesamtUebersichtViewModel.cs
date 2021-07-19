@@ -66,7 +66,7 @@ namespace Aktien.Logic.UI.DerivateViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/Wertpapier/{selectedItem.ID}");
-                if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
+                if ((int)resp.StatusCode == 905)
                 {
                     SendExceptionMessage("Derivate ist im Depot vorhanden.");
                     return;

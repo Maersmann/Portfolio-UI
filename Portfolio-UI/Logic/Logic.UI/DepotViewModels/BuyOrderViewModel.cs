@@ -103,9 +103,15 @@ namespace Aktien.Logic.UI.DepotViewModels
                     Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Buy-Order gespeichert." }, GetStammdatenTyp());
                     Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());              
                 }
-                else if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
+                else
                 {
-                    SendExceptionMessage(resp.Content.ReadAsStringAsync().Result);
+                    if ((int)resp.StatusCode == 901)
+                        SendExceptionMessage("Es sind neuere Orders vorhanden.");
+                    else if ((int)resp.StatusCode == 902)
+                        SendExceptionMessage("Es wurden mehr Wertpapiere zum Verkauf eingetragen, als im Depot vorhanden.");
+                    else
+                        SendExceptionMessage("Order konnte nicht gespeichert werden.");
+
                     return;
                 }
             }

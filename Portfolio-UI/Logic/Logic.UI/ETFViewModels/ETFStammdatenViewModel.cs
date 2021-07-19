@@ -41,14 +41,15 @@ namespace Aktien.Logic.UI.ETFViewModels
                     Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
                     Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
                 }
-                else if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
+                else if ((int)resp.StatusCode == 904)
                 {
                     SendExceptionMessage("ETF ist schon vorhanden");
                     return;
                 }
                 else
                 {
-                    SendExceptionMessage(await resp.Content.ReadAsStringAsync());
+                    SendExceptionMessage("ETF konnte nicht gespeichert werden.");
+                    return;
                 }
             }
         }

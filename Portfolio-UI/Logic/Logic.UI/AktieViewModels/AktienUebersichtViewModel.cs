@@ -78,7 +78,7 @@ namespace Aktien.Logic.UI.AktieViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+$"/api/Wertpapier/{selectedItem.ID}");
-                if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
+                if ((int)resp.StatusCode == 905)
                 {
                     SendExceptionMessage("Aktie ist im Depot vorhanden.");
                     return;

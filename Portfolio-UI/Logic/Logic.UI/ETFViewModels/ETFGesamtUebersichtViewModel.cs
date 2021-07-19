@@ -74,7 +74,7 @@ namespace Aktien.Logic.UI.ETFViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/Wertpapier/{selectedItem.ID}");
-                if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
+                if ((int)resp.StatusCode == 905)
                 {
                     SendExceptionMessage("ETF ist im Depot vorhanden.");
                     return;

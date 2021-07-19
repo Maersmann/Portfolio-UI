@@ -65,7 +65,7 @@ namespace Logic.UI.SteuerViewModels
                 HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL + $"/api/Steuern/{selectedItem.ID}");
                 if (!resp.IsSuccessStatusCode)
                 {
-                    SendExceptionMessage(await resp.Content.ReadAsStringAsync());
+                    SendExceptionMessage("Steuer konnte nicht gelöscht werden.");
                     return;
                 }
 

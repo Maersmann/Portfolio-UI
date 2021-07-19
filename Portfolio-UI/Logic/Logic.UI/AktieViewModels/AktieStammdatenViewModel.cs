@@ -39,14 +39,19 @@ namespace Aktien.Logic.UI.AktieViewModels
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+"/api/Wertpapier", data);
 
 
-                    if (resp.IsSuccessStatusCode)
+                if (resp.IsSuccessStatusCode)
                 {
                     Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
                     Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
                 }
-                else if(resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
+                else if((int)resp.StatusCode == 904)
                 {
                     SendExceptionMessage("Aktie ist schon vorhanden");
+                    return;
+                }
+                else
+                {
+                    SendExceptionMessage("Aktie konnte nicht gespeichert werden");
                     return;
                 }
             }

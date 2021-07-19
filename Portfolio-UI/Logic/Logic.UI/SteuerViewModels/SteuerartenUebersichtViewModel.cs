@@ -48,7 +48,10 @@ namespace Logic.UI.SteuerViewModels
                 HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL + $"/api/Steuerarten/{selectedItem.ID}");
                 if (!resp.IsSuccessStatusCode)
                 {
-                    SendExceptionMessage(await resp.Content.ReadAsStringAsync());
+                    if ((int)resp.StatusCode == 903)
+                        SendExceptionMessage("Steuerart in Steuern verwendet.");
+                    else
+                        SendExceptionMessage("Steuerart konnte nicht gelöscht werden.");
                     return;
                 }
                 else
