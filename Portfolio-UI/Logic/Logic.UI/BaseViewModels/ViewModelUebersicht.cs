@@ -13,11 +13,8 @@ using System.Windows.Input;
 
 namespace Aktien.Logic.UI.BaseViewModels
 {
-    public class ViewModelUebersicht<T> : ViewModelLoadData
+    public class ViewModelUebersicht<T> : ViewModelLoadData<T>
     {
-        protected ObservableCollection<T> itemList;
-
-        protected T selectedItem;
 
         public ViewModelUebersicht()
         {
@@ -30,7 +27,7 @@ namespace Aktien.Logic.UI.BaseViewModels
         protected virtual int GetID() { return 0; }
         protected virtual StammdatenTypes GetStammdatenType() { return 0; }
 
-        public virtual T SelectedItem
+        public override T SelectedItem
         {
             get
             {
@@ -43,14 +40,6 @@ namespace Aktien.Logic.UI.BaseViewModels
                 if (BearbeitenCommand != null) ((DelegateCommand)BearbeitenCommand).RaiseCanExecuteChanged();
                 if (EntfernenCommand != null) ((DelegateCommand)EntfernenCommand).RaiseCanExecuteChanged();
 
-            }
-        }
-
-        public IEnumerable<T> ItemList
-        {
-            get
-            {
-                return itemList;
             }
         }
 

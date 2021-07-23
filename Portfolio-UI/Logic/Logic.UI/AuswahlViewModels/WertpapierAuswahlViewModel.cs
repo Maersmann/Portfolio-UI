@@ -16,11 +16,13 @@ namespace Aktien.Logic.UI.AuswahlViewModels
 {
     public class WertpapierAuswahlViewModel : ViewModelAuswahl<WertpapierAuswahlModel>
     {
+        private string filtertext;
         private Action<bool, int> Callback;
         private WertpapierTypes WertpapierTypes;  
         public WertpapierAuswahlViewModel()
         {
             Title = "Auswahl Wertpapier";
+            filtertext = "";
             WertpapierTypes = WertpapierTypes.none;
             RegisterAktualisereViewMessage(StammdatenTypes.aktien);
         }
@@ -32,7 +34,7 @@ namespace Aktien.Logic.UI.AuswahlViewModels
         public void SetTyp(WertpapierTypes wertpapierTypes)
         {
             WertpapierTypes = wertpapierTypes;
-            this.RaisePropertyChanged(nameof(CanAddNewItem));
+            RaisePropertyChanged(nameof(CanAddNewItem));
             LoadData();
         }
 
@@ -42,17 +44,41 @@ namespace Aktien.Logic.UI.AuswahlViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Wertpapier?aktiv=true&type={WertpapierTypes}");              
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Wertpapier?aktiv=true&type={WertpapierTypes}");          
                 if (resp.IsSuccessStatusCode)
+                {
                     itemList = await resp.Content.ReadAsAsync<ObservableCollection<WertpapierAuswahlModel>>();
-            }           
+                }
+            }          
             base.LoadData();
         }
 
+        protected override bool OnFilterTriggered(object item)
+        {
+            if (item is WertpapierAuswahlModel wertpapier)
+            {
+                return wertpapier.Name.ToLower().Contains(filtertext.ToLower());
+            }
+            return true;
+        }
+
+
         #region Bindings
         public bool CanAddNewItem => WertpapierTypes != WertpapierTypes.none;
+
+        public String FilterText
+        {
+            get => this.filtertext;
+            set
+            {
+                this.filtertext = value;
+                this.RaisePropertyChanged();
+                _customerView.Refresh();
+            }
+        }
+
         #endregion
-        
+
         #region commands
         protected override void ExecuteCloseWindowCommand(Window window)
         {
