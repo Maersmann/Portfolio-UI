@@ -29,8 +29,10 @@ namespace Aktien.Logic.UI
             OpenWertpapierUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewWertpapierUebersicht));
             OpenDerivateUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewDerivateUebersicht));
             OpenEinAusgabenUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewEinAusgabenUebersicht));
+            OpenDivideneMonatAuswertungCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewDivideneMonatAuswertung));
 
-           
+
+
         }
 
         public ICommand OpenAktienUebersichtCommand { get; private set; }
@@ -40,6 +42,7 @@ namespace Aktien.Logic.UI
         public ICommand OpenDerivateUebersichtCommand { get; private set; }
         public ICommand OpenEinAusgabenUebersichtCommand { get; private set; }
         public ICommand OpenStartingViewCommand { get; private set; }
+        public ICommand OpenDivideneMonatAuswertungCommand { get; private set; }
 
         public bool MenuIsEnabled => GlobalVariables.ServerIsOnline;
 

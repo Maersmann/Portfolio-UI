@@ -29,6 +29,7 @@ using Aktien.UI.Desktop.Optionen;
 using UI.Desktop.Steuer;
 using Logic.Messages.Base;
 using UI.Desktop.Konfigruation;
+using UI.Desktop.Auswertung;
 
 namespace Aktien.UI.Desktop
 {
@@ -106,6 +107,9 @@ namespace Aktien.UI.Desktop
                     EinnahmenAusgabenUebersichtPage ??= new EinnahmenAusgabenUebersichtPage();
                     Container.NavigationService.Navigate(EinnahmenAusgabenUebersichtPage);
                     break;
+                case ViewType.viewDivideneMonatAuswertung:
+                    Container.NavigationService.Navigate(new DivideneMonatAuswertungView());
+                    break;      
                 default:
                     break;
             }

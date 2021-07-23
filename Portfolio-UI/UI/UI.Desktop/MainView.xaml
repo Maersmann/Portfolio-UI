@@ -63,6 +63,11 @@
                     <Fluent:Button Header="Einahmen Ausgaben" LargeIcon="/resource/depot.png" Command="{Binding OpenEinAusgabenUebersichtCommand}"  Width="60" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
+            <Fluent:RibbonTabItem Header="Auswertungen">
+                <Fluent:RibbonGroupBox Header="Dividenden" >
+                    <Fluent:Button Header="Je Monat" LargeIcon="/resource/chart-line.png"  Command="{Binding OpenDivideneMonatAuswertungCommand}" Width="60" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" />
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
         </Fluent:Ribbon>
 
         <Grid Grid.Row="1">

@@ -17,6 +17,7 @@
     <None Remove="resource\aktien.png" />
     <None Remove="resource\bank.ico" />
     <None Remove="resource\bearbeiten.png" />
+    <None Remove="resource\chart-line.png" />
     <None Remove="resource\depot.png" />
     <None Remove="resource\derivate.png" />
     <None Remove="resource\entfernen.png" />
@@ -29,6 +30,7 @@
     <Resource Include="resource\aktien.png" />
     <Resource Include="resource\bank.ico" />
     <Resource Include="resource\bearbeiten.png" />
+    <Resource Include="resource\chart-line.png" />
     <Resource Include="resource\depot.png" />
     <Resource Include="resource\derivate.png" />
     <Resource Include="resource\entfernen.png" />
@@ -38,6 +40,7 @@
 
   <ItemGroup>
     <PackageReference Include="Fluent.Ribbon" Version="8.0.3" />
+    <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
     <PackageReference Include="MaterialDesignThemes" Version="4.0.0" />
     <PackageReference Include="MvvmLight" Version="5.4.1.1" />
     <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />

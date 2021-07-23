@@ -16,6 +16,9 @@
     <Color R="135" G="206" B="250" A="255" x:Key="colorUebersicht" />
     <SolidColorBrush Color="{StaticResource colorUebersicht}" x:Key="brushUebersicht" />
 
+    <Color R="111" G="126" B="149" A="125" x:Key="colorSecondHeaderBG" />
+    <SolidColorBrush Color="{StaticResource colorSecondHeaderBG}" x:Key="brushSecondHeader" />
+
 
     <Style x:Key="verticalCenter" TargetType="{x:Type TextBlock}">
         <Setter Property="VerticalAlignment" Value="Center" />

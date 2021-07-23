@@ -59,5 +59,21 @@ namespace Aktien.Logic.Core.Validierung.Base
 
             return validationErrors.Count == 0;
         }
+
+        public bool ValidateZahl(int? zahl, out ICollection<string> validationErrors)
+        {
+            validationErrors = new List<String>();
+
+            if (!zahl.HasValue)
+                validationErrors.Add("Keine Zahl hinterlegt");
+
+            if (zahl == 0)
+                validationErrors.Add("Die Zahl darf nicht 0 sein");
+
+            if (zahl < 0)
+                validationErrors.Add("Die Zahl zu niedrig");
+
+            return validationErrors.Count == 0;
+        }
     }
 }

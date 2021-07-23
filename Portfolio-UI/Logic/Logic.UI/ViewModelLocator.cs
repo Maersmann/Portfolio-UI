@@ -29,6 +29,7 @@ using Aktien.Logic.UI.DerivateViewModels;
 using Aktien.Logic.UI.OptionenViewModels;
 using Logic.UI.SteuerViewModels;
 using Logic.UI.KonfigurationViewModels;
+using Logic.UI.AuswertungViewModels;
 
 namespace Aktien.Logic.UI
 {
@@ -119,6 +120,7 @@ namespace Aktien.Logic.UI
         public SteuerStammdatenViewModel SteuerStammdaten => new SteuerStammdatenViewModel();
         public BackendSettingsViewModel BackendSettings => ServiceLocator.Current.GetInstance<BackendSettingsViewModel>();
         public KonfigruationViewModel Konfigruation => new KonfigruationViewModel();
+        public DividendeMonatAuswertungViewModel DividendeMonatAuswertung => new DividendeMonatAuswertungViewModel();
         public static void Cleanup()
         {
 
