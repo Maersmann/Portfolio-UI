@@ -42,8 +42,18 @@ namespace Aktien.Logic.UI.ETFViewModels
                 if (resp.IsSuccessStatusCode)
                     itemList = await resp.Content.ReadAsAsync<ObservableCollection<ETFModel>>();
             }
-            this.RaisePropertyChanged("ItemList");
+            base.LoadData();
         }
+
+        protected override bool OnFilterTriggered(object item)
+        {
+            if (item is ETFModel wertpapier)
+            {
+                return wertpapier.Name.ToLower().Contains(filtertext.ToLower());
+            }
+            return true;
+        }
+
 
         #region Binding
         public override ETFModel SelectedItem
@@ -57,6 +67,17 @@ namespace Aktien.Logic.UI.ETFViewModels
                 {
                     Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = selectedItem.ID, WertpapierTyp = selectedItem.WertpapierTyp }, messageToken);
                 }
+            }
+        }
+
+        public string FilterText
+        {
+            get => filtertext;
+            set
+            {
+                filtertext = value;
+                RaisePropertyChanged();
+                _customerView.Refresh();
             }
         }
 
