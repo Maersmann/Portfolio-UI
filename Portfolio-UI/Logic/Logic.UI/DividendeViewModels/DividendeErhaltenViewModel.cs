@@ -288,6 +288,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
             if (confirmed)
             { 
                 data.SteuergruppeID = id;
+                data.Steuer = new SteuergruppeModel { Steuern = new List<SteuerModel>() };
                 if (GlobalVariables.ServerIsOnline)
                 {
                     HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/Steuern?steuergruppeid={id}");
