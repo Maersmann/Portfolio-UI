@@ -36,23 +36,34 @@ namespace Aktien.Logic.UI.WertpapierViewModels
             OpenNeueDividendeCommand = new DelegateCommand(this.ExecuteOpenNeueDividendeCommand, this.CanExecuteCommand);
         }
 
-        public async override void LoadData()
+        public override async void LoadData()
         {
             if ( GlobalVariables.ServerIsOnline)
-            { 
+            {
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+"/api/Wertpapier?aktiv=true");
                 if (resp.IsSuccessStatusCode)
+                {
                     itemList = await resp.Content.ReadAsAsync<ObservableCollection<WertpapierModel>>();
+                }
             }
 
-            this.RaisePropertyChanged("ItemList");
+            base.LoadData();
+        }
+
+        protected override bool OnFilterTriggered(object item)
+        {
+            if (item is WertpapierModel wertpapier)
+            {
+                return wertpapier.Name.ToLower().Contains(filtertext.ToLower());
+            }
+            return true;
         }
 
 
         #region Bindings
-        public override WertpapierModel SelectedItem 
+        public override WertpapierModel SelectedItem
         { 
-            get => base.SelectedItem; 
+            get => base.SelectedItem;
             set 
             {
                 base.SelectedItem = value;
@@ -62,6 +73,17 @@ namespace Aktien.Logic.UI.WertpapierViewModels
                 {
                     Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = selectedItem.ID, WertpapierTyp = selectedItem.WertpapierTyp }, messageToken);
                 }
+            }
+        }
+
+        public string FilterText
+        {
+            get => filtertext;
+            set
+            {
+                filtertext = value;
+                RaisePropertyChanged();
+                _customerView.Refresh();
             }
         }
 

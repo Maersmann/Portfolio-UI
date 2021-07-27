@@ -14,6 +14,7 @@ namespace Aktien.Logic.UI.BaseViewModels
 {
     public class ViewModelAuswahl<T> : ViewModelLoadData<T>
     {
+        
         public ViewModelAuswahl()
         {
             itemList = new ObservableCollection<T>();

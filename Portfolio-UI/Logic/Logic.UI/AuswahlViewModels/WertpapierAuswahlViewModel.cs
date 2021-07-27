@@ -16,13 +16,13 @@ namespace Aktien.Logic.UI.AuswahlViewModels
 {
     public class WertpapierAuswahlViewModel : ViewModelAuswahl<WertpapierAuswahlModel>
     {
-        private string filtertext;
+        
         private Action<bool, int> Callback;
-        private WertpapierTypes WertpapierTypes;  
+        private WertpapierTypes WertpapierTypes;
         public WertpapierAuswahlViewModel()
         {
             Title = "Auswahl Wertpapier";
-            filtertext = "";
+            
             WertpapierTypes = WertpapierTypes.none;
             RegisterAktualisereViewMessage(StammdatenTypes.aktien);
         }
@@ -49,7 +49,7 @@ namespace Aktien.Logic.UI.AuswahlViewModels
                 {
                     itemList = await resp.Content.ReadAsAsync<ObservableCollection<WertpapierAuswahlModel>>();
                 }
-            }          
+            }       
             base.LoadData();
         }
 
@@ -66,13 +66,13 @@ namespace Aktien.Logic.UI.AuswahlViewModels
         #region Bindings
         public bool CanAddNewItem => WertpapierTypes != WertpapierTypes.none;
 
-        public String FilterText
+        public string FilterText
         {
-            get => this.filtertext;
+            get => filtertext;
             set
             {
-                this.filtertext = value;
-                this.RaisePropertyChanged();
+                filtertext = value;
+                RaisePropertyChanged();
                 _customerView.Refresh();
             }
         }

@@ -16,6 +16,7 @@ namespace Aktien.Logic.UI.BaseViewModels
 {
     public class ViewModelLoadData<T> : ViewModelBasis
     {
+        protected string filtertext;
         private StammdatenTypes typ;
         protected ICollectionView _customerView;
         protected ObservableCollection<T> itemList;
@@ -28,6 +29,7 @@ namespace Aktien.Logic.UI.BaseViewModels
             itemList = new ObservableCollection<T>();
             _customerView = CollectionViewSource.GetDefaultView(ItemList);
             _customerView.Filter = OnFilterTriggered;
+            filtertext = "";
         }
 
         private void ReceiveAktualisiereViewMessage(AktualisiereViewMessage m)
