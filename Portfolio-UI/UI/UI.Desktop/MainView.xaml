@@ -68,9 +68,11 @@
                     <Fluent:Button Header="Monat" LargeIcon="/resource/chart-line.png"  Command="{Binding OpenDivideneMonatAuswertungCommand}" Width="60" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" />
                     <Fluent:Button Header="Monat Jahresvergleich" LargeIcon="/resource/chart-bar.png"  Command="{Binding OpenDivideneMonatJahresvergleichAuswertungCommand}" Width="100" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" />
                 </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Steuerarten" >
+                    <Fluent:Button Header="Monat" LargeIcon="/resource/chart-line.png"  Command="{Binding OpenSteuerartMonatAuswertungCommand}" Width="60" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" />
+                </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="Steuern" >
-                    <Fluent:Button Header="Monat" LargeIcon="/resource/chart-line.png"  Command="{Binding OpenSteuerMonatAuswertungCommand}" Width="60" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" />
-                    <Fluent:Button Header="Monat Jahresvergleich" LargeIcon="/resource/chart-bar.png"  Command="{Binding OpenDivideneMonatJahresvergleichAuswertungCommand}" Width="100" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" />
+                    <Fluent:Button Header="Monat Jahresvergleich" LargeIcon="/resource/chart-bar.png"  Command="{Binding OpenSteuerMonatJahresvergleichAuswertungCommand}" Width="100" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
         </Fluent:Ribbon>

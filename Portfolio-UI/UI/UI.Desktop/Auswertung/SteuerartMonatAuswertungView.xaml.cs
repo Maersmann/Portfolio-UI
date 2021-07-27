@@ -16,9 +16,9 @@ namespace UI.Desktop.Auswertung
     /// <summary>
     /// Interaktionslogik für SteuerMonatAuswertungView.xaml
     /// </summary>
-    public partial class SteuerMonatAuswertungView : UserControl
+    public partial class SteuerartMonatAuswertungView : UserControl
     {
-        public SteuerMonatAuswertungView()
+        public SteuerartMonatAuswertungView()
         {
             InitializeComponent();
         }

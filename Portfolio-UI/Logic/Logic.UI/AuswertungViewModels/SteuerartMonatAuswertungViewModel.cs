@@ -36,7 +36,7 @@ namespace Logic.UI.AuswertungViewModels
 
         private async void ExcecuteLoadDataCommand()
         {
-            HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/auswertung/steuern/Monate?jahrVon={jahrvon}&jahrBis={jahrbis}");
+            HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/auswertung/steuern/Steuerart/Monate?jahrVon={jahrvon}&jahrBis={jahrbis}");
             if (resp.IsSuccessStatusCode)
             {
                 ItemList = await resp.Content.ReadAsAsync<List<SteuerartMonatAuswertungModel>>();
