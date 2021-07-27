@@ -45,7 +45,16 @@ namespace Aktien.Logic.UI.AktieViewModels
                 if (resp.IsSuccessStatusCode)
                     itemList = await resp.Content.ReadAsAsync<ObservableCollection<AktienModel>>();
             }
-            this.RaisePropertyChanged("ItemList");
+            base.LoadData();
+        }
+
+        protected override bool OnFilterTriggered(object item)
+        {
+            if (item is AktienModel wertpapier)
+            {
+                return wertpapier.Name.ToLower().Contains(filtertext.ToLower());
+            }
+            return true;
         }
 
         #region Binding
@@ -61,6 +70,17 @@ namespace Aktien.Logic.UI.AktieViewModels
                 {
                     Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = selectedItem.ID, WertpapierTyp = WertpapierTypes.Aktie }, messageToken);
                 }
+            }
+        }
+
+        public string FilterText
+        {
+            get => filtertext;
+            set
+            {
+                filtertext = value;
+                RaisePropertyChanged();
+                _customerView.Refresh();
             }
         }
 
