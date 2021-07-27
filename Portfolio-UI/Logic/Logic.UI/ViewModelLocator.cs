@@ -121,6 +121,7 @@ namespace Aktien.Logic.UI
         public BackendSettingsViewModel BackendSettings => ServiceLocator.Current.GetInstance<BackendSettingsViewModel>();
         public KonfigruationViewModel Konfigruation => new KonfigruationViewModel();
         public DividendeMonatAuswertungViewModel DividendeMonatAuswertung => new DividendeMonatAuswertungViewModel();
+        public DividendeMonatJahresVergleichAuswertungViewModel DividendeMonatJahresVergleichAuswertung => new DividendeMonatJahresVergleichAuswertungViewModel();
         public static void Cleanup()
         {
 

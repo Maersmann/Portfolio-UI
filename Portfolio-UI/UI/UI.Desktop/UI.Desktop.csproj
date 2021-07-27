@@ -17,6 +17,7 @@
     <None Remove="resource\aktien.png" />
     <None Remove="resource\bank.ico" />
     <None Remove="resource\bearbeiten.png" />
+    <None Remove="resource\chart-bar.png" />
     <None Remove="resource\chart-line.png" />
     <None Remove="resource\depot.png" />
     <None Remove="resource\derivate.png" />
@@ -30,6 +31,7 @@
     <Resource Include="resource\aktien.png" />
     <Resource Include="resource\bank.ico" />
     <Resource Include="resource\bearbeiten.png" />
+    <Resource Include="resource\chart-bar.png" />
     <Resource Include="resource\chart-line.png" />
     <Resource Include="resource\depot.png" />
     <Resource Include="resource\derivate.png" />

@@ -153,6 +153,12 @@
       <Component Id="INIFileParser.dll">
         <File Source="$(var.UI.Desktop.TargetDir)INIFileParser.dll" />
       </Component>
+      <Component Id="LiveCharts.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)LiveCharts.dll" />
+      </Component>
+      <Component Id="LiveCharts.Wpf.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)LiveCharts.Wpf.dll" />
+      </Component> 
     </ComponentGroup>
 	</Fragment>
 </Wix>
