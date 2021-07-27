@@ -122,6 +122,7 @@ namespace Aktien.Logic.UI
         public KonfigruationViewModel Konfigruation => new KonfigruationViewModel();
         public DividendeMonatAuswertungViewModel DividendeMonatAuswertung => new DividendeMonatAuswertungViewModel();
         public DividendeMonatJahresVergleichAuswertungViewModel DividendeMonatJahresVergleichAuswertung => new DividendeMonatJahresVergleichAuswertungViewModel();
+        public SteuerartMonatAuswertungViewModel SteuerMonatAuswertung => new SteuerartMonatAuswertungViewModel();
         public static void Cleanup()
         {
 

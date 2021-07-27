@@ -27,7 +27,8 @@ namespace Aktien.Data.Types
             viewAusgabenStammdaten,
             viewDividendeStammdaten,
             viewDivideneMonatAuswertung,
-        viewDivideneMonatJahresauswertungAuswertung
+        viewDivideneMonatJahresauswertungAuswertung,
+        viewSteuerMonatAuswertung
     }
 
 }

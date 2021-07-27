@@ -2,6 +2,7 @@
 using Aktien.Logic.Core.Validierung.Base;
 using Data.Model.AuswertungModels;
 using LiveCharts;
+using LiveCharts.Definitions.Series;
 using LiveCharts.Wpf;
 using Logic.UI.BaseViewModels;
 using Prism.Commands;
@@ -15,16 +16,16 @@ using System.Windows.Input;
 
 namespace Logic.UI.AuswertungViewModels
 {
-    public class DividendeMonatJahresVergleichAuswertungViewModel : ViewModelAuswertung<DividendeMonatJahresVergleichAuswertungModel>
+    public class SteuerartMonatAuswertungViewModel : ViewModelAuswertung<SteuerartMonatAuswertungModel>
     {
         private int jahrvon;
         private int jahrbis;
-        public DividendeMonatJahresVergleichAuswertungViewModel()
+        public SteuerartMonatAuswertungViewModel()
         {
-            Title = "Auswertung Dividende je Monat - Jahresvergleich";
+            Title = "Auswertung Steuerart je Monat";
             jahrvon = DateTime.Now.Year;
             jahrbis = DateTime.Now.Year;
-            LoadDataCommand = new DelegateCommand(ExcecuteLoadDataCommand, CanExcecuteLoadDataCommand);
+            LoadDataCommand = new DelegateCommand(this.ExcecuteLoadDataCommand, this.CanExcecuteLoadDataCommand);
             Formatter = value => value.ToString("0.## €");
         }
 
@@ -35,35 +36,35 @@ namespace Logic.UI.AuswertungViewModels
 
         private async void ExcecuteLoadDataCommand()
         {
-            HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/auswertung/dividenden/Monate/Jahresvergleich?jahrVon={jahrvon}&jahrBis={jahrbis}");
+            HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/auswertung/steuern/Monate?jahrVon={jahrvon}&jahrBis={jahrbis}");
             if (resp.IsSuccessStatusCode)
             {
-                ItemList = await resp.Content.ReadAsAsync<List<DividendeMonatJahresVergleichAuswertungModel>>();
+                ItemList = await resp.Content.ReadAsAsync<List<SteuerartMonatAuswertungModel>>();
 
-                Labels = new string[12];
+                Labels = new string[ItemList.Count];
                 int index = 0;
                 SeriesCollection = new SeriesCollection();
                 ItemList.ToList().ForEach(item =>
                 {
-                    ColumnSeries coloumn = new ColumnSeries
-                    {
-                        Title = item.Jahr.ToString(),
-                        Values = new ChartValues<double>()
-                    };
-                    item.Monatswerte.ToList().ForEach(jw =>
-                    {
-                        coloumn.Values.Add(jw.Betrag);
-                    });
-                    SeriesCollection.Add(coloumn);
+                    item.Steuerarten.ToList().ForEach(steuer =>{
+                        ISeriesView StackedColoumn = SeriesCollection.ToList().Find(series => series.Title.Equals(steuer.Steuerart));
+                        if (StackedColoumn == null)
+                        {
+                            StackedColoumn = new StackedColumnSeries
+                            {
+                                Values = new ChartValues<double>(),
+                                Title = steuer.Steuerart
+                            };
+                            SeriesCollection.Add(StackedColoumn);
+                        }
 
+                        StackedColoumn.Values.Add(steuer.Betrag);
+                    });
+
+                    Labels[index] = item.Datum.ToString("MMMM yyyy", CultureInfo.CurrentCulture);
                     
                     index++;
                 });
-
-                for (int monat = 1; monat <= 12; monat++)
-                {
-                    Labels[monat - 1] = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(monat);
-                }
 
                 RaisePropertyChanged(nameof(SeriesCollection));
                 RaisePropertyChanged(nameof(Labels));
@@ -101,7 +102,7 @@ namespace Logic.UI.AuswertungViewModels
         #region Validate
         private bool ValidatZahl(int? zahl, string fieldname)
         {
-            BaseValidierung Validierung = new BaseValidierung();
+            var Validierung = new BaseValidierung();
 
             bool isValid = Validierung.ValidateAnzahl(zahl, out ICollection<string> validationErrors);
 
