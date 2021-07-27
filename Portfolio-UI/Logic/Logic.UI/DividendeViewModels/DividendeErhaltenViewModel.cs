@@ -33,6 +33,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
         private string dividendetext;
         private Double betrag;
         private bool neueDividendeNichtGespeichert;
+        private bool neueSteuergruppeErstellt;
 
         public DividendeErhaltenViewModel()
         {
@@ -259,7 +260,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
         }
         protected override async void ExecuteCloseCommand()
         {         
-            if (data.SteuergruppeID.HasValue && state.Equals(State.Neu) && neueDividendeNichtGespeichert)
+            if (neueSteuergruppeErstellt)
             {
                 if (GlobalVariables.ServerIsOnline)
                 {
@@ -286,7 +287,9 @@ namespace Aktien.Logic.UI.DividendeViewModels
         private async void OpenSteuernUebersichtMessageCallback(bool confirmed, int id)
         {
             if (confirmed)
-            { 
+            {
+                if (!data.SteuergruppeID.HasValue)
+                    neueSteuergruppeErstellt = true;
                 data.SteuergruppeID = id;
                 data.Steuer = new SteuergruppeModel { Steuern = new List<SteuerModel>() };
                 if (GlobalVariables.ServerIsOnline)
@@ -327,6 +330,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
         public override void Cleanup()
         {
             neueDividendeNichtGespeichert = true;
+            neueSteuergruppeErstellt = false;
             data = new DividendeErhaltenStammdatenModel { Steuer = new SteuergruppeModel { Steuern = new List<SteuerModel>() } };
             dividendetext = "";
             DividendeID = -1;

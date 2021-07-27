@@ -73,6 +73,7 @@
                     <Fluent:Button Header="Monat" LargeIcon="/resource/chart-bell-curve-cumulative.png"  Command="{Binding OpenSteuerartMonatAuswertungCommand}" Width="60" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" />
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="Steuern" >
+                    <Fluent:Button Header="Monat" LargeIcon="/resource/chart-areaspline.png"  Command="{Binding OpenSteuerMonatAuswertungCommand}" Width="100" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" />
                     <Fluent:Button Header="Monat Jahresvergleich" LargeIcon="/resource/chart-histogram.png"  Command="{Binding OpenSteuerMonatJahresvergleichAuswertungCommand}" Width="100" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>

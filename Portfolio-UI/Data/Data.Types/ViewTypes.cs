@@ -30,7 +30,8 @@ namespace Aktien.Data.Types
         viewDivideneMonatJahresauswertungAuswertung,
         viewSteuerartMonatAuswertung,
         viewSteuerMonatJahresAuswertung,
-        viewDivideneWertpapierAuswertung
+        viewDivideneWertpapierAuswertung,
+        viewSteuerMonatAuswertung
     }
 
 }

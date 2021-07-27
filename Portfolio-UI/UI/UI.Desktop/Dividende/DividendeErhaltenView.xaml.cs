@@ -82,7 +82,7 @@ namespace Aktien.UI.Desktop.Dividende
                 if(m.SteuergruppeID.HasValue)
                     model.LoadData(m.SteuergruppeID.Value);
                 model.SetCallback(m.Callback);
-                model.setHerkunftTyp(SteuerHerkunftTyp.shtDividende);               
+                model.setHerkunftTyp(SteuerHerkunftTyp.shtDividende);             
             }
             Window window = new Window
             {
