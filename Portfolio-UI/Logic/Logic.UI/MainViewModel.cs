@@ -33,6 +33,7 @@ namespace Aktien.Logic.UI
             OpenDivideneMonatJahresvergleichAuswertungCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewDivideneMonatJahresauswertungAuswertung));
             OpenSteuerartMonatAuswertungCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSteuerartMonatAuswertung));
             OpenSteuerMonatJahresvergleichAuswertungCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSteuerMonatJahresAuswertung));
+            OpenDivideneWertpapierAuswertungCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewDivideneWertpapierAuswertung));
         }
 
         public ICommand OpenAktienUebersichtCommand { get; private set; }
@@ -46,6 +47,7 @@ namespace Aktien.Logic.UI
         public ICommand OpenDivideneMonatJahresvergleichAuswertungCommand { get; private set; }
         public ICommand OpenSteuerartMonatAuswertungCommand { get; private set; }
         public ICommand OpenSteuerMonatJahresvergleichAuswertungCommand { get; private set; }
+        public ICommand OpenDivideneWertpapierAuswertungCommand { get; private set; }
         public bool MenuIsEnabled => GlobalVariables.ServerIsOnline;
 
         private void ExecuteOpenViewCommand(ViewType viewType)

@@ -119,6 +119,9 @@ namespace Aktien.UI.Desktop
                 case ViewType.viewSteuerMonatJahresAuswertung:
                     Container.NavigationService.Navigate(new SteuerMonatJahresVergleichAuswertungView());  
                     break;
+                case ViewType.viewDivideneWertpapierAuswertung:
+                    Container.NavigationService.Navigate(new DividendeWertpapierAuswertungView());
+                    break;
                 default:
                     break;
             }
