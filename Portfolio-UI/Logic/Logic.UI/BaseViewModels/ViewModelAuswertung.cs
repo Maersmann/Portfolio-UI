@@ -18,7 +18,7 @@ namespace Logic.UI.BaseViewModels
         }
 
         public T Data { get; set; }
-        public IList<T> ItemList;
+        public IList<T> ItemList { get; set; }
         public SeriesCollection SeriesCollection { get; set; }
         public Func<double, string> Formatter { get; set; }
         public string[] Labels { get; set; }

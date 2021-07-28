@@ -378,7 +378,7 @@ namespace Aktien.Logic.UI.DepotViewModels
         #endregion
 
         #region Callbacks
-        private async void OpenSteuernUebersichtMessageCallback(bool confirmed, int id)
+        private async void OpenSteuernUebersichtMessageCallback(bool confirmed, int? id)
         {
             if (confirmed)
             {

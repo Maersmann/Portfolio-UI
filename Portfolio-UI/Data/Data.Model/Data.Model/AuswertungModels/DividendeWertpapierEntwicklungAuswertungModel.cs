@@ -15,19 +15,14 @@ namespace Data.Model.AuswertungModels
         {
             get
             {
-                switch (WertpapierTyp)
+                return WertpapierTyp switch
                 {
-                    case WertpapierTypes.Aktie: 
-                        return "Aktie";
-                    case WertpapierTypes.none:
-                        return "";
-                    case WertpapierTypes.ETF:
-                        return "ETF";
-                    case WertpapierTypes.Derivate:
-                        return "Derivate";
-                    default:
-                        return "";
-                }
+                    WertpapierTypes.Aktie => "Aktie",
+                    WertpapierTypes.none => "",
+                    WertpapierTypes.ETF => "ETF",
+                    WertpapierTypes.Derivate => "Derivate",
+                    _ => "",
+                };
             }
         }
 

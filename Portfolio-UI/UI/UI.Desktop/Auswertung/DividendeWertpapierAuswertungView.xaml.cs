@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LiveCharts;
+using LiveCharts.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -21,6 +23,11 @@ namespace UI.Desktop.Auswertung
         public DividendeWertpapierAuswertungView()
         {
             InitializeComponent();
+        }
+
+        private void PieChart_DataClick(object sender, ChartPoint chartPoint)
+        {
+            MessageBox.Show(chartPoint.Y +"€ Dividende von " + chartPoint.SeriesView.Title);
         }
     }
 }
