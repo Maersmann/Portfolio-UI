@@ -39,9 +39,14 @@ namespace Aktien.Logic.UI.DerivateViewModels
                     Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
                     Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
                 }
-                else if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
+                else if ((int)resp.StatusCode == 904)
                 {
                     SendExceptionMessage("Derivate ist schon vorhanden");
+                    return;
+                }
+                else
+                {
+                    SendExceptionMessage("Derivate konnte nicht gespeichert werden.");
                     return;
                 }
             }

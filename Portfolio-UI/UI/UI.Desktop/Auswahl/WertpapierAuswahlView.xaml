@@ -8,7 +8,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         WindowStartupLocation="CenterScreen"
         x:Name="Auswahl"
-        Height="400" SizeToContent="Width"
+        Height="400" SizeToContent="Width" ShowInTaskbar="False"
         DataContext="{Binding WertpapierAuswahl ,Source={StaticResource Locator}}">
     <Grid>
         <Grid.RowDefinitions>
@@ -21,17 +21,37 @@
             <Label HorizontalAlignment="Center" Width="auto" Content="{Binding Title, Mode=OneWay}" />
         </materialDesign:Card>
 
-        <DataGrid Grid.Row="1" Margin="5" ItemsSource="{Binding ItemList}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="false" IsReadOnly="True">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="auto"/>
-                <DataGridTextColumn Header="ISIN" Binding="{Binding ISIN}" Width="auto"/>
-                <DataGridTextColumn Header="Wertpapier-Art" Binding="{Binding WertpapierTyp}" Width="auto"/>
-            </DataGrid.Columns>
-        </DataGrid>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50px"/>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-        <Button Grid.Row="1" DockPanel.Dock="Right" Style="{DynamicResource MaterialDesignFloatingActionButton}" Command="{Binding NewItemCommand, Mode=OneWay}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,25,25" Height="40" Width="40" IsEnabled="{Binding CanAddNewItem}">
-            <Image Source="../Resource/add.png" Stretch="None"/>
-        </Button>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50px"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">Suche:</Label>
+                <TextBox Grid.Column="1" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center" Width="Auto"  Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }" Margin="10,10" Cursor="IBeam" >
+                    <materialDesign:HintAssist.Hint>Name</materialDesign:HintAssist.Hint>
+                </TextBox>
+            </Grid>
+
+            <DataGrid Grid.Row="1" Margin="5" ItemsSource="{Binding ItemCollection}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="false" IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="auto"/>
+                    <DataGridTextColumn Header="ISIN" Binding="{Binding ISIN}" Width="auto"/>
+                    <DataGridTextColumn Header="Wertpapier-Art" Binding="{Binding WertpapierTyp}" Width="auto"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <Button Grid.Row="1" DockPanel.Dock="Right" Style="{DynamicResource MaterialDesignFloatingActionButton}" Command="{Binding NewItemCommand, Mode=OneWay}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,25,25" Height="40" Width="40" IsEnabled="{Binding CanAddNewItem}">
+                <Image Source="../Resource/add.png" Stretch="None"/>
+            </Button>
+        </Grid>
+
+        
 
         <materialDesign:Card Grid.Row="2"  >
             <DockPanel  LastChildFill="False" >

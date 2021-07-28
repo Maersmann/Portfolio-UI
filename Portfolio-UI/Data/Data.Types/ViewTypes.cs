@@ -25,7 +25,14 @@ namespace Aktien.Data.Types
             viewDerivateStammdaten,
             viewEinnahmenStammdaten,
             viewAusgabenStammdaten,
-        viewDividendeStammdaten
+            viewDividendeStammdaten,
+            viewDivideneMonatAuswertung,
+        viewDivideneMonatJahresauswertungAuswertung,
+        viewSteuerartMonatAuswertung,
+        viewSteuerMonatJahresAuswertung,
+        viewDivideneWertpapierAuswertung,
+        viewSteuerMonatAuswertung,
+        viewOpenDividendeWertpapierEntwicklungAuswertung
     }
 
 }

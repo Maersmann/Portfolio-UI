@@ -6,7 +6,7 @@
     <UseWPF>true</UseWPF>
     <ApplicationIcon>resource\bank.ico</ApplicationIcon>
     <AssemblyVersion>2.1.0.0</AssemblyVersion>
-    <Version>2.1.3</Version>
+    <Version>2.2.0</Version>
     <RootNamespace>UI.Desktop</RootNamespace>
     <AssemblyName>Portfolio</AssemblyName>
     <Authors>Märsmann</Authors>
@@ -17,6 +17,13 @@
     <None Remove="resource\aktien.png" />
     <None Remove="resource\bank.ico" />
     <None Remove="resource\bearbeiten.png" />
+    <None Remove="resource\chart-areaspline.png" />
+    <None Remove="resource\chart-bar.png" />
+    <None Remove="resource\chart-bell-curve-cumulative.png" />
+    <None Remove="resource\chart-bell-curve.png" />
+    <None Remove="resource\chart-histogram.png" />
+    <None Remove="resource\chart-line.png" />
+    <None Remove="resource\chart-pie.png" />
     <None Remove="resource\depot.png" />
     <None Remove="resource\derivate.png" />
     <None Remove="resource\entfernen.png" />
@@ -29,6 +36,13 @@
     <Resource Include="resource\aktien.png" />
     <Resource Include="resource\bank.ico" />
     <Resource Include="resource\bearbeiten.png" />
+    <Resource Include="resource\chart-areaspline.png" />
+    <Resource Include="resource\chart-bar.png" />
+    <Resource Include="resource\chart-bell-curve-cumulative.png" />
+    <Resource Include="resource\chart-bell-curve.png" />
+    <Resource Include="resource\chart-histogram.png" />
+    <Resource Include="resource\chart-line.png" />
+    <Resource Include="resource\chart-pie.png" />
     <Resource Include="resource\depot.png" />
     <Resource Include="resource\derivate.png" />
     <Resource Include="resource\entfernen.png" />
@@ -38,6 +52,7 @@
 
   <ItemGroup>
     <PackageReference Include="Fluent.Ribbon" Version="8.0.3" />
+    <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
     <PackageReference Include="MaterialDesignThemes" Version="4.0.0" />
     <PackageReference Include="MvvmLight" Version="5.4.1.1" />
     <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />

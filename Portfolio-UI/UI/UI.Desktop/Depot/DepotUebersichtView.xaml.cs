@@ -68,7 +68,9 @@ namespace Aktien.UI.Desktop.Depot
                 Content = view,
                 SizeToContent = SizeToContent.WidthAndHeight,
                 ResizeMode = ResizeMode.NoResize,
-                WindowStartupLocation = WindowStartupLocation.CenterScreen
+                WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                ShowInTaskbar = false,
+                Owner = Application.Current.MainWindow
             };
 
             window.ShowDialog();

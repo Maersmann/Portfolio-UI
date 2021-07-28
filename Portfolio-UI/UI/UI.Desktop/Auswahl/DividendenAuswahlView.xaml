@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         x:Name="Auswahl"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        WindowStartupLocation="CenterScreen"
+        WindowStartupLocation="CenterScreen" ShowInTaskbar="False"
         Height="400" SizeToContent="Width"
         DataContext="{Binding DividendenAuswahl ,Source={StaticResource Locator}}" Unloaded="Window_Unloaded">
     <Grid>

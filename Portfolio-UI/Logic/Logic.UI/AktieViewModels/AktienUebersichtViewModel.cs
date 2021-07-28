@@ -45,7 +45,16 @@ namespace Aktien.Logic.UI.AktieViewModels
                 if (resp.IsSuccessStatusCode)
                     itemList = await resp.Content.ReadAsAsync<ObservableCollection<AktienModel>>();
             }
-            this.RaisePropertyChanged("ItemList");
+            base.LoadData();
+        }
+
+        protected override bool OnFilterTriggered(object item)
+        {
+            if (item is AktienModel wertpapier)
+            {
+                return wertpapier.Name.ToLower().Contains(filtertext.ToLower());
+            }
+            return true;
         }
 
         #region Binding
@@ -64,6 +73,17 @@ namespace Aktien.Logic.UI.AktieViewModels
             }
         }
 
+        public string FilterText
+        {
+            get => filtertext;
+            set
+            {
+                filtertext = value;
+                RaisePropertyChanged();
+                _customerView.Refresh();
+            }
+        }
+
         public ICommand OpenNeueDividendeCommand { get; set; }
         #endregion
 
@@ -78,7 +98,7 @@ namespace Aktien.Logic.UI.AktieViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+$"/api/Wertpapier/{selectedItem.ID}");
-                if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
+                if ((int)resp.StatusCode == 905)
                 {
                     SendExceptionMessage("Aktie ist im Depot vorhanden.");
                     return;

@@ -16,7 +16,7 @@ namespace Logic.UI.SteuerViewModels
 {
     public class SteuernUebersichtViewModel : ViewModelUebersicht<SteuerModel>
     {
-        private Action<bool, int> callback;
+        private Action<bool, int?> callback;
         private int? steuergruppeID;
         private SteuerHerkunftTyp steuerherkunfttyp;
         private bool istVerknuepfungGespeichert;
@@ -37,7 +37,7 @@ namespace Logic.UI.SteuerViewModels
         }
         protected override int GetID() { return selectedItem.ID; }
         protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.steuer; }
-        public void SetCallback(Action<bool, int> callback)
+        public void SetCallback(Action<bool, int?> callback)
         {
             this.callback = callback;
         }
@@ -65,9 +65,12 @@ namespace Logic.UI.SteuerViewModels
                 HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL + $"/api/Steuern/{selectedItem.ID}");
                 if (!resp.IsSuccessStatusCode)
                 {
-                    SendExceptionMessage(await resp.Content.ReadAsStringAsync());
+                    SendExceptionMessage("Steuer konnte nicht gelöscht werden.");
                     return;
                 }
+                var respObj = await resp.Content.ReadAsAsync<bool>();
+                if (respObj)
+                    steuergruppeID = null;
 
             }
             SendInformationMessage("Steuer gelöscht");
@@ -79,7 +82,7 @@ namespace Logic.UI.SteuerViewModels
             if (steuergruppeID.HasValue)
                 callback(true, this.steuergruppeID.Value);
             else
-                callback(false, 0);
+                callback(false, null);
 
         }
 

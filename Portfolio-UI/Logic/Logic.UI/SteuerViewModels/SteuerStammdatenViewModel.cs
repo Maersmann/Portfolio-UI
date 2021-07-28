@@ -44,7 +44,8 @@ namespace Logic.UI.SteuerViewModels
                 if (resp.IsSuccessStatusCode)
                 {
                     Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());                
-                    this.steuergruppeid = await resp.Content.ReadAsAsync<int>();
+                    var respObj = await resp.Content.ReadAsAsync<SteuerModel>();
+                    steuergruppeid = respObj.SteuergruppeID;
                     Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage { ID = this.steuergruppeid }, GetStammdatenTyp()); 
                     Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.steuergruppe);
                 }

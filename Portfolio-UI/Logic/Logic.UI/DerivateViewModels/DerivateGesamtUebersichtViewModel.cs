@@ -40,7 +40,16 @@ namespace Aktien.Logic.UI.DerivateViewModels
                 if (resp.IsSuccessStatusCode)
                     itemList = await resp.Content.ReadAsAsync<ObservableCollection<DerivateModel>>();
             }
-            this.RaisePropertyChanged("ItemList");
+            base.LoadData();
+        }
+
+        protected override bool OnFilterTriggered(object item)
+        {
+            if (item is DerivateModel wertpapier)
+            {
+                return wertpapier.Name.ToLower().Contains(filtertext.ToLower());
+            }
+            return true;
         }
 
         #region Binding
@@ -56,6 +65,17 @@ namespace Aktien.Logic.UI.DerivateViewModels
                 }
             }
         }
+
+        public string FilterText
+        {
+            get => filtertext;
+            set
+            {
+                filtertext = value;
+                RaisePropertyChanged();
+                _customerView.Refresh();
+            }
+        }
         #endregion
 
         #region Commands
@@ -66,7 +86,7 @@ namespace Aktien.Logic.UI.DerivateViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/Wertpapier/{selectedItem.ID}");
-                if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
+                if ((int)resp.StatusCode == 905)
                 {
                     SendExceptionMessage("Derivate ist im Depot vorhanden.");
                     return;

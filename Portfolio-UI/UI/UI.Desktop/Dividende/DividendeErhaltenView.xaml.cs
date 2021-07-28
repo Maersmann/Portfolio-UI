@@ -43,7 +43,11 @@ namespace Aktien.UI.Desktop.Dividende
 
         private void ReceiveOpenDividendeProStueckAnpassenMessage(OpenDividendeProStueckAnpassenMessage m)
         {
-            var View = new DividendeProStueckAnpassenView();
+            var View = new DividendeProStueckAnpassenView()
+            {
+                Owner = Application.Current.MainWindow
+            };
+
             if (View.DataContext is DividendeProStueckAnpassenViewModel model)
             {
                 model.LoadData(m.DividendeID, m.Umrechnungskurs);
@@ -55,7 +59,10 @@ namespace Aktien.UI.Desktop.Dividende
 
         private void ReceiveOpenDividendeAuswahlMessage(OpenDividendenAuswahlMessage m)
         {
-            var view = new DividendenAuswahlView();
+            var view = new DividendenAuswahlView()
+            {
+                Owner = Application.Current.MainWindow
+            };
             if (view.DataContext is DividendenAuswahlViewModel model)
             {
                 model.OhneHinterlegteDividende = true;
@@ -68,13 +75,14 @@ namespace Aktien.UI.Desktop.Dividende
         private void ReceiveOpenSteuernUebersichtMessage(OpenSteuernUebersichtMessage m)
         {
             var view = new SteuernUebersichtView();
+
             if (view.DataContext is SteuernUebersichtViewModel model)
             {
                 model.IstVerknuepfungGespeichert(m.IstVerknuepfungGespeichert);
                 if(m.SteuergruppeID.HasValue)
                     model.LoadData(m.SteuergruppeID.Value);
                 model.SetCallback(m.Callback);
-                model.setHerkunftTyp(SteuerHerkunftTyp.shtDividende);               
+                model.setHerkunftTyp(SteuerHerkunftTyp.shtDividende);             
             }
             Window window = new Window
             {
@@ -82,7 +90,8 @@ namespace Aktien.UI.Desktop.Dividende
                 SizeToContent = SizeToContent.WidthAndHeight,
                 ResizeMode = ResizeMode.NoResize,
                 WindowStartupLocation = WindowStartupLocation.CenterScreen,
-                ShowInTaskbar = false
+                ShowInTaskbar = false,
+                Owner = Application.Current.MainWindow
             };
             window.ShowDialog();
 

@@ -12,33 +12,15 @@ using System.Windows.Input;
 
 namespace Aktien.Logic.UI.BaseViewModels
 {
-    public class ViewModelAuswahl<T> : ViewModelLoadData
+    public class ViewModelAuswahl<T> : ViewModelLoadData<T>
     {
+        
         public ViewModelAuswahl()
         {
             itemList = new ObservableCollection<T>();
             NewItemCommand = new RelayCommand(this.ExcecuteNewItemCommand);
         }
 
-        public virtual T SelectedItem
-        {
-            get
-            {
-                return selectedItem;
-            }
-            set
-            {
-                selectedItem = value;
-                this.RaisePropertyChanged();
-            }
-        }
-        public IEnumerable<T> ItemList
-        {
-            get
-            {
-                return itemList;
-            }
-        }
 
         protected virtual void ExcecuteNewItemCommand()
         {
@@ -47,8 +29,6 @@ namespace Aktien.Logic.UI.BaseViewModels
 
         public ICommand NewItemCommand { get; set; }
 
-        protected ObservableCollection<T> itemList;
-        protected T selectedItem;
         protected virtual StammdatenTypes GetStammdatenType() { return 0; }
     }
 }

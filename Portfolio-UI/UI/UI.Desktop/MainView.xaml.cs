@@ -29,6 +29,7 @@ using Aktien.UI.Desktop.Optionen;
 using UI.Desktop.Steuer;
 using Logic.Messages.Base;
 using UI.Desktop.Konfigruation;
+using UI.Desktop.Auswertung;
 
 namespace Aktien.UI.Desktop
 {
@@ -106,8 +107,31 @@ namespace Aktien.UI.Desktop
                     EinnahmenAusgabenUebersichtPage ??= new EinnahmenAusgabenUebersichtPage();
                     Container.NavigationService.Navigate(EinnahmenAusgabenUebersichtPage);
                     break;
+                case ViewType.viewDivideneMonatAuswertung:
+                    Container.NavigationService.Navigate(new DivideneMonatAuswertungView());
+                    break;
+                case ViewType.viewDivideneMonatJahresauswertungAuswertung:
+                    Container.NavigationService.Navigate(new DividendeMonatJahresVergleichAuswertungView());
+                    break;
+                case ViewType.viewSteuerartMonatAuswertung:
+                    Container.NavigationService.Navigate(new SteuerartMonatAuswertungView());
+                    break;
+                case ViewType.viewSteuerMonatJahresAuswertung:
+                    Container.NavigationService.Navigate(new SteuerMonatJahresVergleichAuswertungView());  
+                    break;
+                case ViewType.viewDivideneWertpapierAuswertung:
+                    Container.NavigationService.Navigate(new DividendeWertpapierAuswertungView());
+                    break;
+                case ViewType.viewSteuerMonatAuswertung:
+                    Container.NavigationService.Navigate(new SteuerMonatAuswertungView());
+                    break;
+                case ViewType.viewOpenDividendeWertpapierEntwicklungAuswertung:
+                    Container.NavigationService.Navigate(new DividendeWertpapierEntwicklungAuswertungView());
+                    break;                  
                 default:
                     break;
+
+                    
             }
         }
 
@@ -147,6 +171,7 @@ namespace Aktien.UI.Desktop
                 }
 
             }
+            view.Owner = this;
             view.ShowDialog();
         }
 

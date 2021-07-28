@@ -118,7 +118,7 @@ namespace Aktien.Logic.UI.DepotViewModels
                 }
                 else
                 {
-                    SendExceptionMessage(await resp.Content.ReadAsStringAsync());
+                    SendExceptionMessage("Ausgabe konnte nicht gespeichert werden.");
                     return;
                 }
             }

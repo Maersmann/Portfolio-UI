@@ -33,7 +33,11 @@ namespace Aktien.UI.Desktop.Dividende
 
         private void ReceiveOpenDividendeStammdatenMessage(OpenDividendeStammdatenMessage m)
         {
-            var view = new DividendeStammdatenView();
+            var view = new DividendeStammdatenView()
+            {
+                Owner = Application.Current.MainWindow
+            };
+
             if (view.DataContext is DividendeStammdatenViewModel model)
             {
                 model.WertpapierID = m.WertpapierID;

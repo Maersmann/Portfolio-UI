@@ -9,7 +9,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         WindowStartupLocation="CenterScreen"
         x:Name="view"
-
+        ShowInTaskbar="False"
         SizeToContent="WidthAndHeight"
         DataContext="{Binding Konfigruation ,Source={StaticResource Locator}}">
     

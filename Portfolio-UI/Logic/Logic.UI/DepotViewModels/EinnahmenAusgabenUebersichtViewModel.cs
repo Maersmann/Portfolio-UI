@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Aktien.Logic.UI.DepotViewModels
 {
-    public class EinnahmenAusgabenUebersichtViewModel : ViewModelLoadData
+    public class EinnahmenAusgabenUebersichtViewModel : ViewModelLoadData<EinnahmenAusgabenGesamtModel>
     {
         private EinnahmenAusgabenGesamtModel data;
 
