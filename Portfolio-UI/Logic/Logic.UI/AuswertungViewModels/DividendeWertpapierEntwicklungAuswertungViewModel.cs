@@ -1,8 +1,10 @@
 ﻿using Aktien.Logic.Core;
-using Aktien.Logic.Core.Validierung;
 using Aktien.Logic.Core.Validierung.Base;
+using Aktien.Logic.Messages.AuswahlMessages;
 using Data.Model.AuswertungModels;
-using GalaSoft.MvvmLight.Command;
+using Data.Types.AuswertungTypes;
+using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Messaging;
 using LiveCharts;
 using LiveCharts.Wpf;
 using Logic.UI.BaseViewModels;
@@ -17,36 +19,41 @@ using System.Windows.Input;
 
 namespace Logic.UI.AuswertungViewModels
 {
-    public class DividendeMonatAuswertungViewModel : ViewModelAuswertung<DividendeMonatAuswertungModel>
+    public class DividendeWertpapierEntwicklungAuswertungViewModel : ViewModelAuswertung<DividendeWertpapierEntwicklungAuswertungModel>
     {
         private int jahrvon;
         private int jahrbis;
-        public DividendeMonatAuswertungViewModel()
+        private DividendenBetragTyp typ;
+        private int wertpapierID;
+        public DividendeWertpapierEntwicklungAuswertungViewModel()
         {
-            Title = "Auswertung Dividende je Monat";
+            Data = new DividendeWertpapierEntwicklungAuswertungModel();
+            Title = "Auswertung Entwicklung Dividende Wertpapier";
             jahrvon = DateTime.Now.Year;
             jahrbis = DateTime.Now.Year;
-            LoadDataCommand = new DelegateCommand(this.ExcecuteLoadDataCommand, this.CanExcecuteLoadDataCommand);
+            typ = DividendenBetragTyp.NachSteuer;
+            wertpapierID = 0;
+            AuswahlCommand = new RelayCommand(() => ExcecuteAuswahlCommand());
             Formatter = value => value.ToString("0.## €");
         }
 
-        private bool CanExcecuteLoadDataCommand()
+        private void ExcecuteAuswahlCommand()
         {
-            return ValidationErrors.Count == 0;
+            Messenger.Default.Send<OpenWertpapierAuswahlMessage>(new OpenWertpapierAuswahlMessage(OpenOpenWertpapierAuswahlMessageCallback), "DividendeWertpapierEntwicklung");
         }
 
-        private async void ExcecuteLoadDataCommand()
+        private async void LoadData()
         {
-            HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/auswertung/dividenden/Monate?jahrVon={jahrvon}&jahrBis={jahrbis}");
+            HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/auswertung/dividenden/Wertpapiere/{wertpapierID}/Entwicklung?jahrVon={jahrvon}&jahrBis={jahrbis}&typ={typ}");
             if (resp.IsSuccessStatusCode)
             {
-                ItemList = await resp.Content.ReadAsAsync<List<DividendeMonatAuswertungModel>>();
+                Data = await resp.Content.ReadAsAsync<DividendeWertpapierEntwicklungAuswertungModel>();
 
                 ChartValues<double> values = new ChartValues<double>();
-                Labels = new string[ItemList.Count];
+                Labels = new string[Data.Betraege.Count];
                 int index = 0;
-                
-                ItemList.ToList().ForEach(a =>
+
+                Data.Betraege.ToList().ForEach(a =>
                 {
                     values.Add(a.Betrag);
                     Labels[index] = a.Datum.ToString("MMMM yyyy", CultureInfo.CurrentCulture);
@@ -54,26 +61,34 @@ namespace Logic.UI.AuswertungViewModels
                 });
                 SeriesCollection = new SeriesCollection
                 {
-                    new ColumnSeries{ Values = values, Title="Betrag" }
+                    new LineSeries{ Values = values, Title="Betrag" }
                 };
 
+                RaisePropertyChanged(nameof(Data));
                 RaisePropertyChanged(nameof(SeriesCollection));
                 RaisePropertyChanged(nameof(Labels));
                 RaisePropertyChanged(nameof(Formatter));
             }
         }
-
+        #region Callbacks
+        private void OpenOpenWertpapierAuswahlMessageCallback(bool confirmed, int id)
+        {
+            if (confirmed)
+            {
+                wertpapierID = id;
+                LoadData();
+            }
+        }
+        #endregion
 
         #region Bindings
-        public ICommand LoadDataCommand { get; set; }
         public int? JahrVon
-        { 
+        {
             get => jahrvon;
             set
             {
                 ValidatZahl(value, nameof(JahrVon));
                 this.RaisePropertyChanged();
-                ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahrvon = value.GetValueOrDefault(0);
             }
         }
@@ -84,10 +99,21 @@ namespace Logic.UI.AuswertungViewModels
             {
                 ValidatZahl(value, nameof(JahrBis));
                 this.RaisePropertyChanged();
-                ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahrbis = value.GetValueOrDefault(0);
             }
         }
+        public DividendenBetragTyp Typ 
+        {
+            get => typ;
+            set
+            {
+                this.RaisePropertyChanged();
+                typ = value;
+            }
+        }
+        public ICommand AuswahlCommand { get; set; }
+
+        public static IEnumerable<DividendenBetragTyp> Types => Enum.GetValues(typeof(DividendenBetragTyp)).Cast<DividendenBetragTyp>();
         #endregion
 
         #region Validate

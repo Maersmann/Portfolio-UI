@@ -23,6 +23,7 @@
     <None Remove="resource\chart-bell-curve.png" />
     <None Remove="resource\chart-histogram.png" />
     <None Remove="resource\chart-line.png" />
+    <None Remove="resource\chart-pie.png" />
     <None Remove="resource\depot.png" />
     <None Remove="resource\derivate.png" />
     <None Remove="resource\entfernen.png" />
@@ -41,6 +42,7 @@
     <Resource Include="resource\chart-bell-curve.png" />
     <Resource Include="resource\chart-histogram.png" />
     <Resource Include="resource\chart-line.png" />
+    <Resource Include="resource\chart-pie.png" />
     <Resource Include="resource\depot.png" />
     <Resource Include="resource\derivate.png" />
     <Resource Include="resource\entfernen.png" />

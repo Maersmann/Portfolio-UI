@@ -126,6 +126,7 @@ namespace Aktien.Logic.UI
         public SteuerMonatJahresVergleichAuswertungViewModel SteuerartMonatJahresVergleichAuswertung => new SteuerMonatJahresVergleichAuswertungViewModel();
         public DividendeWertpapierAuswertungViewModel DividendeWertpapierAuswertung => new DividendeWertpapierAuswertungViewModel();
         public SteuerMonatAuswertungViewModel SteuerMonatAuswertung => new SteuerMonatAuswertungViewModel();
+        public DividendeWertpapierEntwicklungAuswertungViewModel DividendeWertpapierEntwicklungAuswertung => new DividendeWertpapierEntwicklungAuswertungViewModel();
         public static void Cleanup()
         {
 

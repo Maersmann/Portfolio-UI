@@ -52,7 +52,7 @@ namespace Logic.UI.AuswertungViewModels
                 });
                 SeriesCollection = new SeriesCollection
                 {
-                        new ColumnSeries{ Values = values, Title="Betrag" }
+                    new ColumnSeries{ Values = values, Title="Betrag" }
                 };
 
                 RaisePropertyChanged(nameof(SeriesCollection));
