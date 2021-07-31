@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UI.Desktop.Auswertung"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              mc:Ignorable="d" 
@@ -25,28 +27,138 @@
         </materialDesign:Card>
 
         <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="5*"/>
-                <ColumnDefinition Width="3*"/>
-            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="95"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
 
-            <DataGrid Grid.Column="0"  Margin="5"  ItemsSource="{Binding ItemList}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" SelectionUnit="FullRow" >
-                <DataGrid.Columns >
-                    <DataGridTextColumn Header="Name" Binding="{Binding Bezeichnung}" Width="auto" />
-                    <DataGridTextColumn Header="Betrag" Binding="{Binding Betrag, StringFormat={}{0:N2}€, ConverterCulture='de-DE'}" Width="auto"/>
-                </DataGrid.Columns>
-            </DataGrid>
+                <materialDesign:Card  Margin="5" >
+                    <Grid >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20px"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <materialDesign:Card  Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushSecondHeader}}">
+                            <Label HorizontalAlignment="Center" Width="auto" Content="Auswahl Auswertung" FontSize="9"/>
+                        </materialDesign:Card>
+                        <Grid  Grid.Row="1" Height="auto">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="7*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0">
+                                <Button VerticalAlignment="Center" HorizontalAlignment="Center" Style="{DynamicResource MaterialDesignFlatLightBgButton}" Command="{Binding LoadDataCommand,Mode=OneWay}" Cursor="Hand" >Auswertung Starten</Button>
+                            </Grid>
 
-            <lvc:PieChart Grid.Column="1" Series="{Binding SeriesCollection}" LegendLocation="Bottom" Hoverable="true" DataClick="PieChart_DataClick" >
-                <lvc:PieChart.ChartLegend>
-                    <lvc:DefaultLegend BulletSize="15" TextBlock.FontSize="10" ></lvc:DefaultLegend>
-                </lvc:PieChart.ChartLegend>
-                <lvc:PieChart.DataTooltip>
-                    <lvc:DefaultTooltip BulletSize="20"></lvc:DefaultTooltip>
-                </lvc:PieChart.DataTooltip>
+                            <Grid Grid.Column="1">
 
-            </lvc:PieChart>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+
+
+                                <Grid Grid.Column="0" HorizontalAlignment="Right" Margin="5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Margin="3" Grid.Column="0" Content="Jahr von:" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                    <TextBox Margin="3" Grid.Column="1" Width="75px" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding JahrVon, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True,TargetNullValue=''}" Cursor="IBeam">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="PreviewTextInput" >
+                                                <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyNumbersCommand"/>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <Validation.ErrorTemplate>
+                                            <ControlTemplate>
+                                                <StackPanel>
+                                                    <AdornedElementPlaceholder x:Name="textBox"/>
+                                                    <ItemsControl ItemsSource="{Binding}">
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock Text="{Binding ErrorContent}" Foreground="Red" TextWrapping="Wrap" FontSize="9" />
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                </StackPanel>
+                                            </ControlTemplate>
+                                        </Validation.ErrorTemplate>
+                                    </TextBox>
+                                </Grid>
+                                <Grid Grid.Column="1" HorizontalAlignment="Left" Margin="5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Margin="3" Grid.Column="0" Content="Jahr bis:" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                    <TextBox Margin="3" Grid.Column="1" Width="75px" HorizontalAlignment="Left" VerticalAlignment="Center"  Text="{Binding JahrBis, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True,TargetNullValue=''}" Cursor="IBeam">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="PreviewTextInput" >
+                                                <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyNumbersCommand"/>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <Validation.ErrorTemplate>
+                                            <ControlTemplate>
+                                                <StackPanel>
+                                                    <AdornedElementPlaceholder x:Name="textBox"/>
+                                                    <ItemsControl ItemsSource="{Binding}">
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock Text="{Binding ErrorContent}" Foreground="Red" TextWrapping="Wrap" FontSize="9" />
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                </StackPanel>
+                                            </ControlTemplate>
+                                        </Validation.ErrorTemplate>
+                                    </TextBox>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+
+                    </Grid>
+                </materialDesign:Card>
+            </Grid>
+
+            <Grid Grid.Row="1" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20px"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <materialDesign:Card  Grid.Row="0" Grid.ColumnSpan="2" Background="{Binding Mode=OneWay, Source={StaticResource brushSecondHeader}}">
+                    <Label HorizontalAlignment="Center" Width="auto" Content="Auswertung" FontSize="9"/>
+                </materialDesign:Card>
+
+                <DataGrid Grid.Column="0" Grid.Row="1"  Margin="5"  ItemsSource="{Binding ItemList}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" SelectionUnit="FullRow" >
+                    <DataGrid.Columns >
+                        <DataGridTextColumn Header="Name" Binding="{Binding Bezeichnung}" Width="auto" />
+                        <DataGridTextColumn Header="Betrag" Binding="{Binding Betrag, StringFormat={}{0:N2}€, ConverterCulture='de-DE'}" Width="auto" ElementStyle="{StaticResource horizontalCenter}"/>
+                        <DataGridTextColumn Header="Anteil Investition" Binding="{Binding ProzentBetragZuInvestition, StringFormat={}{0:N2}%, ConverterCulture='de-DE'}" Width="auto" ElementStyle="{StaticResource horizontalCenter}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <lvc:PieChart Grid.Column="1" Grid.Row="1" Series="{Binding SeriesCollection}" LegendLocation="Bottom" Hoverable="true" DataClick="PieChart_DataClick" >
+                    <lvc:PieChart.ChartLegend>
+                        <lvc:DefaultLegend BulletSize="15" TextBlock.FontSize="10" ></lvc:DefaultLegend>
+                    </lvc:PieChart.ChartLegend>
+                    <lvc:PieChart.DataTooltip>
+                        <lvc:DefaultTooltip BulletSize="20"></lvc:DefaultTooltip>
+                    </lvc:PieChart.DataTooltip>
+
+                </lvc:PieChart>
+            </Grid>
         </Grid>
+
+       
   
         <materialDesign:Card Grid.Row="2"  >
             <DockPanel  LastChildFill="False" />

@@ -27,6 +27,9 @@
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="HorizontalAlignment" Value="Center" />
     </Style>
+    <Style x:Key="horizontalCenter" TargetType="{x:Type TextBlock}">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
 
     <System:String x:Key="ButtonLargeIcon1">/gesamt.png</System:String>
 
