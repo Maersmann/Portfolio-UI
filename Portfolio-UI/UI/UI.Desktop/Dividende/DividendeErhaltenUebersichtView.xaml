@@ -27,9 +27,9 @@
                 <DataGridTextColumn Header="Ex-Tag" Binding="{Binding Exdatum, StringFormat=dd.MM.yyyy}" Width="auto"/>
                 <DataGridTextColumn Header="Erhalten" Binding="{Binding Zahldatum, StringFormat=dd.MM.yyyy}" Width="auto"/>
                 <DataGridTextColumn Header="Bestand" Binding="{Binding Bestand}" Width="auto"/>
-                <DataGridTextColumn Header="Bemessungsgrundlage" Binding="{Binding Bemessungsgrundlage, StringFormat=N2, ConverterCulture='de-DE'}" Width="auto"/>
-                <DataGridTextColumn Header="Steuern" Binding="{Binding Steuern,StringFormat=N2, ConverterCulture='de-DE', TargetNullValue='0,00'}" Width="auto"/>
-                <DataGridTextColumn Header="Erhalten" Binding="{Binding Erhalten, StringFormat=N2, ConverterCulture='de-DE'}" Width="auto"/>
+                <DataGridTextColumn Header="Bemessungsgrundlage" Binding="{Binding Bemessungsgrundlage, StringFormat={}{0:N2}€, ConverterCulture='de-DE'}" Width="auto"/>
+                <DataGridTextColumn Header="Steuern" Binding="{Binding Steuern,StringFormat={}{0:N2}€, ConverterCulture='de-DE', TargetNullValue='0,00'}" Width="auto"/>
+                <DataGridTextColumn Header="Erhalten" Binding="{Binding Erhalten, StringFormat={}{0:N2}€, ConverterCulture='de-DE'}" Width="auto"/>
                 <DataGridTextColumn Header="Währung" Binding="{Binding Waehrung}" Width="auto"/>
             </DataGrid.Columns>
         </DataGrid>

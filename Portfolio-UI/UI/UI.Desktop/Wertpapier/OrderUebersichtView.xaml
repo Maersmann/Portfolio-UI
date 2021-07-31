@@ -26,8 +26,8 @@
             <DataGrid.Columns >
                 <materialDesign:DataGridTextColumn Header="Datum" Binding="{Binding Orderdatum, StringFormat=dd.MM.yyyy}"  Width="auto"/>
                 <materialDesign:DataGridTextColumn Header="Anzahl" Binding="{Binding Anzahl,ConverterCulture='de-DE'}" Width="auto"/>
-                <materialDesign:DataGridTextColumn Header="Preis" Binding="{Binding Preis, StringFormat=N3,ConverterCulture='de-DE'}"  Width="auto"/>
-                <materialDesign:DataGridTextColumn Header="Fremdkosten" Binding="{Binding Fremdkostenzuschlag, StringFormat=N2}"  Width="auto"/>
+                <materialDesign:DataGridTextColumn Header="Preis" Binding="{Binding Preis, StringFormat={}{0:N3}€,ConverterCulture='de-DE'}"  Width="auto"/>
+                <materialDesign:DataGridTextColumn Header="Fremdkosten" Binding="{Binding Fremdkostenzuschlag, StringFormat={}{0:N2}€}"  Width="auto"/>
             </DataGrid.Columns>
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow">
