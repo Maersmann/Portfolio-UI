@@ -127,7 +127,7 @@
                     </ControlTemplate>
                 </Validation.ErrorTemplate>
             </TextBox>
-            <TextBox Grid.Row="1"  Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Preis, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, TargetNullValue='', StringFormat=N3,ConverterCulture='de-DE' }" IsEnabled="{Binding EingabePreisEnabled, Mode=OneWay}"  >
+            <TextBox Grid.Row="1"  Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Preis, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, TargetNullValue='', StringFormat={}{0:N3}€,ConverterCulture='de-DE' }" IsEnabled="{Binding EingabePreisEnabled, Mode=OneWay}"  >
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="PreviewTextInput" >
                         <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyBetragCommand"  />
@@ -169,7 +169,7 @@
                     </ControlTemplate>
                 </Validation.ErrorTemplate>
             </TextBox>
-            <TextBox Grid.Row="3"  Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Fremdkosten, UpdateSourceTrigger=PropertyChanged, TargetNullValue='', StringFormat=N2,ConverterCulture='de-DE' }" >
+            <TextBox Grid.Row="3"  Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Fremdkosten, UpdateSourceTrigger=PropertyChanged, TargetNullValue='', StringFormat={}{0:N2}€,ConverterCulture='de-DE' }" Cursor="IBeam" >
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="PreviewTextInput" >
                         <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyBetragCommand"  />
@@ -254,9 +254,9 @@
             <Label Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" >Preis</Label>
             <Label Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" >Buy-In</Label>
 
-            <TextBox Grid.Row="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding Gesamt, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2,ConverterCulture='de-DE' }" TextAlignment="Center"  />
-            <TextBox Grid.Row="3" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding PreisBerechnet, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2,ConverterCulture='de-DE' }"  TextAlignment="Center" />
-            <TextBox Grid.Row="5" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding BuyIn, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2,ConverterCulture='de-DE' }"  TextAlignment="Center" />
+            <TextBox Grid.Row="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding Gesamt, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N2}€,ConverterCulture='de-DE' }" TextAlignment="Center"  />
+            <TextBox Grid.Row="3" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding PreisBerechnet, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N2}€,ConverterCulture='de-DE' }"  TextAlignment="Center" />
+            <TextBox Grid.Row="5" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding BuyIn, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N2}€,ConverterCulture='de-DE' }"  TextAlignment="Center" Cursor="IBeam" />
         </Grid>
 
 

@@ -8,5 +8,6 @@ namespace Data.Model.AuswertungModels
     {
         public string Bezeichnung { get; set; }
         public double Betrag { get; set; }
+        public decimal ProzentBetragZuInvestition { get; set; }
     }
 }

@@ -30,6 +30,7 @@ using Aktien.Logic.UI.OptionenViewModels;
 using Logic.UI.SteuerViewModels;
 using Logic.UI.KonfigurationViewModels;
 using Logic.UI.AuswertungViewModels;
+using Logic.UI.OptionenViewModels;
 
 namespace Aktien.Logic.UI
 {
@@ -127,6 +128,7 @@ namespace Aktien.Logic.UI
         public DividendeWertpapierAuswertungViewModel DividendeWertpapierAuswertung => new DividendeWertpapierAuswertungViewModel();
         public SteuerMonatAuswertungViewModel SteuerMonatAuswertung => new SteuerMonatAuswertungViewModel();
         public DividendeWertpapierEntwicklungAuswertungViewModel DividendeWertpapierEntwicklungAuswertung => new DividendeWertpapierEntwicklungAuswertungViewModel();
+        public InfoViewModel Info => new InfoViewModel();
         public static void Cleanup()
         {
 

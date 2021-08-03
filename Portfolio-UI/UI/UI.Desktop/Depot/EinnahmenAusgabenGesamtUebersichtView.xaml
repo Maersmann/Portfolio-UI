@@ -53,7 +53,7 @@
                                 <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
                             <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold">Einzahlung</Label>
-                            <Label Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding EinnahmeEinzahlung, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  ContentStringFormat="N2"  Language="de-DE" ></Label>
+                            <Label Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding EinnahmeEinzahlung, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  ContentStringFormat="{}{0:N2}€"  Language="de-DE" ></Label>
                         </Grid>
 
                         <Grid Grid.Column="1">
@@ -62,7 +62,7 @@
                                 <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
                             <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold">Verkauf</Label>
-                            <Label Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding EinnahmeVerkauf, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  ContentStringFormat="N2"  Language="de-DE"></Label>
+                            <Label Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding EinnahmeVerkauf, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  ContentStringFormat="{}{0:N2}€"  Language="de-DE"></Label>
                         </Grid>
 
                         <Grid Grid.Column="2">
@@ -71,7 +71,7 @@
                                 <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
                             <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold">Dividende</Label>
-                            <Label Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding EinnahmeDividende, Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"  ContentStringFormat="N2"  Language="de-DE" ></Label>
+                            <Label Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding EinnahmeDividende, Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"  ContentStringFormat="{}{0:N2}€"  Language="de-DE" ></Label>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -101,7 +101,7 @@
                                 <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
                             <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold">Auszahlung</Label>
-                            <Label Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding AusgabeAuszahlung, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  ContentStringFormat="N2"  Language="de-DE" ></Label>
+                            <Label Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding AusgabeAuszahlung, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  ContentStringFormat="{}{0:N2}€"  Language="de-DE" ></Label>
                         </Grid>
 
                         <Grid Grid.Column="1">
@@ -110,7 +110,7 @@
                                 <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
                             <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold">Kauf</Label>
-                            <Label Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding AusgabeKauf, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  ContentStringFormat="N2"  Language="de-DE" ></Label>
+                            <Label Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding AusgabeKauf, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  ContentStringFormat="{}{0:N2}€"  Language="de-DE" ></Label>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -141,7 +141,7 @@
                             </Grid.ColumnDefinitions>
 
                             <Label Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold">Gesamteinnahmen</Label>
-                            <Label Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding EinnahmeGesamt, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat="N2"  Language="de-DE" ></Label>
+                            <Label Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding EinnahmeGesamt, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat="{}{0:N2}€"  Language="de-DE" ></Label>
 
                         </Grid>
 
@@ -152,7 +152,7 @@
                             </Grid.ColumnDefinitions>
 
                             <Label Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold">Gesamtausgaben</Label>
-                            <Label Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding AusgabeGesamt, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  ContentStringFormat="N2"  Language="de-DE"></Label>
+                            <Label Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding AusgabeGesamt, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  ContentStringFormat="{}{0:N2}€"  Language="de-DE"></Label>
 
                         </Grid>
 
@@ -163,7 +163,7 @@
                             </Grid.ColumnDefinitions>
 
                             <Label Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold">Differenz</Label>
-                            <Label Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding Differenz, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  ContentStringFormat="N2"  Language="de-DE" ></Label>
+                            <Label Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding Differenz, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  ContentStringFormat="{}{0:N2}€"  Language="de-DE" ></Label>
 
                         </Grid>
                     </Grid>

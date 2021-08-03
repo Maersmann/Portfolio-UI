@@ -24,7 +24,7 @@
         <DataGrid Grid.Row="1" Margin="5"  ItemsSource="{Binding ItemList}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" SelectionUnit="FullRow" >
             <DataGrid.Columns >
                 <DataGridTextColumn Header="Datum" Binding="{Binding Datum, StringFormat=dd.MM.yyyy}" Width="auto" />
-                <DataGridTextColumn Header="Betrag" Binding="{Binding Betrag,StringFormat=N2, ConverterCulture='de-DE'}" Width="auto"/>
+                <DataGridTextColumn Header="Betrag" Binding="{Binding Betrag,StringFormat={}{0:N2}€, ConverterCulture='de-DE'}" Width="auto"/>
                 <DataGridTextColumn Header="Art" Binding="{Binding Art}"  Width="auto"/>
                 <DataGridTextColumn Header="Beschreibung" Binding="{Binding Beschreibung}"  Width="auto"/>
             </DataGrid.Columns>
