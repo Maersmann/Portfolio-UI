@@ -7,6 +7,7 @@
         xmlns:command="http://www.galasoft.ch/mvvmlight"
         xmlns:steuer="clr-namespace:UI.Desktop.Steuer"
         xmlns:optionen="clr-namespace:Aktien.UI.Desktop.Optionen"
+        xmlns:option="clr-namespace:UI.Desktop.Optionen"
         x:Name="Main"
         xmlns:local="clr-namespace:Aktien.UI.Desktop"
         xmlns:Fluent="urn:fluent-ribbon"
@@ -43,6 +44,10 @@
                         <Fluent:SeparatorTabItem/>
                         <Fluent:BackstageTabItem Header="Backend-Settings">
                             <optionen:BackendSettingsView/>
+                        </Fluent:BackstageTabItem>
+                        <Fluent:SeparatorTabItem/>
+                        <Fluent:BackstageTabItem Header="Info" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" >
+                            <option:InfoView />
                         </Fluent:BackstageTabItem>
                         <Fluent:SeparatorTabItem/>
                         <Fluent:Button Header="Schliessen" Command="{Binding CloseWindowCommand}" CommandParameter="{Binding ElementName=Main}"/>
