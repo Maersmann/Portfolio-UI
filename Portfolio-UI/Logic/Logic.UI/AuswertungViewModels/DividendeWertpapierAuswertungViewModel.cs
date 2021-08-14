@@ -29,7 +29,7 @@ namespace Logic.UI.AuswertungViewModels
             Title = "Auswertung Dividende je Wertpapier";
             jahrvon = DateTime.Now.Year;
             jahrbis = DateTime.Now.Year;
-            Formatter = value => value.ToString("0.## €");
+            Formatter = value => string.Format("{0:N2}€", value);
             LoadDataCommand = new DelegateCommand(this.ExcecuteLoadDataCommand, this.CanExcecuteLoadDataCommand);
         }
 

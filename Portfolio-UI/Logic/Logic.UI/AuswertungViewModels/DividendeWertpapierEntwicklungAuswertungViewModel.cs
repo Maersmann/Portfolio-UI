@@ -34,7 +34,7 @@ namespace Logic.UI.AuswertungViewModels
             typ = DividendenBetragTyp.NachSteuer;
             wertpapierID = 0;
             AuswahlCommand = new RelayCommand(() => ExcecuteAuswahlCommand());
-            Formatter = value => value.ToString("0.## €");
+            Formatter = value => string.Format("{0:N2}€", value);
         }
 
         private void ExcecuteAuswahlCommand()

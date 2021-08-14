@@ -137,7 +137,12 @@
                         <lvc:Axis Title="Monat" Labels="{Binding Labels}"></lvc:Axis>
                     </lvc:CartesianChart.AxisX>
                     <lvc:CartesianChart.AxisY>
-                        <lvc:Axis Title="Betrag" LabelFormatter="{Binding Formatter}"></lvc:Axis>
+                        <lvc:Axis Title="Betrag" LabelFormatter="{Binding Formatter}" MinValue="0">
+                            <lvc:Axis.Separator>
+                                <lvc:Separator Step="2" />
+                            </lvc:Axis.Separator>
+                        </lvc:Axis>
+                        
                     </lvc:CartesianChart.AxisY>
                     <lvc:CartesianChart.DataTooltip>
                         <lvc:DefaultTooltip SelectionMode="SharedYValues"></lvc:DefaultTooltip>
