@@ -78,7 +78,6 @@ namespace Aktien.Logic.UI
             SimpleIoc.Default.Register<EinnahmenUebersichtViewModel>();
             SimpleIoc.Default.Register<AusgabeStammdatenViewModel>();
             SimpleIoc.Default.Register<AusgabenUebersichtViewModel>();
-            SimpleIoc.Default.Register<DividendeProStueckAnpassenViewModel>();
             SimpleIoc.Default.Register<EinnahmenAusgabenUebersichtViewModel>();
             SimpleIoc.Default.Register<DatenAnpassungViewModel>();
             SimpleIoc.Default.Register<SteuerartenUebersichtViewModel>();
@@ -109,7 +108,7 @@ namespace Aktien.Logic.UI
         public EinnahmenUebersichtViewModel EinnahmenUebersicht => ServiceLocator.Current.GetInstance<EinnahmenUebersichtViewModel>();
         public AusgabeStammdatenViewModel AusgabeStammdaten => ServiceLocator.Current.GetInstance<AusgabeStammdatenViewModel>();
         public AusgabenUebersichtViewModel AusgabenUebersicht => ServiceLocator.Current.GetInstance<AusgabenUebersichtViewModel>();
-        public DividendeProStueckAnpassenViewModel DividendeProStueckAnpassen => ServiceLocator.Current.GetInstance<DividendeProStueckAnpassenViewModel>();
+        public DividendeProStueckAnpassenViewModel DividendeProStueckAnpassen => new DividendeProStueckAnpassenViewModel();
         public EinnahmenAusgabenUebersichtViewModel EinnahmenAusgaben => ServiceLocator.Current.GetInstance<EinnahmenAusgabenUebersichtViewModel>();
         public DatenAnpassungViewModel DatenAnpassung => new DatenAnpassungViewModel();
         public WertpapierAuswahlViewModel WertpapierAuswahl => new WertpapierAuswahlViewModel();

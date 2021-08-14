@@ -18,16 +18,14 @@ using System.Windows.Input;
 
 namespace Aktien.Logic.UI.DividendeViewModels
 {
-    public class DividendeProStueckAnpassenViewModel : ViewModelStammdaten<DividendeModel>
+    public class DividendeProStueckAnpassenViewModel : ViewModelStammdaten<DividendeProStueckAnpassenModel>
     {
-        private double umrechnungskurs;
 
         public DividendeProStueckAnpassenViewModel()
         {
             Title = "Dividende pro Stück";
-            data = new DividendeModel();
+            data = new DividendeProStueckAnpassenModel();
             RundungTyp = DividendenRundungTypes.Normal;
-            umrechnungskurs = 0;
             OKCommand = new RelayCommand(() => ExecuteOKCommand());
         }
 
@@ -35,7 +33,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+"/api/dividende", data);
+                HttpResponseMessage resp = await Client.PutAsJsonAsync(GlobalVariables.BackendServer_URL+ "/api/dividende/Rundung", data as DividendeProStueckAnpassenDTOModel);
 
                 if (resp.IsSuccessStatusCode)
                 {
@@ -58,16 +56,22 @@ namespace Aktien.Logic.UI.DividendeViewModels
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/dividende/{dividendeID}");
                 if (resp.IsSuccessStatusCode)
                 {
-                    data = await resp.Content.ReadAsAsync<DividendeModel>();
+                    DividendeModel dividende = await resp.Content.ReadAsAsync<DividendeModel>();
+                    data.DividendeID = dividende.ID;
+                    data.Rundungart = dividende.RundungArt;
+                    data.Zahldatum = dividende.Zahldatum;
+                    data.Betrag = dividende.Betrag;
+                    data.Waehrung = dividende.Waehrung;
                 }
             }
-            umrechnungskurs = umrechungskurs;
-            this.RaisePropertyChanged("Datum");
-            this.RaisePropertyChanged("Betrag");
-            this.RaisePropertyChanged("Waehrung");
-            this.RaisePropertyChanged("Umrechnungskurs");
-            this.RaisePropertyChanged("ErmittelterBetrag");
-            this.RaisePropertyChanged("ErhaltenerBetrag");
+            data.Umrechnungskurs = umrechungskurs;
+            RaisePropertyChanged("Datum");
+            RaisePropertyChanged("Betrag");
+            RaisePropertyChanged("Waehrung");
+            RaisePropertyChanged("Umrechnungskurs");
+            RaisePropertyChanged("ErmittelterBetrag");
+            RaisePropertyChanged("ErhaltenerBetrag");
+            RaisePropertyChanged("RundungTyp");
         }
 
         #region Bindings
@@ -77,10 +81,10 @@ namespace Aktien.Logic.UI.DividendeViewModels
         public DateTime Datum { get { return data.Zahldatum; } }
         public Double Betrag { get { return data.Betrag; } }
         public Waehrungen Waehrung { get { return data.Waehrung; } }
-        public Double Umrechnungskurs { get { return umrechnungskurs; } }
+        public Double Umrechnungskurs { get { return data.Umrechnungskurs; } }
 
-        public Double ErmittelterBetrag { get { return new DividendenBerechnungen().BetragUmgerechnet(data.Betrag, umrechnungskurs, false, DividendenRundungTypes.Normal); } }
-        public Double ErhaltenerBetrag { get { return new DividendenBerechnungen().BetragUmgerechnet(data.Betrag, umrechnungskurs, true, data.RundungArt); } }
+        public Double ErmittelterBetrag { get { return new DividendenBerechnungen().BetragUmgerechnet(data.Betrag, data.Umrechnungskurs, false, DividendenRundungTypes.Normal); } }
+        public Double ErhaltenerBetrag { get { return new DividendenBerechnungen().BetragUmgerechnet(data.Betrag, data.Umrechnungskurs, true, data.Rundungart); } }
 
         public IEnumerable<DividendenRundungTypes> RundungTypes
         {
@@ -91,14 +95,14 @@ namespace Aktien.Logic.UI.DividendeViewModels
         }
         public DividendenRundungTypes RundungTyp
         {
-            get { return data.RundungArt; }
+            get { return data.Rundungart; }
             set
             {
-                if ((this.data.RundungArt != value))
+                if (data.Rundungart != value)
                 {
-                    this.data.RundungArt = value;
-                    this.RaisePropertyChanged();
-                    this.RaisePropertyChanged("ErhaltenerBetrag");
+                    data.Rundungart = value;
+                    RaisePropertyChanged();
+                    RaisePropertyChanged("ErhaltenerBetrag");
                 }
             }
         }
