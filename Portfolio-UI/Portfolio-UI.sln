@@ -7,11 +7,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Logic", "Logic", "{D1FB0712
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{BD718AEC-17B3-4688-BD39-0A881E6FF866}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Shared", "_Shared", "{7D67791F-AF67-48BE-8B6E-82031FA329D9}"
-	ProjectSection(SolutionItems) = preProject
-		_Shared\SharedAssemblyInfo.cs = _Shared\SharedAssemblyInfo.cs
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{F56F2D4B-D131-4993-A2FE-8C8700E92CBA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Setup", "Setup", "{12D94E8D-4289-4AEB-A324-3AE50FA1F725}"
@@ -28,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic.UI", "Logic\Logic.UI\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.Model", "Data\Data.Model\Data.Model\Data.Model.csproj", "{665145B7-4983-4890-914A-890E8054F682}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.Types", "Data\Data.Types\Data.Types.csproj", "{54202458-224F-441D-8208-48A03A5C83E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.Types", "Data\Data.Types\Data.Types.csproj", "{54202458-224F-441D-8208-48A03A5C83E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
