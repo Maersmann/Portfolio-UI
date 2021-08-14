@@ -44,7 +44,7 @@
             </Grid.ColumnDefinitions>
 
             <Label Content="Name" HorizontalAlignment="Center"  Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
-            <TextBox HorizontalAlignment="Center" Height="26" Grid.Row="0" Grid.Column="1" TextWrapping="NoWrap" VerticalAlignment="Center" Width="250" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }">
+            <TextBox HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1" TextWrapping="NoWrap" VerticalAlignment="Center" Width="250" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }">
                 <Validation.ErrorTemplate>
                     <ControlTemplate>
                         <StackPanel>
@@ -62,7 +62,7 @@
             </TextBox>
 
             <Label Content="ISIN" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
-            <TextBox HorizontalAlignment="Center" Height="26"  Grid.Row="1" Grid.Column="1" TextWrapping="NoWrap" VerticalAlignment="Center" Width="250" Text="{Binding ISIN, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }" IsEnabled="{Binding ISIN_isEnabled, Mode=OneWay}">
+            <TextBox HorizontalAlignment="Center"  Grid.Row="1" Grid.Column="1" TextWrapping="NoWrap" VerticalAlignment="Center" Width="250" Text="{Binding ISIN, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }" IsEnabled="{Binding ISIN_isEnabled, Mode=OneWay}">
                 <Validation.ErrorTemplate>
                     <ControlTemplate>
                         <StackPanel>
@@ -79,7 +79,7 @@
                 </Validation.ErrorTemplate>
             </TextBox>
             <Label Content="WKN" HorizontalAlignment="Center"  Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"/>
-            <TextBox HorizontalAlignment="Center" Height="26"  Grid.Row="2" Grid.Column="1" TextWrapping="NoWrap" VerticalAlignment="Center" Width="250" Text="{Binding WKN}"/>
+            <TextBox HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1" TextWrapping="NoWrap" VerticalAlignment="Center" Width="250" Text="{Binding WKN}"/>
 
         </Grid>
 

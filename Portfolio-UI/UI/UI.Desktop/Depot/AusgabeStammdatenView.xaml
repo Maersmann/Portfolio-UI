@@ -50,7 +50,7 @@
             <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Einahmen Art</Label>
             <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Beschreibung</Label>
 
-            <TextBox Grid.Row="0"  Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Betrag, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, TargetNullValue='', StringFormat={}{0:N3}€,ConverterCulture='de-DE' }" Cursor="IBeam"  >
+            <TextBox Grid.Row="0"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Betrag, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, TargetNullValue='', StringFormat={}{0:N3}€,ConverterCulture='de-DE' }" Cursor="IBeam"  >
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="PreviewTextInput" >
                         <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyBetragCommand"  />
@@ -89,7 +89,7 @@
             </DatePicker>
             <ComboBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" ItemsSource="{Binding AusgabeTypes}" SelectedItem="{Binding AusgabeTyp}" />
 
-            <TextBox Grid.Row="3"  Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Beschreibung, UpdateSourceTrigger=PropertyChanged }"  />
+            <TextBox Grid.Row="3"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Beschreibung, UpdateSourceTrigger=PropertyChanged }"  />
 
         </Grid>
 

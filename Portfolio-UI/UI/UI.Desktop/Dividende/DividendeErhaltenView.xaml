@@ -112,7 +112,7 @@
                     </ControlTemplate>
                 </Validation.ErrorTemplate>
             </TextBox>
-            <TextBox Grid.Row="2"  Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Wechselkurs, UpdateSourceTrigger=PropertyChanged,  TargetNullValue='', StringFormat=N5,ConverterCulture='de-DE' }"  >
+            <TextBox Grid.Row="2"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Wechselkurs, UpdateSourceTrigger=PropertyChanged,  TargetNullValue='', StringFormat=N5,ConverterCulture='de-DE' }"  >
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="PreviewTextInput" >
                         <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyBetragCommand"  />
@@ -175,12 +175,12 @@
             <Label Grid.Row="6" HorizontalAlignment="Center" VerticalAlignment="Center" >Steuern</Label>
             <Label Grid.Row="8" HorizontalAlignment="Center" VerticalAlignment="Center" >Erhalten</Label>
 
-            <TextBox Grid.Row="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding Bemessungsgrundlage, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2,ConverterCulture='de-DE' }" TextAlignment="Center"  />
-            <TextBox Grid.Row="3" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding SteuerVorZwischensumme, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2,ConverterCulture='de-DE' }"  TextAlignment="Center" Cursor="IBeam" />
+            <TextBox Grid.Row="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding Bemessungsgrundlage, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2,ConverterCulture='de-DE' }" TextAlignment="Center"  />
+            <TextBox Grid.Row="3" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding SteuerVorZwischensumme, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2,ConverterCulture='de-DE' }"  TextAlignment="Center" Cursor="IBeam" />
 
-            <TextBox Grid.Row="5" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding ZwischensummeTxt, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }" TextAlignment="Center"  />
-            <TextBox Grid.Row="7" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding SteuerNachZwischensumme, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N2}€,ConverterCulture='de-DE' }" TextAlignment="Center"  />
-            <TextBox Grid.Row="9" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding Erhalten, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N2}€,ConverterCulture='de-DE' }" TextAlignment="Center"  />
+            <TextBox Grid.Row="5" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding ZwischensummeTxt, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }" TextAlignment="Center"  />
+            <TextBox Grid.Row="7" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding SteuerNachZwischensumme, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N2}€,ConverterCulture='de-DE' }" TextAlignment="Center"  />
+            <TextBox Grid.Row="9" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding Erhalten, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N2}€,ConverterCulture='de-DE' }" TextAlignment="Center"  />
         </Grid>
         <Grid Grid.Column="2" Grid.Row="1" Grid.RowSpan="2" Height="auto" Background="{Binding Mode=OneWay, Source={StaticResource brushUebersicht}}">
             <Grid.RowDefinitions>
@@ -199,10 +199,10 @@
             <Label Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" >Zwischensumme</Label>
             <Label Grid.Row="6" HorizontalAlignment="Center" VerticalAlignment="Center" >Zwischensumme(€)</Label>
 
-            <TextBox Grid.Row="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding ErhaltenUmgerechnetUngerundet, Mode=OneWay, UpdateSourceTrigger=PropertyChanged,  StringFormat={}{0:N5}€,ConverterCulture='de-DE' }" TextAlignment="Center"  />
-            <TextBox Grid.Row="3" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding Erhalten, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N2}€,ConverterCulture='de-DE' }" TextAlignment="Center"  />
-            <TextBox Grid.Row="5" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding Zwischensumme, Mode=OneWay, UpdateSourceTrigger=PropertyChanged,  StringFormat=N2,ConverterCulture='de-DE' }" TextAlignment="Center" Cursor="IBeam"  />
-            <TextBox Grid.Row="7" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding ZwischensummeUmgerechnet, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2,ConverterCulture='de-DE' }" TextAlignment="Center" Cursor="IBeam"  />
+            <TextBox Grid.Row="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding ErhaltenUmgerechnetUngerundet, Mode=OneWay, UpdateSourceTrigger=PropertyChanged,  StringFormat={}{0:N5}€,ConverterCulture='de-DE' }" TextAlignment="Center"  />
+            <TextBox Grid.Row="3" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding Erhalten, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N2}€,ConverterCulture='de-DE' }" TextAlignment="Center"  />
+            <TextBox Grid.Row="5" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding Zwischensumme, Mode=OneWay, UpdateSourceTrigger=PropertyChanged,  StringFormat=N2,ConverterCulture='de-DE' }" TextAlignment="Center" Cursor="IBeam"  />
+            <TextBox Grid.Row="7" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding ZwischensummeUmgerechnet, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2,ConverterCulture='de-DE' }" TextAlignment="Center" Cursor="IBeam"  />
 
         </Grid>
 

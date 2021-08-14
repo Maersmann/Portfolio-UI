@@ -138,8 +138,8 @@
                 <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Anzahl</Label>
                 <Label Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" >Buy-In</Label>
 
-                <TextBox Grid.Row="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="40" IsReadOnly="true" IsEnabled="False" Text="{Binding NeueAnzahl, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N3,ConverterCulture='de-DE' }" TextAlignment="Center"  />
-                <TextBox Grid.Row="3" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="40" IsReadOnly="true" IsEnabled="False" Text="{Binding NeuerBuyIn, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N3,ConverterCulture='de-DE'}"  TextAlignment="Center" />
+                <TextBox Grid.Row="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="40" IsReadOnly="true" IsEnabled="False" Text="{Binding NeueAnzahl, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N3,ConverterCulture='de-DE' }" TextAlignment="Center"  />
+                <TextBox Grid.Row="3" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="40" IsReadOnly="true" IsEnabled="False" Text="{Binding NeuerBuyIn, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N3,ConverterCulture='de-DE'}"  TextAlignment="Center" Cursor="IBeam" />
 
             </Grid>
         </Grid>
