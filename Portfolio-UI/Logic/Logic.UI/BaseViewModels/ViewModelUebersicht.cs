@@ -43,6 +43,17 @@ namespace Aktien.Logic.UI.BaseViewModels
             }
         }
 
+        public string FilterText
+        {
+            get => filtertext;
+            set
+            {
+                filtertext = value;
+                RaisePropertyChanged();
+                _customerView.Refresh();
+            }
+        }
+
         protected virtual bool CanExecuteCommand()
         {
             return selectedItem != null;
