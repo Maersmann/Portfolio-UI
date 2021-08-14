@@ -12,7 +12,7 @@ using System.Windows.Input;
 
 namespace Aktien.Logic.UI.BaseViewModels
 {
-    public class ViewModelAuswahl<T> : ViewModelLoadData<T>
+    public class ViewModelAuswahl<T> : ViewModelUebersicht<T>
     {
         
         public ViewModelAuswahl()
@@ -29,6 +29,5 @@ namespace Aktien.Logic.UI.BaseViewModels
 
         public ICommand NewItemCommand { get; set; }
 
-        protected virtual StammdatenTypes GetStammdatenType() { return 0; }
     }
 }
