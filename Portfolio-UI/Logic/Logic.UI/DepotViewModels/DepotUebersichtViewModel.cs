@@ -27,7 +27,7 @@ namespace Aktien.Logic.UI.DepotViewModels
         {
             Title = "Übersicht der Aktien im Depot";
             LoadData();
-            OpenDividendeCommand = new DelegateCommand(this.ExecuteOpenDividendeCommandCommand, this.CanExecuteCommand);
+            OpenDividendeCommand = new DelegateCommand(ExecuteOpenDividendeCommandCommand, this.CanExecuteCommand);
             OpenReverseSplitCommand = new RelayCommand(() => ExecuteOpenReverseSplitCommand());
             RegisterAktualisereViewMessage(StammdatenTypes.buysell);
         }
@@ -36,15 +36,24 @@ namespace Aktien.Logic.UI.DepotViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+"/api/Depot");
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + "/api/Depot");
                 if (resp.IsSuccessStatusCode)
+                {
                     itemList = await resp.Content.ReadAsAsync<ObservableCollection<DepotGesamtUebersichtModel>>();
+                }
             }
-        
-            this.RaisePropertyChanged("ItemList");
+            base.LoadData();
             Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = 0, WertpapierTyp = WertpapierTypes.Aktie }, messageToken);
         }
 
+        protected override bool OnFilterTriggered(object item)
+        {
+            if (item is DepotGesamtUebersichtModel depot)
+            {
+                return depot.Bezeichnung.ToLower().Contains(filtertext.ToLower());
+            }
+            return true;
+        }
 
         #region Bindings
         public override DepotGesamtUebersichtModel SelectedItem
@@ -57,13 +66,15 @@ namespace Aktien.Logic.UI.DepotViewModels
             {
                 selectedItem = value;
                 ((DelegateCommand)OpenDividendeCommand).RaiseCanExecuteChanged();
-                this.RaisePropertyChanged();
+                RaisePropertyChanged();
                 if (selectedItem != null)
                 {
                     Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = selectedItem.WertpapierID, WertpapierTyp = selectedItem.WertpapierTyp }, messageToken);
                 }
             }
         }
+
+        
 
 
         public ICommand OpenDividendeCommand { get; set; }

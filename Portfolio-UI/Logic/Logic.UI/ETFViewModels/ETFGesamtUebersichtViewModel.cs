@@ -70,17 +70,6 @@ namespace Aktien.Logic.UI.ETFViewModels
             }
         }
 
-        public string FilterText
-        {
-            get => filtertext;
-            set
-            {
-                filtertext = value;
-                RaisePropertyChanged();
-                _customerView.Refresh();
-            }
-        }
-
         public ICommand OpenNeueDividendeCommand { get; set; }
         #endregion
 

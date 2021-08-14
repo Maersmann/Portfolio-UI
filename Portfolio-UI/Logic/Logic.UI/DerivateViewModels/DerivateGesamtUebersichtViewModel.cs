@@ -66,16 +66,6 @@ namespace Aktien.Logic.UI.DerivateViewModels
             }
         }
 
-        public string FilterText
-        {
-            get => filtertext;
-            set
-            {
-                filtertext = value;
-                RaisePropertyChanged();
-                _customerView.Refresh();
-            }
-        }
         #endregion
 
         #region Commands

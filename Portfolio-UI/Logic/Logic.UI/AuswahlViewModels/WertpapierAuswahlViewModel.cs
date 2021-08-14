@@ -66,17 +66,6 @@ namespace Aktien.Logic.UI.AuswahlViewModels
         #region Bindings
         public bool CanAddNewItem => WertpapierTypes != WertpapierTypes.none;
 
-        public string FilterText
-        {
-            get => filtertext;
-            set
-            {
-                filtertext = value;
-                RaisePropertyChanged();
-                _customerView.Refresh();
-            }
-        }
-
         #endregion
 
         #region commands
