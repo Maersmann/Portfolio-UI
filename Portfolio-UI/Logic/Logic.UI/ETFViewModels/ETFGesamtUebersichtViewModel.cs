@@ -86,9 +86,9 @@ namespace Aktien.Logic.UI.ETFViewModels
             }
             Messenger.Default.Send(new LoadWertpapierOrderMessage { WertpapierID = 0, WertpapierTyp = selectedItem.WertpapierTyp }, messageToken);
             itemList.Remove(selectedItem);
-            this.RaisePropertyChanged("ItemList");
+            RaisePropertyChanged("ItemList");
             SendInformationMessage("ETF gelöscht");
-            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), ViewType.viewWertpapierUebersicht);
+            Messenger.Default.Send(new AktualisiereViewMessage(), ViewType.viewWertpapierUebersicht.ToString());
         }
 
         #endregion

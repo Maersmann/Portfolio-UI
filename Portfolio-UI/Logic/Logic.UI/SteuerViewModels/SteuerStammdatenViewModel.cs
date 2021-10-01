@@ -29,6 +29,7 @@ namespace Logic.UI.SteuerViewModels
         private SteuerHerkunftTyp herkunfttyp;
         private IList<SteuerartModel> steuerarts;
         private bool istVerknuepfungGespeichert;
+        private string betrag;
 
         public SteuerStammdatenViewModel()
         {
@@ -80,7 +81,7 @@ namespace Logic.UI.SteuerViewModels
                     data = await resp.Content.ReadAsAsync<SteuerModel>();
             }
             Waehrung = data.Waehrung;
-            Betrag = data.Betrag;
+            Betrag = data.Betrag.ToString();
             Optimierung = data.Optimierung;
             Steuerart = data.Steuerart;
             steuerarts.Add(data.Steuerart);
@@ -91,17 +92,25 @@ namespace Logic.UI.SteuerViewModels
         }
 
         #region Bindings
-        public double? Betrag
+        public string Betrag
         {
-            get => data.Betrag;
+            get => betrag;
             set
             {
+                if (!double.TryParse(value, out double Betrag))
+                {
+                    ValidateBetrag(0);
+                    betrag = "";
+                    data.Betrag = 0;
+                    RaisePropertyChanged();
+                    return;
+                }
+                betrag = value;
                 if (RequestIsWorking || !double.Equals(data.Betrag, value))
                 {
-                    ValidateBetrag(value);
-                    data.Betrag = value.GetValueOrDefault(0);
+                    ValidateBetrag(Betrag);
+                    data.Betrag = Betrag;
                     RaisePropertyChanged();
-                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
@@ -157,6 +166,7 @@ namespace Logic.UI.SteuerViewModels
             bool isValid = Validierung.ValidateBetrag(betrag, out ICollection<string> validationErrors);
 
             AddValidateInfo(isValid, "Betrag", validationErrors);
+            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             return isValid;
         }
 
@@ -168,7 +178,7 @@ namespace Logic.UI.SteuerViewModels
             istVerknuepfungGespeichert = false;
             state = State.Neu;
             data = new SteuerModel { Steuerart = new SteuerartModel() };
-            Betrag = null;
+            Betrag = "";
         }
 
         private async void LoadSteuerArts()

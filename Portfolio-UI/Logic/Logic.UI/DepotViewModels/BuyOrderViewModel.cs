@@ -31,12 +31,15 @@ namespace Aktien.Logic.UI.DepotViewModels
     public class BuyOrderViewModel : ViewModelStammdaten<BuyOrderModel, StammdatenTypes>
     {
         private BuySell buySell;
-        private WertpapierTypes typ;
-        private Double? betrag;
+        private WertpapierTypes typ;    
         private Double preisUebersicht;
         private Double buyIn;
         private bool neueOrderNichtGespeichert;
         private double steuern;
+        private string anzahl;
+        private string preis;
+        private string betrag;
+        private string fremdkosten;
 
         public BuyOrderViewModel()
         {
@@ -49,17 +52,19 @@ namespace Aktien.Logic.UI.DepotViewModels
 
         public void BerechneWerte()
         {
-            if (betrag.HasValue)
+            if ((betrag.Length > 0) && (double.TryParse(betrag, out double Betrag)))
             {
-                if (betrag.Value.Equals(0))
+                if (Betrag.Equals(0))
+                    preisUebersicht = 0;
+                else if (data.Anzahl.Equals(0))
                     preisUebersicht = 0;
                 else
-                    preisUebersicht = Math.Round(betrag.Value / data.Anzahl, 3, MidpointRounding.AwayFromZero);
+                    preisUebersicht = Math.Round(Betrag / data.Anzahl, 3, MidpointRounding.AwayFromZero);
             }              
             else
-                preisUebersicht = Preis.GetValueOrDefault(0);
+                preisUebersicht = data.Preis;
 
-            if ((buySell.Equals(BuySell.Buy)) && (preisUebersicht != 0))
+            if ((buySell.Equals(BuySell.Buy)) && (preisUebersicht != 0) && (data.Anzahl != 0))
                 buyIn = new KaufBerechnungen().BuyInAktieGekauft(0, 0, data.Anzahl, preisUebersicht, data.Anzahl, data.Fremdkostenzuschlag, data.OrderartTyp);
             else
                 buyIn = 0;
@@ -71,11 +76,11 @@ namespace Aktien.Logic.UI.DepotViewModels
             else
                 data.Gesamt = data.Bemessungsgrundlage - data.Fremdkostenzuschlag.GetValueOrDefault(0) + steuern;
 
-            this.RaisePropertyChanged(nameof(Gesamt));
-            this.RaisePropertyChanged(nameof(Bemessungsgrundlage));
-            this.RaisePropertyChanged("PreisBerechnet");
-            this.RaisePropertyChanged("BuyIn");
-            this.RaisePropertyChanged(nameof(Steuern));
+            RaisePropertyChanged(nameof(Gesamt));
+            RaisePropertyChanged(nameof(Bemessungsgrundlage));
+            RaisePropertyChanged("PreisBerechnet");
+            RaisePropertyChanged("BuyIn");
+            RaisePropertyChanged(nameof(Steuern));
         }
         public void SetTitle(BuySell buySell, WertpapierTypes types)
         {
@@ -105,17 +110,21 @@ namespace Aktien.Logic.UI.DepotViewModels
                 if (resp.IsSuccessStatusCode)
                 {
                     neueOrderNichtGespeichert = false;
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Buy-Order gespeichert." }, GetStammdatenTyp());
-                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());              
+                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Buy-Order gespeichert." }, GetStammdatenTyp());
+                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());              
                 }
                 else
                 {
                     if ((int)resp.StatusCode == 901)
+                    {
                         SendExceptionMessage("Es sind neuere Orders vorhanden.");
+                    }
                     else if ((int)resp.StatusCode == 902)
                         SendExceptionMessage("Es wurden mehr Wertpapiere zum Verkauf eingetragen, als im Depot vorhanden.");
                     else
+                    {
                         SendExceptionMessage("Order konnte nicht gespeichert werden.");
+                    }
 
                     return;
                 }
@@ -161,7 +170,7 @@ namespace Aktien.Logic.UI.DepotViewModels
             {
                 if (RequestIsWorking || (data.KaufartTyp != value))
                 {
-                    ValidateBetrag(Preis, value, "Preis");
+                    ValidateBetrag(data.Preis, value, "Preis");
                     data.KaufartTyp = value;
                     RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
@@ -177,14 +186,14 @@ namespace Aktien.Logic.UI.DepotViewModels
                 {
                     if (value.Equals(Data.Types.WertpapierTypes.OrderTypes.Sparplan))
                     {
-                        Preis = null;
-                        Betrag = null;
+                        Preis = "";
+                        Betrag = "";
                         DeleteValidateInfo("Preis");
                     }
                     else if (data.OrderartTyp.Equals(Data.Types.WertpapierTypes.OrderTypes.Sparplan))
                     {
-                        Betrag = null;
-                        Preis = null;
+                        Betrag = "";
+                        Preis = "";
                         DeleteValidateInfo("Betrag");
                     }
                     data.OrderartTyp = value;
@@ -196,47 +205,70 @@ namespace Aktien.Logic.UI.DepotViewModels
                 }
             }
         }
-        public double? Anzahl
+        public string Anzahl
         {
-            get => data.Anzahl;
+            get => anzahl;
             set
             {
-                if (RequestIsWorking || (data.Anzahl != value))
+                if (!double.TryParse(value, out double Anzahl))
                 {
-                    ValidateAnzahl(value);
-                    data.Anzahl = value.GetValueOrDefault();
+                    ValidateAnzahl(0);
+                    anzahl = "";
+                    data.Anzahl = 0;
                     RaisePropertyChanged();
-                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                    return;
+                }
+                anzahl = value;
+                if (RequestIsWorking || (data.Anzahl != Anzahl))
+                {
+                    ValidateAnzahl(Anzahl);
+                    data.Anzahl = Anzahl;
+                    RaisePropertyChanged();
                     BerechneWerte();
                 }
             }
         }
-        public double? Fremdkosten
+        public string Fremdkosten
         {
-            get => data.Fremdkostenzuschlag;
+            get => fremdkosten;
             set
             {
-                if (RequestIsWorking || (data.Fremdkostenzuschlag != value))
+                if (!double.TryParse(value, out double Fremdkosten))
                 {
-                    data.Fremdkostenzuschlag = value;
+                    fremdkosten = "";
+                    data.Fremdkostenzuschlag = 0;
+                    RaisePropertyChanged();
+                    return;
+                }
+                fremdkosten = value;
+                if (RequestIsWorking || (data.Fremdkostenzuschlag != Fremdkosten))
+                {
+                    data.Fremdkostenzuschlag = Fremdkosten;
                     RaisePropertyChanged();
                     RaisePropertyChanged(nameof(FremdkostenNegativ));
-                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                     BerechneWerte();
                 }
             }
         }
-        public double? Preis
+        public string Preis
         {
-            get => data.Preis;
+            get => preis;
             set
             {
-                if (RequestIsWorking || (data.Preis != value))
+                if (!double.TryParse(value, out double Preis))
                 {
-                    ValidateBetrag(value, KaufTyp, "Preis");
-                    data.Preis = value.GetValueOrDefault();
+                    ValidateBetrag(0, KaufTyp, "Preis");
+                    preis = "";
+                    data.Preis = 0;
                     RaisePropertyChanged();
-                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                    return; 
+                }
+                preis = value;
+                if (RequestIsWorking || (data.Preis != Preis))
+                {
+                    ValidateBetrag(Preis, KaufTyp, "Preis");
+                    data.Preis = Preis;
+                    RaisePropertyChanged();                  
                     BerechneWerte();
                 }
             }
@@ -280,20 +312,24 @@ namespace Aktien.Logic.UI.DepotViewModels
             }
         }
         public int WertpapierID { set { data.WertpapierID = value; } }
-        public Double? Betrag
+        public string Betrag
         {
-            get
-            {
-                return betrag;
-            }
+            get => betrag;
             set
             {
+                if (!double.TryParse(value, out double Betrag))
+                {
+                    ValidateBetrag(0, KaufTyp, "Betrag");
+                    betrag = "";
+                    RaisePropertyChanged();
+                    return; 
+                }
+                
                 if (RequestIsWorking || (betrag != value))
                 {
-                    ValidateBetrag(value, KaufTyp, "Betrag");
-                    betrag = value.GetValueOrDefault();
-                    RaisePropertyChanged();
-                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                    ValidateBetrag(Betrag, KaufTyp, "Betrag");
+                    betrag = value;
+                    RaisePropertyChanged();   
                     BerechneWerte();
                 }
             }
@@ -314,8 +350,8 @@ namespace Aktien.Logic.UI.DepotViewModels
         { 
             get 
             {
-                if (!Fremdkosten.HasValue) return 0;
-                else return (Fremdkosten.GetValueOrDefault(0) * -1);
+                if (Fremdkosten.Equals("")) return 0;
+                else return (Double.Parse(Fremdkosten) * -1);
             } 
         } 
 
@@ -332,6 +368,7 @@ namespace Aktien.Logic.UI.DepotViewModels
             bool isValid = Validierung.ValidateAnzahl(anzahl, out ICollection<string> validationErrors);
 
             AddValidateInfo(isValid, "Anzahl", validationErrors);
+            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             return isValid;
         }
 
@@ -342,6 +379,7 @@ namespace Aktien.Logic.UI.DepotViewModels
             bool isValid = Validierung.ValidateBetrag(betrag, kaufTyp, out ICollection<string> validationErrors);
 
             AddValidateInfo(isValid, propertyKey, validationErrors);
+            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             return isValid;
         }
 
@@ -386,16 +424,18 @@ namespace Aktien.Logic.UI.DepotViewModels
             data = new BuyOrderModel { Steuer = new SteuergruppeModel { Steuern = new List<SteuerModel>() } };
             KaufTyp = Data.Types.WertpapierTypes.KaufTypes.Kauf;
             OrderTyp = Data.Types.WertpapierTypes.OrderTypes.Normal;
-            Anzahl = null;
-            Preis = null;
+            Preis = "";
             Datum = DateTime.Now;
-            Fremdkosten = null;
+            Fremdkosten = "";
             Betrag = null;
             preisUebersicht = 0;
             data.Gesamt = 0;
             data.Bemessungsgrundlage = 0;
             buyIn = 0;
             steuern = 0;
+            Anzahl = "";
+            Betrag = "";
+            DeleteValidateInfo("Betrag");
         }
     }
 }

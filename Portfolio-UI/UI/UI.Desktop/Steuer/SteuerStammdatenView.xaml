@@ -8,6 +8,7 @@
                     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
                     xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
                     xmlns:command="http://www.galasoft.ch/mvvmlight"  
+                    xmlns:Behaviors="clr-namespace:Base.Logic.Core.Behavior;assembly=Base.Logic"
                     mc:Ignorable="d" WindowStartupLocation="CenterScreen" Width="260" Height="225"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                     ResizeMode="NoResize"
@@ -61,11 +62,9 @@
                 </Grid.ColumnDefinitions>
                 <ComboBox Grid.Column="1"   Width="40" ItemsSource="{Binding Waehrungen}" SelectedItem="{Binding Waehrung}" TabIndex="2" />
                 <TextBox  Grid.Column="0" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Betrag, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, TargetNullValue='', StringFormat=N2,ConverterCulture='de-DE'}" Cursor="IBeam" TabIndex="1"  >
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="PreviewTextInput" >
-                            <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyBetragCommand"  />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
+                    <i:Interaction.Behaviors>
+                        <Behaviors:TextBoxInputBehavior InputMode="DecimalInput"/>
+                    </i:Interaction.Behaviors>
                     <Validation.ErrorTemplate>
                         <ControlTemplate>
                             <StackPanel>

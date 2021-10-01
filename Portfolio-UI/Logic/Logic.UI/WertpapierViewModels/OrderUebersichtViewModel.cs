@@ -125,7 +125,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
                 }
 
             }
-            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.buysell);
+            Messenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.buysell.ToString());
             base.ExecuteEntfernenCommand();
         }
 

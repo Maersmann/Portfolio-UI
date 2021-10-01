@@ -8,6 +8,7 @@
                     xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
                     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
                     xmlns:command="http://www.galasoft.ch/mvvmlight"
+                    xmlns:Behaviors="clr-namespace:Base.Logic.Core.Behavior;assembly=Base.Logic"
                     mc:Ignorable="d"
                     Height="auto" Width="630" SizeToContent="Height"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -118,12 +119,10 @@
             <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Datum</Label>
             <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Order Art</Label>
             <Label Grid.Row="6" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"  Content="{Binding KauftypBez}"/>
-            <TextBox Grid.Row="0"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Anzahl, UpdateSourceTrigger=PropertyChanged, TargetNullValue='', ValidatesOnNotifyDataErrors=True, StringFormat=N4,ConverterCulture='de-DE' }" >
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="PreviewTextInput" >
-                        <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyBetragCommand"  />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
+            <TextBox Grid.Row="0"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Anzahl, UpdateSourceTrigger=PropertyChanged, TargetNullValue='', ValidatesOnNotifyDataErrors=True }" >
+                <i:Interaction.Behaviors>
+                    <Behaviors:TextBoxInputBehavior InputMode="DecimalInput"/>
+                </i:Interaction.Behaviors>
                 <Validation.ErrorTemplate>
                     <ControlTemplate>
                         <StackPanel>
@@ -139,12 +138,10 @@
                     </ControlTemplate>
                 </Validation.ErrorTemplate>
             </TextBox>
-            <TextBox Grid.Row="1"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Preis, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, TargetNullValue='', StringFormat={}{0:N3}€,ConverterCulture='de-DE' }" IsEnabled="{Binding EingabePreisEnabled, Mode=OneWay}"  >
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="PreviewTextInput" >
-                        <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyBetragCommand"  />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
+            <TextBox Grid.Row="1"  Grid.Column="1" HorizontalAlignment="Center"  Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Preis, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, TargetNullValue='' }" IsEnabled="{Binding EingabePreisEnabled, Mode=OneWay}" Cursor="IBeam"  >
+                <i:Interaction.Behaviors>
+                    <Behaviors:TextBoxInputBehavior InputMode="DecimalInput"/>
+                </i:Interaction.Behaviors>
                 <Validation.ErrorTemplate>
                     <ControlTemplate>
                         <StackPanel>
@@ -160,12 +157,10 @@
                     </ControlTemplate>
                 </Validation.ErrorTemplate>
             </TextBox>
-            <TextBox Grid.Row="2"  Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Betrag, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, TargetNullValue='', StringFormat=N3,ConverterCulture='de-DE' }" IsEnabled="{Binding EingabeGesamtbetragEnabled, Mode=OneWay}" >
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="PreviewTextInput" >
-                        <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyBetragCommand"  />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
+            <TextBox Grid.Row="2"  Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Betrag, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, TargetNullValue='' }" IsEnabled="{Binding EingabeGesamtbetragEnabled, Mode=OneWay}" >
+                <i:Interaction.Behaviors>
+                    <Behaviors:TextBoxInputBehavior InputMode="DecimalInput"/>
+                </i:Interaction.Behaviors>
                 <Validation.ErrorTemplate>
                     <ControlTemplate>
                         <StackPanel>
@@ -181,12 +176,10 @@
                     </ControlTemplate>
                 </Validation.ErrorTemplate>
             </TextBox>
-            <TextBox Grid.Row="3"  Grid.Column="1" HorizontalAlignment="Center"  TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Fremdkosten, UpdateSourceTrigger=PropertyChanged, TargetNullValue='', StringFormat={}{0:N2}€,ConverterCulture='de-DE' }" Cursor="IBeam" >
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="PreviewTextInput" >
-                        <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyBetragCommand"  />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
+            <TextBox Grid.Row="3"  Grid.Column="1" HorizontalAlignment="Center"  TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Fremdkosten, UpdateSourceTrigger=PropertyChanged, TargetNullValue='' }" Cursor="IBeam" >
+                <i:Interaction.Behaviors>
+                    <Behaviors:TextBoxInputBehavior InputMode="DecimalInput"/>
+                </i:Interaction.Behaviors>
             </TextBox>
             <DatePicker Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" SelectedDate="{Binding Datum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" >
                 <Validation.ErrorTemplate>

@@ -24,6 +24,8 @@ namespace Aktien.Logic.UI.DividendeViewModels
 {
     public class DividendeStammdatenViewModel : ViewModelStammdaten<DividendeModel, StammdatenTypes>
     {
+        private string betrag;
+        private string betragUmgerechnet;
         public DividendeStammdatenViewModel()
         {
             Title = "Informationen Dividende";
@@ -82,28 +84,43 @@ namespace Aktien.Logic.UI.DividendeViewModels
             }
         }
 
-        public double? Betrag
+        public string Betrag
         {
-            get => data.Betrag;
+            get => betrag;
             set
             {
-                if (RequestIsWorking || data.Betrag != value)
+                if (!double.TryParse(value, out double Betrag))
                 {
-                    ValidateBetrag(value);
-                    data.Betrag = value.GetValueOrDefault();
+                    ValidateBetrag(0);
+                    betrag = "";
+                    data.Betrag = 0;
                     RaisePropertyChanged();
-                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                    return;
+                }
+                betrag = value;
+                if (RequestIsWorking || data.Betrag != Betrag)
+                {
+                    ValidateBetrag(Betrag);
+                    data.Betrag = Betrag;
+                    RaisePropertyChanged(); 
                 }
             }
         }
-        public double? BetragUmgerechnet
+        public string BetragUmgerechnet
         {
-            get => data.BetragUmgerechnet;
+            get => betragUmgerechnet;
             set
             {
-                if (RequestIsWorking || data.BetragUmgerechnet != value)
+                if (!double.TryParse(value, out double BetragUmgerechnet))
                 {
-                    data.BetragUmgerechnet = value;
+                    betragUmgerechnet = "";
+                    data.BetragUmgerechnet = 0;
+                    RaisePropertyChanged();
+                    return;
+                }
+                if (RequestIsWorking || data.BetragUmgerechnet != BetragUmgerechnet)
+                {
+                    data.BetragUmgerechnet = BetragUmgerechnet;
                     RaisePropertyChanged();
                 }
             }
@@ -139,9 +156,10 @@ namespace Aktien.Logic.UI.DividendeViewModels
                     WertpapierID = data.WertpapierID;
                     Exdatum = data.Exdatum;
                     Zahldatum = data.Zahldatum;
-                    Betrag = data.Betrag;
+                    Betrag = data.Betrag.ToString();
                     Waehrung = data.Waehrung;
-                    BetragUmgerechnet = data.BetragUmgerechnet;
+                    BetragUmgerechnet = data.BetragUmgerechnet.HasValue ? data.BetragUmgerechnet.Value.ToString() : "";
+
                     state = State.Bearbeiten;
                 }
             }
@@ -166,6 +184,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
             bool isValid = Validierung.ValidateBetrag(betrag, out ICollection<string> validationErrors);
 
             AddValidateInfo(isValid, "Betrag", validationErrors);
+            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             return isValid;
         }
         #endregion
@@ -178,7 +197,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
             state = State.Neu;
             Betrag = null;
             Waehrung = Data.Types.WertpapierTypes.Waehrungen.Euro;
-            this.RaisePropertyChanged();
+            RaisePropertyChanged();
         }
 
     }

@@ -9,11 +9,11 @@ namespace Aktien.Logic.Core.Validierung
 {
     public class DividendeErhaltenValidierung : BaseValidierung
     {
-        public bool ValidateBestand(Double? bestand, out ICollection<string> validationErrors)
+        public bool ValidateBestand(double bestand, out ICollection<string> validationErrors)
         {
             validationErrors = new List<String>();
 
-            if (!bestand.HasValue || (bestand == 0))
+            if (bestand == 0)
                 validationErrors.Add("Kein Bestand hinterlegt");
 
             if (bestand < 0)

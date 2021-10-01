@@ -19,5 +19,10 @@ namespace Data.Model.DepotModels
         public Double Gesamt { get; set; }
         public Double Bemessungsgrundlage { get; set; }
         public SteuergruppeModel Steuer { get; set; }
+
+        public BuyOrderModel()
+        {
+            Preis = 0;
+        }
     }
 }

@@ -22,6 +22,7 @@ namespace Aktien.Logic.UI.DepotViewModels
 {
     public class AusgabeStammdatenViewModel : ViewModelStammdaten<AusgabeModel, StammdatenTypes>, IViewModelStammdaten
     {
+        private string betrag;
         public AusgabeStammdatenViewModel()
         {
             SaveCommand = new DelegateCommand(ExecuteSaveCommand, CanExecuteSaveCommand);
@@ -61,17 +62,25 @@ namespace Aktien.Logic.UI.DepotViewModels
                 }
             }
         }
-        public double? Betrag
+        public string Betrag
         {
-            get => data.Betrag;
+            get => betrag;
             set
             {
-                if (RequestIsWorking || (data.Betrag != value))
+                if (!double.TryParse(value, out double Betrag))
                 {
-                    ValidateBetrag(value);
-                    data.Betrag = value.GetValueOrDefault();
+                    ValidateBetrag(Betrag);
+                    betrag = "";
+                    data.Betrag = 0;
                     RaisePropertyChanged();
-                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                    return;
+                }
+                betrag = value;
+                if (RequestIsWorking || (data.Betrag != Betrag))
+                {
+                    ValidateBetrag(Betrag);
+                    data.Betrag = Betrag;
+                    RaisePropertyChanged();
                 }
             }
         }
@@ -121,6 +130,7 @@ namespace Aktien.Logic.UI.DepotViewModels
             bool isValid = Validierung.ValidateBetrag(betrag, out ICollection<string> validationErrors);
 
             AddValidateInfo(isValid, "Betrag", validationErrors);
+            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             return isValid;
         }
 
@@ -139,7 +149,7 @@ namespace Aktien.Logic.UI.DepotViewModels
         {
             state = State.Neu;
             data = new AusgabeModel();
-            Betrag = null;
+            Betrag = "";
             Datum = DateTime.Now;
             DepotID = 1;
             Beschreibung = "";

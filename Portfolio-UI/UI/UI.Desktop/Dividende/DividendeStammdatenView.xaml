@@ -9,6 +9,7 @@
                     xmlns:local="clr-namespace:Aktien.UI.Desktop.Dividende"
                     xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                    xmlns:Behaviors="clr-namespace:Base.Logic.Core.Behavior;assembly=Base.Logic"
                     mc:Ignorable="d" WindowStartupLocation="CenterScreen"
                     Height="auto" Width="227" SizeToContent="Height" ShowInTaskbar="False"
                     DataContext="{Binding DividendeStammdaten ,Source={StaticResource Locator}}" ResizeMode="NoResize">
@@ -87,11 +88,9 @@
 
             <Label Content="Betrag" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="2" VerticalAlignment="Top"/>
             <TextBox HorizontalAlignment="Left" Margin="61,10,0,20" Grid.Row="2" TextWrapping="NoWrap" VerticalAlignment="Top" Width="89" Text="{Binding Betrag, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, TargetNullValue='', StringFormat=N4,ConverterCulture='de-DE' }" Cursor="IBeam" >
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="PreviewTextInput" >
-                        <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyBetragCommand"  />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
+                <i:Interaction.Behaviors>
+                    <Behaviors:TextBoxInputBehavior InputMode="DecimalInput"/>
+                </i:Interaction.Behaviors>
                 <Validation.ErrorTemplate>
                     <ControlTemplate>
                         <StackPanel>
@@ -112,11 +111,9 @@
 
             <Label Content="Umgerechnet" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="3" VerticalAlignment="Top"/>
             <TextBox HorizontalAlignment="Left" Margin="98,10,0,20" Grid.Row="3" TextWrapping="NoWrap" VerticalAlignment="Top" Width="97" Text="{Binding BetragUmgerechnet, ConverterCulture=de-DE, StringFormat=N3, TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" >
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="PreviewTextInput" >
-                        <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyBetragCommand"  />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
+                <i:Interaction.Behaviors>
+                    <Behaviors:TextBoxInputBehavior InputMode="DecimalInput"/>
+                </i:Interaction.Behaviors>
             </TextBox>
         </Grid>
 

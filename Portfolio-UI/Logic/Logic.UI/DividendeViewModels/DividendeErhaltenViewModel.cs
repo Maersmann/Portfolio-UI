@@ -33,7 +33,8 @@ namespace Aktien.Logic.UI.DividendeViewModels
 {
     public class DividendeErhaltenViewModel : ViewModelStammdaten<DividendeErhaltenStammdatenModel, StammdatenTypes>
     {
-        private double betrag;
+        private string bestand;
+        private string wechselkurs;
         private bool neueDividendeNichtGespeichert;
         private bool neueSteuergruppeErstellt;
         private bool dataGespeichert;
@@ -57,7 +58,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
             DividendeText = datum.ToString("d", fmt) + " (" + betrag.ToString("N2") + ")";
             RaisePropertyChanged(nameof(DividendeText));
             DividendeID = id;
-            this.betrag = betrag;
+            LadeAnzahlWertpapier();
             BerechneGesamtWerte();
         }
 
@@ -70,8 +71,8 @@ namespace Aktien.Logic.UI.DividendeViewModels
                 if (resp.IsSuccessStatusCode)
                 {
                     data = await resp.Content.ReadAsAsync<DividendeErhaltenStammdatenModel>();
-                    Bestand = data.Bestand;
-                    Wechselkurs = data.Umrechnungskurs;
+                    Bestand = data.Umrechnungskurs.ToString();
+                    Wechselkurs = data.Umrechnungskurs.ToString();
                     RundungTyp = data.RundungArt;
                     DividendeAusgewaehlt(data.DividendeID, data.Dividende.Betrag, data.Dividende.Zahldatum);
                     state = State.Bearbeiten;
@@ -79,6 +80,21 @@ namespace Aktien.Logic.UI.DividendeViewModels
                 }
             }
             RequestIsWorking = false;
+        }
+
+        private async void LadeAnzahlWertpapier()
+        {
+            if (GlobalVariables.ServerIsOnline)
+            {
+                RequestIsWorking = true;
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/depot/wertpapier/{data.WertpapierID}/Anzahl");
+                if (resp.IsSuccessStatusCode)
+                {
+                    double Anzahl = await resp.Content.ReadAsAsync<Double>();
+                    Bestand = Anzahl.ToString();
+                }
+                RequestIsWorking = false;
+            }
         }
 
         private int DividendeID
@@ -93,16 +109,15 @@ namespace Aktien.Logic.UI.DividendeViewModels
                     ((DelegateCommand)OpenDividendeCommand).RaiseCanExecuteChanged();
             } 
         }
-
   
         public void WertpapierID(int wertpapierID)
         {
-            data.WertpapierID = wertpapierID;
+            data.WertpapierID = wertpapierID;  
         }
 
         public void BerechneGesamtWerte()
         {
-            data.Bemessungsgrundlage = new DividendenBerechnungen().Bemessungsgrundlage(betrag, data.Bestand);
+            data.Bemessungsgrundlage = 1;// new DividendenBerechnungen().Bemessungsgrundlage(betrag, data.Bestand);
             data.Erhalten = data.Bemessungsgrundlage;
             data.SteuernVorZwischensumme = 0;
             data.SteuernNachZwischensumme = 0;
@@ -137,15 +152,17 @@ namespace Aktien.Logic.UI.DividendeViewModels
         public ICommand OpenAuswahlCommand { get; set; }
         public ICommand OpenDividendeCommand { get; set; }
         public ICommand OpenSteuernCommand { get; set; }
-        public Double? Bestand
+        public string Bestand
         {
-            get => data.Bestand == -1 ? null : (double?)data.Bestand;
+            get => bestand;
             set
             {
-                if (RequestIsWorking || data.Bestand != value)
+                if (!double.TryParse(value, out double Bestand)) return;
+                bestand = value;
+                if (RequestIsWorking || data.Bestand != Bestand)
                 {
-                    ValidateBestand(value);
-                    data.Bestand = value.GetValueOrDefault(-1);
+                    ValidateBestand(Bestand);
+                    data.Bestand = Bestand;
                     RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                     BerechneGesamtWerte();
@@ -153,14 +170,16 @@ namespace Aktien.Logic.UI.DividendeViewModels
             }
         }
         public string DividendeText { get; private set; }
-        public double? Wechselkurs
+        public string Wechselkurs
         {
-            get => data.Umrechnungskurs;
+            get => wechselkurs;
             set
             {
-                if (RequestIsWorking || data.Umrechnungskurs != value)
+                if (!double.TryParse(value, out double Wechselkurs)) return;
+                wechselkurs = value;
+                if (RequestIsWorking || data.Umrechnungskurs != Wechselkurs)
                 {
-                    data.Umrechnungskurs = value;
+                    data.Umrechnungskurs = Wechselkurs;
                     RaisePropertyChanged();
                     RaisePropertyChanged(nameof(WechsellkursHasValue));
                     ((DelegateCommand)OpenDividendeCommand).RaiseCanExecuteChanged();
@@ -314,7 +333,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
         #endregion
 
         #region Validate
-        private bool ValidateBestand(double? bestand)
+        private bool ValidateBestand(double bestand)
         {
             var Validierung = new DividendeErhaltenValidierung();
 
@@ -343,11 +362,11 @@ namespace Aktien.Logic.UI.DividendeViewModels
             data = new DividendeErhaltenStammdatenModel { Steuer = new SteuergruppeModel { Steuern = new List<SteuerModel>() } };
             DividendeText = "";
             DividendeID = -1;
-            Bestand = -1;
+            Bestand = "";
+            wechselkurs = "";
             state = State.Neu;
             Wechselkurs = null;
             RundungTyp = DividendenRundungTypes.Normal;
-            betrag = 0;
             RaisePropertyChanged();
         }
 

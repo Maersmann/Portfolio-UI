@@ -45,7 +45,7 @@ namespace Aktien.Logic.UI.AktieViewModels
                 if (resp.IsSuccessStatusCode)
                 {
                     Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp());
+                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else if((int)resp.StatusCode == 904)
                 {
