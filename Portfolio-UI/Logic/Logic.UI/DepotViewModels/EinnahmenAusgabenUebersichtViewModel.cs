@@ -1,7 +1,8 @@
 ﻿using Aktien.Data.Types;
 using Aktien.Logic.Core;
 using Aktien.Logic.Core.DepotLogic;
-using Aktien.Logic.UI.BaseViewModels;
+using Base.Logic.Core;
+using Base.Logic.ViewModels;
 using Data.Model.DepotModels;
 using System;
 using System.Collections.Generic;
@@ -21,40 +22,42 @@ namespace Aktien.Logic.UI.DepotViewModels
             data = new EinnahmenAusgabenGesamtModel();
             Title = "Einnahmen & Ausgaben Gesamtwerte";
             LoadData();
-            RegisterAktualisereViewMessage(StammdatenTypes.ausgaben);
-            RegisterAktualisereViewMessage(StammdatenTypes.einnahmen);
-            RegisterAktualisereViewMessage(StammdatenTypes.dividendeErhalten);
-            RegisterAktualisereViewMessage(StammdatenTypes.buysell);
-            RegisterAktualisereViewMessage(StammdatenTypes.steuer);
+            RegisterAktualisereViewMessage(StammdatenTypes.ausgaben.ToString());
+            RegisterAktualisereViewMessage(StammdatenTypes.einnahmen.ToString());
+            RegisterAktualisereViewMessage(StammdatenTypes.dividendeErhalten.ToString());
+            RegisterAktualisereViewMessage(StammdatenTypes.buysell.ToString());
+            RegisterAktualisereViewMessage(StammdatenTypes.steuer.ToString());
         }
 
         public async override void LoadData()
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+"/api/depot/EinnahmenAusgaben");
                 if (resp.IsSuccessStatusCode)
                     data = await resp.Content.ReadAsAsync<EinnahmenAusgabenGesamtModel>();
+                RequestIsWorking = false;
             }
-            this.RaisePropertyChanged("EinnahmeEinzahlung");
-            this.RaisePropertyChanged("EinnahmeVerkauf");
-            this.RaisePropertyChanged("EinnahmeDividende");
-            this.RaisePropertyChanged("EinnahmeGesamt");
-            this.RaisePropertyChanged("AusgabeAuszahlung");
-            this.RaisePropertyChanged("AusgabeKauf");
-            this.RaisePropertyChanged("AusgabeGesamt");
-            this.RaisePropertyChanged("Differenz");
+            RaisePropertyChanged("EinnahmeEinzahlung");
+            RaisePropertyChanged("EinnahmeVerkauf");
+            RaisePropertyChanged("EinnahmeDividende");
+            RaisePropertyChanged("EinnahmeGesamt");
+            RaisePropertyChanged("AusgabeAuszahlung");
+            RaisePropertyChanged("AusgabeKauf");
+            RaisePropertyChanged("AusgabeGesamt");
+            RaisePropertyChanged("Differenz");
         }
 
         #region Bindings
-        public Double EinnahmeEinzahlung { get { return data.EinnahmeEinzahlung; } }
-        public Double EinnahmeVerkauf{ get { return  data.EinnahmeVerkauf; } }
-        public Double EinnahmeDividende { get { return data.EinnahmeDividende; } }
-        public Double EinnahmeGesamt { get { return data.EinnahmeGesamt; } }
-        public Double AusgabeAuszahlung { get { return data.AusgabeAuszahlung; } }
-        public Double AusgabeKauf { get { return  data.AusgabeKauf; } }
-        public Double AusgabeGesamt { get { return  data.AusgabeGesamt; } }
-        public Double Differenz { get { return data.Differenz; } }
+        public double EinnahmeEinzahlung => data.EinnahmeEinzahlung; 
+        public double EinnahmeVerkauf => data.EinnahmeVerkauf;
+        public double EinnahmeDividende => data.EinnahmeDividende;
+        public double EinnahmeGesamt => data.EinnahmeGesamt;
+        public double AusgabeAuszahlung => data.AusgabeAuszahlung; 
+        public double AusgabeKauf =>  data.AusgabeKauf;
+        public double AusgabeGesamt =>  data.AusgabeGesamt; 
+        public double Differenz => data.Differenz;
         #endregion
     }
 }

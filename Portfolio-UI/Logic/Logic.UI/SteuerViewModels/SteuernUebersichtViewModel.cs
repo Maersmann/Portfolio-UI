@@ -1,6 +1,8 @@
 ﻿using Aktien.Data.Types;
 using Aktien.Logic.Core;
-using Aktien.Logic.UI.BaseViewModels;
+using Base.Logic.Core;
+using Base.Logic.Types;
+using Base.Logic.ViewModels;
 using Data.Model.SteuerModels;
 using Data.Types.SteuerTypes;
 using GalaSoft.MvvmLight.Messaging;
@@ -14,7 +16,7 @@ using System.Windows;
 
 namespace Logic.UI.SteuerViewModels
 {
-    public class SteuernUebersichtViewModel : ViewModelUebersicht<SteuerModel>
+    public class SteuernUebersichtViewModel : ViewModelUebersicht<SteuerModel, StammdatenTypes>
     {
         private Action<bool, int?> callback;
         private int? steuergruppeID;
@@ -27,8 +29,7 @@ namespace Logic.UI.SteuerViewModels
             steuergruppeID = null;
             istVerknuepfungGespeichert = false;
             steuerherkunfttyp = SteuerHerkunftTyp.shtDividende;
-            LoadData();
-            RegisterAktualisereViewMessage(StammdatenTypes.steuer);
+            RegisterAktualisereViewMessage(StammdatenTypes.steuer.ToString());
         }
 
         public void setHerkunftTyp(SteuerHerkunftTyp steuerHerkunftTyp)
@@ -36,7 +37,8 @@ namespace Logic.UI.SteuerViewModels
             this.steuerherkunfttyp = steuerHerkunftTyp;
         }
         protected override int GetID() { return selectedItem.ID; }
-        protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.steuer; }
+        protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.steuer; }
+
         public void SetCallback(Action<bool, int?> callback)
         {
             this.callback = callback;
@@ -47,13 +49,15 @@ namespace Logic.UI.SteuerViewModels
 
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/Steuern?steuergruppeid={steuergruppeID}");
                 if (resp.IsSuccessStatusCode)
                     itemList = await resp.Content.ReadAsAsync<ObservableCollection<SteuerModel>>();
                 else
                     SendExceptionMessage(await resp.Content.ReadAsStringAsync());
+                RequestIsWorking = false;
             }
-            this.RaisePropertyChanged("ItemList");
+            RaisePropertyChanged("ItemList");
         }
 
         #region Commands
@@ -62,7 +66,9 @@ namespace Logic.UI.SteuerViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL + $"/api/Steuern/{selectedItem.ID}");
+                RequestIsWorking = false;
                 if (!resp.IsSuccessStatusCode)
                 {
                     SendExceptionMessage("Steuer konnte nicht gelöscht werden.");
@@ -94,12 +100,12 @@ namespace Logic.UI.SteuerViewModels
 
         protected override void ExecuteNeuCommand()
         {
-            Messenger.Default.Send<OpenSteuerStammdatenMessage>(new OpenSteuerStammdatenMessage { State = State.Neu, ID = null, StammdatenTyp = GetStammdatenType(), SteuergruppeID = this.steuergruppeID, Typ = steuerherkunfttyp, IstVerknuepfungGespeichert = istVerknuepfungGespeichert },"SteuernUebersicht"); 
+            Messenger.Default.Send(new OpenSteuerStammdatenMessage<StammdatenTypes> { State = State.Neu, ID = null, Stammdaten = GetStammdatenTyp(), SteuergruppeID = this.steuergruppeID, Typ = steuerherkunfttyp, IstVerknuepfungGespeichert = istVerknuepfungGespeichert },"SteuernUebersicht"); 
         }
 
         protected override void ExecuteBearbeitenCommand()
         {
-            Messenger.Default.Send<OpenSteuerStammdatenMessage>(new OpenSteuerStammdatenMessage { State = State.Bearbeiten, ID = selectedItem.ID, StammdatenTyp = GetStammdatenType(), SteuergruppeID = this.steuergruppeID, Typ = steuerherkunfttyp, IstVerknuepfungGespeichert = istVerknuepfungGespeichert }, "SteuernUebersicht");
+            Messenger.Default.Send(new OpenSteuerStammdatenMessage<StammdatenTypes> { State = State.Bearbeiten, ID = selectedItem.ID, Stammdaten = GetStammdatenTyp(), SteuergruppeID = this.steuergruppeID, Typ = steuerherkunfttyp, IstVerknuepfungGespeichert = istVerknuepfungGespeichert }, "SteuernUebersicht");
         }
 
 

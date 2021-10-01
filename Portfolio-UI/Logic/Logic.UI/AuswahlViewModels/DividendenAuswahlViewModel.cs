@@ -3,7 +3,9 @@ using Aktien.Logic.Core;
 using Aktien.Logic.Core.DividendeLogic;
 using Aktien.Logic.Messages.AuswahlMessages;
 using Aktien.Logic.Messages.DividendeMessages;
-using Aktien.Logic.UI.BaseViewModels;
+using Base.Logic.Core;
+using Base.Logic.Types;
+using Base.Logic.ViewModels;
 using Data.Model.AuswahlModels;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
@@ -20,7 +22,7 @@ using System.Windows.Input;
 
 namespace Aktien.Logic.UI.AuswahlViewModels
 {
-    public class DividendenAuswahlViewModel : ViewModelAuswahl<DividendenAuswahlModel>
+    public class DividendenAuswahlViewModel : ViewModelAuswahl<DividendenAuswahlModel, StammdatenTypes>
     { 
         private int wertpapierID;
 
@@ -33,8 +35,8 @@ namespace Aktien.Logic.UI.AuswahlViewModels
         } 
 
         protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.dividende; }
-        public bool OhneHinterlegteDividende { set { ohneHinterlegteDividende = value; } }
-        public void SetCallback(Action<bool, int, Double, DateTime> callback)
+        public bool OhneHinterlegteDividende { set => ohneHinterlegteDividende = value; }
+        public void SetCallback(Action<bool, int, double, DateTime> callback)
         {
             Callback = callback;
         }
@@ -44,18 +46,20 @@ namespace Aktien.Logic.UI.AuswahlViewModels
             this.wertpapierID = wertpapierID;
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+$"/api/Wertpapier/{wertpapierID}/Dividenden?nichtErhalten={ohneHinterlegteDividende}");
                 if (resp.IsSuccessStatusCode)
                     itemList = await resp.Content.ReadAsAsync<ObservableCollection<DividendenAuswahlModel>>();
+                RequestIsWorking = false;
             }
-            this.RaisePropertyChanged("ItemList");
+            RaisePropertyChanged("ItemList");
         }
 
         #region Commands
 
         protected override void ExcecuteNewItemCommand()
         {
-            Messenger.Default.Send<OpenDividendeStammdatenMessage>(new OpenDividendeStammdatenMessage { WertpapierID = wertpapierID, State = State.Neu });
+            Messenger.Default.Send(new OpenDividendeStammdatenMessage<StammdatenTypes> { WertpapierID = wertpapierID, State = State.Neu });
         }
 
         protected override void ExecuteCloseWindowCommand(Window window)

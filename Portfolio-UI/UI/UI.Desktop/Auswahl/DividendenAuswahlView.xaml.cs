@@ -1,4 +1,5 @@
-﻿using Aktien.Logic.Messages.DividendeMessages;
+﻿using Aktien.Data.Types;
+using Aktien.Logic.Messages.DividendeMessages;
 using Aktien.Logic.UI.AuswahlViewModels;
 using Aktien.Logic.UI.DividendeViewModels;
 using Aktien.UI.Desktop.Dividende;
@@ -27,10 +28,10 @@ namespace Aktien.UI.Desktop.Auswahl
         public DividendenAuswahlView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenDividendeStammdatenMessage>(this, m => ReceiveOpenDividendeStammdatenMessage(m));
+            Messenger.Default.Register<OpenDividendeStammdatenMessage<StammdatenTypes>>(this, m => ReceiveOpenDividendeStammdatenMessage(m));
         }
 
-        private void ReceiveOpenDividendeStammdatenMessage(OpenDividendeStammdatenMessage m)
+        private void ReceiveOpenDividendeStammdatenMessage(OpenDividendeStammdatenMessage<StammdatenTypes> m)
         {
             var view = new DividendeStammdatenView()
             {
@@ -52,7 +53,7 @@ namespace Aktien.UI.Desktop.Auswahl
 
         private void Window_Unloaded(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Unregister<OpenDividendeStammdatenMessage>(this);
+            Messenger.Default.Unregister<OpenDividendeStammdatenMessage<StammdatenTypes>>(this);
         }
     }
 }

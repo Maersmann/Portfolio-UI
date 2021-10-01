@@ -1,5 +1,6 @@
 ﻿using Aktien.Logic.Core;
-using Aktien.Logic.UI.BaseViewModels;
+using Base.Logic.Core;
+using Base.Logic.ViewModels;
 using Data.Model.OptionenModels;
 using Logic.Core;
 using System;
@@ -20,9 +21,11 @@ namespace Logic.UI.OptionenViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + "/api/info");
                 if (resp.IsSuccessStatusCode)
                     Info = await resp.Content.ReadAsAsync<InfoModel>();
+                RequestIsWorking = false;
             }
             Info.VersionFrontend = new VersionHelper().GetVersion;
             Info.ReleaseFronted = new VersionHelper().GetRelease;

@@ -1,6 +1,7 @@
 ﻿using Aktien.Data.Types;
 using Aktien.Logic.Messages.DividendeMessages;
 using Aktien.Logic.UI.DividendeViewModels;
+using Base.Logic.Types;
 using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Generic;
@@ -27,10 +28,10 @@ namespace Aktien.UI.Desktop.Dividende
         public DividendeErhaltenUebersichtView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenErhaltendeDividendeStammdatenMessage>(this, m => ReceiveOpenErhaltendeDividendeStammdatenMessage(m));
+            Messenger.Default.Register<OpenErhaltendeDividendeStammdatenMessage<StammdatenTypes>>(this, m => ReceiveOpenErhaltendeDividendeStammdatenMessage(m));
         }
 
-        private void ReceiveOpenErhaltendeDividendeStammdatenMessage(OpenErhaltendeDividendeStammdatenMessage m)
+        private void ReceiveOpenErhaltendeDividendeStammdatenMessage(OpenErhaltendeDividendeStammdatenMessage<StammdatenTypes> m)
         {
             var view = new DividendeErhaltenView()
             {
@@ -54,7 +55,7 @@ namespace Aktien.UI.Desktop.Dividende
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Unregister<OpenErhaltendeDividendeStammdatenMessage>(this);
+            Messenger.Default.Unregister<OpenErhaltendeDividendeStammdatenMessage<StammdatenTypes>>(this);
         }
     }
 }

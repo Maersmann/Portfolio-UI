@@ -3,7 +3,7 @@ using Aktien.Data.Types.WertpapierTypes;
 using Aktien.Logic.Core;
 using Aktien.Logic.Core.Validierung.Base;
 using Aktien.Logic.Messages.Base;
-using Aktien.Logic.UI.BaseViewModels;
+using Base.Logic.ViewModels;
 using Aktien.Logic.UI.InterfaceViewModels;
 using Data.Model.SteuerModels;
 using Data.Types.SteuerTypes;
@@ -17,10 +17,13 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Windows.Input;
+using Base.Logic.Core;
+using Base.Logic.Messages;
+using Base.Logic.Types;
 
 namespace Logic.UI.SteuerViewModels
 {
-    public class SteuerStammdatenViewModel : ViewModelStammdaten<SteuerModel>, IViewModelStammdaten
+    public class SteuerStammdatenViewModel : ViewModelStammdaten<SteuerModel, StammdatenTypes>, IViewModelStammdaten
     {
         private int? steuergruppeid;
         private SteuerHerkunftTyp herkunfttyp;
@@ -38,16 +41,17 @@ namespace Logic.UI.SteuerViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/Steuern?typ={this.herkunfttyp}&gruppeid={this.steuergruppeid}&istVerknuepfungGespeichert={istVerknuepfungGespeichert}", data);
-
+                RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
                 {
                     Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());                
                     var respObj = await resp.Content.ReadAsAsync<SteuerModel>();
                     steuergruppeid = respObj.SteuergruppeID;
-                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage { ID = this.steuergruppeid }, GetStammdatenTyp()); 
-                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.steuergruppe);
+                    Messenger.Default.Send(new AktualisiereViewMessage { ID = this.steuergruppeid }, GetStammdatenTyp().ToString()); 
+                    Messenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.steuergruppe.ToString());
                 }
                 else
                 {
@@ -60,15 +64,15 @@ namespace Logic.UI.SteuerViewModels
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.steuer;
         public void setGruppeInfos(int? id, SteuerHerkunftTyp typ, bool istVerknuepfungGespeichert)
         {
-            this.steuergruppeid = id;
-            this.herkunfttyp = typ;
+            steuergruppeid = id;
+            herkunfttyp = typ;
             this.istVerknuepfungGespeichert = istVerknuepfungGespeichert;
             LoadSteuerArts();
         }
 
         public async void ZeigeStammdatenAn(int id)
         {
-            LoadAktie = true;
+            RequestIsWorking = true;
             if (GlobalVariables.ServerIsOnline)
             {
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/Steuern/" + id.ToString());
@@ -80,37 +84,36 @@ namespace Logic.UI.SteuerViewModels
             Optimierung = data.Optimierung;
             Steuerart = data.Steuerart;
             steuerarts.Add(data.Steuerart);
-            this.RaisePropertyChanged(nameof(Steuerarts));
+            RaisePropertyChanged(nameof(Steuerarts));
             ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
-            LoadAktie = false;
+            RequestIsWorking = false;
             state = State.Bearbeiten;
         }
 
         #region Bindings
         public double? Betrag
         {
-            get { return this.data.Betrag; }
+            get => data.Betrag;
             set
             {
-                if (LoadAktie || !double.Equals(this.data.Betrag, value))
+                if (RequestIsWorking || !double.Equals(data.Betrag, value))
                 {
                     ValidateBetrag(value);
-                    this.data.Betrag = value.GetValueOrDefault(0);
-                    this.RaisePropertyChanged();
+                    data.Betrag = value.GetValueOrDefault(0);
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
         public bool Optimierung
         {
-            get { return this.data.Optimierung; }
+            get => data.Optimierung;
             set
             {
-
-                if (LoadAktie || !bool.Equals(this.data.Optimierung, value))
+                if (RequestIsWorking || !bool.Equals(data.Optimierung, value))
                 {
-                    this.data.Optimierung = value;
-                    this.RaisePropertyChanged();
+                    data.Optimierung = value;
+                    RaisePropertyChanged();
                 }
             }
         }
@@ -118,13 +121,13 @@ namespace Logic.UI.SteuerViewModels
         public IEnumerable<SteuerartModel> Steuerarts => steuerarts;
         public SteuerartModel Steuerart
         {
-            get { return data.Steuerart; }
+            get => data.Steuerart;
             set
             {
-                if (LoadAktie || (this.data.Steuerart != value))
+                if (RequestIsWorking || (data.Steuerart != value))
                 {
-                    this.data.Steuerart = value;
-                    this.RaisePropertyChanged();
+                    data.Steuerart = value;
+                    RaisePropertyChanged();
 
                 }
             }
@@ -132,13 +135,13 @@ namespace Logic.UI.SteuerViewModels
 
         public Waehrungen Waehrung
         {
-            get { return data.Waehrung; }
+            get => data.Waehrung;
             set
             {
-                if (LoadAktie || (this.data.Waehrung != value))
+                if (RequestIsWorking || (data.Waehrung != value))
                 {
-                    this.data.Waehrung = value;
-                    this.RaisePropertyChanged();
+                    data.Waehrung = value;
+                    RaisePropertyChanged();
                 }
             }
         }
@@ -172,6 +175,7 @@ namespace Logic.UI.SteuerViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp;
                 if (steuergruppeid.HasValue)
                      resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/Steuern/Gruppe/{steuergruppeid.Value}/FreieSteuerArten");
@@ -181,10 +185,11 @@ namespace Logic.UI.SteuerViewModels
                 if (resp.IsSuccessStatusCode)
                     steuerarts = await resp.Content.ReadAsAsync<ObservableCollection<SteuerartModel>>();
                 else
-                    SendExceptionMessage(await resp.Content.ReadAsStringAsync());
+                    SendExceptionMessage("Fehler beim Laden der Steuerarten");
+                RequestIsWorking = false;
             }
 
-            this.RaisePropertyChanged(nameof(Steuerarts));
+            RaisePropertyChanged(nameof(Steuerarts));
             ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             if (steuerarts.Count > 0)
                 Steuerart = Steuerarts.First();

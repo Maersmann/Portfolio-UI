@@ -1,7 +1,8 @@
 ﻿using Aktien.Data.Types;
 using Aktien.Data.Types.WertpapierTypes;
 using Aktien.Logic.Core;
-using Aktien.Logic.UI.BaseViewModels;
+using Base.Logic.Core;
+using Base.Logic.ViewModels;
 using Data.Model.AuswahlModels;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ using System.Windows;
 
 namespace Aktien.Logic.UI.AuswahlViewModels
 {
-    public class WertpapierAuswahlViewModel : ViewModelAuswahl<WertpapierAuswahlModel>
+    public class WertpapierAuswahlViewModel : ViewModelAuswahl<WertpapierAuswahlModel, StammdatenTypes>
     {
         
         private Action<bool, int> Callback;
@@ -24,7 +25,7 @@ namespace Aktien.Logic.UI.AuswahlViewModels
             Title = "Auswahl Wertpapier";
             
             WertpapierTypes = WertpapierTypes.none;
-            RegisterAktualisereViewMessage(StammdatenTypes.aktien);
+            RegisterAktualisereViewMessage(StammdatenTypes.aktien.ToString());
         }
 
         public void SetCallback(Action<bool, int> callback)
@@ -38,20 +39,9 @@ namespace Aktien.Logic.UI.AuswahlViewModels
             LoadData();
         }
 
+        protected override string GetREST_API() => $"/api/Wertpapier?aktiv=true&type={WertpapierTypes}";
         protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.aktien; }
 
-        public async override void LoadData()
-        {
-            if (GlobalVariables.ServerIsOnline)
-            {
-                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Wertpapier?aktiv=true&type={WertpapierTypes}");          
-                if (resp.IsSuccessStatusCode)
-                {
-                    itemList = await resp.Content.ReadAsAsync<ObservableCollection<WertpapierAuswahlModel>>();
-                }
-            }       
-            base.LoadData();
-        }
 
         protected override bool OnFilterTriggered(object item)
         {

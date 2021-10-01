@@ -3,7 +3,7 @@ using Aktien.Data.Types.DepotTypes;
 using Aktien.Logic.Core;
 using Aktien.Logic.Core.Validierung.Base;
 using Aktien.Logic.Messages.Base;
-using Aktien.Logic.UI.BaseViewModels;
+using Base.Logic.ViewModels;
 using Aktien.Logic.UI.InterfaceViewModels;
 using Data.Model.DepotModels;
 using GalaSoft.MvvmLight.Messaging;
@@ -14,91 +14,76 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Base.Logic.Core;
+using Base.Logic.Messages;
+using Base.Logic.Types;
 
 namespace Aktien.Logic.UI.DepotViewModels
 {
-    public class AusgabeStammdatenViewModel : ViewModelStammdaten<AusgabeModel>, IViewModelStammdaten
+    public class AusgabeStammdatenViewModel : ViewModelStammdaten<AusgabeModel, StammdatenTypes>, IViewModelStammdaten
     {
         public AusgabeStammdatenViewModel()
         {
-            SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
+            SaveCommand = new DelegateCommand(ExecuteSaveCommand, CanExecuteSaveCommand);
             Cleanup();
         }
 
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.ausgaben;
 
-        public int DepotID { set { data.DepotID = value; } }
+        public int DepotID { set => data.DepotID = value; }
 
         #region Bindings
-        public IEnumerable<AusgabenArtTypes> AusgabeTypes
-        {
-            get
-            {
-                return Enum.GetValues(typeof(AusgabenArtTypes)).Cast<AusgabenArtTypes>();
-            }
-        }
+        public IEnumerable<AusgabenArtTypes> AusgabeTypes => Enum.GetValues(typeof(AusgabenArtTypes)).Cast<AusgabenArtTypes>();
         public AusgabenArtTypes AusgabeTyp
         {
-            get
-            {
-                return data.Art;
-            }
+            get => data.Art;
             set
             {
-                if ((this.data.Art != value))
+                if ((data.Art != value))
                 {
                     data.Art = value;
-                    this.RaisePropertyChanged();
+                    RaisePropertyChanged();
                 }
             }
 
         }
         public DateTime? Datum
         {
-            get
-            {
-                return data.Datum;
-            }
+            get => data.Datum;
             set
             {
-                if (!DateTime.Equals(this.data.Datum, value))
+                if (!Equals(data.Datum, value))
                 {
                     ValidateDatum(value);
-                    this.data.Datum = value.GetValueOrDefault();
-                    this.RaisePropertyChanged();
+                    data.Datum = value.GetValueOrDefault();
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
         public double? Betrag
         {
-            get
-            {
-                return data.Betrag;
-            }
+            get => data.Betrag;
             set
             {
-                if (LoadAktie || (this.data.Betrag != value))
+                if (RequestIsWorking || (data.Betrag != value))
                 {
                     ValidateBetrag(value);
-                    this.data.Betrag = value.GetValueOrDefault();
-                    this.RaisePropertyChanged();
+                    data.Betrag = value.GetValueOrDefault();
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
-        public String Beschreibung
+        public string Beschreibung
         {
-            get
-            {
-                return data.Beschreibung;
-            }
+            get => data.Beschreibung;
             set
             {
-                if (this.data.Beschreibung != value)
+                if (data.Beschreibung != value)
                 {
-                    this.data.Beschreibung = value;
-                    this.RaisePropertyChanged();
+                    data.Beschreibung = value;
+                    RaisePropertyChanged();
                 }
             }
         }
@@ -109,12 +94,14 @@ namespace Aktien.Logic.UI.DepotViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+"/api/depot/Ausgabe", data);
+                RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Ausgabe gespeichert." }, GetStammdatenTyp());
-                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.ausgaben);
+                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Ausgabe gespeichert." }, GetStammdatenTyp());
+                    Messenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.ausgaben.ToString());
                 }
                 else
                 {

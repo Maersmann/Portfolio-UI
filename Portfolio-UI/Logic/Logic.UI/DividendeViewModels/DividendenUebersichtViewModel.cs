@@ -2,7 +2,7 @@
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using Aktien.Logic.Messages.DividendeMessages;
-using Aktien.Logic.UI.BaseViewModels;
+using Base.Logic.ViewModels;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -14,10 +14,12 @@ using System.Windows.Input;
 using System.Net.Http;
 using Data.Model.DividendeModels;
 using Aktien.Logic.Core;
+using Base.Logic.Core;
+using Base.Logic.Types;
 
 namespace Aktien.Logic.UI.DividendeViewModels
 {
-    public class DividendenUebersichtViewModel : ViewModelUebersicht<DividendeUebersichtModel>
+    public class DividendenUebersichtViewModel : ViewModelUebersicht<DividendeUebersichtModel, StammdatenTypes>
     {
 
         private int wertpapierID;
@@ -25,18 +27,20 @@ namespace Aktien.Logic.UI.DividendeViewModels
         public DividendenUebersichtViewModel()
         {
             Title = "Übersicht aller Dividenden";
-            RegisterAktualisereViewMessage(StammdatenTypes.dividende);
+            RegisterAktualisereViewMessage(StammdatenTypes.dividende.ToString());
         }
 
         public async override void LoadData(int id)
         {
             wertpapierID = id;
+            RequestIsWorking = true;
             HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Wertpapier/{wertpapierID}/Dividenden/");
             if (resp.IsSuccessStatusCode)
             {
                 itemList = await resp.Content.ReadAsAsync<ObservableCollection<DividendeUebersichtModel>>();
             }
-            this.RaisePropertyChanged("ItemList");
+            RequestIsWorking = false;
+            RaisePropertyChanged("ItemList");
         }
         public override void LoadData()
         {
@@ -49,7 +53,9 @@ namespace Aktien.Logic.UI.DividendeViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.DeleteAsync(" GlobalVariables.BackendServer_URL/api/Dividende/" + selectedItem.ID.ToString());
+                RequestIsWorking = false;
                 if (resp.IsSuccessStatusCode)
                 {
                     SendInformationMessage("Dividende gelöscht");
@@ -60,11 +66,11 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         protected override void ExecuteNeuCommand()
         {
-            Messenger.Default.Send<OpenDividendeStammdatenMessage>(new OpenDividendeStammdatenMessage { WertpapierID = wertpapierID, State = State.Neu });
+            Messenger.Default.Send(new OpenDividendeStammdatenMessage<StammdatenTypes> { WertpapierID = wertpapierID, State = State.Neu });
         }
         protected override void ExecuteBearbeitenCommand()
         {
-            Messenger.Default.Send<OpenDividendeStammdatenMessage>(new OpenDividendeStammdatenMessage { WertpapierID = wertpapierID, State = State.Bearbeiten, DividendeID = selectedItem.ID });
+            Messenger.Default.Send(new OpenDividendeStammdatenMessage<StammdatenTypes> { WertpapierID = wertpapierID, State = State.Bearbeiten, DividendeID = selectedItem.ID });
         }
 
         #endregion

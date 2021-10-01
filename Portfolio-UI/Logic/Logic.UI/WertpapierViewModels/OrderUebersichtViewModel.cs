@@ -5,7 +5,9 @@ using Aktien.Logic.Messages.AktieMessages;
 using Aktien.Logic.Messages.Base;
 using Aktien.Logic.Messages.DepotMessages;
 using Aktien.Logic.Messages.WertpapierMessages;
-using Aktien.Logic.UI.BaseViewModels;
+using Base.Logic.Core;
+using Base.Logic.Messages;
+using Base.Logic.ViewModels;
 using Data.Model.WertpapierModels;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
@@ -23,7 +25,7 @@ using System.Windows.Input;
 
 namespace Aktien.Logic.UI.WertpapierViewModels
 {
-    public class OrderUebersichtViewModel : ViewModelUebersicht<OrderUebersichtModel>
+    public class OrderUebersichtViewModel : ViewModelUebersicht<OrderUebersichtModel, StammdatenTypes>
     {
 
         private int wertpapierID;
@@ -37,10 +39,10 @@ namespace Aktien.Logic.UI.WertpapierViewModels
             Title = "Übersicht der Order";
             wertpapierID = 0;
             wertpapierTypes = WertpapierTypes.Aktie;
-            AktieGekauftCommand = new DelegateCommand(this.ExecuteAktieGekauftCommand, this.CanExecuteCommand);
-            AktieVerkauftCommand = new DelegateCommand(this.ExecuteAktieVerkauftCommand, this.CanExecuteAktieVerkaufCommand);
-            EntfernenCommand = new DelegateCommand(this.ExecuteEntfernenCommand, this.CanSelectedItemExecuteCommand);
-            RegisterAktualisereViewMessage(StammdatenTypes.buysell);
+            AktieGekauftCommand = new DelegateCommand(ExecuteAktieGekauftCommand, CanExecuteCommand);
+            AktieVerkauftCommand = new DelegateCommand(ExecuteAktieVerkauftCommand, CanExecuteAktieVerkaufCommand);
+            EntfernenCommand = new DelegateCommand(ExecuteEntfernenCommand, CanSelectedItemExecuteCommand);
+            RegisterAktualisereViewMessage(StammdatenTypes.buysell.ToString());
             CheckCanExecuteAktieVerkaufCommand();
         }
 
@@ -66,29 +68,20 @@ namespace Aktien.Logic.UI.WertpapierViewModels
         {
             wertpapierID = id;
 
+            RequestIsWorking = true;
             HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Wertpapier/{wertpapierID}/Orders/");
             if (resp.IsSuccessStatusCode)
             {
                 itemList = await resp.Content.ReadAsAsync<ObservableCollection<OrderUebersichtModel>>();
             }
-            this.RaisePropertyChanged("ItemList");
+            RequestIsWorking = false;
+            RaisePropertyChanged("ItemList");
 
             ((DelegateCommand)AktieGekauftCommand).RaiseCanExecuteChanged();
             CheckCanExecuteAktieVerkaufCommand();
 
         }
 
-        public async void CheckCanExecuteAktieVerkaufCommand()
-        {
-            HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Depot/Wertpapier/{wertpapierID}/Exist");
-            if (resp.IsSuccessStatusCode)
-            {
-                canExecuteAktieVerkaufCommand = await resp.Content.ReadAsAsync<bool>();
-            }
-            else
-                canExecuteAktieVerkaufCommand = false;
-            ((DelegateCommand)AktieVerkauftCommand).RaiseCanExecuteChanged();
-        }
 
         #region Bindings
 
@@ -98,19 +91,34 @@ namespace Aktien.Logic.UI.WertpapierViewModels
         #endregion
 
         #region Commands
+        public async void CheckCanExecuteAktieVerkaufCommand()
+        {
+            RequestIsWorking = true;
+            HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/Depot/Wertpapier/{wertpapierID}/Exist");
+            if (resp.IsSuccessStatusCode)
+            {
+                canExecuteAktieVerkaufCommand = await resp.Content.ReadAsAsync<bool>();
+            }
+            else
+                canExecuteAktieVerkaufCommand = false;
+            RequestIsWorking = false;
+            ((DelegateCommand)AktieVerkauftCommand).RaiseCanExecuteChanged();
+        }
         private void ExecuteAktieGekauftCommand()
         {
-            Messenger.Default.Send<OpenWertpapierGekauftViewMessage>(new OpenWertpapierGekauftViewMessage { WertpapierID = wertpapierID, BuySell = BuySell.Buy, WertpapierTypes = wertpapierTypes }, messagtoken);
+            Messenger.Default.Send(new OpenWertpapierGekauftViewMessage { WertpapierID = wertpapierID, BuySell = BuySell.Buy, WertpapierTypes = wertpapierTypes }, messagtoken);
         }
         private void ExecuteAktieVerkauftCommand()
         {
-            Messenger.Default.Send<OpenWertpapierGekauftViewMessage>(new OpenWertpapierGekauftViewMessage { WertpapierID = wertpapierID, BuySell = BuySell.Sell, WertpapierTypes = wertpapierTypes }, messagtoken);
+            Messenger.Default.Send(new OpenWertpapierGekauftViewMessage { WertpapierID = wertpapierID, BuySell = BuySell.Sell, WertpapierTypes = wertpapierTypes }, messagtoken);
         }
         protected async override void ExecuteEntfernenCommand()
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL + $"/api/Depot/Order/{selectedItem.ID}/Delete?buysell={selectedItem.BuySell}");
+                RequestIsWorking = false;
                 if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
                 {            
                     return;

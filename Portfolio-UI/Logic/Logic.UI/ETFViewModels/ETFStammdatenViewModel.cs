@@ -4,7 +4,7 @@ using Aktien.Logic.Core;
 using Aktien.Logic.Core.Validierung;
 using Aktien.Logic.Core.Validierung.Base;
 using Aktien.Logic.Messages.Base;
-using Aktien.Logic.UI.BaseViewModels;
+using Base.Logic.ViewModels;
 using Aktien.Logic.UI.InterfaceViewModels;
 using Data.Model.ETFModels;
 using GalaSoft.MvvmLight.Messaging;
@@ -16,15 +16,18 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Base.Logic.Core;
+using Base.Logic.Messages;
+using Base.Logic.Types;
 
 namespace Aktien.Logic.UI.ETFViewModels
 {
-    public class ETFStammdatenViewModel : ViewModelStammdaten<ETFModel>, IViewModelStammdaten
+    public class ETFStammdatenViewModel : ViewModelStammdaten<ETFModel, StammdatenTypes>, IViewModelStammdaten
     {
 
         public ETFStammdatenViewModel()
         {
-            SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
+            SaveCommand = new DelegateCommand(ExecuteSaveCommand, CanExecuteSaveCommand);
             Cleanup();
             Title = "Informationen ETF";
         }
@@ -33,13 +36,14 @@ namespace Aktien.Logic.UI.ETFViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+"/api/etf", data);
-
+                RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
+                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
+                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else if ((int)resp.StatusCode == 904)
                 {
@@ -55,12 +59,9 @@ namespace Aktien.Logic.UI.ETFViewModels
         }
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.etf;
 
-
-
-
         public async void ZeigeStammdatenAn(int id)
         {
-            LoadAktie = true;
+            RequestIsWorking = true;
             if (GlobalVariables.ServerIsOnline)
             {
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+$"/api/etf/{id}");
@@ -74,54 +75,54 @@ namespace Aktien.Logic.UI.ETFViewModels
             Name = data.Name;
             ISIN = data.ISIN;
 
-            LoadAktie = false;
+            RequestIsWorking = false;
             state = State.Bearbeiten;
-            this.RaisePropertyChanged("ISIN_isEnabled"); 
+            RaisePropertyChanged("ISIN_isEnabled"); 
         }
 
 
-        public bool ISIN_isEnabled { get { return state == State.Neu; } }
+        public bool ISIN_isEnabled => state == State.Neu;
 
         #region Bindings   
         public string ISIN
         {
-            get { return this.data.ISIN; }
+            get => data.ISIN;
             set
             {
 
-                if (LoadAktie || !string.Equals(this.data.ISIN, value))
+                if (RequestIsWorking || !string.Equals(data.ISIN, value))
                 {
                     ValidateISIN(value);
-                    this.data.ISIN = value;
-                    this.RaisePropertyChanged();
-                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                    data.ISIN = value;
+                    RaisePropertyChanged();
+                    (SaveCommand as DelegateCommand).RaiseCanExecuteChanged();
                 }
             }
         }
         public string Name
         {
-            get { return this.data.Name; }
+            get => data.Name;
             set
             {
-                if (LoadAktie || !string.Equals(this.data.Name, value))
+                if (RequestIsWorking || !string.Equals(data.Name, value))
                 {
                     ValidateName(value);
-                    this.data.Name = value;
-                    this.RaisePropertyChanged();
+                    data.Name = value;
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
         public string WKN
         {
-            get { return this.data.WKN; }
+            get => data.WKN;
             set
             {
 
-                if (LoadAktie || !string.Equals(this.data.WKN, value))
+                if (RequestIsWorking || !string.Equals(data.WKN, value))
                 {
-                    this.data.WKN = value;
-                    this.RaisePropertyChanged();
+                    data.WKN = value;
+                    RaisePropertyChanged();
                 }
             }
         }
@@ -129,33 +130,27 @@ namespace Aktien.Logic.UI.ETFViewModels
         public IEnumerable<ProfitTypes> ProfitTypes => Enum.GetValues(typeof(ProfitTypes)).Cast<ProfitTypes>();
         public ProfitTypes ProfitTyp
         {
-            get { return data.ProfitTyp; }
+            get => data.ProfitTyp;
             set
             {
-                if (LoadAktie || (this.data.ProfitTyp != value))
+                if (RequestIsWorking || (data.ProfitTyp != value))
                 {
-                    this.data.ProfitTyp = value;
-                    this.RaisePropertyChanged();
+                    data.ProfitTyp = value;
+                    RaisePropertyChanged();
                 }
             }
         }
 
-        public IEnumerable<ErmittentTypes> ErmittentTypes
-        {
-            get
-            {
-                return Enum.GetValues(typeof(ErmittentTypes)).Cast<ErmittentTypes>();
-            }
-        }
+        public IEnumerable<ErmittentTypes> ErmittentTypes => Enum.GetValues(typeof(ErmittentTypes)).Cast<ErmittentTypes>();
         public ErmittentTypes ErmittentTyp
         {
-            get { return data.Emittent; }
+            get => data.Emittent;
             set
             {
-                if (LoadAktie || (this.data.Emittent != value))
+                if (RequestIsWorking || (data.Emittent != value))
                 {
-                    this.data.Emittent = value;
-                    this.RaisePropertyChanged();
+                    data.Emittent = value;
+                    RaisePropertyChanged();
                 }
             }
         }

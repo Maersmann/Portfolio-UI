@@ -1,10 +1,10 @@
 ﻿using Aktien.Data.Types;
 using Aktien.Logic.Core;
 using Aktien.Logic.Messages.Base;
-using Aktien.Logic.UI.BaseViewModels;
+using Base.Logic.Core;
+using Base.Logic.ViewModels;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
-using Logic.UI.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +16,7 @@ using System.Windows.Input;
 
 namespace Aktien.Logic.UI
 {
-    public class StartingProgrammViewModel:ViewModelBasis
+    public class StartingProgrammViewModel : ViewModelBasis
     {
         public StartingProgrammViewModel()
         {
@@ -35,7 +35,7 @@ namespace Aktien.Logic.UI
                 Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = ViewType.viewWertpapierUebersicht });
             }
                 
-            Messenger.Default.Send<CloseViewMessage>(new CloseViewMessage(), "StartingProgramm");
+            Messenger.Default.Send(new CloseViewMessage(), "StartingProgramm");
         }
 
         public ICommand CheckServerIsOnlineCommand { get; private set; }

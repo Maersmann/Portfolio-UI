@@ -15,7 +15,7 @@
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closed">
-            <command:EventToCommand Command="{Binding CloseCommand}"/>
+            <command:EventToCommand Command="{Binding CleanUpCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
@@ -24,6 +24,18 @@
             <RowDefinition Height="25px" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="45px" />
+            <RowDefinition >
+                <RowDefinition.Style>
+                    <Style TargetType="{x:Type RowDefinition}">
+                        <Setter Property="Height" Value="5" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding RequestIsWorking}" Value="false">
+                                <Setter Property="Height" Value="0" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </RowDefinition.Style>
+            </RowDefinition>
         </Grid.RowDefinitions>
 
         <materialDesign:Card Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushHeaderBG}}"   >
@@ -47,7 +59,7 @@
                         </Style>
                     </RowDefinition.Style>
                 </RowDefinition>
-                
+
             </Grid.RowDefinitions>
 
             <Label Content="Ex-Tag" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="0" VerticalAlignment="Top"/>
@@ -108,15 +120,13 @@
             </TextBox>
         </Grid>
 
-
-       
-
         <materialDesign:Card Grid.Row="2"  >
             <DockPanel  LastChildFill="False" >
                 <Button Grid.Row ="1" DockPanel.Dock="Right" Margin="5" HorizontalAlignment="Right" Width="100"  Command="{Binding SaveCommand, Mode=OneWay}"  Style="{DynamicResource MaterialDesignToolButton}" >Speichern</Button>
             </DockPanel>
         </materialDesign:Card>
 
+        <ProgressBar Grid.Row="3" Minimum="0" Maximum="100" Name="pbStatus" Height="5" IsIndeterminate="True" />
 
     </Grid>
 </src:StammdatenView>

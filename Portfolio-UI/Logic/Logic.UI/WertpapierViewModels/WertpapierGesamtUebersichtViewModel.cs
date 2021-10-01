@@ -4,7 +4,7 @@ using Aktien.Logic.Core;
 using Aktien.Logic.Messages.Base;
 using Aktien.Logic.Messages.DividendeMessages;
 using Aktien.Logic.Messages.WertpapierMessages;
-using Aktien.Logic.UI.BaseViewModels;
+using Base.Logic.ViewModels;
 using Data.Model.WertpapierModels;
 using GalaSoft.MvvmLight.Messaging;
 using Prism.Commands;
@@ -23,32 +23,19 @@ using System.Windows.Input;
 
 namespace Aktien.Logic.UI.WertpapierViewModels
 {
-    public class WertpapierGesamtUebersichtViewModel : ViewModelUebersicht<WertpapierModel>
+    public class WertpapierGesamtUebersichtViewModel : ViewModelUebersicht<WertpapierModel, StammdatenTypes>
     {
 
         public WertpapierGesamtUebersichtViewModel()
         {
             Title = "Übersicht aller Wertpapiere";
-            LoadData();
-            RegisterAktualisereViewMessage(StammdatenTypes.aktien);
-            RegisterAktualisereViewMessage(StammdatenTypes.derivate);
-            RegisterAktualisereViewMessage(StammdatenTypes.etf);
-            OpenNeueDividendeCommand = new DelegateCommand(this.ExecuteOpenNeueDividendeCommand, this.CanExecuteCommand);
+            RegisterAktualisereViewMessage(StammdatenTypes.aktien.ToString());
+            RegisterAktualisereViewMessage(StammdatenTypes.derivate.ToString());
+            RegisterAktualisereViewMessage(StammdatenTypes.etf.ToString());
+            OpenNeueDividendeCommand = new DelegateCommand(ExecuteOpenNeueDividendeCommand, CanExecuteCommand);
         }
 
-        public override async void LoadData()
-        {
-            if ( GlobalVariables.ServerIsOnline)
-            {
-                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+"/api/Wertpapier?aktiv=true");
-                if (resp.IsSuccessStatusCode)
-                {
-                    itemList = await resp.Content.ReadAsAsync<ObservableCollection<WertpapierModel>>();
-                }
-            }
-
-            base.LoadData();
-        }
+        protected override string GetREST_API() { return $"/api/Wertpapier?aktiv=true"; }
 
         protected override bool OnFilterTriggered(object item)
         {
@@ -71,7 +58,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
                 ((DelegateCommand)OpenNeueDividendeCommand).RaiseCanExecuteChanged();
                 if (selectedItem != null)
                 {
-                    Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = selectedItem.ID, WertpapierTyp = selectedItem.WertpapierTyp }, messageToken);
+                    Messenger.Default.Send(new LoadWertpapierOrderMessage { WertpapierID = selectedItem.ID, WertpapierTyp = selectedItem.WertpapierTyp }, messageToken);
                 }
             }
         }
@@ -87,7 +74,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
 
         private void ExecuteOpenNeueDividendeCommand()
         {
-            Messenger.Default.Send<OpenDividendenUebersichtAuswahlMessage>(new OpenDividendenUebersichtAuswahlMessage { WertpapierID = selectedItem.ID }, messageToken);
+            Messenger.Default.Send(new OpenDividendenUebersichtAuswahlMessage { WertpapierID = selectedItem.ID }, messageToken);
         }
         #endregion
     }

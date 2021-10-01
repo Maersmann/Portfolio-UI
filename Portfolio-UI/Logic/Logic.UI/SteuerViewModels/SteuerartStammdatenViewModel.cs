@@ -2,7 +2,7 @@
 using Aktien.Logic.Core;
 using Aktien.Logic.Core.Validierung.Base;
 using Aktien.Logic.Messages.Base;
-using Aktien.Logic.UI.BaseViewModels;
+using Base.Logic.ViewModels;
 using Aktien.Logic.UI.InterfaceViewModels;
 using Data.Model.SteuerModels;
 using Data.Types.SteuerTypes;
@@ -14,10 +14,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using Base.Logic.Core;
+using Base.Logic.Messages;
+using Base.Logic.Types;
 
 namespace Logic.UI.SteuerViewModels
 {
-    public class SteuerartStammdatenViewModel : ViewModelStammdaten<SteuerartModel>, IViewModelStammdaten
+    public class SteuerartStammdatenViewModel : ViewModelStammdaten<SteuerartModel, StammdatenTypes>, IViewModelStammdaten
     {
         public SteuerartStammdatenViewModel()
         {
@@ -29,13 +32,14 @@ namespace Logic.UI.SteuerViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/Steuerarten", data);
-
+                RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
+                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
+                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else
                 {
@@ -47,7 +51,7 @@ namespace Logic.UI.SteuerViewModels
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.steuerart;
         public async void ZeigeStammdatenAn(int id)
         {
-            LoadAktie = true;
+            RequestIsWorking = true;
             if (GlobalVariables.ServerIsOnline)
             {
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/Steuerarten/" + id.ToString());
@@ -56,22 +60,22 @@ namespace Logic.UI.SteuerViewModels
             }
             Bezeichnung = data.Bezeichnung;
             SteuerberechnungZwischensumme = data.BerechnungZwischensumme;
-            LoadAktie = false;
+            RequestIsWorking = false;
             state = State.Bearbeiten;
         }
 
         #region Bindings
         public string Bezeichnung
         {
-            get { return this.data.Bezeichnung; }
+            get => data.Bezeichnung;
             set
             {
 
-                if (LoadAktie || !string.Equals(this.data.Bezeichnung, value))
+                if (RequestIsWorking || !string.Equals(data.Bezeichnung, value))
                 {
                     ValidateBezeichnung(value);
-                    this.data.Bezeichnung = value;
-                    this.RaisePropertyChanged();
+                    data.Bezeichnung = value;
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -81,20 +85,19 @@ namespace Logic.UI.SteuerViewModels
 
         public SteuerberechnungZwischensumme SteuerberechnungZwischensumme
         {
-            get { return data.BerechnungZwischensumme; }
+            get => data.BerechnungZwischensumme;
             set
             {
-                if (LoadAktie || (this.data.BerechnungZwischensumme != value))
+                if (RequestIsWorking || (data.BerechnungZwischensumme != value))
                 {
-                    this.data.BerechnungZwischensumme = value;
-                    this.RaisePropertyChanged();
-                    
+                    data.BerechnungZwischensumme = value;
+                    RaisePropertyChanged();
                 }
             }
         }
         #endregion
         #region Validate
-        private bool ValidateBezeichnung(String bezeichnung)
+        private bool ValidateBezeichnung(string bezeichnung)
         {
             var Validierung = new BaseValidierung();
 

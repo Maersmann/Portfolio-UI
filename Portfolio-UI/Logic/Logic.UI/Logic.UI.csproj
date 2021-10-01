@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Base.Logic\Base.Logic\Base.Logic.csproj" />
     <ProjectReference Include="..\..\Data\Data.Model\Data.Model\Data.Model.csproj" />
     <ProjectReference Include="..\..\Data\Data.Types\Data.Types.csproj" />
     <ProjectReference Include="..\Logic.Core\Logic.Core.csproj" />

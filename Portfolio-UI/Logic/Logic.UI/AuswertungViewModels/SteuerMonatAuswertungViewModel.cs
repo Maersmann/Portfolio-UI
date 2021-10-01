@@ -3,7 +3,7 @@ using Aktien.Logic.Core.Validierung.Base;
 using Data.Model.AuswertungModels;
 using LiveCharts;
 using LiveCharts.Wpf;
-using Logic.UI.BaseViewModels;
+using Base.Logic.ViewModels;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -12,6 +12,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Windows.Input;
+using Base.Logic.Core;
 
 namespace Logic.UI.AuswertungViewModels
 {
@@ -35,6 +36,7 @@ namespace Logic.UI.AuswertungViewModels
 
         private async void ExcecuteLoadDataCommand()
         {
+            RequestIsWorking = true;
             HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/auswertung/steuern/Monate?jahrVon={jahrvon}&jahrBis={jahrbis}");
             if (resp.IsSuccessStatusCode)
             {
@@ -59,6 +61,7 @@ namespace Logic.UI.AuswertungViewModels
                 RaisePropertyChanged(nameof(Labels));
                 RaisePropertyChanged(nameof(Formatter));
             }
+            RequestIsWorking = false;
         }
 
 

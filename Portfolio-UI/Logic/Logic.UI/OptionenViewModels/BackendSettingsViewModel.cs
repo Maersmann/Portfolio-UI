@@ -1,10 +1,10 @@
 ﻿using Aktien.Logic.Core;
-using Aktien.Logic.UI.BaseViewModels;
+using Base.Logic.Core;
+using Base.Logic.ViewModels;
 using Data.Model.OptionenModels;
 using Data.Types.OptionTypes;
 using GalaSoft.MvvmLight.Command;
 using Logic.Core.OptionenLogic;
-using Logic.UI.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +28,7 @@ namespace Aktien.Logic.UI.OptionenViewModels
 
         public void setModelData()
         {
-            var backendLogic = new BackendLogic();
+            BackendLogic backendLogic = new BackendLogic();
             if(backendLogic.istINIVorhanden())
             { 
                 backendLogic.LoadData();
@@ -42,43 +42,31 @@ namespace Aktien.Logic.UI.OptionenViewModels
         #region Bindings
         public ICommand SpeicherSettingsCommand { get; set; }
         public ICommand TestConnectionCommand { get; set; }
-        public String Backend_IP
+        public string Backend_IP
         {
             get => model.Backend_IP;
             set
             {
                 model.Backend_IP = value;
-                this.RaisePropertyChanged();
+                RaisePropertyChanged();
             }
         }
         public string Backend_URL
         {
-            get
-            {
-                return model.Backend_URL;
-            }
+            get => model.Backend_URL;
             set
             {
                 model.Backend_URL = value;
-                this.RaisePropertyChanged();
+                RaisePropertyChanged();
             }
         }
         public string Port
         {
-            get
-            {
-                if (model.Port.HasValue)
-                    return model.Port.Value.ToString();
-                else
-                    return "";
-            }
+            get => model.Port.HasValue ? model.Port.Value.ToString() : "";
             set
             {
-                if (value.Equals(""))
-                    this.model.Port = null;
-                else
-                    this.model.Port = int.Parse( value );
-                this.RaisePropertyChanged();
+                model.Port = value.Equals("") ? null : (int?)int.Parse(value);
+                RaisePropertyChanged();
             }
         }
 
@@ -98,7 +86,7 @@ namespace Aktien.Logic.UI.OptionenViewModels
         #region Commands
         private void ExecuteSpeicherSettingsCommand()
         {
-            var backendlogic = new BackendLogic();
+            BackendLogic backendlogic = new BackendLogic();
             backendlogic.SaveData(model.Backend_IP, model.ProtokollTyp, model.Port, model.Backend_URL);
             SendInformationMessage("Settings gespeichert");
             GlobalVariables.BackendServer_IP = backendlogic.getBackendIP();
@@ -112,12 +100,9 @@ namespace Aktien.Logic.UI.OptionenViewModels
 
         private void ExecuteTestConnectionCommand()
         {
-            bool isOnline;
-            if (model.Port.HasValue)
-                isOnline = new BackendHelper().TestCheckServerIsOnline(model.Backend_IP, model.Port.Value);
-            else
-                isOnline = new BackendHelper().TestCheckServerIsOnline(model.Backend_IP);
-
+            bool isOnline = model.Port.HasValue
+                ? new BackendHelper().TestCheckServerIsOnline(model.Backend_IP, model.Port.Value)
+                : new BackendHelper().TestCheckServerIsOnline(model.Backend_IP);
             if (isOnline)
             {
                 SendInformationMessage("Test Verbindung erfolgreich");
