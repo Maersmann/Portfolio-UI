@@ -42,8 +42,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Dividende aktualisiert." }, "DividendeProStueckAnpassen");
-                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
+                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Dividende aktualisiert." }, "DividendeProStueckAnpassen");
                 }
                 else if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
                 {
