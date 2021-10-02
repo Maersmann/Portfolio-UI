@@ -4,7 +4,9 @@ using Aktien.Logic.Core.DepotLogic;
 using Aktien.Logic.Core.Validierungen;
 using Aktien.Logic.Messages.AuswahlMessages;
 using Aktien.Logic.Messages.Base;
-using Aktien.Logic.UI.BaseViewModels;
+using Base.Logic.Core;
+using Base.Logic.Messages;
+using Base.Logic.ViewModels;
 using Data.Model.AktieModels;
 using Data.Model.DepotModels;
 using Data.Model.WertpapierModels;
@@ -54,11 +56,13 @@ namespace Aktien.Logic.UI.WertpapierViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/depot/Wertpapier/{id}");
                 if (resp.IsSuccessStatusCode)
                     model.AltWertpapier = await resp.Content.ReadAsAsync<DepotWertpapierModel>();
+                RequestIsWorking = false;
             }             
-            this.RaisePropertyChanged("AlteAktieText");
+            RaisePropertyChanged("AlteAktieText");
         }
 
         public void BerechneWerte()
@@ -66,8 +70,8 @@ namespace Aktien.Logic.UI.WertpapierViewModels
             model.NeuWertpapier.Anzahl = Math.Round(model.AltWertpapier.Anzahl / verhaeltnis,3, MidpointRounding.AwayFromZero);
             model.NeuWertpapier.BuyIn = new KaufBerechnungen().BuyInAktieGekauft(0, 0, model.NeuWertpapier.Anzahl, (model.AltWertpapier.BuyIn * verhaeltnis), NeueAnzahl, 0, Data.Types.WertpapierTypes.OrderTypes.Normal);
             if (Double.IsNaN(model.NeuWertpapier.BuyIn)) model.NeuWertpapier.BuyIn = 0;
-            this.RaisePropertyChanged(nameof(NeueAnzahl));
-            this.RaisePropertyChanged(nameof(NeuerBuyIn));
+            RaisePropertyChanged(nameof(NeueAnzahl));
+            RaisePropertyChanged(nameof(NeuerBuyIn));
         }
 
         #region Bindings
@@ -108,13 +112,14 @@ namespace Aktien.Logic.UI.WertpapierViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/depot/wertpapier/{depotWertpapierID}/ReverseSplit", model);
-
+                RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.aktien);
-                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.buysell);
+                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.aktien.ToString());
+                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.buysell.ToString());
                     Messenger.Default.Send<CloseViewMessage>(new CloseViewMessage(), "ReverseSplitEintragen");
                     SendInformationMessage("Gespeichert");
                 }

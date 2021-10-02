@@ -2,7 +2,8 @@
 using Aktien.Logic.Core;
 using Aktien.Logic.Messages.Base;
 using Aktien.Logic.Messages.WertpapierMessages;
-using Aktien.Logic.UI.BaseViewModels;
+using Base.Logic.Core;
+using Base.Logic.ViewModels;
 using Data.Model.DerivateModels;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -19,29 +20,19 @@ using System.Windows.Input;
 
 namespace Aktien.Logic.UI.DerivateViewModels
 {
-    public class DerivateGesamtUebersichtViewModel : ViewModelUebersicht<DerivateModel>
+    public class DerivateGesamtUebersichtViewModel : ViewModelUebersicht<DerivateModel, StammdatenTypes>
     {
 
         public DerivateGesamtUebersichtViewModel()
         {
             Title = "Übersicht aller Derivate";
             LoadData();
-            RegisterAktualisereViewMessage(StammdatenTypes.derivate);
+            RegisterAktualisereViewMessage(StammdatenTypes.derivate.ToString());
         }
 
         protected override int GetID() { return selectedItem.ID; }
-        protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.derivate; }
-
-        public async override void LoadData()
-        {
-            if (GlobalVariables.ServerIsOnline)
-            {
-                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+"/api/Wertpapier?aktiv=true&type=2");
-                if (resp.IsSuccessStatusCode)
-                    itemList = await resp.Content.ReadAsAsync<ObservableCollection<DerivateModel>>();
-            }
-            base.LoadData();
-        }
+        protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.derivate; }
+        protected override string GetREST_API() { return $"/api/Wertpapier?aktiv=true&type=2"; }
 
         protected override bool OnFilterTriggered(object item)
         {
@@ -61,7 +52,7 @@ namespace Aktien.Logic.UI.DerivateViewModels
                 base.SelectedItem = value;
                 if (selectedItem != null)
                 {
-                    Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = selectedItem.ID, WertpapierTyp = selectedItem.WertpapierTyp }, messageToken);
+                    Messenger.Default.Send(new LoadWertpapierOrderMessage { WertpapierID = selectedItem.ID, WertpapierTyp = selectedItem.WertpapierTyp }, messageToken);
                 }
             }
         }
@@ -75,7 +66,9 @@ namespace Aktien.Logic.UI.DerivateViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/Wertpapier/{selectedItem.ID}");
+                RequestIsWorking = false;
                 if ((int)resp.StatusCode == 905)
                 {
                     SendExceptionMessage("Derivate ist im Depot vorhanden.");
@@ -83,7 +76,7 @@ namespace Aktien.Logic.UI.DerivateViewModels
                 }
 
             }
-            Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = 0, WertpapierTyp = selectedItem.WertpapierTyp }, messageToken);
+            Messenger.Default.Send(new LoadWertpapierOrderMessage { WertpapierID = 0, WertpapierTyp = selectedItem.WertpapierTyp }, messageToken);
             SendInformationMessage("Derivate gelöscht");
             base.ExecuteEntfernenCommand();
         }

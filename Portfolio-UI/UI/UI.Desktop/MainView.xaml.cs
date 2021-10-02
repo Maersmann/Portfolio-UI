@@ -30,6 +30,8 @@ using UI.Desktop.Steuer;
 using Logic.Messages.Base;
 using UI.Desktop.Konfigruation;
 using UI.Desktop.Auswertung;
+using Base.Logic.Messages;
+using Base.Logic.Types;
 
 namespace Aktien.UI.Desktop
 {
@@ -52,7 +54,7 @@ namespace Aktien.UI.Desktop
             Messenger.Default.Register<OpenViewMessage>(this, m => ReceiveOpenViewMessage(m));
             Messenger.Default.Register<ExceptionMessage>(this, m => ReceiveExceptionMessage(m));
             Messenger.Default.Register<InformationMessage>(this, m => ReceiveInformationMessage(m));
-            Messenger.Default.Register<BaseStammdatenMessage>(this, m => ReceiceOpenStammdatenMessage(m));
+            Messenger.Default.Register<BaseStammdatenMessage<StammdatenTypes>>(this, m => ReceiceOpenStammdatenMessage(m));
             Messenger.Default.Register<OpenStartingViewMessage>(this, m => ReceiceOpenStartingViewMessage());
             Messenger.Default.Register<OpenKonfigurationViewMessage>(this, m => ReceiceOpenKonfigurationViewMessage());
             Messenger.Default.Register<CloseApplicationMessage>(this, m => ReceiceCloseApplicationMessage());
@@ -136,10 +138,10 @@ namespace Aktien.UI.Desktop
         }
 
 
-        private void ReceiceOpenStammdatenMessage(BaseStammdatenMessage m)
+        private void ReceiceOpenStammdatenMessage(BaseStammdatenMessage<StammdatenTypes> m)
         {
             StammdatenView view = null;
-            switch (m.StammdatenTyp)
+            switch (m.Stammdaten)
             {
                 case StammdatenTypes.aktien:
                     view = new AktieStammdatenView();

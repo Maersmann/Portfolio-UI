@@ -5,7 +5,7 @@ using Data.Model.AuswertungModels;
 using GalaSoft.MvvmLight.Command;
 using LiveCharts;
 using LiveCharts.Wpf;
-using Logic.UI.BaseViewModels;
+using Base.Logic.ViewModels;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -14,6 +14,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Windows.Input;
+using Base.Logic.Core;
 
 namespace Logic.UI.AuswertungViewModels
 {
@@ -27,7 +28,7 @@ namespace Logic.UI.AuswertungViewModels
             jahrvon = DateTime.Now.Year;
             jahrbis = DateTime.Now.Year;
             LoadDataCommand = new DelegateCommand(this.ExcecuteLoadDataCommand, this.CanExcecuteLoadDataCommand);
-            Formatter = value => value.ToString("0.## €");
+            Formatter = value => string.Format("{0:N2}€", value);
         }
 
         private bool CanExcecuteLoadDataCommand()
@@ -37,6 +38,7 @@ namespace Logic.UI.AuswertungViewModels
 
         private async void ExcecuteLoadDataCommand()
         {
+            RequestIsWorking = true;
             HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/auswertung/dividenden/Monate?jahrVon={jahrvon}&jahrBis={jahrbis}");
             if (resp.IsSuccessStatusCode)
             {
@@ -61,6 +63,7 @@ namespace Logic.UI.AuswertungViewModels
                 RaisePropertyChanged(nameof(Labels));
                 RaisePropertyChanged(nameof(Formatter));
             }
+            RequestIsWorking = false;
         }
 
 
@@ -72,7 +75,7 @@ namespace Logic.UI.AuswertungViewModels
             set
             {
                 ValidatZahl(value, nameof(JahrVon));
-                this.RaisePropertyChanged();
+                RaisePropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahrvon = value.GetValueOrDefault(0);
             }
@@ -83,7 +86,7 @@ namespace Logic.UI.AuswertungViewModels
             set
             {
                 ValidatZahl(value, nameof(JahrBis));
-                this.RaisePropertyChanged();
+                RaisePropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahrbis = value.GetValueOrDefault(0);
             }

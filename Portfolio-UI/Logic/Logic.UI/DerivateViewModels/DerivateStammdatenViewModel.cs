@@ -3,7 +3,7 @@ using Aktien.Logic.Core;
 using Aktien.Logic.Core.Validierung;
 using Aktien.Logic.Core.Validierung.Base;
 using Aktien.Logic.Messages.Base;
-using Aktien.Logic.UI.BaseViewModels;
+using Base.Logic.ViewModels;
 using Aktien.Logic.UI.InterfaceViewModels;
 using Data.Model.DerivateModels;
 using GalaSoft.MvvmLight.Messaging;
@@ -15,10 +15,13 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Base.Logic.Core;
+using Base.Logic.Messages;
+using Base.Logic.Types;
 
 namespace Aktien.Logic.UI.DerivateViewModels
 {
-    public class DerivateStammdatenViewModel : ViewModelStammdaten<DerivateModel>,IViewModelStammdaten
+    public class DerivateStammdatenViewModel : ViewModelStammdaten<DerivateModel, StammdatenTypes>,IViewModelStammdaten
     {
 
         public DerivateStammdatenViewModel()
@@ -31,13 +34,14 @@ namespace Aktien.Logic.UI.DerivateViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+"/api/Wertpapier", data);
-
+                RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
+                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
+                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else if ((int)resp.StatusCode == 904)
                 {
@@ -55,7 +59,7 @@ namespace Aktien.Logic.UI.DerivateViewModels
 
         public async void ZeigeStammdatenAn(int id)
         {
-            LoadAktie = true;
+            RequestIsWorking = true;
             if (GlobalVariables.ServerIsOnline)
             {
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Wertpapier/{id}");
@@ -65,9 +69,9 @@ namespace Aktien.Logic.UI.DerivateViewModels
             WKN = data.WKN;
             Name = data.Name;
             ISIN = data.ISIN;
-            LoadAktie = false;
+            RequestIsWorking = false;
             state = State.Bearbeiten;
-            this.RaisePropertyChanged(nameof(ISIN_isEnabled));
+            RaisePropertyChanged(nameof(ISIN_isEnabled));
         }
 
 
@@ -76,43 +80,43 @@ namespace Aktien.Logic.UI.DerivateViewModels
         #region Bindings   
         public string ISIN
         {
-            get { return this.data.ISIN; }
+            get { return data.ISIN; }
             set
             {
 
-                if (LoadAktie || !string.Equals(this.data.ISIN, value))
+                if (RequestIsWorking || !string.Equals(data.ISIN, value))
                 {
                     ValidateISIN(value);
-                    this.data.ISIN = value;
-                    this.RaisePropertyChanged();
+                    data.ISIN = value;
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
         public string Name
         {
-            get { return this.data.Name; }
+            get { return data.Name; }
             set
             {
-                if (LoadAktie || !string.Equals(this.data.Name, value))
+                if (RequestIsWorking || !string.Equals(data.Name, value))
                 {
                     ValidateName(value);
-                    this.data.Name = value;
-                    this.RaisePropertyChanged();
+                    data.Name = value;
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
         public string WKN
         {
-            get { return this.data.WKN; }
+            get { return data.WKN; }
             set
             {
 
-                if (LoadAktie || !string.Equals(this.data.WKN, value))
+                if (RequestIsWorking || !string.Equals(data.WKN, value))
                 {
-                    this.data.WKN = value;
-                    this.RaisePropertyChanged();
+                    data.WKN = value;
+                    RaisePropertyChanged();
                 }
             }
         }

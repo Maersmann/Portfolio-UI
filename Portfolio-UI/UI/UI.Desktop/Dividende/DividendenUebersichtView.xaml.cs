@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Base.Logic.Types;
 
 namespace Aktien.UI.Desktop.Dividende
 {
@@ -27,11 +28,11 @@ namespace Aktien.UI.Desktop.Dividende
         public DividendenUebersichtView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenDividendeStammdatenMessage>(this, m => ReceiveOpenDividendeStammdatenMessage(m));
+            Messenger.Default.Register<OpenDividendeStammdatenMessage<StammdatenTypes>>(this, m => ReceiveOpenDividendeStammdatenMessage(m));
         }
 
 
-        private void ReceiveOpenDividendeStammdatenMessage(OpenDividendeStammdatenMessage m)
+        private void ReceiveOpenDividendeStammdatenMessage(OpenDividendeStammdatenMessage<StammdatenTypes> m)
         {
             var view = new DividendeStammdatenView()
             {
@@ -51,7 +52,7 @@ namespace Aktien.UI.Desktop.Dividende
 
         private void DataGrid_Unloaded(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Unregister<OpenDividendeStammdatenMessage>(this);
+            Messenger.Default.Unregister<OpenDividendeStammdatenMessage<StammdatenTypes>>(this);
         }
     }
 }

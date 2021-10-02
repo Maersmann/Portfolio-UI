@@ -12,14 +12,4 @@ namespace Aktien.Logic.Messages.Base
         public bool Erfolgreich { get; set; }
         public string Message { get; set; }
     }
-
-    public class ExceptionMessage
-    {
-        public string Message { get; set; }
-    }
-
-    public class InformationMessage
-    {
-        public string Message { get; set; }
-    }
 }

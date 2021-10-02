@@ -6,7 +6,10 @@ using Aktien.Logic.Core.Validierung;
 using Aktien.Logic.Messages.AuswahlMessages;
 using Aktien.Logic.Messages.Base;
 using Aktien.Logic.Messages.DividendeMessages;
-using Aktien.Logic.UI.BaseViewModels;
+using Base.Logic.Core;
+using Base.Logic.Messages;
+using Base.Logic.Types;
+using Base.Logic.ViewModels;
 using Data.Model.DividendeModels;
 using Data.Model.SteuerModels;
 using GalaSoft.MvvmLight.CommandWpf;
@@ -28,22 +31,20 @@ using System.Windows.Input;
 
 namespace Aktien.Logic.UI.DividendeViewModels
 {
-    public class DividendeErhaltenViewModel : ViewModelStammdaten<DividendeErhaltenStammdatenModel>
+    public class DividendeErhaltenViewModel : ViewModelStammdaten<DividendeErhaltenStammdatenModel, StammdatenTypes>
     {
-        private string dividendetext;
-        private Double betrag;
+        private string bestand;
+        private string wechselkurs;
         private bool neueDividendeNichtGespeichert;
         private bool neueSteuergruppeErstellt;
         private bool dataGespeichert;
 
         public DividendeErhaltenViewModel()
         {
-            
-            SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
-            OpenAuswahlCommand = new RelayCommand(this.ExecuteOpenAuswahlCommand);
-            OpenSteuernCommand = new RelayCommand(this.ExecuteOpenSteuernCommand);
-            OpenDividendeCommand = new DelegateCommand(this.ExecuteOpenDividendeCommand, this.CanExecuteOpenDividendeCommand);
-            Cleanup();
+            Title = "Informationen erhaltene Dividende";
+            OpenAuswahlCommand = new RelayCommand(ExecuteOpenAuswahlCommand);
+            OpenSteuernCommand = new RelayCommand(ExecuteOpenSteuernCommand);
+            OpenDividendeCommand = new DelegateCommand(ExecuteOpenDividendeCommand, CanExecuteOpenDividendeCommand);
         }
 
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.dividendeErhalten;
@@ -52,31 +53,46 @@ namespace Aktien.Logic.UI.DividendeViewModels
         public void DividendeAusgewaehlt(int id, double betrag, DateTime datum)
         {
             DateTimeFormatInfo fmt = (new CultureInfo("de-DE")).DateTimeFormat;
-            dividendetext = datum.ToString("d", fmt) + " (" + betrag.ToString("N2") + ")";
-            this.RaisePropertyChanged(nameof(DividendeText));
+            DividendeText = datum.ToString("d", fmt) + " (" + betrag.ToString("N2") + ")";
+            RaisePropertyChanged(nameof(DividendeText));
             DividendeID = id;
-            this.betrag = betrag;
+            LadeAnzahlWertpapier();
             BerechneGesamtWerte();
         }
 
         public async void Bearbeiten(int id)
         {
-            LoadAktie = true;
+            RequestIsWorking = true;
             if (GlobalVariables.ServerIsOnline)
             {
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/DividendeErhalten/{id}");
                 if (resp.IsSuccessStatusCode)
                 {
                     data = await resp.Content.ReadAsAsync<DividendeErhaltenStammdatenModel>();
-                    Bestand = data.Bestand;
-                    Wechselkurs = data.Umrechnungskurs;
+                    Bestand = data.Umrechnungskurs.ToString();
+                    Wechselkurs = data.Umrechnungskurs.ToString();
                     RundungTyp = data.RundungArt;
                     DividendeAusgewaehlt(data.DividendeID, data.Dividende.Betrag, data.Dividende.Zahldatum);
                     state = State.Bearbeiten;
                     neueDividendeNichtGespeichert = false;
                 }
             }
-            LoadAktie = false;
+            RequestIsWorking = false;
+        }
+
+        private async void LadeAnzahlWertpapier()
+        {
+            if (GlobalVariables.ServerIsOnline)
+            {
+                RequestIsWorking = true;
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/depot/wertpapier/{data.WertpapierID}/Anzahl");
+                if (resp.IsSuccessStatusCode)
+                {
+                    double Anzahl = await resp.Content.ReadAsAsync<Double>();
+                    Bestand = Anzahl.ToString();
+                }
+                RequestIsWorking = false;
+            }
         }
 
         private int DividendeID
@@ -91,22 +107,21 @@ namespace Aktien.Logic.UI.DividendeViewModels
                     ((DelegateCommand)OpenDividendeCommand).RaiseCanExecuteChanged();
             } 
         }
-
   
         public void WertpapierID(int wertpapierID)
         {
-            data.WertpapierID = wertpapierID;
+            data.WertpapierID = wertpapierID;  
         }
 
         public void BerechneGesamtWerte()
         {
-            data.Bemessungsgrundlage = new DividendenBerechnungen().Bemessungsgrundlage(betrag, data.Bestand);
+            data.Bemessungsgrundlage = 1;// new DividendenBerechnungen().Bemessungsgrundlage(betrag, data.Bestand);
             data.Erhalten = data.Bemessungsgrundlage;
             data.SteuernVorZwischensumme = 0;
             data.SteuernNachZwischensumme = 0;
 
             if (data.Steuer != null)
-            { 
+            {
                 data.SteuernVorZwischensumme = new SteuerBerechnen().SteuernVorZwischensumme(data.Steuer.Steuern);
                 data.SteuernNachZwischensumme = new SteuerBerechnen().SteuernNachZwischensumme(data.Steuer.Steuern);
             }
@@ -121,78 +136,67 @@ namespace Aktien.Logic.UI.DividendeViewModels
                 data.Erhalten = data.ZwischensummeUmgerechnet.GetValueOrDefault(0) + data.SteuernNachZwischensumme.GetValueOrDefault(0);          
             }
 
-            this.RaisePropertyChanged(nameof(ZwischensummeTxt));
-            this.RaisePropertyChanged(nameof(Bemessungsgrundlage));
-            this.RaisePropertyChanged(nameof(Erhalten));
-            this.RaisePropertyChanged(nameof(SteuerNachZwischensumme));
-            this.RaisePropertyChanged(nameof(SteuerVorZwischensumme));
-            this.RaisePropertyChanged(nameof(Zwischensumme));
-            this.RaisePropertyChanged(nameof(ErhaltenUmgerechnetUngerundet));
-            this.RaisePropertyChanged(nameof(ZwischensummeUmgerechnet));
+            RaisePropertyChanged(nameof(ZwischensummeTxt));
+            RaisePropertyChanged(nameof(Bemessungsgrundlage));
+            RaisePropertyChanged(nameof(Erhalten));
+            RaisePropertyChanged(nameof(SteuerNachZwischensumme));
+            RaisePropertyChanged(nameof(SteuerVorZwischensumme));
+            RaisePropertyChanged(nameof(Zwischensumme));
+            RaisePropertyChanged(nameof(ErhaltenUmgerechnetUngerundet));
+            RaisePropertyChanged(nameof(ZwischensummeUmgerechnet));
         }
 
         #region Bindings
         public ICommand OpenAuswahlCommand { get; set; }
         public ICommand OpenDividendeCommand { get; set; }
         public ICommand OpenSteuernCommand { get; set; }
-        public Double? Bestand
+        public string Bestand
         {
-            get 
+            get => bestand;
+            set
             {
-                if (data.Bestand == -1)
-                    return null;
-                else
-                    return data.Bestand; 
-            }
-            set 
-            {
-                if (LoadAktie || this.data.Bestand != value)
+                if (!double.TryParse(value, out double Bestand)) return;
+                bestand = value;
+                if (RequestIsWorking || data.Bestand != Bestand)
                 {
-                    ValidateBestand(value);
-                    this.data.Bestand = value.GetValueOrDefault(-1);
-                    this.RaisePropertyChanged();
+                    ValidateBestand(Bestand);
+                    data.Bestand = Bestand;
+                    RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                     BerechneGesamtWerte();
                 }
             }
         }
-        public string DividendeText
+        public string DividendeText { get; private set; }
+        public string Wechselkurs
         {
-            get { return dividendetext; }
-        }
-        public Double? Wechselkurs
-        {
-            get { return data.Umrechnungskurs; }
+            get => wechselkurs;
             set
             {
-                if (LoadAktie || this.data.Umrechnungskurs != value)
-                {  
-                    this.data.Umrechnungskurs = value;
-                    this.RaisePropertyChanged();
-                    this.RaisePropertyChanged(nameof(WechsellkursHasValue));
+                if (!double.TryParse(value, out double Wechselkurs)) return;
+                wechselkurs = value;
+                if (RequestIsWorking || data.Umrechnungskurs != Wechselkurs)
+                {
+                    data.Umrechnungskurs = Wechselkurs;
+                    RaisePropertyChanged();
+                    RaisePropertyChanged(nameof(WechsellkursHasValue));
                     ((DelegateCommand)OpenDividendeCommand).RaiseCanExecuteChanged();
                     BerechneGesamtWerte();
                 }
             }
         }
 
-        public IEnumerable<DividendenRundungTypes> RundungTypes
-        {
-            get
-            {
-                return Enum.GetValues(typeof(DividendenRundungTypes)).Cast<DividendenRundungTypes>();
-            }
-        }
+        public IEnumerable<DividendenRundungTypes> RundungTypes => Enum.GetValues(typeof(DividendenRundungTypes)).Cast<DividendenRundungTypes>();
 
         public DividendenRundungTypes RundungTyp
         {
             get { return data.RundungArt; }
             set
             {
-                if (LoadAktie || (this.data.RundungArt != value))
+                if (RequestIsWorking || (data.RundungArt != value))
                 {
-                    this.data.RundungArt = value;
-                    this.RaisePropertyChanged();
+                    data.RundungArt = value;
+                    RaisePropertyChanged();
                     BerechneGesamtWerte();
                 }
             }
@@ -224,26 +228,28 @@ namespace Aktien.Logic.UI.DividendeViewModels
         #region Commands
         private void ExecuteOpenAuswahlCommand()
         {
-            Messenger.Default.Send<OpenDividendenAuswahlMessage>(new OpenDividendenAuswahlMessage(OpenDividendenAuswahlMessageCallback,data.WertpapierID), "DividendeErhalten");
+            Messenger.Default.Send(new OpenDividendenAuswahlMessage(OpenDividendenAuswahlMessageCallback,data.WertpapierID), "DividendeErhalten");
         }
 
         private void ExecuteOpenSteuernCommand()
         {
-            Messenger.Default.Send<OpenSteuernUebersichtMessage>(new OpenSteuernUebersichtMessage(OpenSteuernUebersichtMessageCallback, data.SteuergruppeID, !neueDividendeNichtGespeichert), "DividendeErhalten");
+            Messenger.Default.Send(new OpenSteuernUebersichtMessage(OpenSteuernUebersichtMessageCallback, data.SteuergruppeID, !neueDividendeNichtGespeichert), "DividendeErhalten");
         }
 
         protected async override void ExecuteSaveCommand()
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+ $"/api/DividendeErhalten?state={state}", data);
+                RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
                 {
                     neueDividendeNichtGespeichert = false;
                     dataGespeichert = true;
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
+                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
+                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else
                 {
@@ -258,15 +264,17 @@ namespace Aktien.Logic.UI.DividendeViewModels
         }
         private void ExecuteOpenDividendeCommand()
         {
-            Messenger.Default.Send<OpenDividendeProStueckAnpassenMessage>(new OpenDividendeProStueckAnpassenMessage { DividendeID = data.DividendeID,  Umrechnungskurs = data.Umrechnungskurs.Value });
+            Messenger.Default.Send(new OpenDividendeProStueckAnpassenMessage { DividendeID = data.DividendeID,  Umrechnungskurs = data.Umrechnungskurs.Value });
         }
-        protected override async void ExecuteCloseCommand()
+        protected override async void ExecuteCleanUpCommand()
         {         
             if (neueSteuergruppeErstellt && !dataGespeichert)
             {
                 if (GlobalVariables.ServerIsOnline)
                 {
+                    RequestIsWorking = true;
                     HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL + $"/api/dividendeErhalten/Steuern/{data.SteuergruppeID}");
+                    RequestIsWorking = false;
                     if (!resp.IsSuccessStatusCode)
                     {
                         SendExceptionMessage(await resp.Content.ReadAsStringAsync());
@@ -274,7 +282,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
                     }
                 }
             }
-            base.ExecuteCloseCommand();
+            base.ExecuteCleanUpCommand();
         }
 
         #endregion
@@ -283,23 +291,35 @@ namespace Aktien.Logic.UI.DividendeViewModels
         private void OpenDividendenAuswahlMessageCallback(bool confirmed, int id, double betrag, DateTime date)
         {
             if (confirmed)
+            {
                 DividendeAusgewaehlt(id, betrag, date);
+            }
         }
         private async void OpenSteuernUebersichtMessageCallback(bool confirmed, int? id)
         {
             if (confirmed)
             {
                 if (!data.SteuergruppeID.HasValue)
+                {
                     neueSteuergruppeErstellt = true;
+                }
+
                 data.SteuergruppeID = id;
                 data.Steuer = new SteuergruppeModel { Steuern = new List<SteuerModel>() };
                 if (GlobalVariables.ServerIsOnline)
                 {
+                    RequestIsWorking = true;
                     HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/Steuern?steuergruppeid={id}");
                     if (resp.IsSuccessStatusCode)
+                    {
                         data.Steuer.Steuern = await resp.Content.ReadAsAsync<ObservableCollection<SteuerModel>>();
+                    }
                     else
-                        SendExceptionMessage(await resp.Content.ReadAsStringAsync());
+                    {
+                        SendExceptionMessage("Fehler beim Laden der Steuern");
+                    }
+
+                    RequestIsWorking = false;
                 }
                 BerechneGesamtWerte();
             }
@@ -311,7 +331,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
         #endregion
 
         #region Validate
-        private bool ValidateBestand(Double? bestand)
+        private bool ValidateBestand(double bestand)
         {
             var Validierung = new DividendeErhaltenValidierung();
 
@@ -338,14 +358,14 @@ namespace Aktien.Logic.UI.DividendeViewModels
             neueDividendeNichtGespeichert = true;
             neueSteuergruppeErstellt = false;
             data = new DividendeErhaltenStammdatenModel { Steuer = new SteuergruppeModel { Steuern = new List<SteuerModel>() } };
-            dividendetext = "";
+            DividendeText = "";
             DividendeID = -1;
-            Bestand = -1;
+            Bestand = "";
+            wechselkurs = "";
             state = State.Neu;
             Wechselkurs = null;
             RundungTyp = DividendenRundungTypes.Normal;
-            betrag = 0;
-            this.RaisePropertyChanged();
+            RaisePropertyChanged();
         }
 
        

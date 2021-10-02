@@ -2,6 +2,7 @@
 using Aktien.Logic.Messages.Base;
 using Aktien.Logic.Messages.DividendeMessages;
 using Aktien.Logic.UI.DividendeViewModels;
+using Base.Logic.Messages;
 using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Generic;
@@ -33,8 +34,8 @@ namespace Aktien.UI.Desktop.Dividende
 
         private void ReceiveOpenDividendeErhaltenViewMessage(OpenDividendeErhaltenUebersichtViewMessage m)
         {
-            this.Close();
-            var view = new DividendeErhaltenUebersichtView();
+            Close();
+            DividendeErhaltenUebersichtView view = new DividendeErhaltenUebersichtView();
 
             if (view.DataContext is DividendeErhaltenUebersichtViewModel model)
                 model.LoadData(m.WertpapierID);
@@ -54,10 +55,10 @@ namespace Aktien.UI.Desktop.Dividende
 
         private void ReceiveOpenDividendeUebersichtMessage(OpenDividendeUebersichtMessage m)
         {
-            this.Close();
-            var view = new DividendenUebersichtView();
+            Close();
+            DividendenUebersichtView view = new DividendenUebersichtView();
 
-            Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage {  ID = m.WertpapierID }, StammdatenTypes.dividende);
+            Messenger.Default.Send(new AktualisiereViewMessage {  ID = m.WertpapierID }, StammdatenTypes.dividende.ToString());
 
             Window window = new Window
             {

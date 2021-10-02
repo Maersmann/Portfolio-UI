@@ -3,15 +3,15 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using Aktien.Logic.Core;
-using Aktien.Logic.UI.BaseViewModels;
+using Base.Logic.ViewModels;
 using System;
 using System.Windows.Input;
 using Aktien.Logic.Messages;
 using Aktien.Logic.Messages.Base;
 using System.Net.Sockets;
-using Logic.UI.Helper;
 using Logic.Core.OptionenLogic;
 using Logic.Messages.Base;
+using Base.Logic.Core;
 
 namespace Aktien.Logic.UI
 {
@@ -56,21 +56,21 @@ namespace Aktien.Logic.UI
 
         private void ExecuteOpenViewCommand(ViewType viewType)
         {
-            Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = viewType });
+            Messenger.Default.Send(new OpenViewMessage { ViewType = viewType });
         }
         private void ExecuteOpenStartingViewCommand()
         {
             var backendlogic = new BackendLogic();
             if(!backendlogic.istINIVorhanden())
             {
-                Messenger.Default.Send<OpenKonfigurationViewMessage>(new OpenKonfigurationViewMessage { });
+                Messenger.Default.Send(new OpenKonfigurationViewMessage { });
             }
             backendlogic.LoadData();
             GlobalVariables.BackendServer_IP = backendlogic.getBackendIP();
             GlobalVariables.BackendServer_URL = backendlogic.getURL();
             GlobalVariables.BackendServer_Port = backendlogic.getBackendPort();
 
-            Messenger.Default.Send<OpenStartingViewMessage>(new OpenStartingViewMessage { });
+            Messenger.Default.Send(new OpenStartingViewMessage { });
         }
 
     }

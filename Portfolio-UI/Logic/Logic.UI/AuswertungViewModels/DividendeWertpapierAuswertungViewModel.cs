@@ -1,10 +1,10 @@
 ﻿using Aktien.Logic.Core;
 using Aktien.Logic.Core.Validierung.Base;
-using Aktien.Logic.UI.BaseViewModels;
+using Base.Logic.Core;
+using Base.Logic.ViewModels;
 using Data.Model.AuswertungModels;
 using LiveCharts;
 using LiveCharts.Wpf;
-using Logic.UI.BaseViewModels;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -29,7 +29,7 @@ namespace Logic.UI.AuswertungViewModels
             Title = "Auswertung Dividende je Wertpapier";
             jahrvon = DateTime.Now.Year;
             jahrbis = DateTime.Now.Year;
-            Formatter = value => value.ToString("0.## €");
+            Formatter = value => string.Format("{0:N2}€", value);
             LoadDataCommand = new DelegateCommand(this.ExcecuteLoadDataCommand, this.CanExcecuteLoadDataCommand);
         }
 
@@ -40,6 +40,7 @@ namespace Logic.UI.AuswertungViewModels
 
         public async void ExcecuteLoadDataCommand()
         {
+            RequestIsWorking = true;
             if (GlobalVariables.ServerIsOnline)
             {
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/auswertung/dividenden/Wertpapiere?jahrVon={jahrvon}&jahrBis={jahrbis}");
@@ -62,6 +63,7 @@ namespace Logic.UI.AuswertungViewModels
                 RaisePropertyChanged(nameof(SeriesCollection));
                 RaisePropertyChanged(nameof(Formatter));
             }
+            RequestIsWorking = false;
             RaisePropertyChanged("ItemList");
         }
 

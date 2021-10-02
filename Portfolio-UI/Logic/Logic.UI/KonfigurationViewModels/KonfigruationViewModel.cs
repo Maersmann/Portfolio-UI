@@ -1,4 +1,4 @@
-﻿using Aktien.Logic.UI.BaseViewModels;
+﻿using Base.Logic.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using Logic.Core.OptionenLogic;
 using Logic.Messages.Base;
@@ -20,7 +20,9 @@ namespace Logic.UI.KonfigurationViewModels
         {
             base.ExecuteCloseWindowCommand(window);
             if (!new BackendLogic().istINIVorhanden())
-                Messenger.Default.Send<CloseApplicationMessage>(new CloseApplicationMessage());
+            {
+                Messenger.Default.Send(new CloseApplicationMessage());
+            }
         }
 
 

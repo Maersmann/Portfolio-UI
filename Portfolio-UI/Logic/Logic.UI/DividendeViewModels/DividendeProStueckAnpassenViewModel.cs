@@ -1,9 +1,12 @@
-﻿using Aktien.Data.Types.DividendenTypes;
+﻿using Aktien.Data.Types;
+using Aktien.Data.Types.DividendenTypes;
 using Aktien.Data.Types.WertpapierTypes;
 using Aktien.Logic.Core;
 using Aktien.Logic.Core.DividendeLogic;
 using Aktien.Logic.Messages.Base;
-using Aktien.Logic.UI.BaseViewModels;
+using Base.Logic.Core;
+using Base.Logic.Messages;
+using Base.Logic.ViewModels;
 using Data.Model.DividendeModels;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
@@ -18,7 +21,7 @@ using System.Windows.Input;
 
 namespace Aktien.Logic.UI.DividendeViewModels
 {
-    public class DividendeProStueckAnpassenViewModel : ViewModelStammdaten<DividendeProStueckAnpassenModel>
+    public class DividendeProStueckAnpassenViewModel : ViewModelStammdaten<DividendeProStueckAnpassenModel, StammdatenTypes>
     {
 
         public DividendeProStueckAnpassenViewModel()
@@ -33,12 +36,14 @@ namespace Aktien.Logic.UI.DividendeViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.PutAsJsonAsync(GlobalVariables.BackendServer_URL+ "/api/dividende/Rundung", data as DividendeProStueckAnpassenDTOModel);
+                RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
                 {
                     Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Dividende aktualisiert." }, "DividendeProStueckAnpassen");
-                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
+                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
                 {
@@ -53,6 +58,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/dividende/{dividendeID}");
                 if (resp.IsSuccessStatusCode)
                 {
@@ -63,6 +69,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
                     data.Betrag = dividende.Betrag;
                     data.Waehrung = dividende.Waehrung;
                 }
+                RequestIsWorking = false;
             }
             data.Umrechnungskurs = umrechungskurs;
             RaisePropertyChanged("Datum");
@@ -78,21 +85,15 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         public ICommand OKCommand { get; set; }
 
-        public DateTime Datum { get { return data.Zahldatum; } }
-        public Double Betrag { get { return data.Betrag; } }
-        public Waehrungen Waehrung { get { return data.Waehrung; } }
-        public Double Umrechnungskurs { get { return data.Umrechnungskurs; } }
+        public DateTime Datum => data.Zahldatum;
+        public double Betrag => data.Betrag;
+        public Waehrungen Waehrung => data.Waehrung;
+        public double Umrechnungskurs => data.Umrechnungskurs;
 
-        public Double ErmittelterBetrag { get { return new DividendenBerechnungen().BetragUmgerechnet(data.Betrag, data.Umrechnungskurs, false, DividendenRundungTypes.Normal); } }
-        public Double ErhaltenerBetrag { get { return new DividendenBerechnungen().BetragUmgerechnet(data.Betrag, data.Umrechnungskurs, true, data.Rundungart); } }
+        public double ErmittelterBetrag => new DividendenBerechnungen().BetragUmgerechnet(data.Betrag, data.Umrechnungskurs, false, DividendenRundungTypes.Normal);
+        public double ErhaltenerBetrag => new DividendenBerechnungen().BetragUmgerechnet(data.Betrag, data.Umrechnungskurs, true, data.Rundungart);
 
-        public IEnumerable<DividendenRundungTypes> RundungTypes
-        {
-            get
-            {
-                return Enum.GetValues(typeof(DividendenRundungTypes)).Cast<DividendenRundungTypes>();
-            }
-        }
+        public IEnumerable<DividendenRundungTypes> RundungTypes => Enum.GetValues(typeof(DividendenRundungTypes)).Cast<DividendenRundungTypes>();
         public DividendenRundungTypes RundungTyp
         {
             get { return data.Rundungart; }

@@ -20,6 +20,18 @@
             <RowDefinition Height="25px" />
             <RowDefinition Height="*" />
             <RowDefinition Height="45px" />
+            <RowDefinition >
+                <RowDefinition.Style>
+                    <Style TargetType="{x:Type RowDefinition}">
+                        <Setter Property="Height" Value="5" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding RequestIsWorking}" Value="false">
+                                <Setter Property="Height" Value="0" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </RowDefinition.Style>
+            </RowDefinition>
         </Grid.RowDefinitions>
 
 
@@ -44,10 +56,10 @@
 
             <ComboBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  Width="100" ItemsSource="{Binding RundungTypes}" SelectedItem="{Binding RundungTyp}" Margin="22,4,22,9" />
 
-            <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Height="24" TextWrapping="NoWrap" VerticalAlignment="Center" Width="53" IsReadOnly="true" IsEnabled="False" Text="{Binding Betrag, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2,ConverterCulture='de-DE' }" TextAlignment="Left" Margin="28,12,0,10" />
-            <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Height="24" TextWrapping="NoWrap" VerticalAlignment="Center" Width="40" IsReadOnly="true" IsEnabled="False" Text="{Binding Waehrung, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }" TextAlignment="Left" Margin="88,12,0,10"  />
+            <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" TextWrapping="NoWrap" VerticalAlignment="Center" Width="53" IsReadOnly="true" IsEnabled="False" Text="{Binding Betrag, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2,ConverterCulture='de-DE' }" TextAlignment="Left" Margin="28,12,0,10" />
+            <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" TextWrapping="NoWrap" VerticalAlignment="Center" Width="40" IsReadOnly="true" IsEnabled="False" Text="{Binding Waehrung, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }" TextAlignment="Left" Margin="88,12,0,10"  />
 
-            <TextBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" Height="24" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding Datum, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=dd.MM.yyyy, ConverterCulture='de-DE' }"  TextAlignment="Left" Margin="18,8,18,9" />
+            <TextBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding Datum, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=dd.MM.yyyy, ConverterCulture='de-DE' }"  TextAlignment="Left" Margin="18,8,18,9" />
         </Grid>
 
         <materialDesign:Card Grid.Row="2" Grid.ColumnSpan="2"  >
@@ -70,12 +82,13 @@
             <Label Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" >Ermittelter Betrag (€)</Label>
             <Label Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" >Erhaltener Betrag (€)</Label>
 
-            <TextBox Grid.Row="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding Umrechnungskurs, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N5,ConverterCulture='de-DE' }" TextAlignment="Center"  />
-            <TextBox Grid.Row="3" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding ErmittelterBetrag, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N5,ConverterCulture='de-DE' }"  TextAlignment="Center" />
-            <TextBox Grid.Row="5" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding ErhaltenerBetrag, Mode=OneWay, UpdateSourceTrigger=PropertyChanged,  StringFormat=N2,ConverterCulture='de-DE' }" TextAlignment="Center"  />
+            <TextBox Grid.Row="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding Umrechnungskurs, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N5,ConverterCulture='de-DE' }" TextAlignment="Center"  />
+            <TextBox Grid.Row="3" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding ErmittelterBetrag, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N5,ConverterCulture='de-DE' }"  TextAlignment="Center" />
+            <TextBox Grid.Row="5" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding ErhaltenerBetrag, Mode=OneWay, UpdateSourceTrigger=PropertyChanged,  StringFormat=N2,ConverterCulture='de-DE' }" TextAlignment="Center"  />
 
 
         </Grid>
 
+        <ProgressBar Grid.Row="3" Minimum="0" Maximum="100" Name="pbStatus" Height="5" IsIndeterminate="True" />
     </Grid>
 </src:StammdatenView>

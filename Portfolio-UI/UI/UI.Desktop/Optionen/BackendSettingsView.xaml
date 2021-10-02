@@ -7,6 +7,7 @@
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:Behaviors="clr-namespace:Base.Logic.Core.Behavior;assembly=Base.Logic"
              mc:Ignorable="d" 
              d:DesignHeight="750" d:DesignWidth="1000"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -74,12 +75,10 @@
                             <TextBox Grid.Row="0" HorizontalAlignment="Center" TextWrapping="NoWrap" VerticalAlignment="Center" Width="120" Text="{Binding Backend_IP}" />
                             <TextBox Grid.Row="1" HorizontalAlignment="Center" TextWrapping="NoWrap" VerticalAlignment="Center" Width="120" Text="{Binding Backend_URL}" Cursor="IBeam" />
                             <ComboBox Grid.Row="2" HorizontalAlignment="Center"  VerticalAlignment="Center"  Width="120" ItemsSource="{Binding BackendProtokollTypes}" SelectedItem="{Binding BackendProtokollTyp}" />
-                            <TextBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="120" Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}" Cursor="IBeam" >
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="PreviewTextInput" >
-                                        <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyNumbersCommand"  />
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
+                            <TextBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="120" Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}" Cursor="IBeam" >
+                                <i:Interaction.Behaviors>
+                                    <Behaviors:TextBoxInputBehavior InputMode="DigitInput"/>
+                                </i:Interaction.Behaviors>
                             </TextBox>
 
                         </Grid>

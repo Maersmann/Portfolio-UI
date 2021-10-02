@@ -9,13 +9,14 @@
                     xmlns:local="clr-namespace:Aktien.UI.Desktop.Dividende"
                     xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                    xmlns:Behaviors="clr-namespace:Base.Logic.Core.Behavior;assembly=Base.Logic"
                     mc:Ignorable="d" WindowStartupLocation="CenterScreen"
                     Height="auto" Width="227" SizeToContent="Height" ShowInTaskbar="False"
                     DataContext="{Binding DividendeStammdaten ,Source={StaticResource Locator}}" ResizeMode="NoResize">
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closed">
-            <command:EventToCommand Command="{Binding CloseCommand}"/>
+            <command:EventToCommand Command="{Binding CleanUpCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
@@ -24,6 +25,18 @@
             <RowDefinition Height="25px" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="45px" />
+            <RowDefinition >
+                <RowDefinition.Style>
+                    <Style TargetType="{x:Type RowDefinition}">
+                        <Setter Property="Height" Value="5" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding RequestIsWorking}" Value="false">
+                                <Setter Property="Height" Value="0" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </RowDefinition.Style>
+            </RowDefinition>
         </Grid.RowDefinitions>
 
         <materialDesign:Card Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushHeaderBG}}"   >
@@ -47,7 +60,7 @@
                         </Style>
                     </RowDefinition.Style>
                 </RowDefinition>
-                
+
             </Grid.RowDefinitions>
 
             <Label Content="Ex-Tag" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="0" VerticalAlignment="Top"/>
@@ -74,12 +87,10 @@
             </DatePicker>
 
             <Label Content="Betrag" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="2" VerticalAlignment="Top"/>
-            <TextBox HorizontalAlignment="Left" Height="26" Margin="61,10,0,20" Grid.Row="2" TextWrapping="NoWrap" VerticalAlignment="Top" Width="89" Text="{Binding Betrag, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, TargetNullValue='', StringFormat=N4,ConverterCulture='de-DE' }" Cursor="IBeam" >
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="PreviewTextInput" >
-                        <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyBetragCommand"  />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
+            <TextBox HorizontalAlignment="Left" Margin="61,10,0,20" Grid.Row="2" TextWrapping="NoWrap" VerticalAlignment="Top" Width="89" Text="{Binding Betrag, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, TargetNullValue='', StringFormat=N4,ConverterCulture='de-DE' }" Cursor="IBeam" >
+                <i:Interaction.Behaviors>
+                    <Behaviors:TextBoxInputBehavior InputMode="DecimalInput"/>
+                </i:Interaction.Behaviors>
                 <Validation.ErrorTemplate>
                     <ControlTemplate>
                         <StackPanel>
@@ -99,17 +110,12 @@
             <ComboBox Grid.Row="2" HorizontalAlignment="Left"  VerticalAlignment="Top"  Width="40" ItemsSource="{Binding Waehrungen}" SelectedItem="{Binding Waehrung}" Margin="155,8,0,0" />
 
             <Label Content="Umgerechnet" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="3" VerticalAlignment="Top"/>
-            <TextBox HorizontalAlignment="Left" Height="26" Margin="98,10,0,20" Grid.Row="3" TextWrapping="NoWrap" VerticalAlignment="Top" Width="97" Text="{Binding BetragUmgerechnet, ConverterCulture=de-DE, StringFormat=N3, TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" >
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="PreviewTextInput" >
-                        <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyBetragCommand"  />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
+            <TextBox HorizontalAlignment="Left" Margin="98,10,0,20" Grid.Row="3" TextWrapping="NoWrap" VerticalAlignment="Top" Width="97" Text="{Binding BetragUmgerechnet, ConverterCulture=de-DE, StringFormat=N3, TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" >
+                <i:Interaction.Behaviors>
+                    <Behaviors:TextBoxInputBehavior InputMode="DecimalInput"/>
+                </i:Interaction.Behaviors>
             </TextBox>
         </Grid>
-
-
-       
 
         <materialDesign:Card Grid.Row="2"  >
             <DockPanel  LastChildFill="False" >
@@ -117,6 +123,7 @@
             </DockPanel>
         </materialDesign:Card>
 
+        <ProgressBar Grid.Row="3" Minimum="0" Maximum="100" Name="pbStatus" Height="5" IsIndeterminate="True" />
 
     </Grid>
 </src:StammdatenView>

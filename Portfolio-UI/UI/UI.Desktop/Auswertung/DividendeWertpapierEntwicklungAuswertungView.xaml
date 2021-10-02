@@ -7,6 +7,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+             xmlns:Behaviors="clr-namespace:Base.Logic.Core.Behavior;assembly=Base.Logic"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -17,6 +18,18 @@
             <RowDefinition Height="25px" />
             <RowDefinition Height="*" />
             <RowDefinition Height="45px" />
+            <RowDefinition >
+                <RowDefinition.Style>
+                    <Style TargetType="{x:Type RowDefinition}">
+                        <Setter Property="Height" Value="5" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding RequestIsWorking}" Value="false">
+                                <Setter Property="Height" Value="0" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </RowDefinition.Style>
+            </RowDefinition>
         </Grid.RowDefinitions>
 
         <materialDesign:Card  Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushHeaderBG}}">
@@ -70,11 +83,9 @@
 
 
                                 <TextBox Grid.Row="0" Grid.Column="1" Width="50px" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding JahrVon, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True,TargetNullValue=''}" Cursor="IBeam">
-                                    <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="PreviewTextInput" >
-                                            <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyNumbersCommand"/>
-                                        </i:EventTrigger>
-                                    </i:Interaction.Triggers>
+                                    <i:Interaction.Behaviors>
+                                        <Behaviors:TextBoxInputBehavior InputMode="DigitInput"/>
+                                    </i:Interaction.Behaviors>
                                     <Validation.ErrorTemplate>
                                         <ControlTemplate>
                                             <StackPanel>
@@ -91,11 +102,9 @@
                                     </Validation.ErrorTemplate>
                                 </TextBox>
                                 <TextBox Grid.Row="0" Grid.Column="3" Width="50px" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding JahrBis, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True,TargetNullValue=''}" Cursor="IBeam">
-                                    <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="PreviewTextInput" >
-                                            <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyNumbersCommand"/>
-                                        </i:EventTrigger>
-                                    </i:Interaction.Triggers>
+                                    <i:Interaction.Behaviors>
+                                        <Behaviors:TextBoxInputBehavior InputMode="DigitInput"/>
+                                    </i:Interaction.Behaviors>
                                     <Validation.ErrorTemplate>
                                         <ControlTemplate>
                                             <StackPanel>
@@ -172,7 +181,11 @@
                         <lvc:Axis Title="Datum" Labels="{Binding Labels}"></lvc:Axis>
                     </lvc:CartesianChart.AxisX>
                     <lvc:CartesianChart.AxisY>
-                        <lvc:Axis Title="Betrag" LabelFormatter="{Binding Formatter}"></lvc:Axis>
+                        <lvc:Axis Title="Betrag" LabelFormatter="{Binding Formatter}" MinValue="0">
+                            <lvc:Axis.Separator>
+                                <lvc:Separator Step="2" />
+                            </lvc:Axis.Separator>
+                        </lvc:Axis>
                     </lvc:CartesianChart.AxisY>
                 </lvc:CartesianChart>
             </Grid>
@@ -183,6 +196,8 @@
             <DockPanel  LastChildFill="False" >
             </DockPanel>
         </materialDesign:Card>
+
+        <ProgressBar Grid.Row="3" Minimum="0" Maximum="100" Name="pbStatus" Height="5" IsIndeterminate="True" />
 
     </Grid>
 </UserControl>

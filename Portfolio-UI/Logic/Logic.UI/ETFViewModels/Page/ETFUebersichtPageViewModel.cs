@@ -1,5 +1,5 @@
 ﻿using Aktien.Logic.Messages.AktieMessages;
-using Aktien.Logic.UI.BaseViewModels;
+using Base.Logic.ViewModels;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using System;
@@ -15,18 +15,18 @@ namespace Aktien.Logic.UI.ETFViewModels.Page
     {
         public ETFUebersichtPageViewModel()
         {
-            ShowDividendenViewCommand = new RelayCommand(this.ExecuteShowShowDividendenViewCommand);
-            ShowOrderHistoryViewCommand = new RelayCommand(this.ExecuteShowOrderHistoryViewCommand);
+            ShowDividendenViewCommand = new RelayCommand(ExecuteShowShowDividendenViewCommand);
+            ShowOrderHistoryViewCommand = new RelayCommand(ExecuteShowOrderHistoryViewCommand);
         }
 
         private void ExecuteShowShowDividendenViewCommand()
         {
-            Messenger.Default.Send<OpenDetailViewMessage>(new OpenDetailViewMessage { ViewType = Data.Types.ViewType.viewDividendeUebersicht });
+            Messenger.Default.Send(new OpenDetailViewMessage { ViewType = Data.Types.ViewType.viewDividendeUebersicht });
         }
 
         private void ExecuteShowOrderHistoryViewCommand()
         {
-            Messenger.Default.Send<OpenDetailViewMessage>(new OpenDetailViewMessage { ViewType = Data.Types.ViewType.viewOrderUebersicht });
+            Messenger.Default.Send(new OpenDetailViewMessage { ViewType = Data.Types.ViewType.viewOrderUebersicht });
         }
 
         public ICommand ShowDividendenViewCommand { get; set; }

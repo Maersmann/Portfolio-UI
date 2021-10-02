@@ -1,0 +1,3 @@
+[submodule "Base.Logic"]
+	path = Base.Logic
+	url = ../Base.Logic.git

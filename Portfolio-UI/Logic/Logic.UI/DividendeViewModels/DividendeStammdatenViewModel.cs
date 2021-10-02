@@ -3,7 +3,7 @@ using GalaSoft.MvvmLight.Messaging;
 using Aktien.Logic.Core.Validierung;
 using Aktien.Logic.Messages.Base;
 using Aktien.Logic.Messages.DividendeMessages;
-using Aktien.Logic.UI.BaseViewModels;
+using Base.Logic.ViewModels;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -16,11 +16,16 @@ using Data.Model.DividendeModels;
 using System.Net;
 using Aktien.Logic.Core;
 using System.Net.Http;
+using Base.Logic.Core;
+using Base.Logic.Messages;
+using Base.Logic.Types;
 
 namespace Aktien.Logic.UI.DividendeViewModels
 {
-    public class DividendeStammdatenViewModel : ViewModelStammdaten<DividendeModel>
+    public class DividendeStammdatenViewModel : ViewModelStammdaten<DividendeModel, StammdatenTypes>
     {
+        private string betrag;
+        private string betragUmgerechnet;
         public DividendeStammdatenViewModel()
         {
             Title = "Informationen Dividende";
@@ -31,12 +36,14 @@ namespace Aktien.Logic.UI.DividendeViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+"/api/dividende", data);
+                RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), GetStammdatenTyp());
+                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
+                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
                 {
@@ -50,102 +57,96 @@ namespace Aktien.Logic.UI.DividendeViewModels
         #region Bindings
         public DateTime? Exdatum
         {
-            get
-            {
-                return data.Exdatum;
-            }
+            get => data.Exdatum;
             set
             {
-                if (LoadAktie || !DateTime.Equals(this.data.Exdatum, value))
+                if (RequestIsWorking || !DateTime.Equals(data.Exdatum, value))
                 {
-                    this.data.Exdatum = value;
-                    this.RaisePropertyChanged();
-                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                    data.Exdatum = value;
+                    RaisePropertyChanged();
+                    (SaveCommand as DelegateCommand).RaiseCanExecuteChanged();
                 }
             }
         }
 
         public DateTime? Zahldatum
         {
-            get
-            {
-                if (data.Zahldatum.Equals(DateTime.MinValue))
-                    return null;
-                else
-                    return data.Zahldatum;
-            }
+            get => data.Zahldatum.Equals(DateTime.MinValue) ? null : (DateTime?)data.Zahldatum;
             set
             {
-                if (LoadAktie ||!DateTime.Equals(this.data.Zahldatum, value))
+                if (RequestIsWorking || !DateTime.Equals(data.Zahldatum, value))
                 {
                     ValidateDatum(value);
-                    this.data.Zahldatum = value.GetValueOrDefault();
-                    this.RaisePropertyChanged();
-                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                    data.Zahldatum = value.GetValueOrDefault();
+                    RaisePropertyChanged();
+                    (SaveCommand as DelegateCommand).RaiseCanExecuteChanged();
                 }
             }
         }
 
-        public Double? Betrag
+        public string Betrag
         {
-            get
-            {
-                return data.Betrag;
-            }
+            get => betrag;
             set
             {
-                if (LoadAktie || this.data.Betrag != value)
+                if (!double.TryParse(value, out double Betrag))
                 {
-                    ValidateBetrag(value);
-                    this.data.Betrag = value.GetValueOrDefault();
-                    this.RaisePropertyChanged();
-                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                    ValidateBetrag(0);
+                    betrag = "";
+                    data.Betrag = 0;
+                    RaisePropertyChanged();
+                    return;
+                }
+                betrag = value;
+                if (RequestIsWorking || data.Betrag != Betrag)
+                {
+                    ValidateBetrag(Betrag);
+                    data.Betrag = Betrag;
+                    RaisePropertyChanged(); 
                 }
             }
         }
-        public Double? BetragUmgerechnet
+        public string BetragUmgerechnet
         {
-            get
-            {
-                return data.BetragUmgerechnet;
-            }
+            get => betragUmgerechnet;
             set
             {
-                if (LoadAktie || this.data.BetragUmgerechnet != value)
+                if (!double.TryParse(value, out double BetragUmgerechnet))
                 {
-                    this.data.BetragUmgerechnet = value;
-                    this.RaisePropertyChanged();
+                    betragUmgerechnet = "";
+                    data.BetragUmgerechnet = 0;
+                    RaisePropertyChanged();
+                    return;
+                }
+                if (RequestIsWorking || data.BetragUmgerechnet != BetragUmgerechnet)
+                {
+                    data.BetragUmgerechnet = BetragUmgerechnet;
+                    RaisePropertyChanged();
                 }
             }
         }
         public Waehrungen Waehrung
         {
-            get { return data.Waehrung; }
+            get => data.Waehrung;
             set
             {
-                if (LoadAktie || (this.data.Waehrung != value))
+                if (RequestIsWorking || (data.Waehrung != value))
                 {
-                    this.data.Waehrung = value;
-                    this.RaisePropertyChanged();
+                    data.Waehrung = value;
+                    RaisePropertyChanged();
                 }
             }
         }
-        public static IEnumerable<Waehrungen> Waehrungen
-        {
-            get
-            {
-                return Enum.GetValues(typeof(Waehrungen)).Cast<Waehrungen>();
-            }
-        }
+        public static IEnumerable<Waehrungen> Waehrungen => Enum.GetValues(typeof(Waehrungen)).Cast<Waehrungen>();
 
         #endregion
         public int WertpapierID
         {
-            set { data.WertpapierID = value; }
+            set => data.WertpapierID = value;
         }
         public async void Bearbeiten(int id)
         {
-            LoadAktie = true;
+            RequestIsWorking = true;
             if (GlobalVariables.ServerIsOnline)
             {
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/dividende/{id}");
@@ -155,13 +156,14 @@ namespace Aktien.Logic.UI.DividendeViewModels
                     WertpapierID = data.WertpapierID;
                     Exdatum = data.Exdatum;
                     Zahldatum = data.Zahldatum;
-                    Betrag = data.Betrag;
+                    Betrag = data.Betrag.ToString();
                     Waehrung = data.Waehrung;
-                    BetragUmgerechnet = data.BetragUmgerechnet;
+                    BetragUmgerechnet = data.BetragUmgerechnet.HasValue ? data.BetragUmgerechnet.Value.ToString() : "";
+
                     state = State.Bearbeiten;
                 }
             }
-            LoadAktie = false;
+            RequestIsWorking = false;
         }
 
         #region Validate
@@ -182,6 +184,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
             bool isValid = Validierung.ValidateBetrag(betrag, out ICollection<string> validationErrors);
 
             AddValidateInfo(isValid, "Betrag", validationErrors);
+            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             return isValid;
         }
         #endregion
@@ -194,7 +197,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
             state = State.Neu;
             Betrag = null;
             Waehrung = Data.Types.WertpapierTypes.Waehrungen.Euro;
-            this.RaisePropertyChanged();
+            RaisePropertyChanged();
         }
 
     }

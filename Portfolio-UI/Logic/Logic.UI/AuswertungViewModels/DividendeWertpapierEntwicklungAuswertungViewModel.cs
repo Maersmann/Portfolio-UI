@@ -7,7 +7,7 @@ using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using LiveCharts;
 using LiveCharts.Wpf;
-using Logic.UI.BaseViewModels;
+using Base.Logic.ViewModels;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -16,6 +16,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Windows.Input;
+using Base.Logic.Core;
 
 namespace Logic.UI.AuswertungViewModels
 {
@@ -29,12 +30,13 @@ namespace Logic.UI.AuswertungViewModels
         {
             Data = new DividendeWertpapierEntwicklungAuswertungModel();
             Title = "Auswertung Entwicklung Dividende Wertpapier";
+            SecondTitle = "";
             jahrvon = DateTime.Now.Year;
             jahrbis = DateTime.Now.Year;
             typ = DividendenBetragTyp.NachSteuer;
             wertpapierID = 0;
             AuswahlCommand = new RelayCommand(() => ExcecuteAuswahlCommand());
-            Formatter = value => value.ToString("0.## €");
+            Formatter = value => string.Format("{0:N2}€", value);
         }
 
         private void ExcecuteAuswahlCommand()
@@ -44,6 +46,7 @@ namespace Logic.UI.AuswertungViewModels
 
         private async void LoadData()
         {
+            RequestIsWorking = true;
             HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/auswertung/dividenden/Wertpapiere/{wertpapierID}/Entwicklung?jahrVon={jahrvon}&jahrBis={jahrbis}&typ={typ}");
             if (resp.IsSuccessStatusCode)
             {
@@ -67,8 +70,9 @@ namespace Logic.UI.AuswertungViewModels
                 RaisePropertyChanged(nameof(Data));
                 RaisePropertyChanged(nameof(SeriesCollection));
                 RaisePropertyChanged(nameof(Labels));
-                RaisePropertyChanged(nameof(Formatter));
+                RaisePropertyChanged(nameof(Formatter)); 
             }
+            RequestIsWorking = false;
         }
         #region Callbacks
         private void OpenOpenWertpapierAuswahlMessageCallback(bool confirmed, int id)
@@ -112,7 +116,7 @@ namespace Logic.UI.AuswertungViewModels
             }
         }
         public ICommand AuswahlCommand { get; set; }
-
+        public string SecondTitle { get; set; }
         public static IEnumerable<DividendenBetragTyp> Types => Enum.GetValues(typeof(DividendenBetragTyp)).Cast<DividendenBetragTyp>();
         #endregion
 

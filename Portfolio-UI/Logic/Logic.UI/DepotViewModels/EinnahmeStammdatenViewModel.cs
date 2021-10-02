@@ -3,7 +3,7 @@ using Aktien.Data.Types.DepotTypes;
 using Aktien.Logic.Core;
 using Aktien.Logic.Core.Validierung.Base;
 using Aktien.Logic.Messages.Base;
-using Aktien.Logic.UI.BaseViewModels;
+using Base.Logic.ViewModels;
 using Aktien.Logic.UI.InterfaceViewModels;
 using Data.Model.DepotModels;
 using GalaSoft.MvvmLight.Messaging;
@@ -14,18 +14,21 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Base.Logic.Core;
+using Base.Logic.Messages;
+using Base.Logic.Types;
 
 namespace Aktien.Logic.UI.DepotViewModels
 {
-    public class EinnahmeStammdatenViewModel : ViewModelStammdaten<EinnahmeModel>, IViewModelStammdaten
+    public class EinnahmeStammdatenViewModel : ViewModelStammdaten<EinnahmeModel, StammdatenTypes>, IViewModelStammdaten
     {
+        private string betrag;
         public EinnahmeStammdatenViewModel()
         {
-            SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
-            Cleanup();
+            Title = "Neue Einahme eintragen";
         }
 
-        public int DepotID{ set { data.DepotID = value; } }
+        public int DepotID { set => data.DepotID = value; }
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.einnahmen;
 
         #region Bindings
@@ -39,16 +42,13 @@ namespace Aktien.Logic.UI.DepotViewModels
      
         public EinnahmeArtTypes EinnahmeTyp
         {
-            get
-            {
-                return data.Art;
-            }
-            set 
+            get => data.Art;
+            set
             {
                 if ((this.data.Art != value))
                 {
                     data.Art = value;
-                    this.RaisePropertyChanged();
+                    RaisePropertyChanged();
                 }
             }
 
@@ -56,10 +56,7 @@ namespace Aktien.Logic.UI.DepotViewModels
 
         public DateTime? Datum
         {
-            get
-            {
-                return data.Datum;
-            }
+            get => data.Datum;
             set
             {
                 if (!DateTime.Equals(this.data.Datum, value))
@@ -72,36 +69,39 @@ namespace Aktien.Logic.UI.DepotViewModels
             }
         }
 
-        public double? Betrag
+        public string Betrag
         {
-            get
-            {
-                return data.Betrag;
-            }
+            get => betrag;
             set
             {
-                if (LoadAktie || (this.data.Betrag != value))
+                if (!double.TryParse(value, out double Betrag))
                 {
-                    ValidateBetrag(value);
-                    this.data.Betrag = value.GetValueOrDefault();
-                    this.RaisePropertyChanged();
-                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                    ValidateBetrag(Betrag);
+                    betrag = "";
+                    data.Betrag = 0;
+                    RaisePropertyChanged();
+                    return;
+                }
+                betrag = value;
+                if (RequestIsWorking || (data.Betrag != Betrag))
+                {
+                    ValidateBetrag(Betrag);
+                    data.Betrag = Betrag;
+                    RaisePropertyChanged();
+                    
                 }
             }
         }
 
-        public String Beschreibung
+        public string Beschreibung
         {
-            get
-            {
-                return data.Beschreibung;
-            }
+            get => data.Beschreibung;
             set
             {
-                if (this.data.Beschreibung != value)
+                if (data.Beschreibung != value)
                 {
-                    this.data.Beschreibung = value;
-                    this.RaisePropertyChanged();
+                    data.Beschreibung = value;
+                    RaisePropertyChanged();
                 }
             }
         }
@@ -114,13 +114,14 @@ namespace Aktien.Logic.UI.DepotViewModels
         {
             if (GlobalVariables.ServerIsOnline)
             {
+                RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+"/api/depot/Einnahme", data);
-
+                RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Einnahme gespeichert." }, GetStammdatenTyp());
-                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.einnahmen);
+                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Einnahme gespeichert." }, GetStammdatenTyp());
+                    Messenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.einnahmen.ToString());
                 }
                 else
                 {
@@ -140,6 +141,7 @@ namespace Aktien.Logic.UI.DepotViewModels
             bool isValid = Validierung.ValidateBetrag(betrag, out ICollection<string> validationErrors);
 
             AddValidateInfo(isValid, "Betrag", validationErrors);
+            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             return isValid;
         }
 
@@ -158,7 +160,7 @@ namespace Aktien.Logic.UI.DepotViewModels
         {
             state = State.Neu;
             data = new EinnahmeModel();
-            Betrag = null;
+            Betrag = "";
             Datum = DateTime.Now;
             DepotID = 1;
             Beschreibung = "";
