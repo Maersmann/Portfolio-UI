@@ -43,7 +43,7 @@
         </Grid.RowDefinitions>
 
         <materialDesign:Card Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushHeaderBG}}">
-            <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="Neue Einahme eintragen" ></Label>
+            <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding Title}" ></Label>
         </materialDesign:Card>
 
         <Grid Grid.Row="1" Grid.ColumnSpan="2" >

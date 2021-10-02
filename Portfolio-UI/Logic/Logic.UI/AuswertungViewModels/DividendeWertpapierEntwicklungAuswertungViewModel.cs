@@ -30,6 +30,7 @@ namespace Logic.UI.AuswertungViewModels
         {
             Data = new DividendeWertpapierEntwicklungAuswertungModel();
             Title = "Auswertung Entwicklung Dividende Wertpapier";
+            SecondTitle = "";
             jahrvon = DateTime.Now.Year;
             jahrbis = DateTime.Now.Year;
             typ = DividendenBetragTyp.NachSteuer;
@@ -115,7 +116,7 @@ namespace Logic.UI.AuswertungViewModels
             }
         }
         public ICommand AuswahlCommand { get; set; }
-
+        public string SecondTitle { get; set; }
         public static IEnumerable<DividendenBetragTyp> Types => Enum.GetValues(typeof(DividendenBetragTyp)).Cast<DividendenBetragTyp>();
         #endregion
 

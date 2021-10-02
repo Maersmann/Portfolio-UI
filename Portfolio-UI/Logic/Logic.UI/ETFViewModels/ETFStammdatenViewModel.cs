@@ -27,8 +27,6 @@ namespace Aktien.Logic.UI.ETFViewModels
 
         public ETFStammdatenViewModel()
         {
-            SaveCommand = new DelegateCommand(ExecuteSaveCommand, CanExecuteSaveCommand);
-            Cleanup();
             Title = "Informationen ETF";
         }
 

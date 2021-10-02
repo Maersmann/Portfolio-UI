@@ -9,6 +9,7 @@
              xmlns:command="http://www.galasoft.ch/mvvmlight"
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+             xmlns:Behaviors="clr-namespace:Base.Logic.Core.Behavior;assembly=Base.Logic"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              Background="{DynamicResource MaterialDesignPaper}"
              mc:Ignorable="d"
@@ -115,11 +116,9 @@
                     </Grid.ColumnDefinitions>
                     <Label  Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0" >1 zu </Label>
                     <TextBox Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="25" Margin="5,00,0,0" MaxLength="2" Text="{Binding Verhaeltnis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,ValidatesOnNotifyDataErrors=True, FallbackValue='1', TargetNullValue=''}">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="PreviewTextInput" >
-                                <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnlyNumbersCommand"/>
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
+                        <i:Interaction.Behaviors>
+                            <Behaviors:TextBoxInputBehavior InputMode="DigitInput"/>
+                        </i:Interaction.Behaviors>
                         <Validation.ErrorTemplate>
                             <ControlTemplate>
                                 <StackPanel>

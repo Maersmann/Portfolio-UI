@@ -25,8 +25,7 @@ namespace Aktien.Logic.UI.DepotViewModels
         private string betrag;
         public EinnahmeStammdatenViewModel()
         {
-            SaveCommand = new DelegateCommand(ExecuteSaveCommand, CanExecuteSaveCommand);
-            Cleanup();
+            Title = "Neue Einahme eintragen";
         }
 
         public int DepotID { set => data.DepotID = value; }

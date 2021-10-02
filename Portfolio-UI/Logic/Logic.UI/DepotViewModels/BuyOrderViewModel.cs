@@ -32,8 +32,8 @@ namespace Aktien.Logic.UI.DepotViewModels
     {
         private BuySell buySell;
         private WertpapierTypes typ;    
-        private Double preisUebersicht;
-        private Double buyIn;
+        private double preisUebersicht;
+        private double buyIn;
         private bool neueOrderNichtGespeichert;
         private double steuern;
         private string anzahl;
@@ -55,26 +55,28 @@ namespace Aktien.Logic.UI.DepotViewModels
             if ((betrag.Length > 0) && (double.TryParse(betrag, out double Betrag)))
             {
                 if (Betrag.Equals(0))
+                {
                     preisUebersicht = 0;
-                else if (data.Anzahl.Equals(0))
-                    preisUebersicht = 0;
+                }
                 else
-                    preisUebersicht = Math.Round(Betrag / data.Anzahl, 3, MidpointRounding.AwayFromZero);
+                {
+                    preisUebersicht = data.Anzahl.Equals(0) ? 0 : Math.Round(Betrag / data.Anzahl, 3, MidpointRounding.AwayFromZero);
+                }
             }              
             else
+            {
                 preisUebersicht = data.Preis;
+            }
 
-            if ((buySell.Equals(BuySell.Buy)) && (preisUebersicht != 0) && (data.Anzahl != 0))
-                buyIn = new KaufBerechnungen().BuyInAktieGekauft(0, 0, data.Anzahl, preisUebersicht, data.Anzahl, data.Fremdkostenzuschlag, data.OrderartTyp);
-            else
-                buyIn = 0;
+            buyIn = buySell.Equals(BuySell.Buy) && (preisUebersicht != 0) && (data.Anzahl != 0)
+                ? new KaufBerechnungen().BuyInAktieGekauft(0, 0, data.Anzahl, preisUebersicht, data.Anzahl, data.Fremdkostenzuschlag, data.OrderartTyp)
+                : 0;
 
             data.Bemessungsgrundlage = Math.Round(preisUebersicht * data.Anzahl, 3, MidpointRounding.AwayFromZero);
             steuern = new SteuerBerechnen().SteuerGesamt(data.Steuer.Steuern);
-            if(BuySell.Equals(BuySell.Buy))
-                data.Gesamt = data.Bemessungsgrundlage + data.Fremdkostenzuschlag.GetValueOrDefault(0);
-            else
-                data.Gesamt = data.Bemessungsgrundlage - data.Fremdkostenzuschlag.GetValueOrDefault(0) + steuern;
+            data.Gesamt = BuySell.Equals(BuySell.Buy)
+                ? data.Bemessungsgrundlage + data.Fremdkostenzuschlag.GetValueOrDefault(0)
+                : data.Bemessungsgrundlage - data.Fremdkostenzuschlag.GetValueOrDefault(0) + steuern;
 
             RaisePropertyChanged(nameof(Gesamt));
             RaisePropertyChanged(nameof(Bemessungsgrundlage));
@@ -120,7 +122,9 @@ namespace Aktien.Logic.UI.DepotViewModels
                         SendExceptionMessage("Es sind neuere Orders vorhanden.");
                     }
                     else if ((int)resp.StatusCode == 902)
+                    {
                         SendExceptionMessage("Es wurden mehr Wertpapiere zum Verkauf eingetragen, als im Depot vorhanden.");
+                    }
                     else
                     {
                         SendExceptionMessage("Order konnte nicht gespeichert werden.");

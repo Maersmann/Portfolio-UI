@@ -59,7 +59,7 @@
 
 
         <materialDesign:Card Grid.Row="0" Grid.ColumnSpan="3" Background="{Binding Mode=OneWay, Source={StaticResource brushHeaderBG}}"   >
-            <Label HorizontalAlignment="Center" Width="auto" >Informationen erhaltene Dividende</Label>
+            <Label HorizontalAlignment="Center" Width="auto" Content="{Binding Title}" />
         </materialDesign:Card>
 
         <Grid Grid.Row="1" Grid.Column="0" >

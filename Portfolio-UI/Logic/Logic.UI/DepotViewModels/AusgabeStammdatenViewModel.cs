@@ -25,8 +25,7 @@ namespace Aktien.Logic.UI.DepotViewModels
         private string betrag;
         public AusgabeStammdatenViewModel()
         {
-            SaveCommand = new DelegateCommand(ExecuteSaveCommand, CanExecuteSaveCommand);
-            Cleanup();
+            Title = "Neue Ausgabe eintragen";
         }
 
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.ausgaben;

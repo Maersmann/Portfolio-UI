@@ -41,12 +41,10 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         public DividendeErhaltenViewModel()
         {
-            
-            SaveCommand = new DelegateCommand(ExecuteSaveCommand, CanExecuteSaveCommand);
+            Title = "Informationen erhaltene Dividende";
             OpenAuswahlCommand = new RelayCommand(ExecuteOpenAuswahlCommand);
             OpenSteuernCommand = new RelayCommand(ExecuteOpenSteuernCommand);
             OpenDividendeCommand = new DelegateCommand(ExecuteOpenDividendeCommand, CanExecuteOpenDividendeCommand);
-            Cleanup();
         }
 
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.dividendeErhalten;
