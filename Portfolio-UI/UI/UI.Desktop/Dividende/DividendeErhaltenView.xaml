@@ -105,6 +105,7 @@
             </Grid>
 
             <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Bestand, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, TargetNullValue='' }" Cursor="IBeam"  >
+                <materialDesign:HintAssist.Hint>0</materialDesign:HintAssist.Hint>
                 <i:Interaction.Behaviors>
                     <Behaviors:TextBoxInputBehavior InputMode="DecimalInput"/>
                 </i:Interaction.Behaviors>
@@ -123,7 +124,8 @@
                     </ControlTemplate>
                 </Validation.ErrorTemplate>
             </TextBox>
-            <TextBox Grid.Row="2"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Wechselkurs, UpdateSourceTrigger=PropertyChanged,  TargetNullValue='' }"  >
+            <TextBox Grid.Row="2"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Wechselkurs, UpdateSourceTrigger=PropertyChanged,  TargetNullValue='' }" Cursor="IBeam"  >
+                <materialDesign:HintAssist.Hint>0</materialDesign:HintAssist.Hint>
                 <i:Interaction.Behaviors>
                     <Behaviors:TextBoxInputBehavior InputMode="DecimalInput"/>
                 </i:Interaction.Behaviors>

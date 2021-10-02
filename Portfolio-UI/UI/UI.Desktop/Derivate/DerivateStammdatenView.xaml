@@ -56,7 +56,8 @@
             </Grid.ColumnDefinitions>
 
             <Label Content="Name" HorizontalAlignment="Center"  Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
-            <TextBox HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1" TextWrapping="NoWrap" VerticalAlignment="Center" Width="250" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }">
+            <TextBox HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1" TextWrapping="NoWrap" VerticalAlignment="Center" Width="250" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }" Cursor="IBeam">
+                <materialDesign:HintAssist.Hint>Long @ 13.38€ Deutsche Telekom</materialDesign:HintAssist.Hint>
                 <Validation.ErrorTemplate>
                     <ControlTemplate>
                         <StackPanel>
@@ -75,6 +76,7 @@
 
             <Label Content="ISIN" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
             <TextBox HorizontalAlignment="Center"  Grid.Row="1" Grid.Column="1" TextWrapping="NoWrap" VerticalAlignment="Center" Width="250" Text="{Binding ISIN, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }" IsEnabled="{Binding ISIN_isEnabled, Mode=OneWay}">
+                <materialDesign:HintAssist.Hint>DE000TT312R0</materialDesign:HintAssist.Hint>
                 <Validation.ErrorTemplate>
                     <ControlTemplate>
                         <StackPanel>
@@ -91,7 +93,9 @@
                 </Validation.ErrorTemplate>
             </TextBox>
             <Label Content="WKN" HorizontalAlignment="Center"  Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"/>
-            <TextBox HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1" TextWrapping="NoWrap" VerticalAlignment="Center" Width="250" Text="{Binding WKN}"/>
+            <TextBox HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1" TextWrapping="NoWrap" VerticalAlignment="Center" Width="250" Text="{Binding WKN}">
+                <materialDesign:HintAssist.Hint>TT312R</materialDesign:HintAssist.Hint>
+            </TextBox>
 
         </Grid>
 

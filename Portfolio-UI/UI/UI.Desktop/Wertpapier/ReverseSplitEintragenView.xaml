@@ -115,7 +115,8 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Label  Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0" >1 zu </Label>
-                    <TextBox Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="25" Margin="5,00,0,0" MaxLength="2" Text="{Binding Verhaeltnis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,ValidatesOnNotifyDataErrors=True, FallbackValue='1', TargetNullValue=''}">
+                    <TextBox Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="25" Margin="5,00,0,0" MaxLength="2" Text="{Binding Verhaeltnis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,ValidatesOnNotifyDataErrors=True, FallbackValue='1', TargetNullValue=''}" Cursor="IBeam">
+                        <materialDesign:HintAssist.Hint>1</materialDesign:HintAssist.Hint>
                         <i:Interaction.Behaviors>
                             <Behaviors:TextBoxInputBehavior InputMode="DigitInput"/>
                         </i:Interaction.Behaviors>
