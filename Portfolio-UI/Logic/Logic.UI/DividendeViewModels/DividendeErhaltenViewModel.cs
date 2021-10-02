@@ -38,7 +38,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
         private bool neueDividendeNichtGespeichert;
         private bool neueSteuergruppeErstellt;
         private bool dataGespeichert;
-
+        private double betrag;
         public DividendeErhaltenViewModel()
         {
             Title = "Informationen erhaltene Dividende";
@@ -57,6 +57,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
             RaisePropertyChanged(nameof(DividendeText));
             DividendeID = id;
             LadeAnzahlWertpapier();
+            this.betrag = betrag;
             BerechneGesamtWerte();
         }
 
@@ -115,7 +116,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         public void BerechneGesamtWerte()
         {
-            data.Bemessungsgrundlage = 1;// new DividendenBerechnungen().Bemessungsgrundlage(betrag, data.Bestand);
+            data.Bemessungsgrundlage = new DividendenBerechnungen().Bemessungsgrundlage(betrag, data.Bestand);
             data.Erhalten = data.Bemessungsgrundlage;
             data.SteuernVorZwischensumme = 0;
             data.SteuernNachZwischensumme = 0;
@@ -354,6 +355,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         public override void Cleanup()
         {
+            betrag = 0;
             dataGespeichert = false;
             neueDividendeNichtGespeichert = true;
             neueSteuergruppeErstellt = false;
