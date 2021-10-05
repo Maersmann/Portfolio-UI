@@ -52,7 +52,8 @@
             </Grid.ColumnDefinitions>
 
             <Label Content="Bezeichnung" HorizontalAlignment="Center"  Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
-            <TextBox HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1" TextWrapping="NoWrap" VerticalAlignment="Center" Width="220" Text="{Binding Bezeichnung, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }">
+            <TextBox HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1" TextWrapping="NoWrap" VerticalAlignment="Center" Width="220" Text="{Binding Bezeichnung, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }" Cursor="IBeam">
+                <materialDesign:HintAssist.Hint>Quellensteuer</materialDesign:HintAssist.Hint>
                 <Validation.ErrorTemplate>
                     <ControlTemplate>
                         <StackPanel>
@@ -80,7 +81,7 @@
             </DockPanel>
         </materialDesign:Card>
 
-        <ProgressBar Grid.Row="3" Minimum="0" Maximum="100" Name="pbStatus" Height="5" IsIndeterminate="True" />
+        <ProgressBar Grid.Row="3" Minimum="0" Maximum="100"  Height="5" IsIndeterminate="True" />
 
 
     </Grid>

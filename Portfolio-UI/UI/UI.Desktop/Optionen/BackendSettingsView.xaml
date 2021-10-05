@@ -72,10 +72,13 @@
                                 <RowDefinition Height="50px" />
                                 <RowDefinition Height="50px" />
                             </Grid.RowDefinitions>
-                            <TextBox Grid.Row="0" HorizontalAlignment="Center" TextWrapping="NoWrap" VerticalAlignment="Center" Width="120" Text="{Binding Backend_IP}" />
+                            <TextBox Grid.Row="0" HorizontalAlignment="Center" TextWrapping="NoWrap" VerticalAlignment="Center" Width="120" Text="{Binding Backend_IP}" Cursor="IBeam">
+                                <materialDesign:HintAssist.Hint>localhost</materialDesign:HintAssist.Hint>
+                            </TextBox>
                             <TextBox Grid.Row="1" HorizontalAlignment="Center" TextWrapping="NoWrap" VerticalAlignment="Center" Width="120" Text="{Binding Backend_URL}" Cursor="IBeam" />
                             <ComboBox Grid.Row="2" HorizontalAlignment="Center"  VerticalAlignment="Center"  Width="120" ItemsSource="{Binding BackendProtokollTypes}" SelectedItem="{Binding BackendProtokollTyp}" />
                             <TextBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="120" Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}" Cursor="IBeam" >
+                                <materialDesign:HintAssist.Hint>5000</materialDesign:HintAssist.Hint>
                                 <i:Interaction.Behaviors>
                                     <Behaviors:TextBoxInputBehavior InputMode="DigitInput"/>
                                 </i:Interaction.Behaviors>

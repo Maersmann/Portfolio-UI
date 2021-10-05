@@ -57,7 +57,8 @@
             </Grid.ColumnDefinitions>
 
             <Label Content="Name" HorizontalAlignment="Center"  Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
-            <TextBox HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1" TextWrapping="NoWrap" VerticalAlignment="Center" Width="250" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }">
+            <TextBox HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1" TextWrapping="NoWrap" VerticalAlignment="Center" Width="250" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }" Cursor="IBeam">
+                <materialDesign:HintAssist.Hint>MSCI World</materialDesign:HintAssist.Hint>
                 <Validation.ErrorTemplate>
                     <ControlTemplate>
                         <StackPanel>
@@ -76,6 +77,7 @@
 
             <Label Content="ISIN" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
             <TextBox HorizontalAlignment="Center" Grid.Row="1" Grid.Column="1" TextWrapping="NoWrap" VerticalAlignment="Center" Width="250" Text="{Binding ISIN, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }" IsEnabled="{Binding ISIN_isEnabled, Mode=OneWay}">
+                <materialDesign:HintAssist.Hint>IE00B4L5Y983</materialDesign:HintAssist.Hint>
                 <Validation.ErrorTemplate>
                     <ControlTemplate>
                         <StackPanel>
@@ -92,7 +94,9 @@
                 </Validation.ErrorTemplate>
             </TextBox>
             <Label Content="WKN" HorizontalAlignment="Center"  Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"/>
-            <TextBox HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1" TextWrapping="NoWrap" VerticalAlignment="Center" Width="250" Text="{Binding WKN}" />
+            <TextBox HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1" TextWrapping="NoWrap" VerticalAlignment="Center" Width="250" Text="{Binding WKN}" Cursor="IBeam">
+                <materialDesign:HintAssist.Hint>A0RPWH</materialDesign:HintAssist.Hint>
+            </TextBox>
 
             <Label Content="Ermittent" HorizontalAlignment="Center"  Grid.Row="3" Grid.Column="0" VerticalAlignment="Center"/>
             <ComboBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" ItemsSource="{Binding ErmittentTypes}" SelectedItem="{Binding ErmittentTyp}" Margin="12,10,0,8"/>
@@ -107,7 +111,7 @@
             </DockPanel>
         </materialDesign:Card>
 
-        <ProgressBar Grid.Row="3" Minimum="0" Maximum="100" Name="pbStatus" Height="5" IsIndeterminate="True" />
+        <ProgressBar Grid.Row="3" Minimum="0" Maximum="100"  Height="5" IsIndeterminate="True" />
 
 
     </Grid>

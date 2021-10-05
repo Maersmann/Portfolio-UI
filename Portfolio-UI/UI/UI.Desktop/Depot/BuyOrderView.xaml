@@ -119,7 +119,8 @@
             <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Datum</Label>
             <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Order Art</Label>
             <Label Grid.Row="6" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"  Content="{Binding KauftypBez}"/>
-            <TextBox Grid.Row="0"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Anzahl, UpdateSourceTrigger=PropertyChanged, TargetNullValue='', ValidatesOnNotifyDataErrors=True }" >
+            <TextBox Grid.Row="0"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Anzahl, UpdateSourceTrigger=PropertyChanged, TargetNullValue='', ValidatesOnNotifyDataErrors=True }" Cursor="IBeam" >
+                <materialDesign:HintAssist.Hint>0</materialDesign:HintAssist.Hint>
                 <i:Interaction.Behaviors>
                     <Behaviors:TextBoxInputBehavior InputMode="DecimalInput"/>
                 </i:Interaction.Behaviors>
@@ -139,6 +140,7 @@
                 </Validation.ErrorTemplate>
             </TextBox>
             <TextBox Grid.Row="1"  Grid.Column="1" HorizontalAlignment="Center"  Height="23" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Preis, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, TargetNullValue='' }" IsEnabled="{Binding EingabePreisEnabled, Mode=OneWay}" Cursor="IBeam"  >
+                <materialDesign:HintAssist.Hint>0</materialDesign:HintAssist.Hint>
                 <i:Interaction.Behaviors>
                     <Behaviors:TextBoxInputBehavior InputMode="DecimalInput"/>
                 </i:Interaction.Behaviors>
@@ -177,6 +179,7 @@
                 </Validation.ErrorTemplate>
             </TextBox>
             <TextBox Grid.Row="3"  Grid.Column="1" HorizontalAlignment="Center"  TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Fremdkosten, UpdateSourceTrigger=PropertyChanged, TargetNullValue='' }" Cursor="IBeam" >
+                <materialDesign:HintAssist.Hint>0</materialDesign:HintAssist.Hint>
                 <i:Interaction.Behaviors>
                     <Behaviors:TextBoxInputBehavior InputMode="DecimalInput"/>
                 </i:Interaction.Behaviors>
@@ -272,7 +275,7 @@
             </DockPanel>
         </materialDesign:Card>
 
-        <ProgressBar Grid.Row="3" Minimum="0" Maximum="100" Name="pbStatus" Height="5" IsIndeterminate="True" />
+        <ProgressBar Grid.Row="3" Grid.ColumnSpan="3" Minimum="0" Maximum="100"  Height="5" IsIndeterminate="True" />
 
     </Grid>
 </src:StammdatenView>

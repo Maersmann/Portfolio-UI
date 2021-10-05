@@ -64,7 +64,9 @@
             </Grid.RowDefinitions>
 
             <Label Content="Ex-Tag" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="0" VerticalAlignment="Top"/>
-            <DatePicker HorizontalAlignment="Left" Margin="61,10,0,10" Grid.Row="0" VerticalAlignment="Top" Width="134"  SelectedDate="{Binding Exdatum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <DatePicker HorizontalAlignment="Left" Margin="61,10,0,10" Grid.Row="0" VerticalAlignment="Top" Width="134"  SelectedDate="{Binding Exdatum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <materialDesign:HintAssist.Hint>01.01.2021</materialDesign:HintAssist.Hint>
+            </DatePicker>
 
 
 
@@ -88,6 +90,7 @@
 
             <Label Content="Betrag" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="2" VerticalAlignment="Top"/>
             <TextBox HorizontalAlignment="Left" Margin="61,10,0,20" Grid.Row="2" TextWrapping="NoWrap" VerticalAlignment="Top" Width="89" Text="{Binding Betrag, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, TargetNullValue='', StringFormat=N4,ConverterCulture='de-DE' }" Cursor="IBeam" >
+                <materialDesign:HintAssist.Hint>0</materialDesign:HintAssist.Hint>
                 <i:Interaction.Behaviors>
                     <Behaviors:TextBoxInputBehavior InputMode="DecimalInput"/>
                 </i:Interaction.Behaviors>
@@ -123,7 +126,7 @@
             </DockPanel>
         </materialDesign:Card>
 
-        <ProgressBar Grid.Row="3" Minimum="0" Maximum="100" Name="pbStatus" Height="5" IsIndeterminate="True" />
+        <ProgressBar Grid.Row="3" Minimum="0" Maximum="100"  Height="5" IsIndeterminate="True" />
 
     </Grid>
 </src:StammdatenView>

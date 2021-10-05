@@ -58,7 +58,8 @@
             </Grid.ColumnDefinitions>
 
             <Label Content="Name" HorizontalAlignment="Center"  Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
-            <TextBox HorizontalAlignment="Center"  Grid.Row="0" Grid.Column="1" TextWrapping="NoWrap" VerticalAlignment="Center" Width="250" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }">
+            <TextBox HorizontalAlignment="Center"  Grid.Row="0" Grid.Column="1" TextWrapping="NoWrap" VerticalAlignment="Center" Width="250" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }" Cursor="IBeam">
+                <materialDesign:HintAssist.Hint>Volkswagen</materialDesign:HintAssist.Hint>
                 <Validation.ErrorTemplate>
                     <ControlTemplate>
                         <StackPanel>
@@ -77,6 +78,7 @@
 
             <Label Content="ISIN" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
             <TextBox HorizontalAlignment="Center"  Grid.Row="1" Grid.Column="1" TextWrapping="NoWrap" VerticalAlignment="Center" Width="250" Text="{Binding ISIN, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }" IsEnabled="{Binding ISIN_isEnabled, Mode=OneWay}">
+                <materialDesign:HintAssist.Hint>DE0007664039</materialDesign:HintAssist.Hint>
                 <Validation.ErrorTemplate>
                     <ControlTemplate>
                         <StackPanel>
@@ -93,7 +95,9 @@
                 </Validation.ErrorTemplate>
             </TextBox>
             <Label Content="WKN" HorizontalAlignment="Center"  Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"/>
-            <TextBox HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1" TextWrapping="NoWrap" VerticalAlignment="Center" Width="250" Text="{Binding WKN}"/>
+            <TextBox HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1" TextWrapping="NoWrap" VerticalAlignment="Center" Width="250" Text="{Binding WKN}" Cursor="IBeam">
+                <materialDesign:HintAssist.Hint>766403</materialDesign:HintAssist.Hint>
+            </TextBox>
 
         </Grid>
         
@@ -103,7 +107,7 @@
             </DockPanel>
         </materialDesign:Card>
 
-        <ProgressBar Grid.Row="3" Minimum="0" Maximum="100" Name="pbStatus" Height="5" IsIndeterminate="True" />
+        <ProgressBar Grid.Row="3" Minimum="0" Maximum="100"  Height="5" IsIndeterminate="True" />
 
 
     </Grid>

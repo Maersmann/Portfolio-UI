@@ -62,6 +62,7 @@
                 </Grid.ColumnDefinitions>
                 <ComboBox Grid.Column="1"   Width="40" ItemsSource="{Binding Waehrungen}" SelectedItem="{Binding Waehrung}" TabIndex="2" />
                 <TextBox  Grid.Column="0" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Betrag, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, TargetNullValue='', StringFormat=N2,ConverterCulture='de-DE'}" Cursor="IBeam" TabIndex="1"  >
+                    <materialDesign:HintAssist.Hint>0</materialDesign:HintAssist.Hint>
                     <i:Interaction.Behaviors>
                         <Behaviors:TextBoxInputBehavior InputMode="DecimalInput"/>
                     </i:Interaction.Behaviors>
@@ -95,7 +96,7 @@
             </DockPanel>
         </materialDesign:Card>
 
-        <ProgressBar Grid.Row="3" Minimum="0" Maximum="100" Name="pbStatus" Height="5" IsIndeterminate="True" />
+        <ProgressBar Grid.Row="3" Minimum="0" Maximum="100"  Height="5" IsIndeterminate="True" />
 
 
     </Grid>

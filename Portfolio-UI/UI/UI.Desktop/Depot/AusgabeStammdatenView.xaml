@@ -64,6 +64,7 @@
             <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Beschreibung</Label>
 
             <TextBox Grid.Row="0"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Betrag, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, TargetNullValue=''}" Cursor="IBeam"  >
+                <materialDesign:HintAssist.Hint>0</materialDesign:HintAssist.Hint>
                 <i:Interaction.Behaviors>
                     <Behaviors:TextBoxInputBehavior InputMode="DecimalInput"/>
                 </i:Interaction.Behaviors>
@@ -100,7 +101,9 @@
             </DatePicker>
             <ComboBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" ItemsSource="{Binding AusgabeTypes}" SelectedItem="{Binding AusgabeTyp}" />
 
-            <TextBox Grid.Row="3"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Beschreibung, UpdateSourceTrigger=PropertyChanged }"  />
+            <TextBox Grid.Row="3"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Beschreibung, UpdateSourceTrigger=PropertyChanged }" Cursor="IBeam">
+                <materialDesign:HintAssist.Hint>Auszahlung VB</materialDesign:HintAssist.Hint>
+            </TextBox>
 
         </Grid>
 
@@ -110,7 +113,7 @@
             </DockPanel>
         </materialDesign:Card>
 
-        <ProgressBar Grid.Row="3" Minimum="0" Maximum="100" Name="pbStatus" Height="5" IsIndeterminate="True" />
+        <ProgressBar Grid.Row="3" Minimum="0" Maximum="100"  Height="5" IsIndeterminate="True" />
 
     </Grid>
 </src:StammdatenView>

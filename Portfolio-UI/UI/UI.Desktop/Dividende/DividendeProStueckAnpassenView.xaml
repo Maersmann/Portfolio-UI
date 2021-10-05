@@ -59,7 +59,7 @@
             <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" TextWrapping="NoWrap" VerticalAlignment="Center" Width="53" IsReadOnly="true" IsEnabled="False" Text="{Binding Betrag, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2,ConverterCulture='de-DE' }" TextAlignment="Left" Margin="28,12,0,10" />
             <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" TextWrapping="NoWrap" VerticalAlignment="Center" Width="40" IsReadOnly="true" IsEnabled="False" Text="{Binding Waehrung, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }" TextAlignment="Left" Margin="88,12,0,10"  />
 
-            <TextBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding Datum, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=dd.MM.yyyy, ConverterCulture='de-DE' }"  TextAlignment="Left" Margin="18,8,18,9" />
+            <TextBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" IsReadOnly="true" IsEnabled="False" Text="{Binding Datum, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=dd.MM.yyyy, ConverterCulture='de-DE' }"  TextAlignment="Left" Margin="18,8,18,9" Cursor="IBeam" />
         </Grid>
 
         <materialDesign:Card Grid.Row="2" Grid.ColumnSpan="2"  >
@@ -89,6 +89,6 @@
 
         </Grid>
 
-        <ProgressBar Grid.Row="3" Minimum="0" Maximum="100" Name="pbStatus" Height="5" IsIndeterminate="True" />
+        <ProgressBar Grid.Row="3" Minimum="0" Maximum="100"  Height="5" IsIndeterminate="True" />
     </Grid>
 </src:StammdatenView>
