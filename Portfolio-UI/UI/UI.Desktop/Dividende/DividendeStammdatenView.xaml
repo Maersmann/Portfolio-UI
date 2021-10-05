@@ -126,7 +126,7 @@
             </DockPanel>
         </materialDesign:Card>
 
-        <ProgressBar Grid.Row="3" Minimum="0" Maximum="100" Name="pbStatus" Height="5" IsIndeterminate="True" />
+        <ProgressBar Grid.Row="3" Minimum="0" Maximum="100"  Height="5" IsIndeterminate="True" />
 
     </Grid>
 </src:StammdatenView>
