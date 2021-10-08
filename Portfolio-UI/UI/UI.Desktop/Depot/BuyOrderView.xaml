@@ -15,6 +15,8 @@
                     ResizeMode="NoResize"
                     WindowStartupLocation="CenterScreen" ShowInTaskbar="False"
                     Unloaded="Window_Unloaded"
+                    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+                    Background="{DynamicResource MaterialDesignPaper}"
                     DataContext="{Binding BuyOrder ,Source={StaticResource Locator}}">
 
     <i:Interaction.Triggers>
@@ -71,7 +73,7 @@
             </ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <materialDesign:Card Grid.Row="0" Grid.ColumnSpan="3" Background="{Binding Mode=OneWay, Source={StaticResource brushHeaderBG}}">
+        <materialDesign:Card Grid.Row="0" Grid.ColumnSpan="3" Background="{Binding Mode=OneWay, Source={StaticResource brushHeader}}">
             <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding Titel}" ></Label>
         </materialDesign:Card>
 
@@ -270,8 +272,8 @@
 
         <materialDesign:Card Grid.Row="2" Grid.ColumnSpan="3">
             <DockPanel  LastChildFill="False" >
-                <Button Grid.Row ="1" DockPanel.Dock="Right" Margin="5" HorizontalAlignment="Right" Width="100"  Command="{Binding SaveCommand, Mode=OneWay}"  Style="{DynamicResource MaterialDesignToolButton}" >Speichern</Button>
-                <Button Grid.Row ="1" DockPanel.Dock="Left" Margin="5" HorizontalAlignment="Right" Width="100"  Command="{Binding OpenSteuernCommand, Mode=OneWay}"  Style="{DynamicResource MaterialDesignToolButton}" >Steuern</Button>
+                <Button Grid.Row ="1" DockPanel.Dock="Right" Margin="5" HorizontalAlignment="Right" Width="100"  Command="{Binding SaveCommand, Mode=OneWay}"  Style="{DynamicResource MaterialDesignFlatDarkBgButton}" >Speichern</Button>
+                <Button Grid.Row ="1" DockPanel.Dock="Left" Margin="5" HorizontalAlignment="Right" Width="100"  Command="{Binding OpenSteuernCommand, Mode=OneWay}"  Style="{DynamicResource MaterialDesignFlatDarkBgButton}" >Steuern</Button>
             </DockPanel>
         </materialDesign:Card>
 
