@@ -32,7 +32,7 @@
             </RowDefinition>
         </Grid.RowDefinitions>
 
-        <materialDesign:Card  Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushHeaderBG}}">
+        <materialDesign:Card  Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushHeader}}">
             <Label HorizontalAlignment="Center" Width="auto" Content="{Binding Title, Mode=OneWay}"/>
         </materialDesign:Card>
 
@@ -65,19 +65,19 @@
                             <Grid Grid.Column="1">
 
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="160"/>
+                                    <ColumnDefinition Width="160"/>
                                 </Grid.ColumnDefinitions>
 
 
                                 <Grid Grid.Column="0" HorizontalAlignment="Right" Margin="5">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="4*"/>
+                                        <ColumnDefinition Width="6*"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <Label Margin="3" Grid.Column="0" Content="Jahr von:" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                                    <TextBox Margin="3" Grid.Column="1" Width="75px" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding JahrVon, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True,TargetNullValue=''}" Cursor="IBeam">
+                                    <Label Margin="3" Grid.Column="0" Content="Jahr von:" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <TextBox Margin="3" Grid.Column="1" Width="75px" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding JahrVon, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True,TargetNullValue=''}" Cursor="IBeam">
                                         <i:Interaction.Behaviors>
                                             <Behaviors:TextBoxInputBehavior InputMode="DigitInput"/>
                                         </i:Interaction.Behaviors>
@@ -99,12 +99,12 @@
                                 </Grid>
                                 <Grid Grid.Column="1" HorizontalAlignment="Left" Margin="5">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="4*"/>
+                                        <ColumnDefinition Width="6*"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <Label Margin="3" Grid.Column="0" Content="Jahr bis:" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                                    <TextBox Margin="3" Grid.Column="1" Width="75px" HorizontalAlignment="Left" VerticalAlignment="Center"  Text="{Binding JahrBis, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True,TargetNullValue=''}" Cursor="IBeam">
+                                    <Label Margin="3" Grid.Column="0" Content="Jahr bis:" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <TextBox Margin="3" Grid.Column="1" Width="75px" HorizontalAlignment="Center" VerticalAlignment="Center"  Text="{Binding JahrBis, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True,TargetNullValue=''}" Cursor="IBeam">
                                         <i:Interaction.Behaviors>
                                             <Behaviors:TextBoxInputBehavior InputMode="DigitInput"/>
                                         </i:Interaction.Behaviors>
@@ -137,7 +137,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <materialDesign:Card  Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushSecondHeader}}">
+                <materialDesign:Card  Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushHeader}}">
                     <Label HorizontalAlignment="Center" Width="auto" Content="Auswertung" FontSize="9"/>
                 </materialDesign:Card>
 

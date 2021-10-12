@@ -12,6 +12,8 @@
              xmlns:Behaviors="clr-namespace:Base.Logic.Core.Behavior;assembly=Base.Logic"
              WindowStartupLocation="CenterScreen"
              mc:Ignorable="d" ShowInTaskbar="False"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             Background="{DynamicResource MaterialDesignPaper}"
              DataContext="{Binding DividendeErhalten ,Source={StaticResource Locator}}" Width="auto" Height="auto" SizeToContent="WidthAndHeight">
 
     <i:Interaction.Triggers>
@@ -58,7 +60,7 @@
         </Grid.RowDefinitions>
 
 
-        <materialDesign:Card Grid.Row="0" Grid.ColumnSpan="3" Background="{Binding Mode=OneWay, Source={StaticResource brushHeaderBG}}"   >
+        <materialDesign:Card Grid.Row="0" Grid.ColumnSpan="3" Background="{Binding Mode=OneWay, Source={StaticResource brushHeader}}"   >
             <Label HorizontalAlignment="Center" Width="auto" Content="{Binding Title}" />
         </materialDesign:Card>
 
@@ -160,9 +162,9 @@
 
         <materialDesign:Card Grid.Row="3" Grid.ColumnSpan="3"  >
             <DockPanel  LastChildFill="False" >
-                <Button DockPanel.Dock="Right" Margin="5" HorizontalAlignment="Center" Width="100"  Command="{Binding SaveCommand, Mode=OneWay}"  Style="{DynamicResource MaterialDesignToolButton}" >Speichern</Button>
-                <Button DockPanel.Dock="Left" Margin="5" HorizontalAlignment="Center" Width="100"  Command="{Binding OpenDividendeCommand, Mode=OneWay}"  Style="{DynamicResource MaterialDesignToolButton}" >Dividende</Button>
-                <Button DockPanel.Dock="Left" Margin="5" HorizontalAlignment="Center" Width="100"  Command="{Binding OpenSteuernCommand, Mode=OneWay}"  Style="{DynamicResource MaterialDesignToolButton}" Cursor="Hand" >Steuern</Button>
+                <Button DockPanel.Dock="Right" Margin="5" HorizontalAlignment="Center" Width="100"  Command="{Binding SaveCommand, Mode=OneWay}"  Style="{DynamicResource MaterialDesignFlatDarkBgButton}" >Speichern</Button>
+                <Button DockPanel.Dock="Left" Margin="5" HorizontalAlignment="Center" Width="100"  Command="{Binding OpenDividendeCommand, Mode=OneWay}"  Style="{DynamicResource MaterialDesignFlatDarkBgButton}" >Dividende</Button>
+                <Button DockPanel.Dock="Left" Margin="5" HorizontalAlignment="Center" Width="100"  Command="{Binding OpenSteuernCommand, Mode=OneWay}"  Style="{DynamicResource MaterialDesignFlatDarkBgButton}" Cursor="Hand" >Steuern</Button>
             </DockPanel>
         </materialDesign:Card>
 

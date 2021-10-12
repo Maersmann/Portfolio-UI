@@ -32,7 +32,7 @@
             </RowDefinition>
         </Grid.RowDefinitions>
 
-        <materialDesign:Card  Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushHeaderBG}}">
+        <materialDesign:Card  Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushHeader}}">
             <Label HorizontalAlignment="Center" Width="auto" Content="{Binding Title, Mode=OneWay}" />
         </materialDesign:Card>
 

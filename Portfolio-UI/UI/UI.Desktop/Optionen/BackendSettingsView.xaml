@@ -19,7 +19,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         
-        <materialDesign:Card  Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushHeaderBG}}">
+        <materialDesign:Card  Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushHeader}}">
             <Label HorizontalAlignment="Center" Width="auto" Content="{Binding Title, Mode=OneWay}" />
         </materialDesign:Card>
 
@@ -41,7 +41,7 @@
                         <RowDefinition Height="45px" />
                     </Grid.RowDefinitions>
 
-                    <materialDesign:Card  Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushDetailBG}}">
+                    <materialDesign:Card  Grid.Row="0" Background="{Binding Mode=OneWay, Source={StaticResource brushDetail}}">
                         <Label HorizontalAlignment="Center" Width="auto" Content="Server" />
                     </materialDesign:Card>
                     <Grid Grid.Row="1">

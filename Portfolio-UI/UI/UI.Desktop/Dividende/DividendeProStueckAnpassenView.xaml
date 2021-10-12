@@ -35,7 +35,7 @@
         </Grid.RowDefinitions>
 
 
-        <materialDesign:Card Grid.Row="0" Grid.ColumnSpan="2" Background="{Binding Mode=OneWay, Source={StaticResource brushHeaderBG}}"   >
+        <materialDesign:Card Grid.Row="0" Grid.ColumnSpan="2" Background="{Binding Mode=OneWay, Source={StaticResource brushHeader}}"   >
             <Label HorizontalAlignment="Center" Width="auto" Content="{Binding Title, Mode=OneWay}" />
         </materialDesign:Card>
 
@@ -64,7 +64,7 @@
 
         <materialDesign:Card Grid.Row="2" Grid.ColumnSpan="2"  >
             <DockPanel  LastChildFill="False" >
-                <Button DockPanel.Dock="Right" Margin="5" HorizontalAlignment="Center" Width="100"  Command="{Binding OKCommand, Mode=OneWay}"  Style="{DynamicResource MaterialDesignToolButton}" >OK</Button>
+                <Button DockPanel.Dock="Right" Margin="5" HorizontalAlignment="Center" Width="100"  Command="{Binding OKCommand, Mode=OneWay}"  Style="{DynamicResource MaterialDesignFlatDarkBgButton}" >OK</Button>
             </DockPanel>
         </materialDesign:Card>
 
