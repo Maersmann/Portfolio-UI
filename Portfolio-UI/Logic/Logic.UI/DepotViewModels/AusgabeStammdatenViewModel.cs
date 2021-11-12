@@ -30,18 +30,18 @@ namespace Aktien.Logic.UI.DepotViewModels
 
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.ausgaben;
 
-        public int DepotID { set => data.DepotID = value; }
+        public int DepotID { set => Data.DepotID = value; }
 
         #region Bindings
         public IEnumerable<AusgabenArtTypes> AusgabeTypes => Enum.GetValues(typeof(AusgabenArtTypes)).Cast<AusgabenArtTypes>();
         public AusgabenArtTypes AusgabeTyp
         {
-            get => data.Art;
+            get => Data.Art;
             set
             {
-                if ((data.Art != value))
+                if ((Data.Art != value))
                 {
-                    data.Art = value;
+                    Data.Art = value;
                     RaisePropertyChanged();
                 }
             }
@@ -49,13 +49,13 @@ namespace Aktien.Logic.UI.DepotViewModels
         }
         public DateTime? Datum
         {
-            get => data.Datum;
+            get => Data.Datum;
             set
             {
-                if (!Equals(data.Datum, value))
+                if (!Equals(Data.Datum, value))
                 {
                     ValidateDatum(value);
-                    data.Datum = value.GetValueOrDefault();
+                    Data.Datum = value.GetValueOrDefault();
                     RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
@@ -70,27 +70,27 @@ namespace Aktien.Logic.UI.DepotViewModels
                 {
                     ValidateBetrag(Betrag);
                     betrag = "";
-                    data.Betrag = 0;
+                    Data.Betrag = 0;
                     RaisePropertyChanged();
                     return;
                 }
                 betrag = value;
-                if (RequestIsWorking || (data.Betrag != Betrag))
+                if (RequestIsWorking || (Data.Betrag != Betrag))
                 {
                     ValidateBetrag(Betrag);
-                    data.Betrag = Betrag;
+                    Data.Betrag = Betrag;
                     RaisePropertyChanged();
                 }
             }
         }
         public string Beschreibung
         {
-            get => data.Beschreibung;
+            get => Data.Beschreibung;
             set
             {
-                if (data.Beschreibung != value)
+                if (Data.Beschreibung != value)
                 {
-                    data.Beschreibung = value;
+                    Data.Beschreibung = value;
                     RaisePropertyChanged();
                 }
             }
@@ -103,7 +103,7 @@ namespace Aktien.Logic.UI.DepotViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+"/api/depot/Ausgabe", data);
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+"/api/depot/Ausgabe", Data);
                 RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
@@ -147,7 +147,7 @@ namespace Aktien.Logic.UI.DepotViewModels
         public override void Cleanup()
         {
             state = State.Neu;
-            data = new AusgabeModel();
+            Data = new AusgabeModel();
             Betrag = "";
             Datum = DateTime.Now;
             DepotID = 1;

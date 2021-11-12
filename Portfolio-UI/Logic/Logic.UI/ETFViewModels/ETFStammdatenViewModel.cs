@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using Base.Logic.Core;
 using Base.Logic.Messages;
 using Base.Logic.Types;
+using Base.Logic.Wrapper;
 
 namespace Aktien.Logic.UI.ETFViewModels
 {
@@ -35,7 +36,7 @@ namespace Aktien.Logic.UI.ETFViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+"/api/etf", data);
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+"/api/etf", Data);
                 RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
@@ -64,18 +65,18 @@ namespace Aktien.Logic.UI.ETFViewModels
             {
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+$"/api/etf/{id}");
                 if (resp.IsSuccessStatusCode)
-                    data = await resp.Content.ReadAsAsync<ETFModel>();
+                    Response = await resp.Content.ReadAsAsync<Response<ETFModel>>();
             }
 
-            ProfitTyp = data.ProfitTyp;
-            ErmittentTyp = data.Emittent; 
-            WKN = data.WKN;
-            Name = data.Name;
-            ISIN = data.ISIN;
+            ProfitTyp = Data.ProfitTyp;
+            ErmittentTyp = Data.Emittent;
+            WKN = Data.WKN;
+            Name = Data.Name;
+            ISIN = Data.ISIN;
 
             RequestIsWorking = false;
             state = State.Bearbeiten;
-            RaisePropertyChanged("ISIN_isEnabled"); 
+            RaisePropertyChanged("ISIN_isEnabled");
         }
 
 
@@ -84,14 +85,14 @@ namespace Aktien.Logic.UI.ETFViewModels
         #region Bindings   
         public string ISIN
         {
-            get => data.ISIN;
+            get => Data.ISIN;
             set
             {
 
-                if (RequestIsWorking || !string.Equals(data.ISIN, value))
+                if (RequestIsWorking || !string.Equals(Data.ISIN, value))
                 {
                     ValidateISIN(value);
-                    data.ISIN = value;
+                    Data.ISIN = value;
                     RaisePropertyChanged();
                     (SaveCommand as DelegateCommand).RaiseCanExecuteChanged();
                 }
@@ -99,13 +100,13 @@ namespace Aktien.Logic.UI.ETFViewModels
         }
         public string Name
         {
-            get => data.Name;
+            get => Data.Name;
             set
             {
-                if (RequestIsWorking || !string.Equals(data.Name, value))
+                if (RequestIsWorking || !string.Equals(Data.Name, value))
                 {
                     ValidateName(value);
-                    data.Name = value;
+                    Data.Name = value;
                     RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
@@ -113,13 +114,13 @@ namespace Aktien.Logic.UI.ETFViewModels
         }
         public string WKN
         {
-            get => data.WKN;
+            get => Data.WKN;
             set
             {
 
-                if (RequestIsWorking || !string.Equals(data.WKN, value))
+                if (RequestIsWorking || !string.Equals(Data.WKN, value))
                 {
-                    data.WKN = value;
+                    Data.WKN = value;
                     RaisePropertyChanged();
                 }
             }
@@ -128,12 +129,12 @@ namespace Aktien.Logic.UI.ETFViewModels
         public IEnumerable<ProfitTypes> ProfitTypes => Enum.GetValues(typeof(ProfitTypes)).Cast<ProfitTypes>();
         public ProfitTypes ProfitTyp
         {
-            get => data.ProfitTyp;
+            get => Data.ProfitTyp;
             set
             {
-                if (RequestIsWorking || (data.ProfitTyp != value))
+                if (RequestIsWorking || (Data.ProfitTyp != value))
                 {
-                    data.ProfitTyp = value;
+                    Data.ProfitTyp = value;
                     RaisePropertyChanged();
                 }
             }
@@ -142,12 +143,12 @@ namespace Aktien.Logic.UI.ETFViewModels
         public IEnumerable<ErmittentTypes> ErmittentTypes => Enum.GetValues(typeof(ErmittentTypes)).Cast<ErmittentTypes>();
         public ErmittentTypes ErmittentTyp
         {
-            get => data.Emittent;
+            get => Data.Emittent;
             set
             {
-                if (RequestIsWorking || (data.Emittent != value))
+                if (RequestIsWorking || (Data.Emittent != value))
                 {
-                    data.Emittent = value;
+                    Data.Emittent = value;
                     RaisePropertyChanged();
                 }
             }
@@ -180,12 +181,12 @@ namespace Aktien.Logic.UI.ETFViewModels
         public override void Cleanup()
         {
             state = State.Neu;
-            data = new ETFModel();
+            Data = new ETFModel();
             ISIN = "";
             Name = "";
             WKN = "";
-            ProfitTyp = Data.Types.WertpapierTypes.ProfitTypes.Thesaurierend;
-            ErmittentTyp = Data.Types.WertpapierTypes.ErmittentTypes.iShares;
+            ProfitTyp = Aktien.Data.Types.WertpapierTypes.ProfitTypes.Thesaurierend;
+            ErmittentTyp = Aktien.Data.Types.WertpapierTypes.ErmittentTypes.iShares;
         }
     }
 }

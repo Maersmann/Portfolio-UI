@@ -16,9 +16,9 @@ namespace Aktien.Logic.UI.DepotViewModels
             RegisterAktualisereViewMessage(StammdatenTypes.buysell.ToString());
         }
 
-        protected override int GetID() { return selectedItem.ID; }
+        protected override int GetID() { return SelectedItem.ID; }
         protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.ausgaben; }
         protected override string GetREST_API() { return $"/api/depot/Ausgaben"; }
-
+        protected override bool WithPagination() { return true; }
     }
 }

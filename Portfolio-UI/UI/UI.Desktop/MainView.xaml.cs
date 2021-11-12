@@ -110,25 +110,32 @@ namespace Aktien.UI.Desktop
                     Container.NavigationService.Navigate(EinnahmenAusgabenUebersichtPage);
                     break;
                 case ViewType.viewDivideneMonatAuswertung:
-                    Container.NavigationService.Navigate(new DivideneMonatAuswertungView());
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(DivideneMonatAuswertungView).Name))
+                        Container.NavigationService.Navigate(new DivideneMonatAuswertungView());
                     break;
                 case ViewType.viewDivideneMonatJahresauswertungAuswertung:
-                    Container.NavigationService.Navigate(new DividendeMonatJahresVergleichAuswertungView());
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(DividendeMonatJahresVergleichAuswertungView).Name))
+                        Container.NavigationService.Navigate(new DividendeMonatJahresVergleichAuswertungView());
                     break;
                 case ViewType.viewSteuerartMonatAuswertung:
-                    Container.NavigationService.Navigate(new SteuerartMonatAuswertungView());
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(SteuerartMonatAuswertungView).Name))
+                        Container.NavigationService.Navigate(new SteuerartMonatAuswertungView());
                     break;
                 case ViewType.viewSteuerMonatJahresAuswertung:
-                    Container.NavigationService.Navigate(new SteuerMonatJahresVergleichAuswertungView());  
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(SteuerMonatJahresVergleichAuswertungView).Name))
+                        Container.NavigationService.Navigate(new SteuerMonatJahresVergleichAuswertungView());
                     break;
                 case ViewType.viewDivideneWertpapierAuswertung:
-                    Container.NavigationService.Navigate(new DividendeWertpapierAuswertungView());
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(DividendeWertpapierAuswertungView).Name))
+                        Container.NavigationService.Navigate(new DividendeWertpapierAuswertungView());
                     break;
                 case ViewType.viewSteuerMonatAuswertung:
-                    Container.NavigationService.Navigate(new SteuerMonatAuswertungView());
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(SteuerMonatAuswertungView).Name))
+                        Container.NavigationService.Navigate(new SteuerMonatAuswertungView());
                     break;
                 case ViewType.viewOpenDividendeWertpapierEntwicklungAuswertung:
-                    Container.NavigationService.Navigate(new DividendeWertpapierEntwicklungAuswertungView());
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(DividendeWertpapierEntwicklungAuswertungView).Name))
+                        Container.NavigationService.Navigate(new DividendeWertpapierEntwicklungAuswertungView());
                     break;                  
                 default:
                     break;

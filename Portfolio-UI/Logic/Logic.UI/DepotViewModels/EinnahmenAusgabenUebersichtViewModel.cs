@@ -3,6 +3,7 @@ using Aktien.Logic.Core;
 using Aktien.Logic.Core.DepotLogic;
 using Base.Logic.Core;
 using Base.Logic.ViewModels;
+using Base.Logic.Wrapper;
 using Data.Model.DepotModels;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Aktien.Logic.UI.DepotViewModels
 {
-    public class EinnahmenAusgabenUebersichtViewModel : ViewModelLoadData<EinnahmenAusgabenGesamtModel>
+    public class EinnahmenAusgabenUebersichtViewModel : ViewModelLoadListData<EinnahmenAusgabenGesamtModel>
     {
         private EinnahmenAusgabenGesamtModel data;
 
@@ -21,22 +22,26 @@ namespace Aktien.Logic.UI.DepotViewModels
         {
             data = new EinnahmenAusgabenGesamtModel();
             Title = "Einnahmen & Ausgaben Gesamtwerte";
-            LoadData();
             RegisterAktualisereViewMessage(StammdatenTypes.ausgaben.ToString());
             RegisterAktualisereViewMessage(StammdatenTypes.einnahmen.ToString());
             RegisterAktualisereViewMessage(StammdatenTypes.dividendeErhalten.ToString());
             RegisterAktualisereViewMessage(StammdatenTypes.buysell.ToString());
             RegisterAktualisereViewMessage(StammdatenTypes.steuer.ToString());
+            _ = LoadData();
         }
 
-        public async override void LoadData()
+        public override async Task LoadData()
         {
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+"/api/depot/EinnahmenAusgaben");
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + "/api/depot/EinnahmenAusgaben");
                 if (resp.IsSuccessStatusCode)
-                    data = await resp.Content.ReadAsAsync<EinnahmenAusgabenGesamtModel>();
+                {
+                    var Response = await resp.Content.ReadAsAsync<Response<EinnahmenAusgabenGesamtModel>>();
+                    data = Response.Data;
+                }
+                    
                 RequestIsWorking = false;
             }
             RaisePropertyChanged("EinnahmeEinzahlung");

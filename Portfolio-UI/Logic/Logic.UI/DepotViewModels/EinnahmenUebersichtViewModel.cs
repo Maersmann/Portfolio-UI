@@ -21,16 +21,16 @@ namespace Aktien.Logic.UI.DepotViewModels
         public EinnahmenUebersichtViewModel()
         {
             Title = "Übersicht aller Einnahmen";
-            LoadData();
             RegisterAktualisereViewMessage(StammdatenTypes.einnahmen.ToString());
             RegisterAktualisereViewMessage(StammdatenTypes.dividendeErhalten.ToString());
             RegisterAktualisereViewMessage(StammdatenTypes.steuer.ToString());
             RegisterAktualisereViewMessage(StammdatenTypes.buysell.ToString());
         }
 
-        protected override int GetID() { return selectedItem.ID; }
+        protected override int GetID() { return SelectedItem.ID; }
         protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.einnahmen; }
         protected override string GetREST_API() { return $"/api/depot/Einnahmen"; }
+        protected override bool WithPagination() { return true; }
 
     }
 }

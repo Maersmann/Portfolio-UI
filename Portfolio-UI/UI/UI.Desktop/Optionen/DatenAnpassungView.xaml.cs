@@ -36,12 +36,20 @@ namespace Aktien.UI.Desktop.Optionen
             {
                 Owner = Application.Current.MainWindow
             };
+            
             if (view.DataContext is WertpapierAuswahlViewModel model)
             {
-                model.SetCallback(m.Callback);
-                model.LoadData();         
+                model.SetTyp(Data.Types.WertpapierTypes.WertpapierTypes.none);
+                _ = view.ShowDialog();
+                if (model.AuswahlGetaetigt && model.ID().HasValue)
+                {
+                    m.Callback(true, model.ID().Value);
+                }
+                else
+                {
+                    m.Callback(false, 0);
+                }
             }
-            view.ShowDialog();
         }
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)

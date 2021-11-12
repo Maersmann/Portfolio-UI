@@ -59,7 +59,7 @@ namespace Aktien.UI.Desktop.Dividende
 
         private void ReceiveOpenDividendeAuswahlMessage(OpenDividendenAuswahlMessage m)
         {
-            var view = new DividendenAuswahlView()
+            DividendenAuswahlView view = new DividendenAuswahlView()
             {
                 Owner = Application.Current.MainWindow
             };
@@ -67,8 +67,17 @@ namespace Aktien.UI.Desktop.Dividende
             {
                 model.OhneHinterlegteDividende = true;
                 model.LoadData( m.WertpapierID );
-                model.SetCallback(m.Callback);
-                view.ShowDialog();
+
+                _ = view.ShowDialog();
+
+                if (model.AuswahlGetaetigt && model.ID().HasValue)
+                {
+                    m.Callback(true, model.ID().Value, model.Betrag(), model.Zahldatum());
+                }
+                else
+                {
+                    m.Callback(false, 0, 0 , DateTime.Now);
+                }
             }
         }
 

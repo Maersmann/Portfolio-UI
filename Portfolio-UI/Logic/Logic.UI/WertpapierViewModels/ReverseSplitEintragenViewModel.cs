@@ -7,6 +7,7 @@ using Aktien.Logic.Messages.Base;
 using Base.Logic.Core;
 using Base.Logic.Messages;
 using Base.Logic.ViewModels;
+using Base.Logic.Wrapper;
 using Data.Model.AktieModels;
 using Data.Model.DepotModels;
 using Data.Model.WertpapierModels;
@@ -59,9 +60,13 @@ namespace Aktien.Logic.UI.WertpapierViewModels
                 RequestIsWorking = true;
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/depot/Wertpapier/{id}");
                 if (resp.IsSuccessStatusCode)
-                    model.AltWertpapier = await resp.Content.ReadAsAsync<DepotWertpapierModel>();
+                {
+                    Response<DepotWertpapierModel> Response = await resp.Content.ReadAsAsync<Response<DepotWertpapierModel>>();
+                    model.AltWertpapier = Response.Data;
+                }
+                    
                 RequestIsWorking = false;
-            }             
+            }
             RaisePropertyChanged("AlteAktieText");
         }
 
@@ -69,7 +74,11 @@ namespace Aktien.Logic.UI.WertpapierViewModels
         {
             model.NeuWertpapier.Anzahl = Math.Round(model.AltWertpapier.Anzahl / verhaeltnis,3, MidpointRounding.AwayFromZero);
             model.NeuWertpapier.BuyIn = new KaufBerechnungen().BuyInAktieGekauft(0, 0, model.NeuWertpapier.Anzahl, (model.AltWertpapier.BuyIn * verhaeltnis), NeueAnzahl, 0, Data.Types.WertpapierTypes.OrderTypes.Normal);
-            if (Double.IsNaN(model.NeuWertpapier.BuyIn)) model.NeuWertpapier.BuyIn = 0;
+            if (double.IsNaN(model.NeuWertpapier.BuyIn))
+            {
+                model.NeuWertpapier.BuyIn = 0;
+            }
+
             RaisePropertyChanged(nameof(NeueAnzahl));
             RaisePropertyChanged(nameof(NeuerBuyIn));
         }
@@ -78,19 +87,19 @@ namespace Aktien.Logic.UI.WertpapierViewModels
 
         public string AlteAktieText => model.AltWertpapier.Name;
         public string NeueAktieText => model.NeuWertpapier.Name;
-        public Double NeueAnzahl => model.NeuWertpapier.Anzahl;
-        public Double NeuerBuyIn => model.NeuWertpapier.BuyIn;
+        public double NeueAnzahl => model.NeuWertpapier.Anzahl;
+        public double NeuerBuyIn => model.NeuWertpapier.BuyIn;
         public ICommand OpenAuswahlCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public int? Verhaeltnis
         {
-            get => this.verhaeltnis;
+            get => verhaeltnis;
             set
             {
                 verhaeltnis = value.GetValueOrDefault(0);
                 ValidateVerhaeltnis(verhaeltnis);
                 BerechneWerte();
-                this.RaisePropertyChanged();
+                RaisePropertyChanged();
             }
         }
 
@@ -100,7 +109,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
 
         private void ExecuteOpenAuswahlCommand()
         {
-            Messenger.Default.Send<OpenWertpapierAuswahlMessage>(new OpenWertpapierAuswahlMessage(OpenAktieMessageCallback) { WertpapierTypes = Data.Types.WertpapierTypes.WertpapierTypes.Aktie}, "ReverseSplitEintragen");
+            Messenger.Default.Send(new OpenWertpapierAuswahlMessage(OpenAktieMessageCallback) { WertpapierTypes = Data.Types.WertpapierTypes.WertpapierTypes.Aktie}, "ReverseSplitEintragen");
         }
 
         private bool CanExecuteSaveCommand()
@@ -128,7 +137,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
                     SendExceptionMessage("Aktie ist schon vorhanden");
                     return;
                 }
-            }       
+            }     
         }
 
         #endregion
@@ -143,16 +152,16 @@ namespace Aktien.Logic.UI.WertpapierViewModels
                     HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+"/api/Wertpapier/" + id.ToString());
                     if (resp.IsSuccessStatusCode)
                     {
-                        var aktie = await resp.Content.ReadAsAsync<AktienModel>();
-                        model.NeuWertpapier.Name = aktie.Name;
-                        model.NeuWertpapier.WertpapierID = aktie.ID;
+                        var aktieResponse = await resp.Content.ReadAsAsync<Response<AktienModel>>();
+                        model.NeuWertpapier.Name = aktieResponse.Data.Name;
+                        model.NeuWertpapier.WertpapierID = aktieResponse.Data.ID;
                         model.NeuWertpapier.DepotID = 1;
                     }
                         
                 }
                 ValidateNeueAktie(model.NeuWertpapier.Name);
                 BerechneWerte();
-                this.RaisePropertyChanged("NeueAktieText");
+                RaisePropertyChanged("NeueAktieText");
             }
         }
         #endregion

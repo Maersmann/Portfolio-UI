@@ -1,8 +1,5 @@
-﻿using Aktien.Data.Types.Converter;
-using System;
-using System.Collections.Generic;
+﻿using Base.Logic.Types.Converter;
 using System.ComponentModel;
-using System.Text;
 
 namespace Data.Types.AuswertungTypes
 {

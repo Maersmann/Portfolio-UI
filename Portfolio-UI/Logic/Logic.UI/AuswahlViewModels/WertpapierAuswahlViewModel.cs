@@ -18,39 +18,30 @@ namespace Aktien.Logic.UI.AuswahlViewModels
     public class WertpapierAuswahlViewModel : ViewModelAuswahl<WertpapierAuswahlModel, StammdatenTypes>
     {
         
-        private Action<bool, int> Callback;
         private WertpapierTypes WertpapierTypes;
         public WertpapierAuswahlViewModel()
         {
-            Title = "Auswahl Wertpapier";
-            
+            Title = "Auswahl Wertpapier";          
             WertpapierTypes = WertpapierTypes.none;
             RegisterAktualisereViewMessage(StammdatenTypes.aktien.ToString());
         }
+        protected override bool LoadingOnCreate() => false;
+        protected override bool WithPagination() { return true; }
 
-        public void SetCallback(Action<bool, int> callback)
-        {
-            Callback = callback;
-        }
-        public void SetTyp(WertpapierTypes wertpapierTypes)
+        public async void SetTyp(WertpapierTypes wertpapierTypes)
         {
             WertpapierTypes = wertpapierTypes;
             RaisePropertyChanged(nameof(CanAddNewItem));
-            LoadData();
+            await LoadData();
+        }
+
+        public int? ID()
+        {
+            return SelectedItem == null ? null : (int?)SelectedItem.ID;
         }
 
         protected override string GetREST_API() => $"/api/Wertpapier?aktiv=true&type={WertpapierTypes}";
         protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.aktien; }
-
-
-        protected override bool OnFilterTriggered(object item)
-        {
-            if (item is WertpapierAuswahlModel wertpapier)
-            {
-                return wertpapier.Name.ToLower().Contains(filtertext.ToLower());
-            }
-            return true;
-        }
 
 
         #region Bindings
@@ -61,16 +52,12 @@ namespace Aktien.Logic.UI.AuswahlViewModels
         #region commands
         protected override void ExecuteCloseWindowCommand(Window window)
         {
+            AuswahlGetaetigt = true;
             base.ExecuteCloseWindowCommand(window);
-
-            if (selectedItem != null)
-                Callback(true, selectedItem.ID);
-            else
-                Callback(false, 0);
         }
-        
+
         #endregion
-        
+
 
     }
 }

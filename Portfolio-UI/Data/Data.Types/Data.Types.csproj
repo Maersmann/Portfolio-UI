@@ -10,4 +10,8 @@
     <Product>Portfolio</Product>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Base.Logic\Base.Logic\Base.Logic.csproj" />
+  </ItemGroup>
+
 </Project>

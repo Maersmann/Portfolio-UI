@@ -17,7 +17,7 @@
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{DynamicResource MaterialDesignPaper}"
         Title="{Binding Title, Mode=OneWay}" Height="450" Width="800" 
-        DataContext="{Binding Main ,Source={StaticResource Locator}}" Icon="resource/Bank.ico" MinHeight="728" MinWidth="1024">
+        DataContext="{Binding Main ,Source={StaticResource Locator}}" Icon="resource/Bank.ico" MinHeight="1028" MinWidth="1920">
 
 
     <i:Interaction.Triggers>

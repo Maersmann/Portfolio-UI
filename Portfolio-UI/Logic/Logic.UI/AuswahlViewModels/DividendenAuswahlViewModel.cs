@@ -23,36 +23,39 @@ using System.Windows.Input;
 namespace Aktien.Logic.UI.AuswahlViewModels
 {
     public class DividendenAuswahlViewModel : ViewModelAuswahl<DividendenAuswahlModel, StammdatenTypes>
-    { 
+    {
         private int wertpapierID;
 
         private bool ohneHinterlegteDividende;
-        private Action<bool, int, Double, DateTime> Callback;
 
         public DividendenAuswahlViewModel()
         {
             OhneHinterlegteDividende = false;
-        } 
-
-        protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.dividende; }
-        public bool OhneHinterlegteDividende { set => ohneHinterlegteDividende = value; }
-        public void SetCallback(Action<bool, int, double, DateTime> callback)
-        {
-            Callback = callback;
         }
 
-        public async override void LoadData(int wertpapierID)
+        protected override StammdatenTypes GetStammdatenType() { return StammdatenTypes.dividende; }
+        protected override string GetREST_API() { return $"/api/Wertpapier/{wertpapierID}/Dividenden?nichtErhalten={ohneHinterlegteDividende}"; }
+        protected override bool WithPagination() { return true; }
+        public bool OhneHinterlegteDividende { set => ohneHinterlegteDividende = value; }
+
+
+        public override void LoadData(int wertpapierID)
         {
             this.wertpapierID = wertpapierID;
-            if (GlobalVariables.ServerIsOnline)
-            {
-                RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+$"/api/Wertpapier/{wertpapierID}/Dividenden?nichtErhalten={ohneHinterlegteDividende}");
-                if (resp.IsSuccessStatusCode)
-                    itemList = await resp.Content.ReadAsAsync<ObservableCollection<DividendenAuswahlModel>>();
-                RequestIsWorking = false;
-            }
-            RaisePropertyChanged("ItemList");
+            base.LoadData(wertpapierID);
+        }
+
+        public int? ID()
+        {
+            return SelectedItem == null ? null : (int?)SelectedItem.ID;
+        }
+        public DateTime Zahldatum()
+        {
+            return SelectedItem.Zahldatum;
+        }
+        public double Betrag()
+        {
+            return SelectedItem.Betrag;
         }
 
         #region Commands
@@ -64,14 +67,10 @@ namespace Aktien.Logic.UI.AuswahlViewModels
 
         protected override void ExecuteCloseWindowCommand(Window window)
         {
+            AuswahlGetaetigt = true;
             base.ExecuteCloseWindowCommand(window);
-
-            if (selectedItem != null)
-                Callback(true, selectedItem.ID, selectedItem.Betrag, selectedItem.Zahldatum);
-            else
-                Callback(false, 0, 0, DateTime.MinValue);      
         }
-        
+
         #endregion
     }
 }

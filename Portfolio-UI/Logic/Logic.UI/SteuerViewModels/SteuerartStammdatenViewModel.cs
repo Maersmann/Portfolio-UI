@@ -17,6 +17,7 @@ using System.Text;
 using Base.Logic.Core;
 using Base.Logic.Messages;
 using Base.Logic.Types;
+using Base.Logic.Wrapper;
 
 namespace Logic.UI.SteuerViewModels
 {
@@ -24,7 +25,6 @@ namespace Logic.UI.SteuerViewModels
     {
         public SteuerartStammdatenViewModel()
         {
-            Cleanup();
             Title = "Informationen Steuerart";
         }
 
@@ -33,7 +33,7 @@ namespace Logic.UI.SteuerViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/Steuerarten", data);
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/Steuerarten", Data);
                 RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
@@ -56,10 +56,10 @@ namespace Logic.UI.SteuerViewModels
             {
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/Steuerarten/" + id.ToString());
                 if (resp.IsSuccessStatusCode)
-                    data = await resp.Content.ReadAsAsync<SteuerartModel>();
+                    Response = await resp.Content.ReadAsAsync<Response<SteuerartModel>>();
             }
-            Bezeichnung = data.Bezeichnung;
-            SteuerberechnungZwischensumme = data.BerechnungZwischensumme;
+            Bezeichnung = Data.Bezeichnung;
+            SteuerberechnungZwischensumme = Data.BerechnungZwischensumme;
             RequestIsWorking = false;
             state = State.Bearbeiten;
         }
@@ -67,14 +67,14 @@ namespace Logic.UI.SteuerViewModels
         #region Bindings
         public string Bezeichnung
         {
-            get => data.Bezeichnung;
+            get => Data.Bezeichnung;
             set
             {
 
-                if (RequestIsWorking || !string.Equals(data.Bezeichnung, value))
+                if (RequestIsWorking || !string.Equals(Data.Bezeichnung, value))
                 {
                     ValidateBezeichnung(value);
-                    data.Bezeichnung = value;
+                    Data.Bezeichnung = value;
                     RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
@@ -85,17 +85,18 @@ namespace Logic.UI.SteuerViewModels
 
         public SteuerberechnungZwischensumme SteuerberechnungZwischensumme
         {
-            get => data.BerechnungZwischensumme;
+            get => Data.BerechnungZwischensumme;
             set
             {
-                if (RequestIsWorking || (data.BerechnungZwischensumme != value))
+                if (RequestIsWorking || (Data.BerechnungZwischensumme != value))
                 {
-                    data.BerechnungZwischensumme = value;
+                    Data.BerechnungZwischensumme = value;
                     RaisePropertyChanged();
                 }
             }
         }
         #endregion
+       
         #region Validate
         private bool ValidateBezeichnung(string bezeichnung)
         {
@@ -112,7 +113,7 @@ namespace Logic.UI.SteuerViewModels
         public override void Cleanup()
         {
             state = State.Neu;
-            data = new SteuerartModel();
+            Data = new SteuerartModel();
             Bezeichnung = "";
         }
 

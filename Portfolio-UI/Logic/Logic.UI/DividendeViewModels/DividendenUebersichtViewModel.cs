@@ -30,21 +30,13 @@ namespace Aktien.Logic.UI.DividendeViewModels
             RegisterAktualisereViewMessage(StammdatenTypes.dividende.ToString());
         }
 
-        public async override void LoadData(int id)
+        protected override string GetREST_API() { return $"/api/Wertpapier/{wertpapierID}/Dividenden/"; }
+        protected override bool WithPagination() { return true; }
+
+        public override void LoadData(int id)
         {
             wertpapierID = id;
-            RequestIsWorking = true;
-            HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Wertpapier/{wertpapierID}/Dividenden/");
-            if (resp.IsSuccessStatusCode)
-            {
-                itemList = await resp.Content.ReadAsAsync<ObservableCollection<DividendeUebersichtModel>>();
-            }
-            RequestIsWorking = false;
-            RaisePropertyChanged("ItemList");
-        }
-        public override void LoadData()
-        {
-            LoadData(wertpapierID);
+            base.LoadData(id);
         }
 
         #region Commands
@@ -54,7 +46,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.DeleteAsync(" GlobalVariables.BackendServer_URL/api/Dividende/" + selectedItem.ID.ToString());
+                HttpResponseMessage resp = await Client.DeleteAsync(" GlobalVariables.BackendServer_URL/api/Dividende/" + SelectedItem.ID.ToString());
                 RequestIsWorking = false;
                 if (resp.IsSuccessStatusCode)
                 {
@@ -70,7 +62,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
         }
         protected override void ExecuteBearbeitenCommand()
         {
-            Messenger.Default.Send(new OpenDividendeStammdatenMessage<StammdatenTypes> { WertpapierID = wertpapierID, State = State.Bearbeiten, DividendeID = selectedItem.ID });
+            Messenger.Default.Send(new OpenDividendeStammdatenMessage<StammdatenTypes> { WertpapierID = wertpapierID, State = State.Bearbeiten, DividendeID = SelectedItem.ID });
         }
 
         #endregion

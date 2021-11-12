@@ -26,7 +26,6 @@ namespace Aktien.Logic.UI.DepotViewModels
         public DepotUebersichtViewModel()
         {
             Title = "Übersicht der Aktien im Depot";
-            LoadData();
             OpenDividendeCommand = new DelegateCommand(ExecuteOpenDividendeCommandCommand, this.CanExecuteCommand);
             OpenReverseSplitCommand = new RelayCommand(() => ExecuteOpenReverseSplitCommand());
             RegisterAktualisereViewMessage(StammdatenTypes.buysell.ToString());
@@ -34,46 +33,21 @@ namespace Aktien.Logic.UI.DepotViewModels
 
         protected override string GetREST_API() { return $"/api/Depot"; }
 
-        /*TODO: LoadWertpapier???
-        public async override void LoadData()
-        {
-            if (GlobalVariables.ServerIsOnline)
-            {
-                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + "");
-                if (resp.IsSuccessStatusCode)
-                {
-                    itemList = await resp.Content.ReadAsAsync<ObservableCollection<DepotGesamtUebersichtModel>>();
-                }
-            }
-            base.LoadData();
-            Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = 0, WertpapierTyp = WertpapierTypes.Aktie }, messageToken);
-        }
-        */
-
-        protected override bool OnFilterTriggered(object item)
-        {
-            if (item is DepotGesamtUebersichtModel depot)
-            {
-                return depot.Bezeichnung.ToLower().Contains(filtertext.ToLower());
-            }
-            return true;
-        }
-
         #region Bindings
         public override DepotGesamtUebersichtModel SelectedItem
         {
             get
             {
-                return selectedItem;
+                return base.SelectedItem;
             }
             set
             {
-                selectedItem = value;
+                base.SelectedItem = value;
                 ((DelegateCommand)OpenDividendeCommand).RaiseCanExecuteChanged();
                 RaisePropertyChanged();
-                if (selectedItem != null)
+                if (SelectedItem != null)
                 {
-                    Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = selectedItem.WertpapierID, WertpapierTyp = selectedItem.WertpapierTyp }, messageToken);
+                    Messenger.Default.Send(new LoadWertpapierOrderMessage { WertpapierID = SelectedItem.WertpapierID, WertpapierTyp = SelectedItem.WertpapierTyp }, messageToken);
                 }
             }
         }
@@ -85,17 +59,17 @@ namespace Aktien.Logic.UI.DepotViewModels
         #region Commands
         protected override bool CanExecuteCommand()
         {
-            return base.CanExecuteCommand() && (selectedItem.WertpapierTyp.Equals(WertpapierTypes.Aktie));
+            return base.CanExecuteCommand() && (SelectedItem.WertpapierTyp.Equals(WertpapierTypes.Aktie));
         }
 
         private void ExecuteOpenDividendeCommandCommand()
         {
-            Messenger.Default.Send(new OpenDividendenUebersichtAuswahlMessage { WertpapierID = selectedItem.WertpapierID }, "DepotUebersicht");
+            Messenger.Default.Send(new OpenDividendenUebersichtAuswahlMessage { WertpapierID = SelectedItem.WertpapierID }, "DepotUebersicht");
         }
 
         private void ExecuteOpenReverseSplitCommand()
         {
-            Messenger.Default.Send(new OpenReverseSplitEintragenMessage { DepotWertpapierID = selectedItem.WertpapierID}, "DepotUebersicht");
+            Messenger.Default.Send(new OpenReverseSplitEintragenMessage { DepotWertpapierID = SelectedItem.WertpapierID}, "DepotUebersicht");
         }
         #endregion
     }

@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using Base.Logic.Core;
 using Base.Logic.Messages;
 using Base.Logic.Types;
+using Base.Logic.Wrapper;
 
 namespace Aktien.Logic.UI.DerivateViewModels
 {
@@ -26,7 +27,6 @@ namespace Aktien.Logic.UI.DerivateViewModels
 
         public DerivateStammdatenViewModel()
         {
-            Cleanup();
             Title = "Informationen Derivate";
         }
 
@@ -35,7 +35,7 @@ namespace Aktien.Logic.UI.DerivateViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+"/api/Wertpapier", data);
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+"/api/Wertpapier", Data);
                 RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
@@ -64,11 +64,11 @@ namespace Aktien.Logic.UI.DerivateViewModels
             {
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Wertpapier/{id}");
                 if (resp.IsSuccessStatusCode)
-                    data = await resp.Content.ReadAsAsync<DerivateModel>();
+                    Response = await resp.Content.ReadAsAsync<Response<DerivateModel>>();
             }
-            WKN = data.WKN;
-            Name = data.Name;
-            ISIN = data.ISIN;
+            WKN = Response.Data.WKN;
+            Name = Response.Data.Name;
+            ISIN = Response.Data.ISIN;
             RequestIsWorking = false;
             state = State.Bearbeiten;
             RaisePropertyChanged(nameof(ISIN_isEnabled));
@@ -80,14 +80,14 @@ namespace Aktien.Logic.UI.DerivateViewModels
         #region Bindings   
         public string ISIN
         {
-            get { return data.ISIN; }
+            get { return Data.ISIN; }
             set
             {
 
-                if (RequestIsWorking || !string.Equals(data.ISIN, value))
+                if (RequestIsWorking || !string.Equals(Data.ISIN, value))
                 {
                     ValidateISIN(value);
-                    data.ISIN = value;
+                    Data.ISIN = value;
                     RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
@@ -95,13 +95,13 @@ namespace Aktien.Logic.UI.DerivateViewModels
         }
         public string Name
         {
-            get { return data.Name; }
+            get { return Data.Name; }
             set
             {
-                if (RequestIsWorking || !string.Equals(data.Name, value))
+                if (RequestIsWorking || !string.Equals(Data.Name, value))
                 {
                     ValidateName(value);
-                    data.Name = value;
+                    Data.Name = value;
                     RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
@@ -109,13 +109,13 @@ namespace Aktien.Logic.UI.DerivateViewModels
         }
         public string WKN
         {
-            get { return data.WKN; }
+            get { return Data.WKN; }
             set
             {
 
-                if (RequestIsWorking || !string.Equals(data.WKN, value))
+                if (RequestIsWorking || !string.Equals(Data.WKN, value))
                 {
-                    data.WKN = value;
+                    Data.WKN = value;
                     RaisePropertyChanged();
                 }
             }
@@ -147,7 +147,7 @@ namespace Aktien.Logic.UI.DerivateViewModels
         public override void Cleanup()
         {
             state = State.Neu;
-            data = new DerivateModel();
+            Data = new DerivateModel();
             ISIN = "";
             Name = "";
             WKN = "";

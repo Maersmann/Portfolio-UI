@@ -19,14 +19,14 @@ namespace Logic.UI.SteuerViewModels
         public SteuerartenUebersichtViewModel()
         {
             Title = "Übersicht aller Steuerarten";
-            LoadData();
             RegisterAktualisereViewMessage(StammdatenTypes.steuerart.ToString());
         }
 
 
-        protected override int GetID() { return selectedItem.ID; }
+        protected override int GetID() { return SelectedItem.ID; }
         protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.steuerart; }
         protected override string GetREST_API() { return $"/api/Steuerarten"; }
+        protected override bool WithPagination() { return true; }
 
 
         #region Commands
@@ -36,14 +36,19 @@ namespace Logic.UI.SteuerViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL + $"/api/Steuerarten/{selectedItem.ID}");
+                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL + $"/api/Steuerarten/{SelectedItem.ID}");
                 RequestIsWorking = false;
                 if (!resp.IsSuccessStatusCode)
                 {
                     if ((int)resp.StatusCode == 903)
+                    {
                         SendExceptionMessage("Steuerart in Steuern verwendet.");
+                    }
                     else
+                    {
                         SendExceptionMessage("Steuerart konnte nicht gelöscht werden.");
+                    }
+
                     return;
                 }
                 else

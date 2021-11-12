@@ -19,6 +19,7 @@ using System.Net.Http;
 using Base.Logic.Core;
 using Base.Logic.Messages;
 using Base.Logic.Types;
+using Base.Logic.Wrapper;
 
 namespace Aktien.Logic.UI.DividendeViewModels
 {
@@ -29,7 +30,6 @@ namespace Aktien.Logic.UI.DividendeViewModels
         public DividendeStammdatenViewModel()
         {
             Title = "Informationen Dividende";
-            Cleanup();
         }
 
         protected async override void ExecuteSaveCommand()
@@ -37,7 +37,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+"/api/dividende", data);
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+"/api/dividende", Data);
                 RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
@@ -57,12 +57,12 @@ namespace Aktien.Logic.UI.DividendeViewModels
         #region Bindings
         public DateTime? Exdatum
         {
-            get => data.Exdatum;
+            get => Data.Exdatum;
             set
             {
-                if (RequestIsWorking || !DateTime.Equals(data.Exdatum, value))
+                if (RequestIsWorking || !DateTime.Equals(Data.Exdatum, value))
                 {
-                    data.Exdatum = value;
+                    Data.Exdatum = value;
                     RaisePropertyChanged();
                     (SaveCommand as DelegateCommand).RaiseCanExecuteChanged();
                 }
@@ -71,13 +71,13 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         public DateTime? Zahldatum
         {
-            get => data.Zahldatum.Equals(DateTime.MinValue) ? null : (DateTime?)data.Zahldatum;
+            get => Data.Zahldatum.Equals(DateTime.MinValue) ? null : (DateTime?)Data.Zahldatum;
             set
             {
-                if (RequestIsWorking || !DateTime.Equals(data.Zahldatum, value))
+                if (RequestIsWorking || !DateTime.Equals(Data.Zahldatum, value))
                 {
                     ValidateDatum(value);
-                    data.Zahldatum = value.GetValueOrDefault();
+                    Data.Zahldatum = value.GetValueOrDefault();
                     RaisePropertyChanged();
                     (SaveCommand as DelegateCommand).RaiseCanExecuteChanged();
                 }
@@ -93,15 +93,15 @@ namespace Aktien.Logic.UI.DividendeViewModels
                 {
                     ValidateBetrag(0);
                     betrag = "";
-                    data.Betrag = 0;
+                    Data.Betrag = 0;
                     RaisePropertyChanged();
                     return;
                 }
                 betrag = value;
-                if (RequestIsWorking || data.Betrag != Betrag)
+                if (RequestIsWorking || Data.Betrag != Betrag)
                 {
                     ValidateBetrag(Betrag);
-                    data.Betrag = Betrag;
+                    Data.Betrag = Betrag;
                     RaisePropertyChanged(); 
                 }
             }
@@ -114,25 +114,25 @@ namespace Aktien.Logic.UI.DividendeViewModels
                 if (!double.TryParse(value, out double BetragUmgerechnet))
                 {
                     betragUmgerechnet = "";
-                    data.BetragUmgerechnet = 0;
+                    Data.BetragUmgerechnet = 0;
                     RaisePropertyChanged();
                     return;
                 }
-                if (RequestIsWorking || data.BetragUmgerechnet != BetragUmgerechnet)
+                if (RequestIsWorking || Data.BetragUmgerechnet != BetragUmgerechnet)
                 {
-                    data.BetragUmgerechnet = BetragUmgerechnet;
+                    Data.BetragUmgerechnet = BetragUmgerechnet;
                     RaisePropertyChanged();
                 }
             }
         }
         public Waehrungen Waehrung
         {
-            get => data.Waehrung;
+            get => Data.Waehrung;
             set
             {
-                if (RequestIsWorking || (data.Waehrung != value))
+                if (RequestIsWorking || (Data.Waehrung != value))
                 {
-                    data.Waehrung = value;
+                    Data.Waehrung = value;
                     RaisePropertyChanged();
                 }
             }
@@ -142,7 +142,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
         #endregion
         public int WertpapierID
         {
-            set => data.WertpapierID = value;
+            set => Data.WertpapierID = value;
         }
         public async void Bearbeiten(int id)
         {
@@ -151,14 +151,14 @@ namespace Aktien.Logic.UI.DividendeViewModels
             {
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/dividende/{id}");
                 if (resp.IsSuccessStatusCode)
-                { 
-                    data = await resp.Content.ReadAsAsync<DividendeModel>();
-                    WertpapierID = data.WertpapierID;
-                    Exdatum = data.Exdatum;
-                    Zahldatum = data.Zahldatum;
-                    Betrag = data.Betrag.ToString();
-                    Waehrung = data.Waehrung;
-                    BetragUmgerechnet = data.BetragUmgerechnet.HasValue ? data.BetragUmgerechnet.Value.ToString() : "";
+                {
+                    Response = await resp.Content.ReadAsAsync<Response<DividendeModel>>();
+                    WertpapierID = Data.WertpapierID;
+                    Exdatum = Data.Exdatum;
+                    Zahldatum = Data.Zahldatum;
+                    Betrag = Data.Betrag.ToString();
+                    Waehrung = Data.Waehrung;
+                    BetragUmgerechnet = Data.BetragUmgerechnet.HasValue ? Data.BetragUmgerechnet.Value.ToString() : "";
 
                     state = State.Bearbeiten;
                 }
@@ -191,12 +191,12 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         public override void Cleanup()
         {
-            data = new DividendeUebersichtModel();
+            Data = new DividendeUebersichtModel();
             Zahldatum = DateTime.Now;
             Exdatum = null;
             state = State.Neu;
             Betrag = null;
-            Waehrung = Data.Types.WertpapierTypes.Waehrungen.Euro;
+            Waehrung = Aktien.Data.Types.WertpapierTypes.Waehrungen.Euro;
             RaisePropertyChanged();
         }
 
