@@ -32,6 +32,7 @@ namespace Aktien.Logic.UI.DepotViewModels
         }
 
         protected override string GetREST_API() { return $"/api/Depot"; }
+        protected override bool WithPagination() { return true; }
 
         #region Bindings
         public override DepotGesamtUebersichtModel SelectedItem
