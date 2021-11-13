@@ -1,6 +1,9 @@
 ﻿using Logic.UI.OptionenViewModels;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -30,10 +33,32 @@ namespace UI.Desktop.Optionen
             {
                 if (visible)
                 {
-                    if (this.DataContext is InfoViewModel model)
-                        model.LoadData();
+                    if (DataContext is InfoViewModel model)
+                        model.SetInfos(Assembly.GetExecutingAssembly().GetName().Version.ToString(), GetBuildDate(Assembly.GetExecutingAssembly()));
                 }
             }
+        }
+
+        private static DateTime GetBuildDate(Assembly assembly)
+        {
+            const string BuildVersionMetadataPrefix = "+build";
+
+            var attribute = assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
+            if (attribute?.InformationalVersion != null)
+            {
+                var value = attribute.InformationalVersion;
+                var index = value.IndexOf(BuildVersionMetadataPrefix);
+                if (index > 0)
+                {
+                    value = value.Substring(index + BuildVersionMetadataPrefix.Length);
+                    if (DateTime.TryParseExact(value, "yyyyMMddHHmmss", CultureInfo.InvariantCulture, DateTimeStyles.None, out var result))
+                    {
+                        return result;
+                    }
+                }
+            }
+
+            return default;
         }
     }
 }
