@@ -20,9 +20,9 @@ namespace UI.Desktop.Auswertung
     /// <summary>
     /// Interaktionslogik für DividendeWertpapierEntwicklungView.xaml
     /// </summary>
-    public partial class DividendeWertpapierEntwicklungAuswertungView : UserControl
+    public partial class DividendeWertpapierEntwicklungView : UserControl
     {
-        public DividendeWertpapierEntwicklungAuswertungView()
+        public DividendeWertpapierEntwicklungView()
         {
             InitializeComponent();
             Messenger.Default.Register<OpenWertpapierAuswahlMessage>(this, "DividendeWertpapierEntwicklung", m => ReceiveOpenWertpapierAuswahlMessage(m));

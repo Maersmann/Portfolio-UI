@@ -36,6 +36,8 @@ namespace Aktien.Logic.UI
             OpenDivideneWertpapierAuswertungCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewDivideneWertpapierAuswertung));
             OpenSteuerMonatAuswertungCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSteuerMonatAuswertung));
             OpenDividendeWertpapierEntwicklungAuswertungCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewOpenDividendeWertpapierEntwicklungAuswertung));
+            OpenDividendenErhaltenImJahrCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewOpenDividendenErhaltenImJahr));
+            OpenDividendenErhaltenImMonatCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewOpenDividendenErhaltenImMonat));
         }
 
         public ICommand OpenAktienUebersichtCommand { get; private set; }
@@ -52,6 +54,8 @@ namespace Aktien.Logic.UI
         public ICommand OpenDivideneWertpapierAuswertungCommand { get; private set; }
         public ICommand OpenSteuerMonatAuswertungCommand { get; private set; }
         public ICommand OpenDividendeWertpapierEntwicklungAuswertungCommand { get; private set; }
+        public ICommand OpenDividendenErhaltenImMonatCommand { get; private set; }
+        public ICommand OpenDividendenErhaltenImJahrCommand { get; private set; }
         public bool MenuIsEnabled => GlobalVariables.ServerIsOnline;
 
         private void ExecuteOpenViewCommand(ViewType viewType)

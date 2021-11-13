@@ -20,15 +20,15 @@ using Base.Logic.Core;
 
 namespace Logic.UI.AuswertungViewModels
 {
-    public class DividendeWertpapierEntwicklungAuswertungViewModel : ViewModelAuswertung<DividendeWertpapierEntwicklungAuswertungModel>
+    public class DividendeWertpapierEntwicklungMonatlichViewModel : ViewModelAuswertung<DividendeWertpapierEntwicklungMonatlichModel>
     {
         private int jahrvon;
         private int jahrbis;
         private DividendenBetragTyp typ;
         private int wertpapierID;
-        public DividendeWertpapierEntwicklungAuswertungViewModel()
+        public DividendeWertpapierEntwicklungMonatlichViewModel()
         {
-            Data = new DividendeWertpapierEntwicklungAuswertungModel();
+            Data = new DividendeWertpapierEntwicklungMonatlichModel();
             Title = "Auswertung Entwicklung Dividende Wertpapier";
             SecondTitle = "";
             jahrvon = DateTime.Now.Year;
@@ -47,10 +47,10 @@ namespace Logic.UI.AuswertungViewModels
         private async void LoadData()
         {
             RequestIsWorking = true;
-            HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/auswertung/dividenden/Wertpapiere/{wertpapierID}/Entwicklung?jahrVon={jahrvon}&jahrBis={jahrbis}&typ={typ}");
+            HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/auswertung/dividendenErhalten/Gesamt/Wertpapiere/{wertpapierID}/Entwicklung?jahrVon={jahrvon}&jahrBis={jahrbis}&typ={typ}");
             if (resp.IsSuccessStatusCode)
             {
-                Data = await resp.Content.ReadAsAsync<DividendeWertpapierEntwicklungAuswertungModel>();
+                Data = await resp.Content.ReadAsAsync<DividendeWertpapierEntwicklungMonatlichModel>();
 
                 ChartValues<double> values = new ChartValues<double>();
                 Labels = new string[Data.Betraege.Count];

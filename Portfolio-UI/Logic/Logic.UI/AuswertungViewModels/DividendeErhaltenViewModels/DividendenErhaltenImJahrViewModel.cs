@@ -1,32 +1,27 @@
-﻿using Aktien.Logic.Core;
-using Aktien.Logic.Core.Validierung.Base;
-using Data.Model.AuswertungModels;
-using LiveCharts;
-using LiveCharts.Wpf;
+﻿using Aktien.Logic.Core.Validierung.Base;
+using Base.Logic.Core;
 using Base.Logic.ViewModels;
+using Data.Model.AuswertungModels.DividendeModels;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Windows.Input;
-using Base.Logic.Core;
 
-namespace Logic.UI.AuswertungViewModels
+namespace Logic.UI.AuswertungViewModels.DividendeErhaltenViewModels
 {
-    public class DividendeMonatJahresVergleichAuswertungViewModel : ViewModelAuswertung<DividendeMonatJahresVergleichAuswertungModel>
+    public class DividendenErhaltenImJahrViewModel : ViewModelAuswertung<DividendenErhaltenImJahrModel>
     {
         private int jahrvon;
         private int jahrbis;
-        public DividendeMonatJahresVergleichAuswertungViewModel()
+        public DividendenErhaltenImJahrViewModel()
         {
-            Title = "Auswertung Dividende je Monat - Jahresvergleich";
+            Title = "Auswertung Dividende Erhalten im Jahr";
             jahrvon = DateTime.Now.Year;
             jahrbis = DateTime.Now.Year;
             LoadDataCommand = new DelegateCommand(ExcecuteLoadDataCommand, CanExcecuteLoadDataCommand);
-            Formatter = value => string.Format("{0:N2}€", value);
         }
 
         private bool CanExcecuteLoadDataCommand()
@@ -37,35 +32,15 @@ namespace Logic.UI.AuswertungViewModels
         private async void ExcecuteLoadDataCommand()
         {
             RequestIsWorking = true;
-            HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/auswertung/dividenden/Monate/Jahresvergleich?jahrVon={jahrvon}&jahrBis={jahrbis}");
+            HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/auswertung/dividendenErhalten/Jahr?jahrVon={jahrvon}&jahrBis={jahrbis}");
             if (resp.IsSuccessStatusCode)
             {
-                ItemList = await resp.Content.ReadAsAsync<List<DividendeMonatJahresVergleichAuswertungModel>>();
-
-                Labels = new string[12];
-                SeriesCollection = new SeriesCollection();
-                ItemList.ToList().ForEach(item =>
+                ItemList = await resp.Content.ReadAsAsync<List<DividendenErhaltenImJahrModel>>();
+                if (ItemList.Count() > 0)
                 {
-                    ColumnSeries coloumn = new ColumnSeries
-                    {
-                        Title = item.Jahr.ToString(),
-                        Values = new ChartValues<double>()
-                    };
-                    item.Monatswerte.ToList().ForEach(mw =>
-                    {
-                        coloumn.Values.Add(mw.Betrag);
-                    });
-                    SeriesCollection.Add(coloumn);
-                });
-
-                for (int monat = 1; monat <= 12; monat++)
-                {
-                    Labels[monat - 1] = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(monat);
+                    SelectedItem = ItemList.ElementAt(0);
                 }
-
-                RaisePropertyChanged(nameof(SeriesCollection));
-                RaisePropertyChanged(nameof(Labels));
-                RaisePropertyChanged(nameof(Formatter));
+                RaisePropertyChanged(nameof(ItemList));
             }
             RequestIsWorking = false;
         }
@@ -95,12 +70,25 @@ namespace Logic.UI.AuswertungViewModels
                 jahrbis = value.GetValueOrDefault(0);
             }
         }
+
+
+        public override DividendenErhaltenImJahrModel SelectedItem
+        {
+            get => base.SelectedItem;
+            set
+            {
+                base.SelectedItem = value;
+                RaisePropertyChanged(nameof(DetailItemList));
+            }
+        }
+
+        public IList<DividendenErhaltenImJahrDividendeModel> DetailItemList => SelectedItem != null ? SelectedItem.Dividenden : new List<DividendenErhaltenImJahrDividendeModel>();
         #endregion
 
         #region Validate
         private bool ValidatZahl(int? zahl, string fieldname)
         {
-            BaseValidierung Validierung = new BaseValidierung();
+            var Validierung = new BaseValidierung();
 
             bool isValid = Validierung.ValidateAnzahl(zahl, out ICollection<string> validationErrors);
 

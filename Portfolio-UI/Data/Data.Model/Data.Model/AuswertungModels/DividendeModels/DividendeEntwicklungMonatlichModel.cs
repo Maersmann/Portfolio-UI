@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Data.Model.AuswertungModels
 {
-    public class DividendeMonatAuswertungModel
+    public class DividendeEntwicklungMonatlichModel
     {
         public DateTime Datum { get; set; }
         public Double Betrag { get; set; }

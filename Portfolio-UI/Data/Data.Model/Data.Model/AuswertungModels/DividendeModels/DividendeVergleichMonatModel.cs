@@ -4,12 +4,12 @@ using System.Text;
 
 namespace Data.Model.AuswertungModels
 {
-    public class DividendeMonatJahresVergleichAuswertungModel
+    public class DividendeVergleichMonatModel
     {
         public int Jahr { get; set; }
         public IList<DividendeMonatJahresVergleichMonatsWertAuswertungModel> Monatswerte { get; set; }
 
-        public DividendeMonatJahresVergleichAuswertungModel()
+        public DividendeVergleichMonatModel()
         {
             Monatswerte = new List<DividendeMonatJahresVergleichMonatsWertAuswertungModel>();
         }

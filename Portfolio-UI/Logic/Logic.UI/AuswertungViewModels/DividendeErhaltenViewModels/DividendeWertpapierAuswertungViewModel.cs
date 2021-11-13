@@ -1,34 +1,36 @@
 ﻿using Aktien.Logic.Core;
-using Aktien.Logic.Core.Validierung;
 using Aktien.Logic.Core.Validierung.Base;
+using Base.Logic.Core;
+using Base.Logic.ViewModels;
 using Data.Model.AuswertungModels;
-using GalaSoft.MvvmLight.Command;
 using LiveCharts;
 using LiveCharts.Wpf;
-using Base.Logic.ViewModels;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
+using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Linq;
 using System.Net.Http;
+using System.Reflection;
 using System.Text;
 using System.Windows.Input;
-using Base.Logic.Core;
+using System.Windows.Media;
 
 namespace Logic.UI.AuswertungViewModels
 {
-    public class DividendeMonatAuswertungViewModel : ViewModelAuswertung<DividendeMonatAuswertungModel>
+    public class DividendeWertpapierAuswertungViewModel : ViewModelAuswertung<DividendeWertpapierAuswertungModel>
     {
         private int jahrvon;
         private int jahrbis;
-        public DividendeMonatAuswertungViewModel()
+
+        public DividendeWertpapierAuswertungViewModel()
         {
-            Title = "Auswertung Dividende je Monat";
+            Title = "Auswertung Dividende je Wertpapier";
             jahrvon = DateTime.Now.Year;
             jahrbis = DateTime.Now.Year;
-            LoadDataCommand = new DelegateCommand(this.ExcecuteLoadDataCommand, this.CanExcecuteLoadDataCommand);
             Formatter = value => string.Format("{0:N2}€", value);
+            LoadDataCommand = new DelegateCommand(this.ExcecuteLoadDataCommand, this.CanExcecuteLoadDataCommand);
         }
 
         private bool CanExcecuteLoadDataCommand()
@@ -36,46 +38,44 @@ namespace Logic.UI.AuswertungViewModels
             return ValidationErrors.Count == 0;
         }
 
-        private async void ExcecuteLoadDataCommand()
+        public async void ExcecuteLoadDataCommand()
         {
             RequestIsWorking = true;
-            HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/auswertung/dividenden/Monate?jahrVon={jahrvon}&jahrBis={jahrbis}");
-            if (resp.IsSuccessStatusCode)
+            if (GlobalVariables.ServerIsOnline)
             {
-                ItemList = await resp.Content.ReadAsAsync<List<DividendeMonatAuswertungModel>>();
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/auswertung/dividendenErhalten/Gesamt/Wertpapiere?jahrVon={jahrvon}&jahrBis={jahrbis}");
+                if (resp.IsSuccessStatusCode)
+                    ItemList = await resp.Content.ReadAsAsync<ObservableCollection<DividendeWertpapierAuswertungModel>>();
 
                 ChartValues<double> values = new ChartValues<double>();
-                Labels = new string[ItemList.Count];
-                int index = 0;
-                
+
+                static string labelPoint(ChartPoint chartPoint) =>
+                    string.Format("{0:N2}€ ({1:P})", chartPoint.Y, chartPoint.Participation);
+
+                SeriesCollection = new SeriesCollection();
+
                 ItemList.ToList().ForEach(a =>
                 {
-                    values.Add(a.Betrag);
-                    Labels[index] = a.Datum.ToString("MMMM yyyy", CultureInfo.CurrentCulture);
-                    index++;
+                    SeriesCollection.Add(new PieSeries { Values = new ChartValues<double> { a.Betrag } , Title = a.Bezeichnung, DataLabels = true, LabelPoint = labelPoint });
                 });
-                SeriesCollection = new SeriesCollection
-                {
-                    new ColumnSeries{ Values = values, Title="Betrag" }
-                };
+               
 
                 RaisePropertyChanged(nameof(SeriesCollection));
-                RaisePropertyChanged(nameof(Labels));
                 RaisePropertyChanged(nameof(Formatter));
             }
             RequestIsWorking = false;
+            RaisePropertyChanged("ItemList");
         }
-
 
         #region Bindings
         public ICommand LoadDataCommand { get; set; }
         public int? JahrVon
-        { 
+        {
             get => jahrvon;
             set
             {
                 ValidatZahl(value, nameof(JahrVon));
-                RaisePropertyChanged();
+                this.RaisePropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahrvon = value.GetValueOrDefault(0);
             }
@@ -86,7 +86,7 @@ namespace Logic.UI.AuswertungViewModels
             set
             {
                 ValidatZahl(value, nameof(JahrBis));
-                RaisePropertyChanged();
+                this.RaisePropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahrbis = value.GetValueOrDefault(0);
             }
@@ -104,6 +104,5 @@ namespace Logic.UI.AuswertungViewModels
             return isValid;
         }
         #endregion
-
     }
 }

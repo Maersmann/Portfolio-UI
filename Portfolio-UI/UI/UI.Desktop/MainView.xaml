@@ -75,9 +75,13 @@
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
             <Fluent:RibbonTabItem Header="Auswertungen"  ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White">
-                <Fluent:RibbonGroupBox Header="Dividenden" >
-                    <Fluent:Button Header="Monatsbeträge" LargeIcon="/resource/chart-line.png"  Command="{Binding OpenDivideneMonatAuswertungCommand}" Width="100" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
-                    <Fluent:Button Header="Monatsbeträge Jahresvergleich" LargeIcon="/resource/chart-bar.png"  Command="{Binding OpenDivideneMonatJahresvergleichAuswertungCommand}" Width="100" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                <Fluent:RibbonGroupBox Header="Dividenden Erhalten " >
+                    <Fluent:Button Header="Monat" LargeIcon="/resource/calendar-month-outline.png"  Command="{Binding OpenDividendenErhaltenImMonatCommand}" Width="80" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                    <Fluent:Button Header="Jahr" LargeIcon="/resource/calendar-star.png"  Command="{Binding OpenDividendenErhaltenImJahrCommand}" Width="80" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Dividenden Erhalten - Gesamt" >
+                    <Fluent:Button Header="Monatliche Entwicklung" LargeIcon="/resource/chart-line.png"  Command="{Binding OpenDivideneMonatAuswertungCommand}" Width="100" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                    <Fluent:Button Header="Monatlich Jahresvergleich" LargeIcon="/resource/chart-bar.png"  Command="{Binding OpenDivideneMonatJahresvergleichAuswertungCommand}" Width="100" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                     <Fluent:Button Header="Wertpapiere Gesambeträge" LargeIcon="/resource/chart-pie.png"  Command="{Binding OpenDivideneWertpapierAuswertungCommand}" Width="100" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
                     <Fluent:Button Header="Wertpapier Entwicklung" LargeIcon="/resource/chart-bell-curve.png"  Command="{Binding OpenDividendeWertpapierEntwicklungAuswertungCommand}" Width="100" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
                 </Fluent:RibbonGroupBox>

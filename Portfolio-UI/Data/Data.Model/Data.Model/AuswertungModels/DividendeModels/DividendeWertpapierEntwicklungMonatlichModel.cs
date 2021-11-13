@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Data.Model.AuswertungModels
 {
-    public class DividendeWertpapierEntwicklungAuswertungModel
+    public class DividendeWertpapierEntwicklungMonatlichModel
     {
         public string Name { get; set; }
         public WertpapierTypes WertpapierTyp { get; set; }
@@ -28,7 +28,7 @@ namespace Data.Model.AuswertungModels
 
         public IList<DividendeWertpapierEntwicklungAuswertungBetragModel> Betraege { get; set; }
 
-        public DividendeWertpapierEntwicklungAuswertungModel()
+        public DividendeWertpapierEntwicklungMonatlichModel()
         {
             WertpapierTyp = WertpapierTypes.none;
             Betraege = new List<DividendeWertpapierEntwicklungAuswertungBetragModel>();
