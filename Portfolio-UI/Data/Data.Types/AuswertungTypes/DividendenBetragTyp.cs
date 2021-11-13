@@ -6,9 +6,9 @@ namespace Data.Types.AuswertungTypes
     [TypeConverter(typeof(EnumDescriptionTypeConverter))]
     public enum DividendenBetragTyp
     {
-        [Description("Nach Steuer")]
-        NachSteuer = 0,
-        [Description("Vor Steuer")]
-        VorSteuer = 1
+        [Description("Netto")]
+        Netto = 0,
+        [Description("Brutto")]
+        Brutto = 1
     }
 }

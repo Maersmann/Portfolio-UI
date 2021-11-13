@@ -55,6 +55,10 @@ namespace Logic.UI.AuswertungViewModels
                     item.Monatswerte.ToList().ForEach(mw =>
                     {
                         coloumn.Values.Add(mw.Betrag);
+                        if (Math.Abs(mw.Betrag) > HighestValue)
+                        {
+                            HighestValue = Math.Abs(mw.Betrag);
+                        }
                     });
                     SeriesCollection.Add(coloumn);
 
@@ -64,6 +68,8 @@ namespace Logic.UI.AuswertungViewModels
                 {
                     Labels[monat - 1] = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(monat);
                 }
+
+                BerechneSeperator();
 
                 RaisePropertyChanged(nameof(SeriesCollection));
                 RaisePropertyChanged(nameof(Labels));

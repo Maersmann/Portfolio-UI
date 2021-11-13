@@ -26,7 +26,7 @@ namespace Logic.UI.AuswertungViewModels
             Title = "Auswertung Steuerart je Monat";
             jahrvon = DateTime.Now.Year;
             jahrbis = DateTime.Now.Year;
-            LoadDataCommand = new DelegateCommand(this.ExcecuteLoadDataCommand, this.CanExcecuteLoadDataCommand);
+            LoadDataCommand = new DelegateCommand(ExcecuteLoadDataCommand, CanExcecuteLoadDataCommand);
             Formatter = value => string.Format("{0:N2}€", value);
         }
 

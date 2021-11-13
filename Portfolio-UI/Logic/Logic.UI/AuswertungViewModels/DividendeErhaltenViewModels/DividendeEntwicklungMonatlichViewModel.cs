@@ -1,8 +1,5 @@
-﻿using Aktien.Logic.Core;
-using Aktien.Logic.Core.Validierung;
-using Aktien.Logic.Core.Validierung.Base;
+﻿using Aktien.Logic.Core.Validierung.Base;
 using Data.Model.AuswertungModels;
-using GalaSoft.MvvmLight.Command;
 using LiveCharts;
 using LiveCharts.Wpf;
 using Base.Logic.ViewModels;
@@ -12,9 +9,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Windows.Input;
 using Base.Logic.Core;
+using System.Windows.Data;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace Logic.UI.AuswertungViewModels
 {
@@ -22,8 +21,12 @@ namespace Logic.UI.AuswertungViewModels
     {
         private int jahrvon;
         private int jahrbis;
+        private bool bruttoSeriesVisibility;
+        private bool nettoSeriesVisibility;
         public DividendeEntwicklungMonatlichViewModel()
         {
+            nettoSeriesVisibility = true;
+            bruttoSeriesVisibility = true;
             Title = "Auswertung Dividende je Monat";
             jahrvon = DateTime.Now.Year;
             jahrbis = DateTime.Now.Year;
@@ -44,20 +47,59 @@ namespace Logic.UI.AuswertungViewModels
             {
                 ItemList = await resp.Content.ReadAsAsync<List<DividendeEntwicklungMonatlichModel>>();
 
-                ChartValues<double> values = new ChartValues<double>();
+                ChartValues<double> NettoChart = new ChartValues<double>();
+                ChartValues<double> BruttoChart = new ChartValues<double>();
                 Labels = new string[ItemList.Count];
                 int index = 0;
                 
                 ItemList.ToList().ForEach(a =>
                 {
-                    values.Add(a.Betrag);
+                    NettoChart.Add(a.Netto);
+                    BruttoChart.Add(a.Brutto);
+                    if(a.Brutto > HighestValue)
+                    {
+                        HighestValue = a.Brutto;
+                    }
                     Labels[index] = a.Datum.ToString("MMMM yyyy", CultureInfo.CurrentCulture);
                     index++;
                 });
+
+                Binding NettoSeriesVisbilityBinding = new Binding()
+                {
+                    Source = this,
+                    Path = new PropertyPath(nameof(NettoSeriesVisibility)),
+                    Converter = new BooleanToVisibilityConverter(),
+                    Mode = BindingMode.OneWay,
+                };
+                Binding BruttoSeriesVisbilityBinding = new Binding()
+                {
+                    Source = this,
+                    Path = new PropertyPath(nameof(BruttoSeriesVisibility)),
+                    Converter = new BooleanToVisibilityConverter(),
+                    Mode = BindingMode.OneWay,
+                };
+
+                var NettoSeries = new ColumnSeries
+                {
+                    Values = NettoChart,
+                    Title = "Netto",
+                };
+                var BruttoSeries = new ColumnSeries
+                {
+                    Values = BruttoChart,
+                    Title = "Brutto"
+                };
+
+                NettoSeries.SetBinding(UIElement.VisibilityProperty, NettoSeriesVisbilityBinding);
+                BruttoSeries.SetBinding(UIElement.VisibilityProperty, BruttoSeriesVisbilityBinding);
+
                 SeriesCollection = new SeriesCollection
                 {
-                    new ColumnSeries{ Values = values, Title="Betrag" }
+                    NettoSeries,
+                    BruttoSeries
                 };
+
+                BerechneSeperator();
 
                 RaisePropertyChanged(nameof(SeriesCollection));
                 RaisePropertyChanged(nameof(Labels));
@@ -90,6 +132,26 @@ namespace Logic.UI.AuswertungViewModels
                 RaisePropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahrbis = value.GetValueOrDefault(0);
+            }
+        }
+
+        public bool BruttoSeriesVisibility
+        {
+            get { return bruttoSeriesVisibility; }
+            set
+            {
+                bruttoSeriesVisibility = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public bool NettoSeriesVisibility
+        {
+            get { return nettoSeriesVisibility; }
+            set
+            {
+                nettoSeriesVisibility = value;
+                RaisePropertyChanged();
             }
         }
         #endregion

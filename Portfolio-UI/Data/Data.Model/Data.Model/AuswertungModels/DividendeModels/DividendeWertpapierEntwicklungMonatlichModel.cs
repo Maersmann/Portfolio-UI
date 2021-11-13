@@ -38,6 +38,7 @@ namespace Data.Model.AuswertungModels
     public class DividendeWertpapierEntwicklungAuswertungBetragModel
     {
         public DateTime Datum { get; set; }
-        public double Betrag { get; set; }
+        public double Netto { get; set; }
+        public double Brutto { get; set; }
     }
 }

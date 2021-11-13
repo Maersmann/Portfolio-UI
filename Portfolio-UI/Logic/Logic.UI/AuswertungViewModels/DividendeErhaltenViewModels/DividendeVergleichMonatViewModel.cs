@@ -13,6 +13,7 @@ using System.Net.Http;
 using System.Text;
 using System.Windows.Input;
 using Base.Logic.Core;
+using Data.Types.AuswertungTypes;
 
 namespace Logic.UI.AuswertungViewModels
 {
@@ -20,11 +21,14 @@ namespace Logic.UI.AuswertungViewModels
     {
         private int jahrvon;
         private int jahrbis;
+        private DividendenBetragTyp typ;
+
         public DividendeVergleichMonatViewModel()
         {
             Title = "Auswertung Dividende je Monat - Jahresvergleich";
             jahrvon = DateTime.Now.Year;
             jahrbis = DateTime.Now.Year;
+            typ = DividendenBetragTyp.Netto;
             LoadDataCommand = new DelegateCommand(ExcecuteLoadDataCommand, CanExcecuteLoadDataCommand);
             Formatter = value => string.Format("{0:N2}€", value);
         }
@@ -41,35 +45,48 @@ namespace Logic.UI.AuswertungViewModels
             if (resp.IsSuccessStatusCode)
             {
                 ItemList = await resp.Content.ReadAsAsync<List<DividendeVergleichMonatModel>>();
+                SetDataIntoChart();
 
-                Labels = new string[12];
-                SeriesCollection = new SeriesCollection();
-                ItemList.ToList().ForEach(item =>
-                {
-                    ColumnSeries coloumn = new ColumnSeries
-                    {
-                        Title = item.Jahr.ToString(),
-                        Values = new ChartValues<double>()
-                    };
-                    item.Monatswerte.ToList().ForEach(mw =>
-                    {
-                        coloumn.Values.Add(mw.Betrag);
-                    });
-                    SeriesCollection.Add(coloumn);
-                });
 
-                for (int monat = 1; monat <= 12; monat++)
-                {
-                    Labels[monat - 1] = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(monat);
-                }
-
-                RaisePropertyChanged(nameof(SeriesCollection));
-                RaisePropertyChanged(nameof(Labels));
-                RaisePropertyChanged(nameof(Formatter));
             }
             RequestIsWorking = false;
         }
 
+        private void SetDataIntoChart()
+        {
+            Labels = new string[12];
+            SeriesCollection = new SeriesCollection();
+            ItemList.ToList().ForEach(item =>
+            {
+                ColumnSeries coloumn = new ColumnSeries
+                {
+                    Title = item.Jahr.ToString(),
+                    Values = new ChartValues<double>()
+                };
+                item.Monatswerte.ToList().ForEach(mw =>
+                {
+                    Double Betrag = typ.Equals(DividendenBetragTyp.Brutto) ? mw.Brutto : mw.Netto;
+                    coloumn.Values.Add(Betrag);
+                    if (Betrag > HighestValue)
+                    {
+                        HighestValue = Betrag;
+                    }
+                });
+
+                SeriesCollection.Add(coloumn);
+            });
+
+            BerechneSeperator();
+
+            for (int monat = 1; monat <= 12; monat++)
+            {
+                Labels[monat - 1] = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(monat);
+            }
+
+            RaisePropertyChanged(nameof(SeriesCollection));
+            RaisePropertyChanged(nameof(Labels));
+            RaisePropertyChanged(nameof(Formatter));
+        }
 
         #region Bindings
         public ICommand LoadDataCommand { get; set; }
@@ -93,6 +110,18 @@ namespace Logic.UI.AuswertungViewModels
                 RaisePropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahrbis = value.GetValueOrDefault(0);
+            }
+        }
+
+        public static IEnumerable<DividendenBetragTyp> Types => Enum.GetValues(typeof(DividendenBetragTyp)).Cast<DividendenBetragTyp>();
+        public DividendenBetragTyp Typ
+        {
+            get => typ;
+            set
+            {
+                RaisePropertyChanged();
+                typ = value;
+                SetDataIntoChart();
             }
         }
         #endregion

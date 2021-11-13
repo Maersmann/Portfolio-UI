@@ -148,13 +148,12 @@
                     <lvc:CartesianChart.AxisY>
                         <lvc:Axis Title="Betrag" LabelFormatter="{Binding Formatter}" >
                             <lvc:Axis.Separator>
-                                <lvc:Separator Step="2" />
+                                <lvc:Separator Step="{Binding AxisYSeperator}" />
                             </lvc:Axis.Separator>
                         </lvc:Axis>
-                        
                     </lvc:CartesianChart.AxisY>
                     <lvc:CartesianChart.DataTooltip>
-                        <lvc:DefaultTooltip SelectionMode="SharedYValues"></lvc:DefaultTooltip>
+                        <lvc:DefaultTooltip Background="{Binding Mode=OneWay, Source={StaticResource brushHeader}}"></lvc:DefaultTooltip>
                     </lvc:CartesianChart.DataTooltip>
                 </lvc:CartesianChart>
             </Grid>

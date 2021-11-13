@@ -69,8 +69,6 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
@@ -78,8 +76,7 @@
                                 </Grid.RowDefinitions>
 
                                 <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">Jahr von</Label>
-                                <Label Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">Jahr Bis</Label>
-                                <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">Typ</Label>
+                                <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">Jahr Bis</Label>
 
 
                                 <TextBox Grid.Row="0" Grid.Column="1" Width="50px" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding JahrVon, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True,TargetNullValue=''}" Cursor="IBeam">
@@ -101,7 +98,7 @@
                                         </ControlTemplate>
                                     </Validation.ErrorTemplate>
                                 </TextBox>
-                                <TextBox Grid.Row="0" Grid.Column="3" Width="50px" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding JahrBis, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True,TargetNullValue=''}" Cursor="IBeam">
+                                <TextBox Grid.Row="1" Grid.Column="1" Width="50px" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding JahrBis, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True,TargetNullValue=''}" Cursor="IBeam">
                                     <i:Interaction.Behaviors>
                                         <Behaviors:TextBoxInputBehavior InputMode="DigitInput"/>
                                     </i:Interaction.Behaviors>
@@ -121,7 +118,7 @@
                                     </Validation.ErrorTemplate>
                                 </TextBox>
 
-                                <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Width="161" HorizontalAlignment="Left"  ItemsSource="{Binding Types}" SelectedItem="{Binding Typ}"/>
+                                
 
                             </Grid>
                         </Grid>
@@ -169,6 +166,7 @@
             <Grid Grid.Row="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="20px"/>
+                    <RowDefinition Height="40px"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
@@ -176,14 +174,24 @@
                     <Label HorizontalAlignment="Center" Width="auto" Content="{Binding SecondTitle, Mode=OneWay}" FontSize="9"/>
                 </materialDesign:Card>
 
-                <lvc:CartesianChart Grid.Row="1" Series="{Binding SeriesCollection}" Height="auto" Margin="10">
+                <Grid Grid.Row="1">
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox IsChecked="{Binding BruttoSeriesVisibility}" Content="Brutto" Margin="29,0,20,0"/>
+                        <CheckBox IsChecked="{Binding NettoSeriesVisibility}" Content="Netto"/>
+                    </StackPanel>
+                </Grid>
+
+                <lvc:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}" Height="auto" Margin="10" LegendLocation="Bottom">
+                    <lvc:CartesianChart.DataTooltip>
+                        <lvc:DefaultTooltip Background="{Binding Mode=OneWay, Source={StaticResource brushHeader}}"></lvc:DefaultTooltip>
+                    </lvc:CartesianChart.DataTooltip>
                     <lvc:CartesianChart.AxisX>
                         <lvc:Axis Title="Datum" Labels="{Binding Labels}"></lvc:Axis>
                     </lvc:CartesianChart.AxisX>
                     <lvc:CartesianChart.AxisY>
                         <lvc:Axis Title="Betrag" LabelFormatter="{Binding Formatter}" MinValue="0">
                             <lvc:Axis.Separator>
-                                <lvc:Separator Step="2" />
+                                <lvc:Separator Step="{Binding AxisYSeperator}" />
                             </lvc:Axis.Separator>
                         </lvc:Axis>
                     </lvc:CartesianChart.AxisY>
