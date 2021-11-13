@@ -19,6 +19,7 @@ using Data.Model.DepotModels;
 using Data.Model.OptionenModels;
 using Base.Logic.Core;
 using Base.Logic.Messages;
+using Base.Logic.Wrapper;
 
 namespace Aktien.Logic.UI.OptionenViewModels
 {
@@ -46,21 +47,22 @@ namespace Aktien.Logic.UI.OptionenViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+"/api/depot/wertpapier", new DepotWertpapierModel { 
-                    Anzahl = BuyInModel.Anzahl, 
-                    BuyIn = BuyInModel.NeuerBuyIn, 
-                    DepotID = BuyInModel.DepotID, 
-                    ID = BuyInModel.DepotWertpapierID, 
-                    WertpapierID = BuyInModel.WertpapierID 
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + "/api/depot/wertpapier", new DepotWertpapierModel
+                {
+                    Anzahl = BuyInModel.Anzahl,
+                    BuyIn = BuyInModel.NeuerBuyIn,
+                    DepotID = BuyInModel.DepotID,
+                    ID = BuyInModel.DepotWertpapierID,
+                    WertpapierID = BuyInModel.WertpapierID
                 });
                 RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
                 {
                     SendInformationMessage("Erledigt");
-                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.buysell.ToString());
+                    Messenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.buysell.ToString());
                     BuyInModel = new WertpapierBuyInModel { AlterBuyIn = 0, NeuerBuyIn = 0, DepotWertpapierID = 0, WertpapierName = "<<Nicht ausgewählt>>" };
-                    this.RaisePropertyChanged("WertpapierBuyInModel");
+                    RaisePropertyChanged("WertpapierBuyInModel");
                     ((DelegateCommand)SpeicherBuyInCommand).RaiseCanExecuteChanged();
                 }
                 else if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
@@ -91,7 +93,8 @@ namespace Aktien.Logic.UI.OptionenViewModels
                     HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/depot/Wertpapier/{id}/BuyInNeuBerechnen");
                     if (resp.IsSuccessStatusCode)
                     {
-                        BuyInModel = await resp.Content.ReadAsAsync<WertpapierBuyInModel>();
+                        Response<WertpapierBuyInModel> BuyInModelResponse = await resp.Content.ReadAsAsync<Response<WertpapierBuyInModel>>();
+                        BuyInModel = BuyInModelResponse.Data;
                         RaisePropertyChanged("WertpapierBuyInModel");
                         ((DelegateCommand)SpeicherBuyInCommand).RaiseCanExecuteChanged();
                     }

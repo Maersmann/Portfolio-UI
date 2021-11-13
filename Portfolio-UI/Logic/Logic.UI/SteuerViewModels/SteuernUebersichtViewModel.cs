@@ -3,6 +3,7 @@ using Aktien.Logic.Core;
 using Base.Logic.Core;
 using Base.Logic.Types;
 using Base.Logic.ViewModels;
+using Base.Logic.Wrapper;
 using Data.Model.SteuerModels;
 using Data.Types.SteuerTypes;
 using GalaSoft.MvvmLight.Messaging;
@@ -34,30 +35,22 @@ namespace Logic.UI.SteuerViewModels
 
         public void setHerkunftTyp(SteuerHerkunftTyp steuerHerkunftTyp)
         {
-            this.steuerherkunfttyp = steuerHerkunftTyp;
+            steuerherkunfttyp = steuerHerkunftTyp;
         }
-        protected override int GetID() { return selectedItem.ID; }
+        protected override int GetID() { return SelectedItem.ID; }
         protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.steuer; }
+        protected override bool WithPagination() { return true; }
+        protected override string GetREST_API() { return $"/api/Steuern?steuergruppeid={LoadDataID}"; }
 
         public void SetCallback(Action<bool, int?> callback)
         {
             this.callback = callback;
         }
-        public async override void LoadData(int steuergruppeID)
-        {
-            this.steuergruppeID = steuergruppeID;
 
-            if (GlobalVariables.ServerIsOnline)
-            {
-                RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/Steuern?steuergruppeid={steuergruppeID}");
-                if (resp.IsSuccessStatusCode)
-                    itemList = await resp.Content.ReadAsAsync<ObservableCollection<SteuerModel>>();
-                else
-                    SendExceptionMessage(await resp.Content.ReadAsStringAsync());
-                RequestIsWorking = false;
-            }
-            RaisePropertyChanged("ItemList");
+        public override void LoadData(int id)
+        {
+            steuergruppeID = id;
+            base.LoadData(id);
         }
 
         #region Commands
@@ -67,17 +60,18 @@ namespace Logic.UI.SteuerViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL + $"/api/Steuern/{selectedItem.ID}");
+                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL + $"/api/Steuern/{SelectedItem.ID}");
                 RequestIsWorking = false;
                 if (!resp.IsSuccessStatusCode)
                 {
                     SendExceptionMessage("Steuer konnte nicht gelöscht werden.");
                     return;
                 }
-                var respObj = await resp.Content.ReadAsAsync<bool>();
-                if (respObj)
+                Response<bool> respObj = await resp.Content.ReadAsAsync<Response<bool>>();
+                if (respObj.Data)
+                {
                     steuergruppeID = null;
-
+                }
             }
             SendInformationMessage("Steuer gelöscht");
             base.ExecuteEntfernenCommand();
@@ -86,7 +80,9 @@ namespace Logic.UI.SteuerViewModels
         public void ExceuteCallBack()
         {
             if (steuergruppeID.HasValue)
-                callback(true, this.steuergruppeID.Value);
+            {
+                callback(true, steuergruppeID.Value);
+            }
             else
                 callback(false, null);
 
@@ -105,7 +101,7 @@ namespace Logic.UI.SteuerViewModels
 
         protected override void ExecuteBearbeitenCommand()
         {
-            Messenger.Default.Send(new OpenSteuerStammdatenMessage<StammdatenTypes> { State = State.Bearbeiten, ID = selectedItem.ID, Stammdaten = GetStammdatenTyp(), SteuergruppeID = this.steuergruppeID, Typ = steuerherkunfttyp, IstVerknuepfungGespeichert = istVerknuepfungGespeichert }, "SteuernUebersicht");
+            Messenger.Default.Send(new OpenSteuerStammdatenMessage<StammdatenTypes> { State = State.Bearbeiten, ID = SelectedItem.ID, Stammdaten = GetStammdatenTyp(), SteuergruppeID = this.steuergruppeID, Typ = steuerherkunfttyp, IstVerknuepfungGespeichert = istVerknuepfungGespeichert }, "SteuernUebersicht");
         }
 
 

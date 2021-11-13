@@ -20,6 +20,7 @@ using System.Windows.Input;
 using Base.Logic.Core;
 using Base.Logic.Messages;
 using Base.Logic.Types;
+using Base.Logic.Wrapper;
 
 namespace Logic.UI.SteuerViewModels
 {
@@ -34,7 +35,6 @@ namespace Logic.UI.SteuerViewModels
         public SteuerStammdatenViewModel()
         {
             steuerarts = new List<SteuerartModel>();
-            Cleanup();
             Title = "Informationen Steuer";
         }
 
@@ -43,7 +43,7 @@ namespace Logic.UI.SteuerViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/Steuern?typ={this.herkunfttyp}&gruppeid={this.steuergruppeid}&istVerknuepfungGespeichert={istVerknuepfungGespeichert}", data);
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/Steuern?typ={this.herkunfttyp}&gruppeid={this.steuergruppeid}&istVerknuepfungGespeichert={istVerknuepfungGespeichert}", Data);
                 RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
@@ -78,13 +78,13 @@ namespace Logic.UI.SteuerViewModels
             {
                 HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/Steuern/" + id.ToString());
                 if (resp.IsSuccessStatusCode)
-                    data = await resp.Content.ReadAsAsync<SteuerModel>();
+                    Response = await resp.Content.ReadAsAsync<Response<SteuerModel>>();
             }
-            Waehrung = data.Waehrung;
-            Betrag = data.Betrag.ToString();
-            Optimierung = data.Optimierung;
-            Steuerart = data.Steuerart;
-            steuerarts.Add(data.Steuerart);
+            Waehrung = Data.Waehrung;
+            Betrag = Data.Betrag.ToString();
+            Optimierung = Data.Optimierung;
+            Steuerart = Data.Steuerart;
+            steuerarts.Add(Data.Steuerart);
             RaisePropertyChanged(nameof(Steuerarts));
             ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             RequestIsWorking = false;
@@ -101,27 +101,27 @@ namespace Logic.UI.SteuerViewModels
                 {
                     ValidateBetrag(0);
                     betrag = "";
-                    data.Betrag = 0;
+                    Data.Betrag = 0;
                     RaisePropertyChanged();
                     return;
                 }
                 betrag = value;
-                if (RequestIsWorking || !double.Equals(data.Betrag, value))
+                if (RequestIsWorking || !double.Equals(Data.Betrag, value))
                 {
                     ValidateBetrag(Betrag);
-                    data.Betrag = Betrag;
+                    Data.Betrag = Betrag;
                     RaisePropertyChanged();
                 }
             }
         }
         public bool Optimierung
         {
-            get => data.Optimierung;
+            get => Data.Optimierung;
             set
             {
-                if (RequestIsWorking || !bool.Equals(data.Optimierung, value))
+                if (RequestIsWorking || !bool.Equals(Data.Optimierung, value))
                 {
-                    data.Optimierung = value;
+                    Data.Optimierung = value;
                     RaisePropertyChanged();
                 }
             }
@@ -130,12 +130,12 @@ namespace Logic.UI.SteuerViewModels
         public IEnumerable<SteuerartModel> Steuerarts => steuerarts;
         public SteuerartModel Steuerart
         {
-            get => data.Steuerart;
+            get => Data.Steuerart;
             set
             {
-                if (RequestIsWorking || (data.Steuerart != value))
+                if (RequestIsWorking || (Data.Steuerart != value))
                 {
-                    data.Steuerart = value;
+                    Data.Steuerart = value;
                     RaisePropertyChanged();
 
                 }
@@ -144,12 +144,12 @@ namespace Logic.UI.SteuerViewModels
 
         public Waehrungen Waehrung
         {
-            get => data.Waehrung;
+            get => Data.Waehrung;
             set
             {
-                if (RequestIsWorking || (data.Waehrung != value))
+                if (RequestIsWorking || (Data.Waehrung != value))
                 {
-                    data.Waehrung = value;
+                    Data.Waehrung = value;
                     RaisePropertyChanged();
                 }
             }
@@ -177,7 +177,7 @@ namespace Logic.UI.SteuerViewModels
         {
             istVerknuepfungGespeichert = false;
             state = State.Neu;
-            data = new SteuerModel { Steuerart = new SteuerartModel() };
+            Data = new SteuerModel { Steuerart = new SteuerartModel() };
             Betrag = "";
         }
 
@@ -186,14 +186,16 @@ namespace Logic.UI.SteuerViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp;
-                if (steuergruppeid.HasValue)
-                     resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/Steuern/Gruppe/{steuergruppeid.Value}/FreieSteuerArten");
-                else
-                    resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/Steuerarten");
-                
+                HttpResponseMessage resp = steuergruppeid.HasValue
+                    ? await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/Steuern/Gruppe/{steuergruppeid.Value}/FreieSteuerArten")
+                    : await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/Steuerarten");
+
                 if (resp.IsSuccessStatusCode)
-                    steuerarts = await resp.Content.ReadAsAsync<ObservableCollection<SteuerartModel>>();
+                {
+                    PagedResponse<ObservableCollection<SteuerartModel>> SteuerartResponse = await resp.Content.ReadAsAsync<PagedResponse<ObservableCollection<SteuerartModel>>>();
+                    steuerarts = SteuerartResponse.Data;
+                }
+                    
                 else
                     SendExceptionMessage("Fehler beim Laden der Steuerarten");
                 RequestIsWorking = false;
@@ -202,7 +204,9 @@ namespace Logic.UI.SteuerViewModels
             RaisePropertyChanged(nameof(Steuerarts));
             ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             if (steuerarts.Count > 0)
+            {
                 Steuerart = Steuerarts.First();
+            }
         }
 
         protected override bool CanExecuteSaveCommand()

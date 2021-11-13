@@ -8,6 +8,7 @@ using Aktien.Logic.Messages.WertpapierMessages;
 using Base.Logic.Core;
 using Base.Logic.Messages;
 using Base.Logic.ViewModels;
+using Base.Logic.Wrapper;
 using Data.Model.WertpapierModels;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
@@ -35,7 +36,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
 
         public OrderUebersichtViewModel()
         {
-            canExecuteAktieVerkaufCommand = false;          
+            canExecuteAktieVerkaufCommand = false;        
             Title = "Übersicht der Order";
             wertpapierID = 0;
             wertpapierTypes = WertpapierTypes.Aktie;
@@ -45,6 +46,10 @@ namespace Aktien.Logic.UI.WertpapierViewModels
             RegisterAktualisereViewMessage(StammdatenTypes.buysell.ToString());
             CheckCanExecuteAktieVerkaufCommand();
         }
+
+        protected override string GetREST_API() { return $"/api/Wertpapier/{wertpapierID}/Orders/"; }
+        protected override bool WithPagination() { return true; }
+        protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.buysell; }
 
         public override string MessageToken
         {
@@ -60,26 +65,20 @@ namespace Aktien.Logic.UI.WertpapierViewModels
             LoadData(m.WertpapierID);
         }
 
-        public override void LoadData()
+        public override Task LoadData()
         {
             LoadData(wertpapierID);
+            return Task.CompletedTask;
         }
+
         public override async void LoadData(int id)
         {
             wertpapierID = id;
 
-            RequestIsWorking = true;
-            HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Wertpapier/{wertpapierID}/Orders/");
-            if (resp.IsSuccessStatusCode)
-            {
-                itemList = await resp.Content.ReadAsAsync<ObservableCollection<OrderUebersichtModel>>();
-            }
-            RequestIsWorking = false;
-            RaisePropertyChanged("ItemList");
+            await base.LoadData();
 
             ((DelegateCommand)AktieGekauftCommand).RaiseCanExecuteChanged();
             CheckCanExecuteAktieVerkaufCommand();
-
         }
 
 
@@ -97,10 +96,14 @@ namespace Aktien.Logic.UI.WertpapierViewModels
             HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/Depot/Wertpapier/{wertpapierID}/Exist");
             if (resp.IsSuccessStatusCode)
             {
-                canExecuteAktieVerkaufCommand = await resp.Content.ReadAsAsync<bool>();
+                Response<bool> ExistResponse = await resp.Content.ReadAsAsync<Response<bool>>();
+                canExecuteAktieVerkaufCommand = ExistResponse.Data;
             }
             else
+            {
                 canExecuteAktieVerkaufCommand = false;
+            }
+
             RequestIsWorking = false;
             ((DelegateCommand)AktieVerkauftCommand).RaiseCanExecuteChanged();
         }
@@ -117,15 +120,14 @@ namespace Aktien.Logic.UI.WertpapierViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL + $"/api/Depot/Order/{selectedItem.ID}/Delete?buysell={selectedItem.BuySell}");
+                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL + $"/api/Depot/Order/{SelectedItem.ID}/Delete?buysell={SelectedItem.BuySell}");
                 RequestIsWorking = false;
                 if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
-                {            
+                {
                     return;
                 }
 
             }
-            Messenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.buysell.ToString());
             base.ExecuteEntfernenCommand();
         }
 
@@ -135,7 +137,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
         }
         private bool CanSelectedItemExecuteCommand()
         {
-            return (selectedItem != null) && ( itemList.IndexOf(SelectedItem) == 0 );
+            return (SelectedItem != null) && ( ItemList.IndexOf(SelectedItem) == 0 );
         }
 
         private bool CanExecuteAktieVerkaufCommand()

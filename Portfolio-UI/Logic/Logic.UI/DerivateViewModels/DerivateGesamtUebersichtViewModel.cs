@@ -26,22 +26,13 @@ namespace Aktien.Logic.UI.DerivateViewModels
         public DerivateGesamtUebersichtViewModel()
         {
             Title = "Übersicht aller Derivate";
-            LoadData();
             RegisterAktualisereViewMessage(StammdatenTypes.derivate.ToString());
         }
 
-        protected override int GetID() { return selectedItem.ID; }
+        protected override int GetID() { return SelectedItem.ID; }
         protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.derivate; }
         protected override string GetREST_API() { return $"/api/Wertpapier?aktiv=true&type=2"; }
-
-        protected override bool OnFilterTriggered(object item)
-        {
-            if (item is DerivateModel wertpapier)
-            {
-                return wertpapier.Name.ToLower().Contains(filtertext.ToLower());
-            }
-            return true;
-        }
+        protected override bool WithPagination() { return true; }
 
         #region Binding
         public override DerivateModel SelectedItem
@@ -50,9 +41,9 @@ namespace Aktien.Logic.UI.DerivateViewModels
             set
             {
                 base.SelectedItem = value;
-                if (selectedItem != null)
+                if (SelectedItem != null)
                 {
-                    Messenger.Default.Send(new LoadWertpapierOrderMessage { WertpapierID = selectedItem.ID, WertpapierTyp = selectedItem.WertpapierTyp }, messageToken);
+                    Messenger.Default.Send(new LoadWertpapierOrderMessage { WertpapierID = SelectedItem.ID, WertpapierTyp = SelectedItem.WertpapierTyp }, messageToken);
                 }
             }
         }
@@ -67,7 +58,7 @@ namespace Aktien.Logic.UI.DerivateViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/Wertpapier/{selectedItem.ID}");
+                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/Wertpapier/{SelectedItem.ID}");
                 RequestIsWorking = false;
                 if ((int)resp.StatusCode == 905)
                 {
@@ -76,7 +67,7 @@ namespace Aktien.Logic.UI.DerivateViewModels
                 }
 
             }
-            Messenger.Default.Send(new LoadWertpapierOrderMessage { WertpapierID = 0, WertpapierTyp = selectedItem.WertpapierTyp }, messageToken);
+            Messenger.Default.Send(new LoadWertpapierOrderMessage { WertpapierID = 0, WertpapierTyp = SelectedItem.WertpapierTyp }, messageToken);
             SendInformationMessage("Derivate gelöscht");
             base.ExecuteEntfernenCommand();
         }

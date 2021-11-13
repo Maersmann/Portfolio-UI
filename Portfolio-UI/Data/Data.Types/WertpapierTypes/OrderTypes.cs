@@ -1,4 +1,4 @@
-﻿using Aktien.Data.Types.Converter;
+﻿using Base.Logic.Types.Converter;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

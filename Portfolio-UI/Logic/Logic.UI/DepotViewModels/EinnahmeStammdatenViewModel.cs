@@ -28,26 +28,20 @@ namespace Aktien.Logic.UI.DepotViewModels
             Title = "Neue Einahme eintragen";
         }
 
-        public int DepotID { set => data.DepotID = value; }
+        public int DepotID { set => Data.DepotID = value; }
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.einnahmen;
 
         #region Bindings
-        public IEnumerable<EinnahmeArtTypes> EinnahmeTypes
-        {
-            get
-            {
-                return Enum.GetValues(typeof(EinnahmeArtTypes)).Cast<EinnahmeArtTypes>();
-            }
-        }
-     
+        public IEnumerable<EinnahmeArtTypes> EinnahmeTypes => Enum.GetValues(typeof(EinnahmeArtTypes)).Cast<EinnahmeArtTypes>();
+
         public EinnahmeArtTypes EinnahmeTyp
         {
-            get => data.Art;
+            get => Data.Art;
             set
             {
-                if ((this.data.Art != value))
+                if ((this.Data.Art != value))
                 {
-                    data.Art = value;
+                    Data.Art = value;
                     RaisePropertyChanged();
                 }
             }
@@ -56,13 +50,13 @@ namespace Aktien.Logic.UI.DepotViewModels
 
         public DateTime? Datum
         {
-            get => data.Datum;
+            get => Data.Datum;
             set
             {
-                if (!DateTime.Equals(this.data.Datum, value))
+                if (!DateTime.Equals(this.Data.Datum, value))
                 {
                     ValidateDatum(value);
-                    this.data.Datum = value.GetValueOrDefault();
+                    this.Data.Datum = value.GetValueOrDefault();
                     this.RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
@@ -78,15 +72,15 @@ namespace Aktien.Logic.UI.DepotViewModels
                 {
                     ValidateBetrag(Betrag);
                     betrag = "";
-                    data.Betrag = 0;
+                    Data.Betrag = 0;
                     RaisePropertyChanged();
                     return;
                 }
                 betrag = value;
-                if (RequestIsWorking || (data.Betrag != Betrag))
+                if (RequestIsWorking || (Data.Betrag != Betrag))
                 {
                     ValidateBetrag(Betrag);
-                    data.Betrag = Betrag;
+                    Data.Betrag = Betrag;
                     RaisePropertyChanged();
                     
                 }
@@ -95,12 +89,12 @@ namespace Aktien.Logic.UI.DepotViewModels
 
         public string Beschreibung
         {
-            get => data.Beschreibung;
+            get => Data.Beschreibung;
             set
             {
-                if (data.Beschreibung != value)
+                if (Data.Beschreibung != value)
                 {
-                    data.Beschreibung = value;
+                    Data.Beschreibung = value;
                     RaisePropertyChanged();
                 }
             }
@@ -115,7 +109,7 @@ namespace Aktien.Logic.UI.DepotViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+"/api/depot/Einnahme", data);
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+"/api/depot/Einnahme", Data);
                 RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
@@ -159,7 +153,7 @@ namespace Aktien.Logic.UI.DepotViewModels
         public override void Cleanup()
         {
             state = State.Neu;
-            data = new EinnahmeModel();
+            Data = new EinnahmeModel();
             Betrag = "";
             Datum = DateTime.Now;
             DepotID = 1;

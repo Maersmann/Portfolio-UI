@@ -16,7 +16,9 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="25px"/>
             <RowDefinition Height="*" />
+            <RowDefinition Height="70px" />
             <RowDefinition Height="45px" />
+           
             <RowDefinition >
                 <RowDefinition.Style>
                     <Style TargetType="{x:Type RowDefinition}">
@@ -42,22 +44,42 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Button Grid.Row="1" DockPanel.Dock="Right" Style="{DynamicResource MaterialDesignFloatingActionButton}" Command="{Binding NeuCommand, Mode=OneWay}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,25,25">
-            <Image Source="/resource/add.png" Stretch="None"/>
-        </Button>
-        <Button Grid.Row="1" DockPanel.Dock="Right" Style="{DynamicResource MaterialDesignFloatingActionButton}" Command="{Binding BearbeitenCommand, Mode=OneWay}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,85,25" >
-            <Image Source="../Resource/bearbeiten.png" Stretch="None"/>
-        </Button>
-        <Button Grid.Row="1" DockPanel.Dock="Right" Style="{DynamicResource MaterialDesignFloatingActionButton}" Command="{Binding EntfernenCommand, Mode=OneWay}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,145,25" Cursor="Hand" >
-            <Image Source="../Resource/entfernen.png" Stretch="None"/>
-        </Button>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="9*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <DockPanel LastChildFill="False" Margin="12" >
+                    <Button DockPanel.Dock="Left" HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Content="&lt;&lt;" Command="{Binding FirstPageCommand, Mode=OneWay}" Style="{DynamicResource MaterialDesignFlatDarkBgButton}"  Margin="3"/>
+                    <Button DockPanel.Dock="Left" VerticalAlignment="Center" Width="50" Command="{Binding PreviousPageCommand, Mode=OneWay}" Style="{DynamicResource MaterialDesignFlatDarkBgButton}" Content="&lt;" Margin="3" Cursor="Hand"/>
+                    <Label  DockPanel.Dock="Left" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Width="120" VerticalContentAlignment="Center" VerticalAlignment="Center" Content="{Binding PageInfo}" Margin="3"/>
+                    <Button DockPanel.Dock="Left" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="40" Content="&gt;" Command="{Binding NextPageCommand, Mode=OneWay}" Style="{DynamicResource MaterialDesignFlatDarkBgButton}" Margin="3"/>
+                    <Button DockPanel.Dock="Left" HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Command="{Binding LastPageCommand, Mode=OneWay}"  Style="{DynamicResource MaterialDesignFlatDarkBgButton}" Content="&gt;&gt;" Margin="3"/>
+                    <ComboBox  DockPanel.Dock="Left" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="45" HorizontalContentAlignment="Center"   ItemsSource="{Binding PageSizeTypes}" SelectedItem="{Binding PageSizeTyp}" IsReadOnly="True" SelectedIndex="0" Margin="3"/>
+                </DockPanel>
 
-        <materialDesign:Card Grid.Row="2"  >
+            </Grid>
+
+            <Grid Grid.Column="1">
+                <Button Grid.Row="1" DockPanel.Dock="Right" Style="{DynamicResource MaterialDesignFloatingActionButton}" Command="{Binding NeuCommand, Mode=OneWay}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,25,10" Cursor="Hand">
+                    <Image Source="/resource/add.png" Stretch="None"/>
+                </Button>
+                <Button Grid.Row="1" DockPanel.Dock="Right" Style="{DynamicResource MaterialDesignFloatingActionButton}" Command="{Binding BearbeitenCommand, Mode=OneWay}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,85,10" Cursor="Hand">
+                    <Image Source="../Resource/bearbeiten.png" Stretch="None"/>
+                </Button>
+                <Button Grid.Row="1" DockPanel.Dock="Right" Style="{DynamicResource MaterialDesignFloatingActionButton}" Command="{Binding EntfernenCommand, Mode=OneWay}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,145,10" Cursor="Hand" >
+                    <Image Source="../Resource/entfernen.png" Stretch="None"/>
+                </Button>
+            </Grid>
+        </Grid>
+
+        <materialDesign:Card Grid.Row="3"  >
             <DockPanel  LastChildFill="False" >
             </DockPanel>
         </materialDesign:Card>
 
-        <ProgressBar Grid.Row="3" Minimum="0" Maximum="100"  Height="5" IsIndeterminate="True" />
+        <ProgressBar Grid.Row="4" Minimum="0" Maximum="100"  Height="5" IsIndeterminate="True" />
 
     </Grid>
 </UserControl>

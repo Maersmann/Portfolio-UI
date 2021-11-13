@@ -44,11 +44,19 @@ namespace Aktien.UI.Desktop.Wertpapier
             {
                 Owner = Application.Current.MainWindow
             };
+            
             if (view.DataContext is WertpapierAuswahlViewModel model)
             {
                 model.SetTyp(m.WertpapierTypes);
-                model.SetCallback(m.Callback);
-                view.ShowDialog();
+                _ = view.ShowDialog();
+                if (model.AuswahlGetaetigt && model.ID().HasValue)
+                {
+                    m.Callback(true, model.ID().Value);
+                }
+                else
+                {
+                    m.Callback(false, 0);
+                }
             }
         }
     }

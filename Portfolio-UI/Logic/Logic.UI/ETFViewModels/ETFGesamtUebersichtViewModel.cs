@@ -28,22 +28,13 @@ namespace Aktien.Logic.UI.ETFViewModels
         public ETFGesamtUebersichtViewModel()
         {
             Title = "Übersicht aller ETF's";
-            LoadData();
             RegisterAktualisereViewMessage(StammdatenTypes.etf.ToString());
             OpenNeueDividendeCommand = new DelegateCommand(ExecuteOpenNeueDividendeCommand, CanExecuteCommand);
         }
-        protected override int GetID() { return selectedItem.ID; }
+        protected override int GetID() { return SelectedItem.ID; }
         protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.etf ; }
         protected override string GetREST_API() { return $"/api/etf?aktiv=true"; }
-
-        protected override bool OnFilterTriggered(object item)
-        {
-            if (item is ETFModel wertpapier)
-            {
-                return wertpapier.Name.ToLower().Contains(filtertext.ToLower());
-            }
-            return true;
-        }
+        protected override bool WithPagination() { return true; }
 
 
         #region Binding
@@ -54,9 +45,9 @@ namespace Aktien.Logic.UI.ETFViewModels
             {
                 base.SelectedItem = value;
                 ((DelegateCommand)OpenNeueDividendeCommand).RaiseCanExecuteChanged();
-                if (selectedItem != null)
+                if (SelectedItem != null)
                 {
-                    Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = selectedItem.ID, WertpapierTyp = selectedItem.WertpapierTyp }, messageToken);
+                    Messenger.Default.Send(new LoadWertpapierOrderMessage { WertpapierID = SelectedItem.ID, WertpapierTyp = SelectedItem.WertpapierTyp }, messageToken);
                 }
             }
         }
@@ -67,7 +58,7 @@ namespace Aktien.Logic.UI.ETFViewModels
         #region Commands
         private void ExecuteOpenNeueDividendeCommand()
         {
-            Messenger.Default.Send<OpenDividendenUebersichtAuswahlMessage>(new OpenDividendenUebersichtAuswahlMessage { WertpapierID = selectedItem.ID }, messageToken);
+            Messenger.Default.Send(new OpenDividendenUebersichtAuswahlMessage { WertpapierID = SelectedItem.ID }, messageToken);
         }
 
         protected async override void ExecuteEntfernenCommand()
@@ -75,7 +66,7 @@ namespace Aktien.Logic.UI.ETFViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/Wertpapier/{selectedItem.ID}");
+                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/Wertpapier/{SelectedItem.ID}");
                 RequestIsWorking = false;
                 if ((int)resp.StatusCode == 905)
                 {
@@ -84,11 +75,10 @@ namespace Aktien.Logic.UI.ETFViewModels
                 }
 
             }
-            Messenger.Default.Send(new LoadWertpapierOrderMessage { WertpapierID = 0, WertpapierTyp = selectedItem.WertpapierTyp }, messageToken);
-            itemList.Remove(selectedItem);
-            RaisePropertyChanged("ItemList");
+            base.ExecuteEntfernenCommand();
+            Messenger.Default.Send(new LoadWertpapierOrderMessage { WertpapierID = 0, WertpapierTyp = SelectedItem.WertpapierTyp }, messageToken);
             SendInformationMessage("ETF gelöscht");
-            Messenger.Default.Send(new AktualisiereViewMessage(), ViewType.viewWertpapierUebersicht.ToString());
+
         }
 
         #endregion

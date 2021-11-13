@@ -32,6 +32,7 @@ using UI.Desktop.Konfigruation;
 using UI.Desktop.Auswertung;
 using Base.Logic.Messages;
 using Base.Logic.Types;
+using UI.Desktop.Auswertung.DividendeErhalten;
 
 namespace Aktien.UI.Desktop
 {
@@ -110,26 +111,41 @@ namespace Aktien.UI.Desktop
                     Container.NavigationService.Navigate(EinnahmenAusgabenUebersichtPage);
                     break;
                 case ViewType.viewDivideneMonatAuswertung:
-                    Container.NavigationService.Navigate(new DivideneMonatAuswertungView());
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(DividendeEntwicklungMonatlichView).Name))
+                        Container.NavigationService.Navigate(new DividendeEntwicklungMonatlichView());
                     break;
                 case ViewType.viewDivideneMonatJahresauswertungAuswertung:
-                    Container.NavigationService.Navigate(new DividendeMonatJahresVergleichAuswertungView());
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(DividendeVergleichMonatView).Name))
+                        Container.NavigationService.Navigate(new DividendeVergleichMonatView());
                     break;
                 case ViewType.viewSteuerartMonatAuswertung:
-                    Container.NavigationService.Navigate(new SteuerartMonatAuswertungView());
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(SteuerartMonatAuswertungView).Name))
+                        Container.NavigationService.Navigate(new SteuerartMonatAuswertungView());
                     break;
                 case ViewType.viewSteuerMonatJahresAuswertung:
-                    Container.NavigationService.Navigate(new SteuerMonatJahresVergleichAuswertungView());  
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(SteuerMonatJahresVergleichAuswertungView).Name))
+                        Container.NavigationService.Navigate(new SteuerMonatJahresVergleichAuswertungView());
                     break;
                 case ViewType.viewDivideneWertpapierAuswertung:
-                    Container.NavigationService.Navigate(new DividendeWertpapierAuswertungView());
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(DividendeWertpapierAuswertungView).Name))
+                        Container.NavigationService.Navigate(new DividendeWertpapierAuswertungView());
                     break;
                 case ViewType.viewSteuerMonatAuswertung:
-                    Container.NavigationService.Navigate(new SteuerMonatAuswertungView());
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(SteuerMonatAuswertungView).Name))
+                        Container.NavigationService.Navigate(new SteuerMonatAuswertungView());
                     break;
                 case ViewType.viewOpenDividendeWertpapierEntwicklungAuswertung:
-                    Container.NavigationService.Navigate(new DividendeWertpapierEntwicklungAuswertungView());
-                    break;                  
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(DividendeWertpapierEntwicklungView).Name))
+                        Container.NavigationService.Navigate(new DividendeWertpapierEntwicklungView());
+                    break;
+                case ViewType.viewOpenDividendenErhaltenImJahr:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(DividendenErhaltenImJahrView).Name))
+                        Container.NavigationService.Navigate(new DividendenErhaltenImJahrView());
+                    break;
+                case ViewType.viewOpenDividendenErhaltenImMonat:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(DividendenErhaltenImMonatView).Name))
+                        Container.NavigationService.Navigate(new DividendenErhaltenImMonatView());
+                    break;
                 default:
                     break;
 

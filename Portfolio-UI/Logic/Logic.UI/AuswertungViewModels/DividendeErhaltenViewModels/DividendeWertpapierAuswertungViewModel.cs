@@ -1,33 +1,36 @@
 ﻿using Aktien.Logic.Core;
 using Aktien.Logic.Core.Validierung.Base;
+using Base.Logic.Core;
+using Base.Logic.ViewModels;
 using Data.Model.AuswertungModels;
 using LiveCharts;
-using LiveCharts.Definitions.Series;
 using LiveCharts.Wpf;
-using Base.Logic.ViewModels;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
+using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Linq;
 using System.Net.Http;
+using System.Reflection;
 using System.Text;
 using System.Windows.Input;
-using Base.Logic.Core;
+using System.Windows.Media;
 
 namespace Logic.UI.AuswertungViewModels
 {
-    public class SteuerartMonatAuswertungViewModel : ViewModelAuswertung<SteuerartMonatAuswertungModel>
+    public class DividendeWertpapierAuswertungViewModel : ViewModelAuswertung<DividendeWertpapierAuswertungModel>
     {
         private int jahrvon;
         private int jahrbis;
-        public SteuerartMonatAuswertungViewModel()
+
+        public DividendeWertpapierAuswertungViewModel()
         {
-            Title = "Auswertung Steuerart je Monat";
+            Title = "Auswertung Dividende je Wertpapier";
             jahrvon = DateTime.Now.Year;
             jahrbis = DateTime.Now.Year;
-            LoadDataCommand = new DelegateCommand(this.ExcecuteLoadDataCommand, this.CanExcecuteLoadDataCommand);
             Formatter = value => string.Format("{0:N2}€", value);
+            LoadDataCommand = new DelegateCommand(this.ExcecuteLoadDataCommand, this.CanExcecuteLoadDataCommand);
         }
 
         private bool CanExcecuteLoadDataCommand()
@@ -35,46 +38,34 @@ namespace Logic.UI.AuswertungViewModels
             return ValidationErrors.Count == 0;
         }
 
-        private async void ExcecuteLoadDataCommand()
+        public async void ExcecuteLoadDataCommand()
         {
             RequestIsWorking = true;
-            HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/auswertung/steuern/Steuerart/Monate?jahrVon={jahrvon}&jahrBis={jahrbis}");
-            if (resp.IsSuccessStatusCode)
+            if (GlobalVariables.ServerIsOnline)
             {
-                ItemList = await resp.Content.ReadAsAsync<List<SteuerartMonatAuswertungModel>>();
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/auswertung/dividendenErhalten/Gesamt/Wertpapiere?jahrVon={jahrvon}&jahrBis={jahrbis}");
+                if (resp.IsSuccessStatusCode)
+                    ItemList = await resp.Content.ReadAsAsync<ObservableCollection<DividendeWertpapierAuswertungModel>>();
 
-                Labels = new string[ItemList.Count];
-                int index = 0;
+                ChartValues<double> values = new ChartValues<double>();
+
+                static string labelPoint(ChartPoint chartPoint) =>
+                    string.Format("{0:N2}€ ({1:P})", chartPoint.Y, chartPoint.Participation);
+
                 SeriesCollection = new SeriesCollection();
-                ItemList.ToList().ForEach(item =>
+
+                ItemList.ToList().ForEach(a =>
                 {
-                    item.Steuerarten.ToList().ForEach(steuer =>{
-                        ISeriesView StackedColoumn = SeriesCollection.ToList().Find(series => series.Title.Equals(steuer.Steuerart));
-                        if (StackedColoumn == null)
-                        {
-                            StackedColoumn = new StackedColumnSeries
-                            {
-                                Values = new ChartValues<double>(),
-                                Title = steuer.Steuerart
-                            };
-                            SeriesCollection.Add(StackedColoumn);
-                        }
-
-                        StackedColoumn.Values.Add(steuer.Betrag);
-                    });
-
-                    Labels[index] = item.Datum.ToString("MMMM yyyy", CultureInfo.CurrentCulture);
-                    
-                    index++;
+                    SeriesCollection.Add(new PieSeries { Values = new ChartValues<double> { a.Betrag } , Title = a.Bezeichnung, DataLabels = true, LabelPoint = labelPoint });
                 });
+               
 
                 RaisePropertyChanged(nameof(SeriesCollection));
-                RaisePropertyChanged(nameof(Labels));
-                RaisePropertyChanged(nameof(Formatter));  
+                RaisePropertyChanged(nameof(Formatter));
             }
             RequestIsWorking = false;
+            RaisePropertyChanged("ItemList");
         }
-
 
         #region Bindings
         public ICommand LoadDataCommand { get; set; }
@@ -84,7 +75,7 @@ namespace Logic.UI.AuswertungViewModels
             set
             {
                 ValidatZahl(value, nameof(JahrVon));
-                RaisePropertyChanged();
+                this.RaisePropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahrvon = value.GetValueOrDefault(0);
             }
@@ -95,7 +86,7 @@ namespace Logic.UI.AuswertungViewModels
             set
             {
                 ValidatZahl(value, nameof(JahrBis));
-                RaisePropertyChanged();
+                this.RaisePropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahrbis = value.GetValueOrDefault(0);
             }

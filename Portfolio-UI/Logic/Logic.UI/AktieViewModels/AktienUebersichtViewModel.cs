@@ -30,23 +30,15 @@ namespace Aktien.Logic.UI.AktieViewModels
         public AktienUebersichtViewModel()
         {
             Title = "Übersicht aller Aktien";
-            LoadData();
             OpenNeueDividendeCommand = new DelegateCommand(this.ExecuteOpenNeueDividendeCommand, this.CanExecuteCommand);
             RegisterAktualisereViewMessage(StammdatenTypes.aktien.ToString());
         }
 
-        protected override int GetID() { return selectedItem.ID; }
+        protected override int GetID() { return SelectedItem.ID; }
         protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.aktien; }
         protected override string GetREST_API() { return $"/api/Wertpapier?aktiv=true&type=0"; }
+        protected override bool WithPagination() { return true; }
 
-        protected override bool OnFilterTriggered(object item)
-        {
-            if (item is AktienModel wertpapier)
-            {
-                return wertpapier.Name.ToLower().Contains(filtertext.ToLower());
-            }
-            return true;
-        }
 
         #region Binding
 
@@ -57,9 +49,9 @@ namespace Aktien.Logic.UI.AktieViewModels
             {
                 base.SelectedItem = value;
                 ((DelegateCommand)OpenNeueDividendeCommand).RaiseCanExecuteChanged();
-                if (selectedItem != null)
+                if (SelectedItem != null)
                 {
-                    Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = selectedItem.ID, WertpapierTyp = WertpapierTypes.Aktie }, messageToken);
+                    Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = SelectedItem.ID, WertpapierTyp = WertpapierTypes.Aktie }, messageToken);
                 }
             }
         }
@@ -71,14 +63,14 @@ namespace Aktien.Logic.UI.AktieViewModels
 
         private void ExecuteOpenNeueDividendeCommand()
         {
-            Messenger.Default.Send<OpenDividendenUebersichtAuswahlMessage>(new OpenDividendenUebersichtAuswahlMessage { WertpapierID = selectedItem.ID }, messageToken);
+            Messenger.Default.Send<OpenDividendenUebersichtAuswahlMessage>(new OpenDividendenUebersichtAuswahlMessage { WertpapierID = SelectedItem.ID }, messageToken);
         }
         protected async override void ExecuteEntfernenCommand()
         {
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+$"/api/Wertpapier/{selectedItem.ID}");
+                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+$"/api/Wertpapier/{SelectedItem.ID}");
                 RequestIsWorking = false;
                 if ((int)resp.StatusCode == 905)
                 {

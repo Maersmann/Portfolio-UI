@@ -14,11 +14,11 @@ using System.Windows.Shapes;
 namespace UI.Desktop.Auswertung
 {
     /// <summary>
-    /// Interaktionslogik für DividendeMonatJahresVergleichAuswertungView.xaml
+    /// Interaktionslogik für DividendeVergleichMonatView.xaml
     /// </summary>
-    public partial class DividendeMonatJahresVergleichAuswertungView : UserControl
+    public partial class DividendeVergleichMonatView : UserControl
     {
-        public DividendeMonatJahresVergleichAuswertungView()
+        public DividendeVergleichMonatView()
         {
             InitializeComponent();
         }

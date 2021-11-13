@@ -4,9 +4,10 @@ using System.Text;
 
 namespace Data.Model.AuswertungModels
 {
-    public class DividendeMonatAuswertungModel
+    public class DividendeEntwicklungMonatlichModel
     {
         public DateTime Datum { get; set; }
-        public Double Betrag { get; set; }
+        public double Netto { get; set; }
+        public double Brutto { get; set; }
     }
 }

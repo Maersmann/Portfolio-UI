@@ -30,21 +30,13 @@ namespace Aktien.Logic.UI.DividendeViewModels
             Title = "Übersicht aller erhaltene Dividenden";
             RegisterAktualisereViewMessage(StammdatenTypes.steuergruppe.ToString());
         }
+        protected override string GetREST_API() { return $"/api/Wertpapier/{wertpapierID}/ErhalteneDividenden/"; }
+        protected override bool WithPagination() { return true; }
 
-        public async override void LoadData(int id)
+        public  override void LoadData(int id)
         {
             wertpapierID = id;
-
-            HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/Wertpapier/{wertpapierID}/ErhalteneDividenden/");
-            if (resp.IsSuccessStatusCode)
-            {
-                itemList = await resp.Content.ReadAsAsync<ObservableCollection<DividendeErhaltenUebersichtModel>>();
-            }
             base.LoadData(id);
-        }
-        public override void LoadData()
-        {
-            LoadData(wertpapierID);
         }
 
         #region Commands
@@ -54,7 +46,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
         }
         protected override void ExecuteBearbeitenCommand()
         {
-            Messenger.Default.Send(new OpenErhaltendeDividendeStammdatenMessage<StammdatenTypes> { WertpapierID = wertpapierID, State = State.Bearbeiten, ID = selectedItem.ID });
+            Messenger.Default.Send(new OpenErhaltendeDividendeStammdatenMessage<StammdatenTypes> { WertpapierID = wertpapierID, State = State.Bearbeiten, ID = SelectedItem.ID });
         }
 
         protected async override void ExecuteEntfernenCommand()
@@ -62,7 +54,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/DividendeErhalten/{selectedItem.ID}");
+                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/DividendeErhalten/{SelectedItem.ID}");
                 RequestIsWorking = false;
                 if (resp.IsSuccessStatusCode)
                 {

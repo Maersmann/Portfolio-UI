@@ -31,6 +31,7 @@ using Logic.UI.SteuerViewModels;
 using Logic.UI.KonfigurationViewModels;
 using Logic.UI.AuswertungViewModels;
 using Logic.UI.OptionenViewModels;
+using Logic.UI.AuswertungViewModels.DividendeErhaltenViewModels;
 
 namespace Aktien.Logic.UI
 {
@@ -120,14 +121,16 @@ namespace Aktien.Logic.UI
         public SteuerStammdatenViewModel SteuerStammdaten => new SteuerStammdatenViewModel();
         public BackendSettingsViewModel BackendSettings => ServiceLocator.Current.GetInstance<BackendSettingsViewModel>();
         public KonfigruationViewModel Konfigruation => new KonfigruationViewModel();
-        public DividendeMonatAuswertungViewModel DividendeMonatAuswertung => new DividendeMonatAuswertungViewModel();
-        public DividendeMonatJahresVergleichAuswertungViewModel DividendeMonatJahresVergleichAuswertung => new DividendeMonatJahresVergleichAuswertungViewModel();
+        public DividendeEntwicklungMonatlichViewModel DividendeEntwicklungMonatlich => new DividendeEntwicklungMonatlichViewModel();
+        public DividendeVergleichMonatViewModel DividendeVergleichMonat => new DividendeVergleichMonatViewModel();
         public SteuerartMonatAuswertungViewModel SteuerartMonatAuswertung => new SteuerartMonatAuswertungViewModel();
         public SteuerMonatJahresVergleichAuswertungViewModel SteuerartMonatJahresVergleichAuswertung => new SteuerMonatJahresVergleichAuswertungViewModel();
         public DividendeWertpapierAuswertungViewModel DividendeWertpapierAuswertung => new DividendeWertpapierAuswertungViewModel();
         public SteuerMonatAuswertungViewModel SteuerMonatAuswertung => new SteuerMonatAuswertungViewModel();
-        public DividendeWertpapierEntwicklungAuswertungViewModel DividendeWertpapierEntwicklungAuswertung => new DividendeWertpapierEntwicklungAuswertungViewModel();
+        public DividendeWertpapierEntwicklungMonatlichViewModel DividendeWertpapierEntwicklung => new DividendeWertpapierEntwicklungMonatlichViewModel();
         public InfoViewModel Info => new InfoViewModel();
+        public DividendenErhaltenImMonatViewModel DividendenErhaltenImMonat => new DividendenErhaltenImMonatViewModel();
+        public DividendenErhaltenImJahrViewModel DividendenErhaltenImJahr => new DividendenErhaltenImJahrViewModel();
         public static void Cleanup()
         {
 

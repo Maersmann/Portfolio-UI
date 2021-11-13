@@ -23,6 +23,7 @@ using Data.Model.AktieModels;
 using Base.Logic.Core;
 using Base.Logic.Messages;
 using Base.Logic.Types;
+using Base.Logic.Wrapper;
 
 namespace Aktien.Logic.UI.AktieViewModels
 {
@@ -30,16 +31,15 @@ namespace Aktien.Logic.UI.AktieViewModels
     {
         public AktieStammdatenViewModel()
         {
-            Cleanup();
             Title = "Informationen Aktie";
         }
 
         protected async override void ExecuteSaveCommand()
-        {   
+        {
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+"/api/Wertpapier", data);
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+"/api/Wertpapier", Data);
                 RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
@@ -66,44 +66,46 @@ namespace Aktien.Logic.UI.AktieViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+"/api/Wertpapier/"+id.ToString());
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + "/api/Wertpapier/" + id.ToString());
                 if (resp.IsSuccessStatusCode)
-                    data = await resp.Content.ReadAsAsync<AktienModel>();
-                RequestIsWorking = false;
+                {
+                    Response = await resp.Content.ReadAsAsync<Response<AktienModel>>();
+                }       
             }
-            WKN = data.WKN;
-            Name = data.Name;
-            ISIN = data.ISIN;
+            WKN = Data.WKN;
+            Name = Data.Name;
+            ISIN = Data.ISIN;
             RequestIsWorking = false;
             state = State.Bearbeiten;
-            RaisePropertyChanged(nameof(ISIN_isEnabled));       
+            RaisePropertyChanged(nameof(ISIN_isEnabled));
+            RequestIsWorking = false;
         }
 
 
         public bool ISIN_isEnabled { get{ return state == State.Neu; } }
         public string ISIN
         {
-            get { return data.ISIN; }
+            get { return Data.ISIN; }
             set
             {
 
-                if (RequestIsWorking || !string.Equals(data.ISIN, value))
+                if (RequestIsWorking || !string.Equals(Data.ISIN, value))
                 {
                     ValidateISIN(value);
-                    data.ISIN = value;
+                    Data.ISIN = value;
                     RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
         public string Name{
-            get { return data.Name; }
+            get { return Data.Name; }
             set
             {               
-                if (RequestIsWorking || !string.Equals(data.Name, value))
+                if (RequestIsWorking || !string.Equals(Data.Name, value))
                 {
                     ValidateName(value);
-                    data.Name = value;
+                    Data.Name = value;
                     RaisePropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
@@ -111,13 +113,13 @@ namespace Aktien.Logic.UI.AktieViewModels
         }
         public string WKN
         {
-            get { return data.WKN; }
+            get { return Data.WKN; }
             set
             {
 
-                if (RequestIsWorking || !string.Equals(data.WKN, value))
+                if (RequestIsWorking || !string.Equals(Data.WKN, value))
                 {
-                    data.WKN = value;
+                    Data.WKN = value;
                     RaisePropertyChanged();
                 }
             }
@@ -149,7 +151,7 @@ namespace Aktien.Logic.UI.AktieViewModels
         public override void Cleanup()
         {
             state = State.Neu;
-            data = new AktienModel();
+            Data = new AktienModel();
             ISIN = "";
             Name = "";
             WKN = "";

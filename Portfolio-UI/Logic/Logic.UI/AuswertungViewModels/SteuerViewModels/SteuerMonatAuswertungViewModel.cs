@@ -51,11 +51,17 @@ namespace Logic.UI.AuswertungViewModels
                     values.Add(a.Betrag);
                     Labels[index] = a.Datum.ToString("MMMM yyyy", CultureInfo.CurrentCulture);
                     index++;
+                    if (Math.Abs(a.Betrag) > HighestValue)
+                    {
+                        HighestValue = Math.Abs(a.Betrag);
+                    }
                 });
                 SeriesCollection = new SeriesCollection
                 {
                     new ColumnSeries{ Values = values, Title="Betrag" }
                 };
+
+                BerechneSeperator();
 
                 RaisePropertyChanged(nameof(SeriesCollection));
                 RaisePropertyChanged(nameof(Labels));

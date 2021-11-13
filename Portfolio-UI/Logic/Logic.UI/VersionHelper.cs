@@ -7,7 +7,7 @@ namespace Logic.Core
 {
     public class VersionHelper
     {
-        public string GetVersion => "2.7.1";
-        public DateTime GetRelease => new DateTime(2021, 10, 12);
+        public string GetVersion => "3.0.0";
+        public DateTime GetRelease => new DateTime(2021, 11, 13);
     }
 }

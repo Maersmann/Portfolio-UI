@@ -36,15 +36,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
         }
 
         protected override string GetREST_API() { return $"/api/Wertpapier?aktiv=true"; }
-
-        protected override bool OnFilterTriggered(object item)
-        {
-            if (item is WertpapierModel wertpapier)
-            {
-                return wertpapier.Name.ToLower().Contains(filtertext.ToLower());
-            }
-            return true;
-        }
+        protected override bool WithPagination() { return true; }
 
 
         #region Bindings
@@ -56,9 +48,9 @@ namespace Aktien.Logic.UI.WertpapierViewModels
                 base.SelectedItem = value;
                 
                 ((DelegateCommand)OpenNeueDividendeCommand).RaiseCanExecuteChanged();
-                if (selectedItem != null)
+                if (SelectedItem != null)
                 {
-                    Messenger.Default.Send(new LoadWertpapierOrderMessage { WertpapierID = selectedItem.ID, WertpapierTyp = selectedItem.WertpapierTyp }, messageToken);
+                    Messenger.Default.Send(new LoadWertpapierOrderMessage { WertpapierID = SelectedItem.ID, WertpapierTyp = SelectedItem.WertpapierTyp }, messageToken);
                 }
             }
         }
@@ -69,12 +61,12 @@ namespace Aktien.Logic.UI.WertpapierViewModels
         #region commands
         protected override bool CanExecuteCommand()
         {
-            return base.CanExecuteCommand() && ((selectedItem.WertpapierTyp.Equals( WertpapierTypes.Aktie )||(selectedItem.WertpapierTyp.Equals(WertpapierTypes.ETF))));
+            return base.CanExecuteCommand() && ((SelectedItem.WertpapierTyp.Equals( WertpapierTypes.Aktie )||(SelectedItem.WertpapierTyp.Equals(WertpapierTypes.ETF))));
         }
 
         private void ExecuteOpenNeueDividendeCommand()
         {
-            Messenger.Default.Send(new OpenDividendenUebersichtAuswahlMessage { WertpapierID = selectedItem.ID }, messageToken);
+            Messenger.Default.Send(new OpenDividendenUebersichtAuswahlMessage { WertpapierID = SelectedItem.ID }, messageToken);
         }
         #endregion
     }
