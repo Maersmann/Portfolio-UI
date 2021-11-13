@@ -6,6 +6,7 @@ using Logic.Core;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Logic.UI.OptionenViewModels
 {
@@ -15,9 +16,8 @@ namespace Logic.UI.OptionenViewModels
         {
             Info = new InfoModel();
             Title = "Info";
-            LoadData();
         }
-        public async void LoadData()
+        public async Task LoadData()
         {
             if (GlobalVariables.ServerIsOnline)
             {
@@ -27,8 +27,14 @@ namespace Logic.UI.OptionenViewModels
                     Info = await resp.Content.ReadAsAsync<InfoModel>();
                 RequestIsWorking = false;
             }
-            Info.VersionFrontend = new VersionHelper().GetVersion;
-            Info.ReleaseFronted = new VersionHelper().GetRelease;
+        }
+
+        public async void SetInfos(string version, DateTime release)
+        {
+            await LoadData();
+            Info.ReleaseFronted = release;
+            Info.VersionFrontend = version;
+
             RaisePropertyChanged("Info");
         }
 
