@@ -5,8 +5,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>resource\bank.ico</ApplicationIcon>
-    <AssemblyVersion>3.0.1.0</AssemblyVersion>
-    <Version>3.0.1</Version>
+    <AssemblyVersion>3.1.0.0</AssemblyVersion>
+    <Version>3.1.0</Version>
     <RootNamespace>UI.Desktop</RootNamespace>
     <AssemblyName>Portfolio</AssemblyName>
     <Authors>Märsmann</Authors>
@@ -18,6 +18,7 @@
     <None Remove="resource\aktien.png" />
     <None Remove="resource\bank.ico" />
     <None Remove="resource\bearbeiten.png" />
+    <None Remove="resource\book-open-blank-variant.png" />
     <None Remove="resource\calendar-month-outline.png" />
     <None Remove="resource\calendar-star.png" />
     <None Remove="resource\chart-areaspline.png" />
@@ -32,6 +33,7 @@
     <None Remove="resource\entfernen.png" />
     <None Remove="resource\etf.png" />
     <None Remove="resource\gesamt.png" />
+    <None Remove="resource\plus-minus-variant.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,6 +41,7 @@
     <Resource Include="resource\aktien.png" />
     <Resource Include="resource\bank.ico" />
     <Resource Include="resource\bearbeiten.png" />
+    <Resource Include="resource\book-open-blank-variant.png" />
     <Resource Include="resource\calendar-month-outline.png" />
     <Resource Include="resource\calendar-star.png" />
     <Resource Include="resource\chart-areaspline.png" />
@@ -53,6 +56,7 @@
     <Resource Include="resource\entfernen.png" />
     <Resource Include="resource\etf.png" />
     <Resource Include="resource\gesamt.png" />
+    <Resource Include="resource\plus-minus-variant.png" />
   </ItemGroup>
 
   <ItemGroup>

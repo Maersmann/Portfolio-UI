@@ -70,8 +70,9 @@
                     <Fluent:Button Header="Derivate" LargeIcon="/resource/derivate.png"  Command="{Binding OpenDerivateUebersichtCommand}" Width="60" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="Depot">
-                    <Fluent:Button Header="Bestand" LargeIcon="/resource/depot.png" Command="{Binding OpenDepotUebersichtCommand}" Width="60" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
-                    <Fluent:Button Header="Einahmen Ausgaben" LargeIcon="/resource/depot.png" Command="{Binding OpenEinAusgabenUebersichtCommand}"  Width="60" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
+                    <Fluent:Button Header="Bestand" LargeIcon="/resource/depot.png" Command="{Binding OpenDepotUebersichtCommand}" Width="70" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
+                    <Fluent:Button Header="Einahmen Ausgaben" LargeIcon="/resource/plus-minus-variant.png" Command="{Binding OpenEinAusgabenUebersichtCommand}"  Width="70" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
+                    <Fluent:Button Header="Orderbuch" LargeIcon="/resource/book-open-blank-variant.png" Command="{Binding OpenOrderBuchCommand}"  Width="70" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
             <Fluent:RibbonTabItem Header="Auswertungen"  ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White">
