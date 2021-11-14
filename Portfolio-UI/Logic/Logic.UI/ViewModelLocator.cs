@@ -32,6 +32,7 @@ using Logic.UI.KonfigurationViewModels;
 using Logic.UI.AuswertungViewModels;
 using Logic.UI.OptionenViewModels;
 using Logic.UI.AuswertungViewModels.DividendeErhaltenViewModels;
+using Logic.UI.DepotViewModels;
 
 namespace Aktien.Logic.UI
 {
@@ -131,6 +132,7 @@ namespace Aktien.Logic.UI
         public InfoViewModel Info => new InfoViewModel();
         public DividendenErhaltenImMonatViewModel DividendenErhaltenImMonat => new DividendenErhaltenImMonatViewModel();
         public DividendenErhaltenImJahrViewModel DividendenErhaltenImJahr => new DividendenErhaltenImJahrViewModel();
+        public OrderBuchViewModel OrderBuch => new OrderBuchViewModel();
         public static void Cleanup()
         {
 

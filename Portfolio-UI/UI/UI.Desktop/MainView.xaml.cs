@@ -33,6 +33,7 @@ using UI.Desktop.Auswertung;
 using Base.Logic.Messages;
 using Base.Logic.Types;
 using UI.Desktop.Auswertung.DividendeErhalten;
+using UI.Desktop.Depot;
 
 namespace Aktien.UI.Desktop
 {
@@ -145,6 +146,10 @@ namespace Aktien.UI.Desktop
                 case ViewType.viewOpenDividendenErhaltenImMonat:
                     if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(DividendenErhaltenImMonatView).Name))
                         Container.NavigationService.Navigate(new DividendenErhaltenImMonatView());
+                    break;
+                case ViewType.viewOpenOrderBuch:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(OrderBuchView).Name))
+                        Container.NavigationService.Navigate(new OrderBuchView());
                     break;
                 default:
                     break;
