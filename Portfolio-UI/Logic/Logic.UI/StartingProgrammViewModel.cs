@@ -2,9 +2,11 @@
 using Aktien.Logic.Core;
 using Aktien.Logic.Messages.Base;
 using Base.Logic.Core;
+using Base.Logic.Messages;
 using Base.Logic.ViewModels;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
+using Logic.Messages.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,15 +29,17 @@ namespace Aktien.Logic.UI
         private void ExecuteCheckServerIsOnlineCommand()
         {
             new BackendHelper().CheckServerIsOnline();
-
+            Messenger.Default.Send(new CloseViewMessage(), "StartingProgramm");
             if (GlobalVariables.ServerIsOnline)
             {
-                ViewModelLocator locator = new ViewModelLocator();
-                locator.Main.RaisePropertyChanged("MenuIsEnabled");
-                Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = ViewType.viewWertpapierUebersicht });
+                Messenger.Default.Send(new OpenLoginViewMessage { });
+            }
+            else
+            {
+                Messenger.Default.Send(new CloseApplicationMessage { });
             }
                 
-            Messenger.Default.Send(new CloseViewMessage(), "StartingProgramm");
+            
         }
 
         public ICommand CheckServerIsOnlineCommand { get; private set; }

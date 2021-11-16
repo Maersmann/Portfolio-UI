@@ -34,6 +34,7 @@ using Base.Logic.Messages;
 using Base.Logic.Types;
 using UI.Desktop.Auswertung.DividendeErhalten;
 using UI.Desktop.Depot;
+using UI.Desktop;
 
 namespace Aktien.UI.Desktop
 {
@@ -58,6 +59,7 @@ namespace Aktien.UI.Desktop
             Messenger.Default.Register<InformationMessage>(this, m => ReceiveInformationMessage(m));
             Messenger.Default.Register<BaseStammdatenMessage<StammdatenTypes>>(this, m => ReceiceOpenStammdatenMessage(m));
             Messenger.Default.Register<OpenStartingViewMessage>(this, m => ReceiceOpenStartingViewMessage());
+            Messenger.Default.Register<OpenLoginViewMessage>(this, m => ReceiceOpenLoginViewMessage());
             Messenger.Default.Register<OpenKonfigurationViewMessage>(this, m => ReceiceOpenKonfigurationViewMessage());
             Messenger.Default.Register<CloseApplicationMessage>(this, m => ReceiceCloseApplicationMessage());
             
@@ -200,8 +202,12 @@ namespace Aktien.UI.Desktop
 
         private void ReceiceOpenStartingViewMessage()
         {
-            var view = new StartingProgrammView();
-            view.ShowDialog();
+            new StartingProgrammView().ShowDialog();
+        }
+
+        private void ReceiceOpenLoginViewMessage()
+        {
+            new LoginView().ShowDialog();
         }
 
         private void ReceiceOpenKonfigurationViewMessage()

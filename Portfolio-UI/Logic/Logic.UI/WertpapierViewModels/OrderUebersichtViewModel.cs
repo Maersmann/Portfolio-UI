@@ -36,7 +36,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
 
         public OrderUebersichtViewModel()
         {
-            canExecuteAktieVerkaufCommand = false;        
+            canExecuteAktieVerkaufCommand = false;      
             Title = "Übersicht der Order";
             wertpapierID = 0;
             wertpapierTypes = WertpapierTypes.Aktie;
@@ -50,6 +50,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
         protected override string GetREST_API() { return $"/api/Wertpapier/{wertpapierID}/Orders/"; }
         protected override bool WithPagination() { return true; }
         protected override StammdatenTypes GetStammdatenTyp() { return StammdatenTypes.buysell; }
+        protected override bool LoadingOnCreate() => false;
 
         public override string MessageToken
         {

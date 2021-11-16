@@ -12,6 +12,7 @@ using System.Net.Sockets;
 using Logic.Core.OptionenLogic;
 using Logic.Messages.Base;
 using Base.Logic.Core;
+using Base.Logic.Messages;
 
 namespace Aktien.Logic.UI
 {
@@ -22,6 +23,7 @@ namespace Aktien.Logic.UI
             Title = "Aktienübersicht";
             GlobalVariables.ServerIsOnline = false;
             GlobalVariables.BackendServer_URL = "";
+            GlobalVariables.Token = "";
             OpenStartingViewCommand = new RelayCommand(() => ExecuteOpenStartingViewCommand());
             OpenAktienUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand( ViewType.viewAktienUebersicht));
             OpenDepotUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewDepotUebersicht));
@@ -39,6 +41,9 @@ namespace Aktien.Logic.UI
             OpenDividendenErhaltenImJahrCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewOpenDividendenErhaltenImJahr));
             OpenDividendenErhaltenImMonatCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewOpenDividendenErhaltenImMonat));
             OpenOrderBuchCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewOpenOrderBuch));
+
+
+            Messenger.Default.Register<AktualisiereBerechtigungenMessage>(this, m => ReceiveOpenViewMessage());
         }
 
         public ICommand OpenAktienUebersichtCommand { get; private set; }
@@ -66,7 +71,7 @@ namespace Aktien.Logic.UI
         }
         private void ExecuteOpenStartingViewCommand()
         {
-            var backendlogic = new BackendLogic();
+            BackendLogic backendlogic = new BackendLogic();
             if(!backendlogic.istINIVorhanden())
             {
                 Messenger.Default.Send(new OpenKonfigurationViewMessage { });
@@ -77,6 +82,11 @@ namespace Aktien.Logic.UI
             GlobalVariables.BackendServer_Port = backendlogic.getBackendPort();
 
             Messenger.Default.Send(new OpenStartingViewMessage { });
+        }
+
+        private void ReceiveOpenViewMessage()
+        {
+            RaisePropertyChanged("MenuIsEnabled");
         }
 
     }
