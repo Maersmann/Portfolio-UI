@@ -36,18 +36,30 @@ namespace Logic.UI
         {
             if (GlobalVariables.ServerIsOnline)
             {
-                HttpResponseMessage resp = await Client.PostAsJsonAsync("https://localhost:5001/api/Users/authenticate", authenticate);
-                if (resp.IsSuccessStatusCode)
+                RequestIsWorking = true;
+                try
                 {
-                    AuthenticateResponseModel Response = await resp.Content.ReadAsAsync<AuthenticateResponseModel>();
-                    GlobalVariables.Token = Response.Token;
-                    Messenger.Default.Send(new AktualisiereBerechtigungenMessage());
-                    Messenger.Default.Send(new OpenViewMessage { ViewType = ViewType.viewWertpapierUebersicht });
-                    Messenger.Default.Send(new CloseViewMessage(), "Login");
+                    HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+"/api/Users/authenticate", authenticate);
+
+                
+                    RequestIsWorking = false;
+                    if (resp.IsSuccessStatusCode)
+                    {
+                        AuthenticateResponseModel Response = await resp.Content.ReadAsAsync<AuthenticateResponseModel>();
+                        GlobalVariables.Token = Response.Token;
+                        Messenger.Default.Send(new AktualisiereBerechtigungenMessage());
+                        Messenger.Default.Send(new OpenViewMessage { ViewType = ViewType.viewWertpapierUebersicht });
+                        Messenger.Default.Send(new CloseViewMessage(), "Login");
+                    }
+                    else if (resp.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                    {
+                        SendExceptionMessage("User oder Passwort ist falsch");
+                    }
                 }
-                else if (resp.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                catch (Exception e)
                 {
-                    SendExceptionMessage("User oder Passwort ist falsch");
+                    var s = e.Message;
+                    throw;
                 }
             }
         }
