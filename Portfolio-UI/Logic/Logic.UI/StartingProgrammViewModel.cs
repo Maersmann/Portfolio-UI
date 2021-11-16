@@ -2,9 +2,11 @@
 using Aktien.Logic.Core;
 using Aktien.Logic.Messages.Base;
 using Base.Logic.Core;
+using Base.Logic.Messages;
 using Base.Logic.ViewModels;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
+using Logic.Messages.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,9 +32,8 @@ namespace Aktien.Logic.UI
 
             if (GlobalVariables.ServerIsOnline)
             {
-                ViewModelLocator locator = new ViewModelLocator();
-                locator.Main.RaisePropertyChanged("MenuIsEnabled");
-                Messenger.Default.Send<OpenViewMessage>(new OpenViewMessage { ViewType = ViewType.viewWertpapierUebersicht });
+                Messenger.Default.Send(new AktualisiereBerechtigungenMessage());
+                Messenger.Default.Send(new OpenViewMessage { ViewType = ViewType.viewWertpapierUebersicht });
             }
                 
             Messenger.Default.Send(new CloseViewMessage(), "StartingProgramm");
