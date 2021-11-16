@@ -30,7 +30,7 @@ namespace Aktien.Logic.UI.AktieViewModels
         public AktienUebersichtViewModel()
         {
             Title = "Übersicht aller Aktien";
-            OpenNeueDividendeCommand = new DelegateCommand(this.ExecuteOpenNeueDividendeCommand, this.CanExecuteCommand);
+            OpenNeueDividendeCommand = new DelegateCommand(ExecuteOpenNeueDividendeCommand, CanExecuteCommand);
             RegisterAktualisereViewMessage(StammdatenTypes.aktien.ToString());
         }
 

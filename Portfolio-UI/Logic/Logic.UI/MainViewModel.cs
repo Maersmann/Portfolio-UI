@@ -23,6 +23,7 @@ namespace Aktien.Logic.UI
             Title = "Aktienübersicht";
             GlobalVariables.ServerIsOnline = false;
             GlobalVariables.BackendServer_URL = "";
+            GlobalVariables.Token = "";
             OpenStartingViewCommand = new RelayCommand(() => ExecuteOpenStartingViewCommand());
             OpenAktienUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand( ViewType.viewAktienUebersicht));
             OpenDepotUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewDepotUebersicht));

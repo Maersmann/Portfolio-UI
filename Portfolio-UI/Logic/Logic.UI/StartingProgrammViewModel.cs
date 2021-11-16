@@ -29,14 +29,17 @@ namespace Aktien.Logic.UI
         private void ExecuteCheckServerIsOnlineCommand()
         {
             new BackendHelper().CheckServerIsOnline();
-
+            Messenger.Default.Send(new CloseViewMessage(), "StartingProgramm");
             if (GlobalVariables.ServerIsOnline)
             {
-                Messenger.Default.Send(new AktualisiereBerechtigungenMessage());
-                Messenger.Default.Send(new OpenViewMessage { ViewType = ViewType.viewWertpapierUebersicht });
+                Messenger.Default.Send(new OpenLoginViewMessage { });
+            }
+            else
+            {
+                Messenger.Default.Send(new CloseApplicationMessage { });
             }
                 
-            Messenger.Default.Send(new CloseViewMessage(), "StartingProgramm");
+            
         }
 
         public ICommand CheckServerIsOnlineCommand { get; private set; }
