@@ -23,5 +23,6 @@ namespace Logic.UI.DepotViewModels.Helper
             else
                 return new List<OrderTypes> { OrderTypes.Normal, OrderTypes.Limit, OrderTypes.Stop };
         }
+
     }
 }

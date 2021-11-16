@@ -8,7 +8,7 @@
         xmlns:command="http://www.galasoft.ch/mvvmlight"
         mc:Ignorable="d"
         Height="232.744" Width="442.378"
-        WindowStartupLocation="CenterScreen" 
+        WindowStartupLocation="CenterOwner" 
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         ResizeMode="NoResize" ShowInTaskbar="False"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -23,7 +23,7 @@
     </i:Interaction.Triggers>
 
 
-    <Grid >
+    <Grid FocusManager.FocusedElement="{Binding ElementName=tbuser}" >
         <Grid.RowDefinitions>
             <RowDefinition Height="25px" />
             <RowDefinition Height="*" />
@@ -58,7 +58,7 @@
             </Grid.ColumnDefinitions>
 
             <Label Content="User" HorizontalAlignment="Center"  Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
-            <TextBox HorizontalAlignment="Center"  Grid.Row="0" Grid.Column="1" TextWrapping="NoWrap" VerticalAlignment="Center" Width="250" Text="{Binding User, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }" Cursor="IBeam">
+            <TextBox x:Name="tbuser" HorizontalAlignment="Center"  Grid.Row="0" Grid.Column="1" TextWrapping="NoWrap" VerticalAlignment="Center" Width="250" Text="{Binding User, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True }" Cursor="IBeam">
                 <Validation.ErrorTemplate>
                     <ControlTemplate>
                         <StackPanel>
@@ -78,6 +78,10 @@
             <Label Content="Password" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
 
             <PasswordBox HorizontalAlignment="Center"  Grid.Row="1" Grid.Column="1"  VerticalAlignment="Center" Width="250" Cursor="IBeam" x:Name="PasswordBox">
+
+                <PasswordBox.InputBindings>
+                    <KeyBinding Key="Enter" Command="{Binding LoginCommand}" />
+                </PasswordBox.InputBindings>
 
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="PasswordChanged">
