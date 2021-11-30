@@ -30,8 +30,11 @@ namespace UI.Desktop.Steuer
             { 
                 if (visible)
                 { 
-                    if (this.DataContext is SteuerartenUebersichtViewModel modelUebersicht)
-                        modelUebersicht.LoadData();
+                    if (DataContext is SteuerartenUebersichtViewModel modelUebersicht)
+                    {
+                        modelUebersicht.SetConnection();
+                        _ = modelUebersicht.LoadData();
+                    }
                 }
             }
 

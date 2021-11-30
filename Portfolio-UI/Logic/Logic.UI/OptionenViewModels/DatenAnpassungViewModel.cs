@@ -90,6 +90,7 @@ namespace Aktien.Logic.UI.OptionenViewModels
                 if (GlobalVariables.ServerIsOnline)
                 {
                     RequestIsWorking = true;
+                    SetConnection();
                     HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL+ $"/api/depot/Wertpapier/{id}/BuyInNeuBerechnen");
                     if (resp.IsSuccessStatusCode)
                     {
