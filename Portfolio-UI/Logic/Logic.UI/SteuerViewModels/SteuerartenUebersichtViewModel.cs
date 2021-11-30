@@ -56,7 +56,7 @@ namespace Logic.UI.SteuerViewModels
                     SendInformationMessage("Steuerart gelöscht");
                     base.ExecuteEntfernenCommand();
                 }
-            }           
+            }         
         }
 
         #endregion
