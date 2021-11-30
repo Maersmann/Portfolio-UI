@@ -5,8 +5,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>resource\bank.ico</ApplicationIcon>
-    <AssemblyVersion>4.0.2.0</AssemblyVersion>
-    <Version>4.0.2</Version>
+    <AssemblyVersion>4.0.3.0</AssemblyVersion>
+    <Version>4.0.3</Version>
     <RootNamespace>UI.Desktop</RootNamespace>
     <AssemblyName>Portfolio</AssemblyName>
     <Authors>Rene Märsmann</Authors>
