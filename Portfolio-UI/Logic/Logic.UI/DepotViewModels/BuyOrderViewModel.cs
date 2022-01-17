@@ -26,6 +26,7 @@ using Base.Logic.Core;
 using Base.Logic.Messages;
 using Base.Logic.Types;
 using Base.Logic.Wrapper;
+using Data.Types.SteuerTypes;
 
 namespace Aktien.Logic.UI.DepotViewModels
 {
@@ -35,7 +36,6 @@ namespace Aktien.Logic.UI.DepotViewModels
         private WertpapierTypes typ;    
         private double preisUebersicht;
         private double buyIn;
-        private bool neueOrderNichtGespeichert;
         private double steuern;
         private string anzahl;
         private string preis;
@@ -99,7 +99,7 @@ namespace Aktien.Logic.UI.DepotViewModels
         #region Commands
         private void ExecuteOpenOpenSteuernCommand()
         {
-            Messenger.Default.Send(new OpenSteuernUebersichtMessage(OpenSteuernUebersichtMessageCallback, Data.SteuergruppeID, !neueOrderNichtGespeichert), "BuyOrder");
+            Messenger.Default.Send(new OpenSteuernUebersichtMessage(OpenSteuernUebersichtMessageCallback), "BuyOrder");
         }
         protected async override void ExecuteSaveCommand()
         {
@@ -111,7 +111,6 @@ namespace Aktien.Logic.UI.DepotViewModels
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    neueOrderNichtGespeichert = false;
                     Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Buy-Order gespeichert." }, GetStammdatenTyp());
                     Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());              
                 }
@@ -134,27 +133,6 @@ namespace Aktien.Logic.UI.DepotViewModels
                 }
             }
         }
-
-        protected override async void ExecuteCleanUpCommand()
-        {
-            if (Data.SteuergruppeID.HasValue && state.Equals(State.Neu) && neueOrderNichtGespeichert)
-            {
-                if (GlobalVariables.ServerIsOnline)
-                {
-                    RequestIsWorking = true;
-                    HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL + $"/api/dividendeErhalten/Steuern/{Data.SteuergruppeID}");
-                    RequestIsWorking = false;
-                    if (!resp.IsSuccessStatusCode)
-                    {
-                        SendExceptionMessage(await resp.Content.ReadAsStringAsync());
-                        return;
-                    }
-
-                }
-            }
-            base.ExecuteCleanUpCommand();
-        }
-
 
         private bool CanExecuteOpenOpenSteuernCommand()
         {
@@ -400,24 +378,11 @@ namespace Aktien.Logic.UI.DepotViewModels
         #endregion
 
         #region Callbacks
-        private async void OpenSteuernUebersichtMessageCallback(bool confirmed, int? id)
+        private void OpenSteuernUebersichtMessageCallback(bool confirmed, IList<SteuerModel> steuern)
         {
             if (confirmed)
             {
-                Data.SteuergruppeID = id;
-                if (GlobalVariables.ServerIsOnline)
-                {
-                    RequestIsWorking = true;
-                    HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/Steuern?steuergruppeid={id}");
-                    if (resp.IsSuccessStatusCode)
-                    {
-                        var SteuernResponse = await resp.Content.ReadAsAsync<PagedResponse<ObservableCollection<SteuerModel>>>();
-                        Data.Steuer.Steuern = SteuernResponse.Data;
-                    }                     
-                    else
-                        SendExceptionMessage(await resp.Content.ReadAsStringAsync());
-                    RequestIsWorking = false;
-                }
+                Data.Steuer.Steuern = steuern;
                 BerechneWerte();
             }
         }
@@ -426,9 +391,8 @@ namespace Aktien.Logic.UI.DepotViewModels
         public override void Cleanup()
         {
             DeleteValidateInfo("Betrag");
-            neueOrderNichtGespeichert = true;
             state = State.Neu;
-            Data = new BuyOrderModel { Steuer = new SteuergruppeModel { Steuern = new List<SteuerModel>() } };
+            Data = new BuyOrderModel { Steuer = new SteuergruppeModel { SteuerHerkunftTyp = SteuerHerkunftTyp.shtOrder, Steuern = new List<SteuerModel>() } };
             KaufTyp = Aktien.Data.Types.WertpapierTypes.KaufTypes.Kauf;
             OrderTyp = Aktien.Data.Types.WertpapierTypes.OrderTypes.Normal;
             Preis = "";

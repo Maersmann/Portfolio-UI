@@ -37,11 +37,8 @@ namespace Aktien.UI.Desktop.Depot
             var view = new SteuernUebersichtView();
             if (view.DataContext is SteuernUebersichtViewModel model)
             {
-                model.IstVerknuepfungGespeichert(!m.SteuergruppeID.HasValue);
-                if (m.SteuergruppeID.HasValue)
-                    model.LoadData(m.SteuergruppeID.Value);
                 model.SetCallback(m.Callback);
-                model.setHerkunftTyp(SteuerHerkunftTyp.shtOrder);
+                model.setSteuern(m.Steuern);
             }
             Window window = new Window
             {

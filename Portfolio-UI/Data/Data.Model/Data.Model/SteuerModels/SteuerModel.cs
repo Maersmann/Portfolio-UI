@@ -15,5 +15,12 @@ namespace Data.Model.SteuerModels
         public Waehrungen Waehrung { get; set; }
         public SteuerartModel Steuerart { get; set; }
         public int SteuergruppeID { get; set; }
+
+
+        public SteuerModel DeepCopy()
+        {
+            SteuerModel othercopy = (SteuerModel)MemberwiseClone();
+            return othercopy;
+        }
     }
 }

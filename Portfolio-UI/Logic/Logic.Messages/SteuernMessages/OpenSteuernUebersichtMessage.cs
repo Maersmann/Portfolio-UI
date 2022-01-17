@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Data.Model.SteuerModels;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,16 +7,18 @@ namespace Logic.Messages.SteuernMessages
 {
     public class OpenSteuernUebersichtMessage
     {
-        public int? SteuergruppeID { get; set; }
+        public Action<bool, IList<SteuerModel>> Callback { get; private set; }
+        public IList<SteuerModel> Steuern { get; set; }
 
-        public Action<bool, int?> Callback { get; private set; }
-        public bool IstVerknuepfungGespeichert { get; set; }
-
-        public OpenSteuernUebersichtMessage(Action<bool, int?> callback, int? steuergruppeID, bool istVerknuepfungGespeichert)
+        public OpenSteuernUebersichtMessage(Action<bool, IList<SteuerModel>> callback)
         {
             Callback = callback;
-            SteuergruppeID = steuergruppeID;
-            IstVerknuepfungGespeichert = istVerknuepfungGespeichert;
+            Steuern = new List<SteuerModel>();
+        }
+        public OpenSteuernUebersichtMessage(Action<bool, IList<SteuerModel>> callback, IList<SteuerModel> steuern)
+        {
+            Callback = callback;
+            Steuern = steuern;
         }
     }
 }

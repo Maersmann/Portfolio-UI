@@ -24,12 +24,9 @@ using Base.Logic.Wrapper;
 
 namespace Logic.UI.SteuerViewModels
 {
-    public class SteuerStammdatenViewModel : ViewModelStammdaten<SteuerModel, StammdatenTypes>, IViewModelStammdaten
+    public class SteuerStammdatenViewModel : ViewModelOfflineStammdaten<SteuerModel, StammdatenTypes>, IViewModelOfflineStammdaten<SteuerModel>
     {
-        private int? steuergruppeid;
-        private SteuerHerkunftTyp herkunfttyp;
         private IList<SteuerartModel> steuerarts;
-        private bool istVerknuepfungGespeichert;
         private string betrag;
 
         public SteuerStammdatenViewModel()
@@ -38,53 +35,25 @@ namespace Logic.UI.SteuerViewModels
             Title = "Informationen Steuer";
         }
 
-        protected async override void ExecuteSaveCommand()
+        protected override void ExecuteSaveCommand()
         {
-            if (GlobalVariables.ServerIsOnline)
-            {
-                RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/Steuern?typ={this.herkunfttyp}&gruppeid={this.steuergruppeid}&istVerknuepfungGespeichert={istVerknuepfungGespeichert}", Data);
-                RequestIsWorking = false;
-
-                if (resp.IsSuccessStatusCode)
-                {
-                    Messenger.Default.Send<StammdatenGespeichertMessage>(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());                
-                    var respObj = await resp.Content.ReadAsAsync<SteuerModel>();
-                    steuergruppeid = respObj.SteuergruppeID;
-                    Messenger.Default.Send(new AktualisiereViewMessage { ID = this.steuergruppeid }, GetStammdatenTyp().ToString()); 
-                    Messenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.steuergruppe.ToString());
-                }
-                else
-                {
-                    SendExceptionMessage(await resp.Content.ReadAsStringAsync());
-                    return;
-                }
-            }
+            Gespeichert = true;
+            newData = Data.DeepCopy();
+            Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
         }
 
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.steuer;
-        public void setGruppeInfos(int? id, SteuerHerkunftTyp typ, bool istVerknuepfungGespeichert)
-        {
-            steuergruppeid = id;
-            herkunfttyp = typ;
-            this.istVerknuepfungGespeichert = istVerknuepfungGespeichert;
-            LoadSteuerArts();
-        }
 
-        public async void ZeigeStammdatenAn(int id)
+
+        public void ZeigeStammdatenAn(SteuerModel data)
         {
+            Data = data;
             RequestIsWorking = true;
-            if (GlobalVariables.ServerIsOnline)
-            {
-                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/Steuern/" + id.ToString());
-                if (resp.IsSuccessStatusCode)
-                    Response = await resp.Content.ReadAsAsync<Response<SteuerModel>>();
-            }
             Waehrung = Data.Waehrung;
             Betrag = Data.Betrag.ToString();
             Optimierung = Data.Optimierung;
-            Steuerart = Data.Steuerart;
             steuerarts.Add(Data.Steuerart);
+            Steuerart = Data.Steuerart;    
             RaisePropertyChanged(nameof(Steuerarts));
             ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             RequestIsWorking = false;
@@ -175,20 +144,17 @@ namespace Logic.UI.SteuerViewModels
 
         public override void Cleanup()
         {
-            istVerknuepfungGespeichert = false;
             state = State.Neu;
             Data = new SteuerModel { Steuerart = new SteuerartModel() };
             Betrag = "";
         }
 
-        private async void LoadSteuerArts()
+        public async void LoadSteuerArts(IList<SteuerartModel> vorhandeneSteuerarts)
         {
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = steuergruppeid.HasValue
-                    ? await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/Steuern/Gruppe/{steuergruppeid.Value}/FreieSteuerArten")
-                    : await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/Steuerarten");
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/Steuerarten");
 
                 if (resp.IsSuccessStatusCode)
                 {
@@ -201,6 +167,12 @@ namespace Logic.UI.SteuerViewModels
                 RequestIsWorking = false;
             }
 
+            vorhandeneSteuerarts.ToList().ForEach(steuerart =>
+            {
+                _ = steuerarts.Remove(steuerarts.First(s => s.ID.Equals(steuerart.ID)));
+            });
+            
+
             RaisePropertyChanged(nameof(Steuerarts));
             ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             if (steuerarts.Count > 0)
@@ -212,6 +184,7 @@ namespace Logic.UI.SteuerViewModels
         protected override bool CanExecuteSaveCommand()
         {
             return base.CanExecuteSaveCommand() && steuerarts.Count > 0;
-        }
+        }       
+
     }
 }

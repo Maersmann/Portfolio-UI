@@ -207,7 +207,10 @@ namespace Aktien.UI.Desktop
 
         private void ReceiceOpenLoginViewMessage()
         {
-            new LoginView().ShowDialog();
+            new LoginView() 
+            {
+                Owner = Application.Current.MainWindow
+            }.ShowDialog();
         }
 
         private void ReceiceOpenKonfigurationViewMessage()

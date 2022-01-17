@@ -13,6 +13,7 @@ using Base.Logic.ViewModels;
 using Base.Logic.Wrapper;
 using Data.Model.DividendeModels;
 using Data.Model.SteuerModels;
+using Data.Types.SteuerTypes;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using Logic.Core.SteuernLogic;
@@ -36,9 +37,6 @@ namespace Aktien.Logic.UI.DividendeViewModels
     {
         private string bestand;
         private string wechselkurs;
-        private bool neueDividendeNichtGespeichert;
-        private bool neueSteuergruppeErstellt;
-        private bool dataGespeichert;
         private double betrag;
         public DividendeErhaltenViewModel()
         {
@@ -76,7 +74,6 @@ namespace Aktien.Logic.UI.DividendeViewModels
                     RundungTyp = Data.RundungArt;
                     DividendeAusgewaehlt(Data.DividendeID, Data.Dividende.Betrag, Data.Dividende.Zahldatum);
                     state = State.Bearbeiten;
-                    neueDividendeNichtGespeichert = false;
                 }
             }
             RequestIsWorking = false;
@@ -235,7 +232,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         private void ExecuteOpenSteuernCommand()
         {
-            Messenger.Default.Send(new OpenSteuernUebersichtMessage(OpenSteuernUebersichtMessageCallback, Data.SteuergruppeID, !neueDividendeNichtGespeichert), "DividendeErhalten");
+            Messenger.Default.Send(new OpenSteuernUebersichtMessage(OpenSteuernUebersichtMessageCallback, Data.Steuer.Steuern), "DividendeErhalten");
         }
 
         protected async override void ExecuteSaveCommand()
@@ -248,8 +245,6 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    neueDividendeNichtGespeichert = false;
-                    dataGespeichert = true;
                     Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
                     Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
@@ -268,24 +263,6 @@ namespace Aktien.Logic.UI.DividendeViewModels
         {
             Messenger.Default.Send(new OpenDividendeProStueckAnpassenMessage { DividendeID = Data.DividendeID,  Umrechnungskurs = Data.Umrechnungskurs.Value });
         }
-        protected override async void ExecuteCleanUpCommand()
-        {         
-            if (neueSteuergruppeErstellt && !dataGespeichert)
-            {
-                if (GlobalVariables.ServerIsOnline)
-                {
-                    RequestIsWorking = true;
-                    HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL + $"/api/dividendeErhalten/Steuern/{Data.SteuergruppeID}");
-                    RequestIsWorking = false;
-                    if (!resp.IsSuccessStatusCode)
-                    {
-                        SendExceptionMessage(await resp.Content.ReadAsStringAsync());
-                        return;
-                    }
-                }
-            }
-            base.ExecuteCleanUpCommand();
-        }
 
         #endregion
 
@@ -297,38 +274,12 @@ namespace Aktien.Logic.UI.DividendeViewModels
                 DividendeAusgewaehlt(id, betrag, date);
             }
         }
-        private async void OpenSteuernUebersichtMessageCallback(bool confirmed, int? id)
+        private void OpenSteuernUebersichtMessageCallback(bool confirmed, IList<SteuerModel> steuern)
         {
             if (confirmed)
             {
-                if (!Data.SteuergruppeID.HasValue)
-                {
-                    neueSteuergruppeErstellt = true;
-                }
-
-                Data.SteuergruppeID = id;
-                Data.Steuer = new SteuergruppeModel { Steuern = new List<SteuerModel>() };
-                if (GlobalVariables.ServerIsOnline)
-                {
-                    RequestIsWorking = true;
-                    HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/Steuern?steuergruppeid={id}");
-                    if (resp.IsSuccessStatusCode)
-                    {
-                        PagedResponse<ObservableCollection<SteuerModel>> SteuernResponse = await resp.Content.ReadAsAsync<PagedResponse<ObservableCollection<SteuerModel>>>();
-                        Data.Steuer.Steuern = SteuernResponse.Data;
-                    }
-                    else
-                    {
-                        SendExceptionMessage("Fehler beim Laden der Steuern");
-                    }
-
-                    RequestIsWorking = false;
-                }
+                Data.Steuer.Steuern = steuern;
                 BerechneGesamtWerte();
-            }
-            else
-            {
-                Data.SteuergruppeID = null;
             }
         }
         #endregion
@@ -358,10 +309,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
         public override void Cleanup()
         {
             betrag = 0;
-            dataGespeichert = false;
-            neueDividendeNichtGespeichert = true;
-            neueSteuergruppeErstellt = false;
-            Data = new DividendeErhaltenStammdatenModel { Steuer = new SteuergruppeModel { Steuern = new List<SteuerModel>() } };
+            Data = new DividendeErhaltenStammdatenModel { Steuer = new SteuergruppeModel { SteuerHerkunftTyp = SteuerHerkunftTyp.shtDividende, Steuern = new List<SteuerModel>() } };
             DividendeText = "";
             DividendeID = -1;
             Bestand = "";
@@ -369,7 +317,6 @@ namespace Aktien.Logic.UI.DividendeViewModels
             state = State.Neu;
             Wechselkurs = null;
             RundungTyp = DividendenRundungTypes.Normal;
-            RaisePropertyChanged();
         }
 
        

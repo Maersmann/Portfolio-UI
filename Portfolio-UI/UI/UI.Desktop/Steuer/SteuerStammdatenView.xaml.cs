@@ -22,7 +22,7 @@ namespace UI.Desktop.Steuer
         public SteuerStammdatenView()
         {
             InitializeComponent();
-            base.RegisterStammdatenGespeichertMessage(StammdatenTypes.steuer);
+            RegisterStammdatenGespeichertMessage(StammdatenTypes.steuer);
         }
     }
 }

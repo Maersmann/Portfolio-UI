@@ -96,7 +96,7 @@ namespace Aktien.Logic.UI
         public DepotUebersichtViewModel DepotUebersicht => ServiceLocator.Current.GetInstance<DepotUebersichtViewModel>();
         public OrderUebersichtViewModel OrderUebersicht => new OrderUebersichtViewModel();
         public AktieUebersichtPageViewModel AktieUebersichtPage => ServiceLocator.Current.GetInstance<AktieUebersichtPageViewModel>();
-        public DividendeErhaltenViewModel DividendeErhalten => ServiceLocator.Current.GetInstance<DividendeErhaltenViewModel>();
+        public DividendeErhaltenViewModel DividendeErhalten => new DividendeErhaltenViewModel();
         public DividendenUebersichtAuswahlViewModel DividendenUebersichtAuswahl => ServiceLocator.Current.GetInstance<DividendenUebersichtAuswahlViewModel>();
         public DividendenAuswahlViewModel DividendenAuswahl => ServiceLocator.Current.GetInstance<DividendenAuswahlViewModel>();
         public DividendeErhaltenUebersichtViewModel DividendeErhaltenUebersicht => ServiceLocator.Current.GetInstance<DividendeErhaltenUebersichtViewModel>();
