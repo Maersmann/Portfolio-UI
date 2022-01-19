@@ -1,8 +1,6 @@
 ﻿using Aktien.Logic.Core;
 using Aktien.Logic.Core.Validierung.Base;
 using Data.Model.AuswertungModels;
-using LiveCharts;
-using LiveCharts.Wpf;
 using Base.Logic.ViewModels;
 using Prism.Commands;
 using System;
@@ -13,6 +11,7 @@ using System.Net.Http;
 using System.Text;
 using System.Windows.Input;
 using Base.Logic.Core;
+using LiveChartsCore.SkiaSharpView;
 
 namespace Logic.UI.AuswertungViewModels
 {
@@ -25,8 +24,7 @@ namespace Logic.UI.AuswertungViewModels
             Title = "Auswertung Steuer je Monat";
             jahrvon = DateTime.Now.Year;
             jahrbis = DateTime.Now.Year;
-            LoadDataCommand = new DelegateCommand(this.ExcecuteLoadDataCommand, this.CanExcecuteLoadDataCommand);
-            Formatter = value => string.Format("{0:N2}€", value);
+            LoadDataCommand = new DelegateCommand(ExcecuteLoadDataCommand, CanExcecuteLoadDataCommand);
         }
 
         private bool CanExcecuteLoadDataCommand()
@@ -42,30 +40,26 @@ namespace Logic.UI.AuswertungViewModels
             {
                 ItemList = await resp.Content.ReadAsAsync<List<SteuerMonatAuswertungModel>>();
 
-                ChartValues<double> values = new ChartValues<double>();
+                IList<double> values = new List<double>();
                 Labels = new string[ItemList.Count];
                 int index = 0;
 
                 ItemList.ToList().ForEach(a =>
                 {
                     values.Add(a.Betrag);
-                    Labels[index] = a.Datum.ToString("MMMM yyyy", CultureInfo.CurrentCulture);
+                    Labels[index] = a.Datum.ToString("MM.yyyy", CultureInfo.CurrentCulture);
                     index++;
-                    if (Math.Abs(a.Betrag) > HighestValue)
-                    {
-                        HighestValue = Math.Abs(a.Betrag);
-                    }
                 });
-                SeriesCollection = new SeriesCollection
-                {
-                    new ColumnSeries{ Values = values, Title="Betrag" }
-                };
+             
+                XAxes.First().Labels = Labels;
+                XAxes.First().Name = "Monat";
+                YAxes.First().Name = "Betrag";
 
-                BerechneSeperator();
+                Series = new ColumnSeries<double>[1] { new ColumnSeries<double> { Values = values, Name = "Betrag", TooltipLabelFormatter = (point) => "Betrag " + point.PrimaryValue.ToString("N2") + "€" } };
 
-                RaisePropertyChanged(nameof(SeriesCollection));
-                RaisePropertyChanged(nameof(Labels));
-                RaisePropertyChanged(nameof(Formatter));
+                RaisePropertyChanged(nameof(Series));
+                RaisePropertyChanged(nameof(XAxes));
+                RaisePropertyChanged(nameof(YAxes));
             }
             RequestIsWorking = false;
         }

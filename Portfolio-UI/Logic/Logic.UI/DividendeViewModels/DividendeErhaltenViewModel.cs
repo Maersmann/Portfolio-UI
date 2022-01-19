@@ -14,7 +14,7 @@ using Base.Logic.Wrapper;
 using Data.Model.DividendeModels;
 using Data.Model.SteuerModels;
 using Data.Types.SteuerTypes;
-using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Logic.Core.SteuernLogic;
 using Logic.Messages.SteuernMessages;

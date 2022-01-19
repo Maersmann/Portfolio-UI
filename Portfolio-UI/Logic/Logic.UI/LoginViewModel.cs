@@ -5,7 +5,7 @@ using Base.Logic.Core;
 using Base.Logic.Messages;
 using Base.Logic.ViewModels;
 using Data.Model.UserModels;
-using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Logic.Messages.Base;
 using Prism.Commands;

@@ -1,7 +1,6 @@
 ﻿using Aktien.Logic.Core.Validierung.Base;
 using Data.Model.AuswertungModels;
-using LiveCharts;
-using LiveCharts.Wpf;
+
 using Base.Logic.ViewModels;
 using Prism.Commands;
 using System;
@@ -14,6 +13,11 @@ using Base.Logic.Core;
 using System.Windows.Data;
 using System.Windows;
 using System.Windows.Controls;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Painting;
+using LiveChartsCore.Measure;
+using SkiaSharp;
 
 namespace Logic.UI.AuswertungViewModels
 {
@@ -21,17 +25,16 @@ namespace Logic.UI.AuswertungViewModels
     {
         private int jahrvon;
         private int jahrbis;
-        private bool bruttoSeriesVisibility;
-        private bool nettoSeriesVisibility;
+        private ColumnSeries<double> nettoSeries;
+        private ColumnSeries<double> bruttoSeries;
         public DividendeEntwicklungMonatlichViewModel()
         {
-            nettoSeriesVisibility = true;
-            bruttoSeriesVisibility = true;
             Title = "Auswertung Dividende je Monat";
             jahrvon = DateTime.Now.Year;
             jahrbis = DateTime.Now.Year;
-            LoadDataCommand = new DelegateCommand(ExcecuteLoadDataCommand, CanExcecuteLoadDataCommand);
-            Formatter = value => string.Format("{0:N2}€", value);
+            LoadDataCommand = new DelegateCommand(ExcecuteLoadDataCommand, CanExcecuteLoadDataCommand);     
+            nettoSeries = new ColumnSeries<double>();
+            bruttoSeries = new ColumnSeries<double>();
         }
 
         private bool CanExcecuteLoadDataCommand()
@@ -47,8 +50,8 @@ namespace Logic.UI.AuswertungViewModels
             {
                 ItemList = await resp.Content.ReadAsAsync<List<DividendeEntwicklungMonatlichModel>>();
 
-                ChartValues<double> NettoChart = new ChartValues<double>();
-                ChartValues<double> BruttoChart = new ChartValues<double>();
+                IList<double> NettoChart = new List<double>();
+                IList<double> BruttoChart = new List<double>();
                 Labels = new string[ItemList.Count];
                 int index = 0;
                 
@@ -56,58 +59,35 @@ namespace Logic.UI.AuswertungViewModels
                 {
                     NettoChart.Add(a.Netto);
                     BruttoChart.Add(a.Brutto);
-                    if(a.Brutto > HighestValue)
-                    {
-                        HighestValue = a.Brutto;
-                    }
-                    Labels[index] = a.Datum.ToString("MMMM yyyy", CultureInfo.CurrentCulture);
+                    Labels[index] = a.Datum.ToString("MM.yyyy", CultureInfo.CurrentCulture);
                     index++;
                 });
 
-                Binding NettoSeriesVisbilityBinding = new Binding()
-                {
-                    Source = this,
-                    Path = new PropertyPath(nameof(NettoSeriesVisibility)),
-                    Converter = new BooleanToVisibilityConverter(),
-                    Mode = BindingMode.OneWay,
-                };
-                Binding BruttoSeriesVisbilityBinding = new Binding()
-                {
-                    Source = this,
-                    Path = new PropertyPath(nameof(BruttoSeriesVisibility)),
-                    Converter = new BooleanToVisibilityConverter(),
-                    Mode = BindingMode.OneWay,
-                };
-
-                var NettoSeries = new ColumnSeries
+                nettoSeries = new ColumnSeries<double>
                 {
                     Values = NettoChart,
-                    Title = "Netto",
+                    Name = "Netto",
+                    TooltipLabelFormatter = (point) => "Netto " + point.PrimaryValue.ToString("N2") + "€"
                 };
-                var BruttoSeries = new ColumnSeries
+                bruttoSeries = new ColumnSeries<double>
                 {
                     Values = BruttoChart,
-                    Title = "Brutto"
+                    Name = "Brutto",
+                    TooltipLabelFormatter = (point) => "Brutto " + point.PrimaryValue.ToString("N2") + "€"
                 };
 
-                NettoSeries.SetBinding(UIElement.VisibilityProperty, NettoSeriesVisbilityBinding);
-                BruttoSeries.SetBinding(UIElement.VisibilityProperty, BruttoSeriesVisbilityBinding);
+                XAxes.First().Labels = Labels;
+                XAxes.First().Name = "Monat";
+                YAxes.First().Name = "Betrag";
+                Series = new ColumnSeries<double>[2] { bruttoSeries, nettoSeries };
 
-                SeriesCollection = new SeriesCollection
-                {
-                    NettoSeries,
-                    BruttoSeries
-                };
-
-                BerechneSeperator();
-
-                RaisePropertyChanged(nameof(SeriesCollection));
-                RaisePropertyChanged(nameof(Labels));
-                RaisePropertyChanged(nameof(Formatter));
+                RaisePropertyChanged(nameof(Series));
+                RaisePropertyChanged(nameof(XAxes));
+                RaisePropertyChanged(nameof(YAxes));
             }
             RequestIsWorking = false;
         }
-
+   
 
         #region Bindings
 
@@ -137,21 +117,20 @@ namespace Logic.UI.AuswertungViewModels
 
         public bool BruttoSeriesVisibility
         {
-            get { return bruttoSeriesVisibility; }
+            get { return bruttoSeries.IsVisible; }
             set
             {
-                bruttoSeriesVisibility = value;
-                RaisePropertyChanged();
+                bruttoSeries.IsVisible = value;
+                RaisePropertyChanged(nameof(Series));
             }
         }
-
         public bool NettoSeriesVisibility
         {
-            get { return nettoSeriesVisibility; }
+            get { return nettoSeries.IsVisible; }
             set
             {
-                nettoSeriesVisibility = value;
-                RaisePropertyChanged();
+                nettoSeries.IsVisible = value;
+                RaisePropertyChanged(nameof(Series));
             }
         }
         #endregion

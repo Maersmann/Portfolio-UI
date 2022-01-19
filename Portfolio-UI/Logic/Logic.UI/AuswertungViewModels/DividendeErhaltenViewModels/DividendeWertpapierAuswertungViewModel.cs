@@ -3,8 +3,9 @@ using Aktien.Logic.Core.Validierung.Base;
 using Base.Logic.Core;
 using Base.Logic.ViewModels;
 using Data.Model.AuswertungModels;
-using LiveCharts;
-using LiveCharts.Wpf;
+using LiveChartsCore;
+using LiveChartsCore.Kernel;
+using LiveChartsCore.SkiaSharpView;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -29,8 +30,7 @@ namespace Logic.UI.AuswertungViewModels
             Title = "Auswertung Dividende je Wertpapier";
             jahrvon = DateTime.Now.Year;
             jahrbis = DateTime.Now.Year;
-            Formatter = value => string.Format("{0:N2}€", value);
-            LoadDataCommand = new DelegateCommand(this.ExcecuteLoadDataCommand, this.CanExcecuteLoadDataCommand);
+            LoadDataCommand = new DelegateCommand(ExcecuteLoadDataCommand, CanExcecuteLoadDataCommand);
         }
 
         private bool CanExcecuteLoadDataCommand()
@@ -47,21 +47,18 @@ namespace Logic.UI.AuswertungViewModels
                 if (resp.IsSuccessStatusCode)
                     ItemList = await resp.Content.ReadAsAsync<ObservableCollection<DividendeWertpapierAuswertungModel>>();
 
-                ChartValues<double> values = new ChartValues<double>();
+                PieSeries<double>[] series = new PieSeries<double>[ItemList.Count];
 
-                static string labelPoint(ChartPoint chartPoint) =>
-                    string.Format("{0:N2}€ ({1:P})", chartPoint.Y, chartPoint.Participation);
-
-                SeriesCollection = new SeriesCollection();
-
+                int index = 0;
                 ItemList.ToList().ForEach(a =>
                 {
-                    SeriesCollection.Add(new PieSeries { Values = new ChartValues<double> { a.Betrag } , Title = a.Bezeichnung, DataLabels = true, LabelPoint = labelPoint });
+                    series.SetValue(new PieSeries<double> { Values = new double[] { a.Betrag }, Name = a.Bezeichnung, TooltipLabelFormatter = (point) => string.Format("{0} {1:N2}€ ", a.Bezeichnung, point.PrimaryValue) }, index);
+                    index++;
                 });
-               
 
-                RaisePropertyChanged(nameof(SeriesCollection));
-                RaisePropertyChanged(nameof(Formatter));
+                Series = series;
+
+                RaisePropertyChanged(nameof(Series));
             }
             RequestIsWorking = false;
             RaisePropertyChanged("ItemList");

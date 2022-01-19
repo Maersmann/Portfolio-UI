@@ -3,10 +3,7 @@ using Aktien.Logic.Core.Validierung.Base;
 using Aktien.Logic.Messages.AuswahlMessages;
 using Data.Model.AuswertungModels;
 using Data.Types.AuswertungTypes;
-using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
-using LiveCharts;
-using LiveCharts.Wpf;
 using Base.Logic.ViewModels;
 using Prism.Commands;
 using System;
@@ -20,6 +17,8 @@ using Base.Logic.Core;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Controls;
+using LiveChartsCore.SkiaSharpView;
+using GalaSoft.MvvmLight.Command;
 
 namespace Logic.UI.AuswertungViewModels
 {
@@ -28,12 +27,12 @@ namespace Logic.UI.AuswertungViewModels
         private int jahrvon;
         private int jahrbis;
         private int wertpapierID;
-        private bool bruttoSeriesVisibility;
-        private bool nettoSeriesVisibility;
+        private LineSeries<double> nettoSeries;
+        private LineSeries<double> bruttoSeries;
         public DividendeWertpapierEntwicklungMonatlichViewModel()
         {
-            nettoSeriesVisibility = true;
-            bruttoSeriesVisibility = true;
+            nettoSeries = new LineSeries<double>();
+            bruttoSeries = new LineSeries<double>();
             Data = new DividendeWertpapierEntwicklungMonatlichModel();
             Title = "Auswertung Entwicklung Dividende Wertpapier";
             SecondTitle = "";
@@ -41,7 +40,6 @@ namespace Logic.UI.AuswertungViewModels
             jahrbis = DateTime.Now.Year;
             wertpapierID = 0;
             AuswahlCommand = new RelayCommand(() => ExcecuteAuswahlCommand());
-            Formatter = value => string.Format("{0:N2}€", value);
         }
 
         private void ExcecuteAuswahlCommand()
@@ -57,8 +55,8 @@ namespace Logic.UI.AuswertungViewModels
             {
                 Data = await resp.Content.ReadAsAsync<DividendeWertpapierEntwicklungMonatlichModel>();
 
-                ChartValues<double> NettoChart = new ChartValues<double>();
-                ChartValues<double> BruttoChart = new ChartValues<double>();
+                IList<double> NettoChart = new List<double>();
+                IList<double> BruttoChart = new List<double>();
                 Labels = new string[Data.Betraege.Count];
                 int index = 0;
 
@@ -68,54 +66,29 @@ namespace Logic.UI.AuswertungViewModels
                     BruttoChart.Add(a.Brutto);
                     Labels[index] = a.Datum.ToString("MMMM yyyy", CultureInfo.CurrentCulture);
                     index++;
-
-                    if (a.Brutto > HighestValue)
-                    {
-                        HighestValue = a.Brutto;
-                    }
                 });
 
-                Binding NettoSeriesVisbilityBinding = new Binding()
-                {
-                    Source = this,
-                    Path = new PropertyPath(nameof(NettoSeriesVisibility)),
-                    Converter = new BooleanToVisibilityConverter(),
-                    Mode = BindingMode.OneWay,
-                };
-                Binding BruttoSeriesVisbilityBinding = new Binding()
-                {
-                    Source = this,
-                    Path = new PropertyPath(nameof(BruttoSeriesVisibility)),
-                    Converter = new BooleanToVisibilityConverter(),
-                    Mode = BindingMode.OneWay,
-                };
-
-                var NettoSeries = new LineSeries
+                nettoSeries = new LineSeries<double>
                 {
                     Values = NettoChart,
-                    Title = "Netto",
+                    Name = "Netto",
+                    TooltipLabelFormatter = (point) => "Netto " + point.PrimaryValue.ToString("N2") + "€"
                 };
-                var BruttoSeries = new LineSeries
+                bruttoSeries = new LineSeries<double>
                 {
                     Values = BruttoChart,
-                    Title = "Brutto"
+                    Name = "Brutto",
+                    TooltipLabelFormatter = (point) => "Brutto " + point.PrimaryValue.ToString("N2") + "€"
                 };
 
-                NettoSeries.SetBinding(UIElement.VisibilityProperty, NettoSeriesVisbilityBinding);
-                BruttoSeries.SetBinding(UIElement.VisibilityProperty, BruttoSeriesVisbilityBinding);
+                XAxes.First().Labels = Labels;
+                XAxes.First().Name = "Monat";
+                YAxes.First().Name = "Betrag";
+                Series = new LineSeries<double>[2] { bruttoSeries, nettoSeries };
 
-                SeriesCollection = new SeriesCollection
-                {
-                    NettoSeries,
-                    BruttoSeries
-                };
-
-                BerechneSeperator();
-
-                RaisePropertyChanged(nameof(Data));
-                RaisePropertyChanged(nameof(SeriesCollection));
-                RaisePropertyChanged(nameof(Labels));
-                RaisePropertyChanged(nameof(Formatter)); 
+                RaisePropertyChanged(nameof(Series));
+                RaisePropertyChanged(nameof(XAxes));
+                RaisePropertyChanged(nameof(YAxes));
             }
             RequestIsWorking = false;
         }
@@ -155,21 +128,21 @@ namespace Logic.UI.AuswertungViewModels
         public string SecondTitle { get; set; }
         public bool BruttoSeriesVisibility
         {
-            get { return bruttoSeriesVisibility; }
+            get { return bruttoSeries.IsVisible; }
             set
             {
-                bruttoSeriesVisibility = value;
-                RaisePropertyChanged();
+                bruttoSeries.IsVisible = value;
+                RaisePropertyChanged(nameof(Series));
             }
         }
 
         public bool NettoSeriesVisibility
         {
-            get { return nettoSeriesVisibility; }
+            get { return nettoSeries.IsVisible; }
             set
             {
-                nettoSeriesVisibility = value;
-                RaisePropertyChanged();
+                nettoSeries.IsVisible = value;
+                RaisePropertyChanged(nameof(Series));
             }
         }
         #endregion

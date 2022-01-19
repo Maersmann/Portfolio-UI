@@ -4,7 +4,7 @@ using Aktien.Logic.Messages.Base;
 using Base.Logic.Core;
 using Base.Logic.Messages;
 using Base.Logic.ViewModels;
-using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Logic.Messages.Base;
 using System;

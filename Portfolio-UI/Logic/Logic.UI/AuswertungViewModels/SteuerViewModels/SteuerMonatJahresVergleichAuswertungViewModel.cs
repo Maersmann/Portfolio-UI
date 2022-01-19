@@ -1,9 +1,6 @@
 ﻿using Aktien.Logic.Core;
 using Aktien.Logic.Core.Validierung.Base;
 using Data.Model.AuswertungModels;
-using LiveCharts;
-using LiveCharts.Definitions.Series;
-using LiveCharts.Wpf;
 using Base.Logic.ViewModels;
 using Prism.Commands;
 using System;
@@ -14,6 +11,7 @@ using System.Net.Http;
 using System.Text;
 using System.Windows.Input;
 using Base.Logic.Core;
+using LiveChartsCore.SkiaSharpView;
 
 namespace Logic.UI.AuswertungViewModels
 {
@@ -27,7 +25,6 @@ namespace Logic.UI.AuswertungViewModels
             jahrvon = DateTime.Now.Year;
             jahrbis = DateTime.Now.Year;
             LoadDataCommand = new DelegateCommand(this.ExcecuteLoadDataCommand, this.CanExcecuteLoadDataCommand);
-            Formatter = value => string.Format("{0:N2}€", value);
         }
 
         private bool CanExcecuteLoadDataCommand()
@@ -44,24 +41,25 @@ namespace Logic.UI.AuswertungViewModels
                 ItemList = await resp.Content.ReadAsAsync<List<SteuerMonatJahresVergleichAuswertungModel>>();
 
                 Labels = new string[12];
-                SeriesCollection = new SeriesCollection();
+                ColumnSeries<double>[] series = new ColumnSeries<double>[ItemList.Count];
+                int index = 0;
                 ItemList.ToList().ForEach(item =>
                 {
-                    ColumnSeries coloumn = new ColumnSeries
+                    ColumnSeries<double> coloumn = new ColumnSeries<double>
                     {
-                        Title = item.Jahr.ToString(),
-                        Values = new ChartValues<double>()
+                        Name = item.Jahr.ToString(),
+                        Values = new List<double>(),
+                        TooltipLabelFormatter = (point) => item.Jahr + " " + point.PrimaryValue.ToString("N2") + "€"
                     };
+
+                    var betraege = new List<double>();
                     item.Monatswerte.ToList().ForEach(mw =>
                     {
-                        coloumn.Values.Add(mw.Betrag);
-                        if (Math.Abs(mw.Betrag) > HighestValue)
-                        {
-                            HighestValue = Math.Abs(mw.Betrag);
-                        }
+                        betraege.Add(mw.Betrag);
                     });
-                    SeriesCollection.Add(coloumn);
-
+                    coloumn.Values = betraege;
+                    series.SetValue(coloumn, index);
+                    index++;
                 });
 
                 for (int monat = 1; monat <= 12; monat++)
@@ -69,11 +67,16 @@ namespace Logic.UI.AuswertungViewModels
                     Labels[monat - 1] = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(monat);
                 }
 
-                BerechneSeperator();
+                XAxes.First().Labels = Labels;
+                XAxes.First().Name = "Monat";
+                YAxes.First().Name = "Betrag";
 
-                RaisePropertyChanged(nameof(SeriesCollection));
-                RaisePropertyChanged(nameof(Labels));
-                RaisePropertyChanged(nameof(Formatter));
+                Series = series;
+
+                RaisePropertyChanged(nameof(Series));
+                RaisePropertyChanged(nameof(XAxes));
+                RaisePropertyChanged(nameof(YAxes));
+
             }
             RequestIsWorking = false;
         }

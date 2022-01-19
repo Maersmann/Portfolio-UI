@@ -7,7 +7,7 @@ using Base.Logic.Core;
 using Base.Logic.Types;
 using Base.Logic.ViewModels;
 using Data.Model.AuswahlModels;
-using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Prism.Commands;
 using System;

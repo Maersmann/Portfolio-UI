@@ -1,5 +1,5 @@
 ﻿using Aktien.Logic.Messages.AktieMessages;
-using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Generic;
@@ -14,8 +14,8 @@ namespace Aktien.Logic.UI.DepotViewModels.Page
     {
         public DepotUebersichtPageViewModel()
         {
-            ShowDividendenViewCommand = new RelayCommand(this.ExecuteShowShowDividendenViewCommand);
-            ShowOrderHistoryViewCommand = new RelayCommand(this.ExecuteShowOrderHistoryViewCommand);
+            ShowDividendenViewCommand = new RelayCommand(ExecuteShowShowDividendenViewCommand);
+            ShowOrderHistoryViewCommand = new RelayCommand(ExecuteShowOrderHistoryViewCommand);
         }
 
         private void ExecuteShowShowDividendenViewCommand()
