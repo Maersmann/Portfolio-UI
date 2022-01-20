@@ -158,6 +158,10 @@ namespace Aktien.UI.Desktop
                     if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(SteuerJahresgesamtbetragAuswertungView).Name))
                         Container.NavigationService.Navigate(new SteuerJahresgesamtbetragAuswertungView());
                     break;
+                case ViewType.viewSteuerMonatgesamtbetragAuswertung:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(SteuerMonatgesamtbetragAuswertungView).Name))
+                        Container.NavigationService.Navigate(new SteuerMonatgesamtbetragAuswertungView());
+                    break;
                 default:
                     break;
 

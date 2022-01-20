@@ -42,6 +42,7 @@ namespace Aktien.Logic.UI
             OpenDividendenErhaltenImMonatCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewOpenDividendenErhaltenImMonat));
             OpenOrderBuchCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewOpenOrderBuch));
             OpenSteuerJahresgesamtbetragAuswertungCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSteuerJahresgesamtbetragAuswertung));
+            OpenSteuerMonatgesamtbetragAuswertungCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSteuerMonatgesamtbetragAuswertung));
 
             Messenger.Default.Register<AktualisiereBerechtigungenMessage>(this, m => ReceiveOpenViewMessage());
         }
@@ -64,6 +65,7 @@ namespace Aktien.Logic.UI
         public ICommand OpenDividendenErhaltenImJahrCommand { get; private set; }
         public ICommand OpenOrderBuchCommand { get; private set; }
         public ICommand OpenSteuerJahresgesamtbetragAuswertungCommand { get; private set; }
+        public ICommand OpenSteuerMonatgesamtbetragAuswertungCommand { get; private set; }
         public bool MenuIsEnabled => GlobalVariables.ServerIsOnline;
 
         private void ExecuteOpenViewCommand(ViewType viewType)

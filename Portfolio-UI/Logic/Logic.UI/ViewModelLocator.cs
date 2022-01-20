@@ -87,6 +87,7 @@ namespace Aktien.Logic.UI
             SimpleIoc.Default.Register<SteuerartenUebersichtViewModel>();
             SimpleIoc.Default.Register<BackendSettingsViewModel>();
             SimpleIoc.Default.Register<SteuerJahresgesamtbetragAuswertungViewModel>();
+            SimpleIoc.Default.Register<SteuerMonatgesamtbetragAuswertungViewModel>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
@@ -138,6 +139,7 @@ namespace Aktien.Logic.UI
         public OrderBuchViewModel OrderBuch => new OrderBuchViewModel();
         public LoginViewModel Login => new LoginViewModel();
         public SteuerJahresgesamtbetragAuswertungViewModel SteuerJahresgesamtbetragAuswertung => new SteuerJahresgesamtbetragAuswertungViewModel();
+        public SteuerMonatgesamtbetragAuswertungViewModel SteuerMonatgesamtbetragAuswertung => new SteuerMonatgesamtbetragAuswertungViewModel();
         public static void Cleanup()
         {
 

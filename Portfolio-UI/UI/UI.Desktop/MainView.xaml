@@ -91,7 +91,8 @@
             </Fluent:RibbonTabItem>
             <Fluent:RibbonTabItem Header="Steuern"  ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White">
                 <Fluent:RibbonGroupBox Header="Gesamt" >
-                    <Fluent:Button Header="Jahr" LargeIcon="/resource/book-open-variant.png"  Command="{Binding OpenSteuerJahresgesamtbetragAuswertungCommand}" Width="100" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
+                    <Fluent:Button Header="Jahr" LargeIcon="/resource/book-open-variant.png"  Command="{Binding OpenSteuerJahresgesamtbetragAuswertungCommand}" Width="80" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
+                    <Fluent:Button Header="Monat" LargeIcon="/resource/book-open-outline.png"  Command="{Binding OpenSteuerMonatgesamtbetragAuswertungCommand}" Width="80" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="Steuerarten" >
                     <Fluent:Button Header="Monatsbeträge" LargeIcon="/resource/chart-bell-curve-cumulative.png"  Command="{Binding OpenSteuerartMonatAuswertungCommand}" Width="100" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
