@@ -35,6 +35,7 @@ using Base.Logic.Types;
 using UI.Desktop.Auswertung.DividendeErhalten;
 using UI.Desktop.Depot;
 using UI.Desktop;
+using UI.Desktop.Auswertung.Steuer;
 
 namespace Aktien.UI.Desktop
 {
@@ -152,6 +153,10 @@ namespace Aktien.UI.Desktop
                 case ViewType.viewOpenOrderBuch:
                     if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(OrderBuchView).Name))
                         Container.NavigationService.Navigate(new OrderBuchView());
+                    break;
+                case ViewType.viewSteuerJahresgesamtbetragAuswertung:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(SteuerJahresgesamtbetragAuswertungView).Name))
+                        Container.NavigationService.Navigate(new SteuerJahresgesamtbetragAuswertungView());
                     break;
                 default:
                     break;

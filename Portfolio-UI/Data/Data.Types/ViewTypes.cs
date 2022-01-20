@@ -35,7 +35,8 @@ namespace Aktien.Data.Types
         viewOpenDividendeWertpapierEntwicklungAuswertung,
         viewOpenDividendenErhaltenImJahr,
         viewOpenDividendenErhaltenImMonat,
-        viewOpenOrderBuch
+        viewOpenOrderBuch,
+        viewSteuerJahresgesamtbetragAuswertung
     }
 
 }

@@ -19,6 +19,7 @@
     <None Remove="resource\bank.ico" />
     <None Remove="resource\bearbeiten.png" />
     <None Remove="resource\book-open-blank-variant.png" />
+    <None Remove="resource\book-open-variant.png" />
     <None Remove="resource\calendar-month-outline.png" />
     <None Remove="resource\calendar-star.png" />
     <None Remove="resource\chart-areaspline.png" />
@@ -42,6 +43,7 @@
     <Resource Include="resource\bank.ico" />
     <Resource Include="resource\bearbeiten.png" />
     <Resource Include="resource\book-open-blank-variant.png" />
+    <Resource Include="resource\book-open-variant.png" />
     <Resource Include="resource\calendar-month-outline.png" />
     <Resource Include="resource\calendar-star.png" />
     <Resource Include="resource\chart-areaspline.png" />
