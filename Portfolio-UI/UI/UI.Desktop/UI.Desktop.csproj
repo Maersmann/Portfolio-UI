@@ -36,6 +36,7 @@
     <None Remove="resource\etf.png" />
     <None Remove="resource\gesamt.png" />
     <None Remove="resource\plus-minus-variant.png" />
+    <None Remove="resource\vector-polyline.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -61,6 +62,7 @@
     <Resource Include="resource\etf.png" />
     <Resource Include="resource\gesamt.png" />
     <Resource Include="resource\plus-minus-variant.png" />
+    <Resource Include="resource\vector-polyline.png" />
   </ItemGroup>
 
   <ItemGroup>

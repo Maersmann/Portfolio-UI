@@ -88,6 +88,9 @@
                     <Fluent:Button Header="Monatliche Entwicklung" LargeIcon="/resource/chart-line.png"  Command="{Binding OpenDivideneMonatAuswertungCommand}" Width="100" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                     <Fluent:Button Header="Monatlich Jahresvergleich" LargeIcon="/resource/chart-bar.png"  Command="{Binding OpenDivideneMonatJahresvergleichAuswertungCommand}" Width="100" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                   </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Summiert" >
+                    <Fluent:Button Header="Gesamt" LargeIcon="/resource/vector-polyline.png"  Command="{Binding OpenDividendeGesamtentwicklungSummiertCommand}" Width="100" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
             <Fluent:RibbonTabItem Header="Steuern"  ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White">
                 <Fluent:RibbonGroupBox Header="Gesamt" >

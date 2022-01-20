@@ -162,6 +162,10 @@ namespace Aktien.UI.Desktop
                     if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(SteuerMonatgesamtbetragAuswertungView).Name))
                         Container.NavigationService.Navigate(new SteuerMonatgesamtbetragAuswertungView());
                     break;
+                case ViewType.viewDividendeGesamtentwicklungSummiert:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(DividendeGesamtentwicklungSummiertView).Name))
+                        Container.NavigationService.Navigate(new DividendeGesamtentwicklungSummiertView());
+                    break;
                 default:
                     break;
 
