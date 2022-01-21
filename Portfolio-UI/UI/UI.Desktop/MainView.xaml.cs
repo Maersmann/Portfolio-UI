@@ -170,6 +170,10 @@ namespace Aktien.UI.Desktop
                     if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(DividendeJahresentwicklungSummiertView).Name))
                         Container.NavigationService.Navigate(new DividendeJahresentwicklungSummiertView());
                     break;
+                case ViewType.viewDividendeMonatentwicklungSummiert:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(DividendeMonatentwicklungSummiertView).Name))
+                        Container.NavigationService.Navigate(new DividendeMonatentwicklungSummiertView());
+                    break;
                 default:
                     break;
 

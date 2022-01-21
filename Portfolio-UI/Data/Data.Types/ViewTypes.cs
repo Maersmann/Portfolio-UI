@@ -33,7 +33,8 @@
         viewSteuerJahresgesamtbetragAuswertung,
         viewSteuerMonatgesamtbetragAuswertung,
         viewDividendeGesamtentwicklungSummiert,
-        viewDividendeJahresentwicklungSummiert
+        viewDividendeJahresentwicklungSummiert,
+        viewDividendeMonatentwicklungSummiert
     }
 
 }
