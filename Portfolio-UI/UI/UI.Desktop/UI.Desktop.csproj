@@ -37,6 +37,7 @@
     <None Remove="resource\gesamt.png" />
     <None Remove="resource\plus-minus-variant.png" />
     <None Remove="resource\vector-polyline.png" />
+    <None Remove="resource\vector-square.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -63,6 +64,7 @@
     <Resource Include="resource\gesamt.png" />
     <Resource Include="resource\plus-minus-variant.png" />
     <Resource Include="resource\vector-polyline.png" />
+    <Resource Include="resource\vector-square.png" />
   </ItemGroup>
 
   <ItemGroup>

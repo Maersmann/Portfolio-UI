@@ -32,7 +32,8 @@
         viewOpenOrderBuch,
         viewSteuerJahresgesamtbetragAuswertung,
         viewSteuerMonatgesamtbetragAuswertung,
-        viewDividendeGesamtentwicklungSummiert
+        viewDividendeGesamtentwicklungSummiert,
+        viewDividendeJahresentwicklungSummiert
     }
 
 }

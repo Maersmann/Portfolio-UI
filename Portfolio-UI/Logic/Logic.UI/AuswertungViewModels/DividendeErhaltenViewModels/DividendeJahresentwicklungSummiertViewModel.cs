@@ -14,15 +14,15 @@ using System.Windows.Input;
 
 namespace Logic.UI.AuswertungViewModels.DividendeErhaltenViewModels
 {
-    public class DividendeGesamtentwicklungSummiertViewModel : ViewModelAuswertung<DividendeGesamtentwicklungSummiertModel>
+    public class DividendeJahresentwicklungSummiertViewModel : ViewModelAuswertung<DividendeJahresentwicklungSummiertModel>
     {
         private int jahrvon;
         private int jahrbis;
         private LineSeries<double> nettoSeries;
         private LineSeries<double> bruttoSeries;
-        public DividendeGesamtentwicklungSummiertViewModel()
+        public DividendeJahresentwicklungSummiertViewModel()
         {
-            Title = "Auswertung Gesamtdividende Summiert";
+            Title = "Auswertung Dividende Summiert im Jahr";
             jahrvon = DateTime.Now.Year;
             jahrbis = DateTime.Now.Year;
             LoadDataCommand = new DelegateCommand(ExcecuteLoadDataCommand, CanExcecuteLoadDataCommand);
@@ -38,10 +38,10 @@ namespace Logic.UI.AuswertungViewModels.DividendeErhaltenViewModels
         private async void ExcecuteLoadDataCommand()
         {
             RequestIsWorking = true;
-            HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/auswertung/dividendenErhalten/Summiert/Gesamt?jahrVon={jahrvon}&jahrBis={jahrbis}");
+            HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/auswertung/dividendenErhalten/Summiert/Jahr?jahrVon={jahrvon}&jahrBis={jahrbis}");
             if (resp.IsSuccessStatusCode)
             {
-                ItemList = await resp.Content.ReadAsAsync<List<DividendeGesamtentwicklungSummiertModel>>();
+                ItemList = await resp.Content.ReadAsAsync<List<DividendeJahresentwicklungSummiertModel>>();
 
                 IList<double> NettoChart = new List<double>();
                 IList<double> BruttoChart = new List<double>();
@@ -52,7 +52,7 @@ namespace Logic.UI.AuswertungViewModels.DividendeErhaltenViewModels
                 {
                     NettoChart.Add(a.Netto);
                     BruttoChart.Add(a.Brutto);
-                    Labels[index] = a.Datum.ToString("MM.yyyy", CultureInfo.CurrentCulture);
+                    Labels[index] = a.Jahr.ToString();
                     index++;
                 });
 
