@@ -20,7 +20,7 @@ namespace Logic.UI.AuswertungViewModels.SteuerViewModels
         public SteuerMonatgesamtbetragAuswertungViewModel()
         {
             Title = "Auswertung Steuern im Monat";
-            jahrvon = DateTime.Now.Year;
+            jahrvon = GlobalUserVariables.JahrVon;
             jahrbis = DateTime.Now.Year;
             monat = DateTime.Now.Month;
             LoadDataCommand = new DelegateCommand(ExcecuteLoadDataCommand, CanExcecuteLoadDataCommand);

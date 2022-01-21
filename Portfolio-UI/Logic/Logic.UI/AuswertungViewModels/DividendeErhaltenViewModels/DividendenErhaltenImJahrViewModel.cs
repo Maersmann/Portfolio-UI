@@ -19,7 +19,7 @@ namespace Logic.UI.AuswertungViewModels.DividendeErhaltenViewModels
         public DividendenErhaltenImJahrViewModel()
         {
             Title = "Auswertung Dividende Erhalten im Jahr";
-            jahrvon = DateTime.Now.Year;
+            jahrvon = GlobalUserVariables.JahrVon;
             jahrbis = DateTime.Now.Year;
             LoadDataCommand = new DelegateCommand(ExcecuteLoadDataCommand, CanExcecuteLoadDataCommand);
         }

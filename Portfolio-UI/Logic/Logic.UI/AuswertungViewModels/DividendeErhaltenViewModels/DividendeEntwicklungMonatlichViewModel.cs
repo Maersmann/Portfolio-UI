@@ -30,7 +30,7 @@ namespace Logic.UI.AuswertungViewModels
         public DividendeEntwicklungMonatlichViewModel()
         {
             Title = "Auswertung Dividende je Monat";
-            jahrvon = DateTime.Now.Year;
+            jahrvon = GlobalUserVariables.JahrVon;
             jahrbis = DateTime.Now.Year;
             LoadDataCommand = new DelegateCommand(ExcecuteLoadDataCommand, CanExcecuteLoadDataCommand);     
             nettoSeries = new ColumnSeries<double>();

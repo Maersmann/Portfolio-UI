@@ -52,6 +52,8 @@
                             <optionen:BackendSettingsView/>
                         </Fluent:BackstageTabItem>
                         <Fluent:SeparatorTabItem/>
+                        <Fluent:Button Header="Vorbelegung" Command="{Binding OpenVorbelegungCommand}" CommandParameter="{Binding ElementName=Main}"/>
+                        <Fluent:SeparatorTabItem/>
                         <Fluent:BackstageTabItem Header="Info" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" >
                             <option:InfoView />
                         </Fluent:BackstageTabItem>

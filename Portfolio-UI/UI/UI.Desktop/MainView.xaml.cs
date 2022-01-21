@@ -36,6 +36,7 @@ using UI.Desktop.Auswertung.DividendeErhalten;
 using UI.Desktop.Depot;
 using UI.Desktop;
 using UI.Desktop.Auswertung.Steuer;
+using UI.Desktop.User;
 
 namespace Aktien.UI.Desktop
 {
@@ -70,12 +71,12 @@ namespace Aktien.UI.Desktop
 
         private void ReceiveInformationMessage(InformationMessage m)
         {
-            MessageBox.Show(m.Message, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            _ = MessageBox.Show(m.Message, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void ReceiveExceptionMessage(ExceptionMessage m)
         {
-            MessageBox.Show(m.Message, "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
+            _ = MessageBox.Show(m.Message, "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         private void ReceiveOpenViewMessage(OpenViewMessage m)
@@ -205,6 +206,9 @@ namespace Aktien.UI.Desktop
                 case StammdatenTypes.steuerart:
                     view = new SteuerartStammdatenView();
                     break;
+                case StammdatenTypes.vorbelegung:
+                    view = new VorbelegungView();
+                    break;
                 default:
                     break;
             }
@@ -218,17 +222,17 @@ namespace Aktien.UI.Desktop
 
             }
             view.Owner = this;
-            view.ShowDialog();
+            _ = view.ShowDialog();
         }
 
         private void ReceiceOpenStartingViewMessage()
         {
-            new StartingProgrammView().ShowDialog();
+            _ = new StartingProgrammView().ShowDialog();
         }
 
         private void ReceiceOpenLoginViewMessage()
         {
-            new LoginView() 
+            _ = new LoginView()
             {
                 Owner = Application.Current.MainWindow
             }.ShowDialog();

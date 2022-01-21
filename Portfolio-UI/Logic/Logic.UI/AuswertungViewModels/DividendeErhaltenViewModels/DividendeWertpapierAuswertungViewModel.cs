@@ -28,7 +28,7 @@ namespace Logic.UI.AuswertungViewModels
         public DividendeWertpapierAuswertungViewModel()
         {
             Title = "Auswertung Dividende je Wertpapier";
-            jahrvon = DateTime.Now.Year;
+            jahrvon = GlobalUserVariables.JahrVon;
             jahrbis = DateTime.Now.Year;
             LoadDataCommand = new DelegateCommand(ExcecuteLoadDataCommand, CanExcecuteLoadDataCommand);
         }

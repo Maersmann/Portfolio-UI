@@ -22,7 +22,7 @@ namespace Logic.UI.AuswertungViewModels
         public SteuerMonatJahresVergleichAuswertungViewModel()
         {
             Title = "Auswertung Steuerart je Monat - Jahresvergleich";
-            jahrvon = DateTime.Now.Year;
+            jahrvon = GlobalUserVariables.JahrVon;
             jahrbis = DateTime.Now.Year;
             LoadDataCommand = new DelegateCommand(this.ExcecuteLoadDataCommand, this.CanExcecuteLoadDataCommand);
         }

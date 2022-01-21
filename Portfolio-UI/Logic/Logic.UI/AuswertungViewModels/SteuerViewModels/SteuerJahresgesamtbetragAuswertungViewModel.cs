@@ -19,7 +19,7 @@ namespace Logic.UI.AuswertungViewModels.SteuerViewModels
         public SteuerJahresgesamtbetragAuswertungViewModel()
         {
             Title = "Auswertung Steuern im Jahr";
-            jahrvon = DateTime.Now.Year;
+            jahrvon = GlobalUserVariables.JahrVon;
             jahrbis = DateTime.Now.Year;
             LoadDataCommand = new DelegateCommand(ExcecuteLoadDataCommand, CanExcecuteLoadDataCommand);
         }

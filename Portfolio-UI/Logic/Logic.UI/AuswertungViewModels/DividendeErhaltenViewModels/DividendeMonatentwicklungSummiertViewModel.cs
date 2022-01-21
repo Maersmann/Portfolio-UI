@@ -23,7 +23,7 @@ namespace Logic.UI.AuswertungViewModels.DividendeErhaltenViewModels
         public DividendeMonatentwicklungSummiertViewModel()
         {
             Title = "Auswertung Dividende Summiert im Monat";
-            jahrvon = DateTime.Now.Year;
+            jahrvon = GlobalUserVariables.JahrVon;
             jahrbis = DateTime.Now.Year;
             monat = DateTime.Now.Month;
             LoadDataCommand = new DelegateCommand(ExcecuteLoadDataCommand, CanExcecuteLoadDataCommand);

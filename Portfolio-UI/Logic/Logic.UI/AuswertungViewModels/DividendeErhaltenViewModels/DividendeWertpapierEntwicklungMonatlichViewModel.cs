@@ -36,7 +36,7 @@ namespace Logic.UI.AuswertungViewModels
             Data = new DividendeWertpapierEntwicklungMonatlichModel();
             Title = "Auswertung Entwicklung Dividende Wertpapier";
             SecondTitle = "";
-            jahrvon = DateTime.Now.Year;
+            jahrvon = GlobalUserVariables.JahrVon;
             jahrbis = DateTime.Now.Year;
             wertpapierID = 0;
             AuswahlCommand = new RelayCommand(() => ExcecuteAuswahlCommand());

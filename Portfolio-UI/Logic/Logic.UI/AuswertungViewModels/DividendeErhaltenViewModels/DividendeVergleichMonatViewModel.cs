@@ -25,7 +25,7 @@ namespace Logic.UI.AuswertungViewModels
         public DividendeVergleichMonatViewModel()
         {
             Title = "Auswertung Dividende je Monat - Jahresvergleich";
-            jahrvon = DateTime.Now.Year;
+            jahrvon = GlobalUserVariables.JahrVon;
             jahrbis = DateTime.Now.Year;
             typ = DividendenBetragTyp.Netto;
             LoadDataCommand = new DelegateCommand(ExcecuteLoadDataCommand, CanExcecuteLoadDataCommand);

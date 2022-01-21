@@ -18,6 +18,7 @@ namespace Aktien.Data.Types
         dividende,
         steuerart,
         steuer,
-        steuergruppe
+        steuergruppe,
+        vorbelegung
     }
 }

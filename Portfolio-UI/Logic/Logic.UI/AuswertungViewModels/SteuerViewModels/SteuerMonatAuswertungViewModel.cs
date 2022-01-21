@@ -22,7 +22,7 @@ namespace Logic.UI.AuswertungViewModels
         public SteuerMonatAuswertungViewModel()
         {
             Title = "Auswertung Steuer je Monat";
-            jahrvon = DateTime.Now.Year;
+            jahrvon = GlobalUserVariables.JahrVon;
             jahrbis = DateTime.Now.Year;
             LoadDataCommand = new DelegateCommand(ExcecuteLoadDataCommand, CanExcecuteLoadDataCommand);
         }

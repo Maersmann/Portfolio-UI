@@ -13,6 +13,7 @@ using Logic.Core.OptionenLogic;
 using Logic.Messages.Base;
 using Base.Logic.Core;
 using Base.Logic.Messages;
+using Base.Logic.Types;
 
 namespace Aktien.Logic.UI
 {
@@ -46,6 +47,7 @@ namespace Aktien.Logic.UI
             OpenDividendeGesamtentwicklungSummiertCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewDividendeGesamtentwicklungSummiert));
             OpenDividendeJahresentwicklungSummiertCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewDividendeJahresentwicklungSummiert));
             OpenDividendeMonatentwicklungSummiertCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewDividendeMonatentwicklungSummiert));
+            OpenVorbelegungCommand = new RelayCommand(() => ExecuteStammdatenViewCommand(StammdatenTypes.vorbelegung));
 
             Messenger.Default.Register<AktualisiereBerechtigungenMessage>(this, m => ReceiveOpenViewMessage());
         }
@@ -72,11 +74,16 @@ namespace Aktien.Logic.UI
         public ICommand OpenDividendeGesamtentwicklungSummiertCommand { get; set; }
         public ICommand OpenDividendeJahresentwicklungSummiertCommand { get; set; }
         public ICommand OpenDividendeMonatentwicklungSummiertCommand { get; set; }
+        public ICommand OpenVorbelegungCommand { get; set; }
         public bool MenuIsEnabled => GlobalVariables.ServerIsOnline;
 
         private void ExecuteOpenViewCommand(ViewType viewType)
         {
             Messenger.Default.Send(new OpenViewMessage { ViewType = viewType });
+        }
+        private void ExecuteStammdatenViewCommand(StammdatenTypes stammdatenTypes)
+        {
+            Messenger.Default.Send(new BaseStammdatenMessage<StammdatenTypes> { State = State.Bearbeiten, ID = 0, Stammdaten = stammdatenTypes });
         }
         private void ExecuteOpenStartingViewCommand()
         {

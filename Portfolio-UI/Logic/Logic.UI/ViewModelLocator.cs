@@ -35,6 +35,7 @@ using Logic.UI.AuswertungViewModels.DividendeErhaltenViewModels;
 using Logic.UI.DepotViewModels;
 using Logic.UI;
 using Logic.UI.AuswertungViewModels.SteuerViewModels;
+using Logic.UI.UserViewModels;
 
 namespace Aktien.Logic.UI
 {
@@ -90,6 +91,7 @@ namespace Aktien.Logic.UI
             SimpleIoc.Default.Register<SteuerMonatgesamtbetragAuswertungViewModel>();
             SimpleIoc.Default.Register<DividendeGesamtentwicklungSummiertViewModel>();
             SimpleIoc.Default.Register<DividendeJahresentwicklungSummiertViewModel>();
+            SimpleIoc.Default.Register<VorbelegungViewModel>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
@@ -145,6 +147,7 @@ namespace Aktien.Logic.UI
         public DividendeGesamtentwicklungSummiertViewModel DividendeGesamtentwicklungSummiert => new DividendeGesamtentwicklungSummiertViewModel();
         public DividendeJahresentwicklungSummiertViewModel DividendeJahresentwicklungSummiert => new DividendeJahresentwicklungSummiertViewModel();
         public DividendeMonatentwicklungSummiertViewModel DividendeMonatentwicklungSummiert => new DividendeMonatentwicklungSummiertViewModel();
+        public VorbelegungViewModel Vorbelegung => new VorbelegungViewModel();
         public static void Cleanup()
         {
 
