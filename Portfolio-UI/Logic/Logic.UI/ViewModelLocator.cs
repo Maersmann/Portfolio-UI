@@ -92,6 +92,8 @@ namespace Aktien.Logic.UI
             SimpleIoc.Default.Register<DividendeGesamtentwicklungSummiertViewModel>();
             SimpleIoc.Default.Register<DividendeJahresentwicklungSummiertViewModel>();
             SimpleIoc.Default.Register<VorbelegungViewModel>();
+            SimpleIoc.Default.Register<SteuerGesamtentwicklungSummiertViewModel>();
+            SimpleIoc.Default.Register<SteuerartGesamtentwicklungSummiertViewModel>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
@@ -148,6 +150,8 @@ namespace Aktien.Logic.UI
         public DividendeJahresentwicklungSummiertViewModel DividendeJahresentwicklungSummiert => new DividendeJahresentwicklungSummiertViewModel();
         public DividendeMonatentwicklungSummiertViewModel DividendeMonatentwicklungSummiert => new DividendeMonatentwicklungSummiertViewModel();
         public VorbelegungViewModel Vorbelegung => new VorbelegungViewModel();
+        public SteuerGesamtentwicklungSummiertViewModel SteuerGesamtentwicklungSummiert => new SteuerGesamtentwicklungSummiertViewModel();
+        public SteuerartGesamtentwicklungSummiertViewModel SteuerartGesamtentwicklungSummiert => new SteuerartGesamtentwicklungSummiertViewModel();
         public static void Cleanup()
         {
 

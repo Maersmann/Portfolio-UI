@@ -77,6 +77,7 @@
                     <Fluent:Button Header="Orderbuch" LargeIcon="/resource/book-open-blank-variant.png" Command="{Binding OpenOrderBuchCommand}"  Width="70" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
+            
             <Fluent:RibbonTabItem Header="Dividenden Erhalten"  ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White">
                 <Fluent:RibbonGroupBox Header="Listen" >
                     <Fluent:Button Header="Monat" LargeIcon="/resource/calendar-month-outline.png"  Command="{Binding OpenDividendenErhaltenImMonatCommand}" Width="80" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
@@ -96,6 +97,7 @@
                     <Fluent:Button Header="Monat" LargeIcon="/resource/vector-square-open.png"  Command="{Binding OpenDividendeMonatentwicklungSummiertCommand}" Width="80" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
+            
             <Fluent:RibbonTabItem Header="Steuern"  ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White">
                 <Fluent:RibbonGroupBox Header="Gesamt" >
                     <Fluent:Button Header="Jahr" LargeIcon="/resource/book-open-variant.png"  Command="{Binding OpenSteuerJahresgesamtbetragAuswertungCommand}" Width="80" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
@@ -107,6 +109,10 @@
                 <Fluent:RibbonGroupBox Header="Steuern" >
                     <Fluent:Button Header="Monatsbeträge" LargeIcon="/resource/chart-areaspline.png"  Command="{Binding OpenSteuerMonatAuswertungCommand}" Width="100" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
                     <Fluent:Button Header="Monatsbeträge Jahresvergleich" LargeIcon="/resource/chart-histogram.png"  Command="{Binding OpenSteuerMonatJahresvergleichAuswertungCommand}" Width="100" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Summiert" >
+                    <Fluent:Button Header="Steuer" LargeIcon="/resource/vector-polyline.png"  Command="{Binding OpenSteuerGesamtentwicklungSummiertCommand}" Width="80" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                    <Fluent:Button Header="Steuerart" LargeIcon="/resource/vector-square.png"  Command="{Binding OpenSteuerartGesamtentwicklungSummiertCommand}" Width="80" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
         </Fluent:Ribbon>
