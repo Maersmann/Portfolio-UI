@@ -36,7 +36,8 @@
         viewDividendeJahresentwicklungSummiert,
         viewDividendeMonatentwicklungSummiert,
         viewSteuerGesamtentwicklungSummiert,
-        viewSteuerartGesamtentwicklungSummiert
+        viewSteuerartGesamtentwicklungSummiert,
+        viewInvestitionMonatlich
     }
 
 }

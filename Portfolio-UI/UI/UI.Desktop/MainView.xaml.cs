@@ -183,6 +183,10 @@ namespace Aktien.UI.Desktop
                     if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(SteuerartGesamtentwicklungSummiertView).Name))
                         Container.NavigationService.Navigate(new SteuerartGesamtentwicklungSummiertView());
                     break;
+                case ViewType.viewInvestitionMonatlich:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(InvestitionMonatlichView).Name))
+                        Container.NavigationService.Navigate(new InvestitionMonatlichView());
+                    break;
                 default:
                     break;
 

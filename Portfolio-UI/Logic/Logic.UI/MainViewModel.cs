@@ -49,6 +49,7 @@ namespace Aktien.Logic.UI
             OpenDividendeMonatentwicklungSummiertCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewDividendeMonatentwicklungSummiert));
             OpenSteuerGesamtentwicklungSummiertCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSteuerGesamtentwicklungSummiert));
             OpenSteuerartGesamtentwicklungSummiertCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSteuerartGesamtentwicklungSummiert));
+            OpenInvestitionMonatlichCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewInvestitionMonatlich));
 
             OpenVorbelegungCommand = new RelayCommand(() => ExecuteStammdatenViewCommand(StammdatenTypes.vorbelegung));
 
@@ -80,6 +81,9 @@ namespace Aktien.Logic.UI
         public ICommand OpenVorbelegungCommand { get; set; }
         public ICommand OpenSteuerGesamtentwicklungSummiertCommand { get; set; }
         public ICommand OpenSteuerartGesamtentwicklungSummiertCommand { get; set; }
+        public ICommand OpenInvestitionMonatlichCommand { get; set; }
+
+
         public bool MenuIsEnabled => GlobalVariables.ServerIsOnline;
 
         private void ExecuteOpenViewCommand(ViewType viewType)

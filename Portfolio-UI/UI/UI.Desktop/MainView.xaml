@@ -115,6 +115,13 @@
                     <Fluent:Button Header="Steuerart" LargeIcon="/resource/vector-square.png"  Command="{Binding OpenSteuerartGesamtentwicklungSummiertCommand}" Width="80" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
+
+            <Fluent:RibbonTabItem Header="Investition"  ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White">
+                <Fluent:RibbonGroupBox Header="Monatlich" >
+                    <Fluent:Button Header="Einzel" LargeIcon="/resource/chart-bar.png"  Command="{Binding OpenInvestitionMonatlichCommand}" Width="80" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
+                    <Fluent:Button Header="Summiert" LargeIcon="/resource/book-open-outline.png"  Command="{Binding OpenSteuerMonatgesamtbetragAuswertungCommand}" Width="80" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
         </Fluent:Ribbon>
 
         <Grid Grid.Row="1">

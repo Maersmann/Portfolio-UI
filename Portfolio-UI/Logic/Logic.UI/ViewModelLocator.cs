@@ -36,6 +36,7 @@ using Logic.UI.DepotViewModels;
 using Logic.UI;
 using Logic.UI.AuswertungViewModels.SteuerViewModels;
 using Logic.UI.UserViewModels;
+using Logic.UI.AuswertungViewModels.InvestitionViewModels;
 
 namespace Aktien.Logic.UI
 {
@@ -94,6 +95,7 @@ namespace Aktien.Logic.UI
             SimpleIoc.Default.Register<VorbelegungViewModel>();
             SimpleIoc.Default.Register<SteuerGesamtentwicklungSummiertViewModel>();
             SimpleIoc.Default.Register<SteuerartGesamtentwicklungSummiertViewModel>();
+            SimpleIoc.Default.Register<InvestitionMonatlichViewModel>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
@@ -152,6 +154,7 @@ namespace Aktien.Logic.UI
         public VorbelegungViewModel Vorbelegung => new VorbelegungViewModel();
         public SteuerGesamtentwicklungSummiertViewModel SteuerGesamtentwicklungSummiert => new SteuerGesamtentwicklungSummiertViewModel();
         public SteuerartGesamtentwicklungSummiertViewModel SteuerartGesamtentwicklungSummiert => new SteuerartGesamtentwicklungSummiertViewModel();
+        public InvestitionMonatlichViewModel InvestitionMonatlich => new InvestitionMonatlichViewModel();
         public static void Cleanup()
         {
 
