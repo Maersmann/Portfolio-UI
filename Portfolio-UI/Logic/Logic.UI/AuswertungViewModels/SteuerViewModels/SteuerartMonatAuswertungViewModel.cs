@@ -1,9 +1,6 @@
 ﻿using Aktien.Logic.Core;
 using Aktien.Logic.Core.Validierung.Base;
 using Data.Model.AuswertungModels;
-using LiveCharts;
-using LiveCharts.Definitions.Series;
-using LiveCharts.Wpf;
 using Base.Logic.ViewModels;
 using Prism.Commands;
 using System;
@@ -14,6 +11,8 @@ using System.Net.Http;
 using System.Text;
 using System.Windows.Input;
 using Base.Logic.Core;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore;
 
 namespace Logic.UI.AuswertungViewModels
 {
@@ -24,10 +23,9 @@ namespace Logic.UI.AuswertungViewModels
         public SteuerartMonatAuswertungViewModel()
         {
             Title = "Auswertung Steuerart je Monat";
-            jahrvon = DateTime.Now.Year;
+            jahrvon = GlobalUserVariables.JahrVon;
             jahrbis = DateTime.Now.Year;
             LoadDataCommand = new DelegateCommand(ExcecuteLoadDataCommand, CanExcecuteLoadDataCommand);
-            Formatter = value => string.Format("{0:N2}€", value);
         }
 
         private bool CanExcecuteLoadDataCommand()
@@ -44,33 +42,54 @@ namespace Logic.UI.AuswertungViewModels
                 ItemList = await resp.Content.ReadAsAsync<List<SteuerartMonatAuswertungModel>>();
 
                 Labels = new string[ItemList.Count];
+                IList<Betrag> werte = new List<Betrag>();
                 int index = 0;
-                SeriesCollection = new SeriesCollection();
                 ItemList.ToList().ForEach(item =>
                 {
                     item.Steuerarten.ToList().ForEach(steuer =>{
-                        ISeriesView StackedColoumn = SeriesCollection.ToList().Find(series => series.Title.Equals(steuer.Steuerart));
-                        if (StackedColoumn == null)
+                        var wert = werte.ToList().Find(wert => wert.Steuerart.Equals(steuer.Steuerart));
+                        if (wert == null)
                         {
-                            StackedColoumn = new StackedColumnSeries
+                            wert = new Betrag
                             {
-                                Values = new ChartValues<double>(),
-                                Title = steuer.Steuerart
+                                Betraege = new List<double>(),
+                                Steuerart = steuer.Steuerart
                             };
-                            SeriesCollection.Add(StackedColoumn);
+                            werte.Add(wert);
                         }
-
-                        StackedColoumn.Values.Add(steuer.Betrag);
+                        wert.Betraege.Add(steuer.Betrag);
                     });
 
-                    Labels[index] = item.Datum.ToString("MMMM yyyy", CultureInfo.CurrentCulture);
-                    
+                    Labels[index] = item.Datum.ToString("MM.yyyy", CultureInfo.CurrentCulture);                  
                     index++;
                 });
 
-                RaisePropertyChanged(nameof(SeriesCollection));
-                RaisePropertyChanged(nameof(Labels));
-                RaisePropertyChanged(nameof(Formatter));  
+
+                StackedColumnSeries<double>[] series = new StackedColumnSeries<double>[werte.Count];
+                index = 0;
+                werte.ToList().ForEach(wert =>
+                {
+                    var StackedColoumn = new StackedColumnSeries<double>
+                    {
+                        Values = wert.Betraege,
+                        Name = wert.Steuerart,
+                        TooltipLabelFormatter = (point) => wert.Steuerart+ " " + point.PrimaryValue.ToString("N2") + "€"
+                    };
+                    series.SetValue(StackedColoumn, index);
+                    index++;
+                });
+
+                
+
+                XAxes.First().Labels = Labels;
+                XAxes.First().Name = "Monat";
+                YAxes.First().Name = "Betrag";
+
+                Series = series;
+
+                RaisePropertyChanged(nameof(Series));
+                RaisePropertyChanged(nameof(XAxes));
+                RaisePropertyChanged(nameof(YAxes));
             }
             RequestIsWorking = false;
         }
@@ -113,5 +132,11 @@ namespace Logic.UI.AuswertungViewModels
             return isValid;
         }
         #endregion
+    }
+
+
+    class Betrag {
+        public IList<double> Betraege { get; set; }
+        public string Steuerart { get; set; }
     }
 }

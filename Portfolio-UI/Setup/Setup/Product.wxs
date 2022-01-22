@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="Portfolio" Language="1033" Version="4.0.3" Manufacturer="Rene Märsmann" UpgradeCode="127a1ee4-ee7d-4a65-9c41-3a6ec823378f">
+	<Product Id="*" Name="Portfolio" Language="1033" Version="4.1.0" Manufacturer="Rene Märsmann" UpgradeCode="127a1ee4-ee7d-4a65-9c41-3a6ec823378f">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." MigrateFeatures="yes" AllowSameVersionUpgrades="yes" />
@@ -153,11 +153,26 @@
       <Component Id="INIFileParser.dll">
         <File Source="$(var.UI.Desktop.TargetDir)INIFileParser.dll" />
       </Component>
-      <Component Id="LiveCharts.dll">
-        <File Source="$(var.UI.Desktop.TargetDir)LiveCharts.dll" />
+      <Component Id="LiveChartsCore.SkiaSharpView.WPF.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)LiveChartsCore.SkiaSharpView.WPF.dll" />
       </Component>
-      <Component Id="LiveCharts.Wpf.dll">
-        <File Source="$(var.UI.Desktop.TargetDir)LiveCharts.Wpf.dll" />
+      <Component Id="LiveChartsCore.SkiaSharpView.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)LiveChartsCore.SkiaSharpView.dll" />
+      </Component>
+      <Component Id="SkiaSharp.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)SkiaSharp.dll" />
+      </Component>
+      <Component Id="SkiaSharp.Views.Desktop.Common.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)SkiaSharp.Views.Desktop.Common.dll" />
+      </Component>
+      <Component Id="SkiaSharp.Views.WPF.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)SkiaSharp.Views.WPF.dll" />
+      </Component>
+      <Component Id="LiveChartsCore.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)LiveChartsCore.dll" />
+      </Component>
+      <Component Id="libSkiaSharp.dll">
+        <File Source="$(var.UI.Desktop.TargetDir)runtimes\win-x64\native\libSkiaSharp.dll" />
       </Component>
       <Component Id="Base.Logic">
         <File Source="$(var.UI.Desktop.TargetDir)Base.Logic.dll" />

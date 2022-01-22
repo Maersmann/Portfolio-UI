@@ -34,6 +34,9 @@ using Logic.UI.OptionenViewModels;
 using Logic.UI.AuswertungViewModels.DividendeErhaltenViewModels;
 using Logic.UI.DepotViewModels;
 using Logic.UI;
+using Logic.UI.AuswertungViewModels.SteuerViewModels;
+using Logic.UI.UserViewModels;
+using Logic.UI.AuswertungViewModels.InvestitionViewModels;
 
 namespace Aktien.Logic.UI
 {
@@ -85,6 +88,15 @@ namespace Aktien.Logic.UI
             SimpleIoc.Default.Register<DatenAnpassungViewModel>();
             SimpleIoc.Default.Register<SteuerartenUebersichtViewModel>();
             SimpleIoc.Default.Register<BackendSettingsViewModel>();
+            SimpleIoc.Default.Register<SteuerJahresgesamtbetragAuswertungViewModel>();
+            SimpleIoc.Default.Register<SteuerMonatgesamtbetragAuswertungViewModel>();
+            SimpleIoc.Default.Register<DividendeGesamtentwicklungSummiertViewModel>();
+            SimpleIoc.Default.Register<DividendeJahresentwicklungSummiertViewModel>();
+            SimpleIoc.Default.Register<VorbelegungViewModel>();
+            SimpleIoc.Default.Register<SteuerGesamtentwicklungSummiertViewModel>();
+            SimpleIoc.Default.Register<SteuerartGesamtentwicklungSummiertViewModel>();
+            SimpleIoc.Default.Register<InvestitionMonatlichViewModel>();
+            SimpleIoc.Default.Register<InvestitionMonatlichSummiertViewModel>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
@@ -96,7 +108,7 @@ namespace Aktien.Logic.UI
         public DepotUebersichtViewModel DepotUebersicht => ServiceLocator.Current.GetInstance<DepotUebersichtViewModel>();
         public OrderUebersichtViewModel OrderUebersicht => new OrderUebersichtViewModel();
         public AktieUebersichtPageViewModel AktieUebersichtPage => ServiceLocator.Current.GetInstance<AktieUebersichtPageViewModel>();
-        public DividendeErhaltenViewModel DividendeErhalten => ServiceLocator.Current.GetInstance<DividendeErhaltenViewModel>();
+        public DividendeErhaltenViewModel DividendeErhalten => new DividendeErhaltenViewModel();
         public DividendenUebersichtAuswahlViewModel DividendenUebersichtAuswahl => ServiceLocator.Current.GetInstance<DividendenUebersichtAuswahlViewModel>();
         public DividendenAuswahlViewModel DividendenAuswahl => ServiceLocator.Current.GetInstance<DividendenAuswahlViewModel>();
         public DividendeErhaltenUebersichtViewModel DividendeErhaltenUebersicht => ServiceLocator.Current.GetInstance<DividendeErhaltenUebersichtViewModel>();
@@ -135,6 +147,16 @@ namespace Aktien.Logic.UI
         public DividendenErhaltenImJahrViewModel DividendenErhaltenImJahr => new DividendenErhaltenImJahrViewModel();
         public OrderBuchViewModel OrderBuch => new OrderBuchViewModel();
         public LoginViewModel Login => new LoginViewModel();
+        public SteuerJahresgesamtbetragAuswertungViewModel SteuerJahresgesamtbetragAuswertung => new SteuerJahresgesamtbetragAuswertungViewModel();
+        public SteuerMonatgesamtbetragAuswertungViewModel SteuerMonatgesamtbetragAuswertung => new SteuerMonatgesamtbetragAuswertungViewModel();
+        public DividendeGesamtentwicklungSummiertViewModel DividendeGesamtentwicklungSummiert => new DividendeGesamtentwicklungSummiertViewModel();
+        public DividendeJahresentwicklungSummiertViewModel DividendeJahresentwicklungSummiert => new DividendeJahresentwicklungSummiertViewModel();
+        public DividendeMonatentwicklungSummiertViewModel DividendeMonatentwicklungSummiert => new DividendeMonatentwicklungSummiertViewModel();
+        public VorbelegungViewModel Vorbelegung => new VorbelegungViewModel();
+        public SteuerGesamtentwicklungSummiertViewModel SteuerGesamtentwicklungSummiert => new SteuerGesamtentwicklungSummiertViewModel();
+        public SteuerartGesamtentwicklungSummiertViewModel SteuerartGesamtentwicklungSummiert => new SteuerartGesamtentwicklungSummiertViewModel();
+        public InvestitionMonatlichViewModel InvestitionMonatlich => new InvestitionMonatlichViewModel();
+        public InvestitionMonatlichSummiertViewModel InvestitionMonatlichSummiert => new InvestitionMonatlichSummiertViewModel();
         public static void Cleanup()
         {
 

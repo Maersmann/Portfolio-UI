@@ -35,6 +35,9 @@ using Base.Logic.Types;
 using UI.Desktop.Auswertung.DividendeErhalten;
 using UI.Desktop.Depot;
 using UI.Desktop;
+using UI.Desktop.Auswertung.Steuer;
+using UI.Desktop.User;
+using UI.Desktop.Auswertung.Investition;
 
 namespace Aktien.UI.Desktop
 {
@@ -69,12 +72,12 @@ namespace Aktien.UI.Desktop
 
         private void ReceiveInformationMessage(InformationMessage m)
         {
-            MessageBox.Show(m.Message, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            _ = MessageBox.Show(m.Message, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void ReceiveExceptionMessage(ExceptionMessage m)
         {
-            MessageBox.Show(m.Message, "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
+            _ = MessageBox.Show(m.Message, "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         private void ReceiveOpenViewMessage(OpenViewMessage m)
@@ -153,6 +156,42 @@ namespace Aktien.UI.Desktop
                     if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(OrderBuchView).Name))
                         Container.NavigationService.Navigate(new OrderBuchView());
                     break;
+                case ViewType.viewSteuerJahresgesamtbetragAuswertung:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(SteuerJahresgesamtbetragAuswertungView).Name))
+                        Container.NavigationService.Navigate(new SteuerJahresgesamtbetragAuswertungView());
+                    break;
+                case ViewType.viewSteuerMonatgesamtbetragAuswertung:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(SteuerMonatgesamtbetragAuswertungView).Name))
+                        Container.NavigationService.Navigate(new SteuerMonatgesamtbetragAuswertungView());
+                    break;
+                case ViewType.viewDividendeGesamtentwicklungSummiert:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(DividendeGesamtentwicklungSummiertView).Name))
+                        Container.NavigationService.Navigate(new DividendeGesamtentwicklungSummiertView());
+                    break;
+                case ViewType.viewDividendeJahresentwicklungSummiert:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(DividendeJahresentwicklungSummiertView).Name))
+                        Container.NavigationService.Navigate(new DividendeJahresentwicklungSummiertView());
+                    break;
+                case ViewType.viewDividendeMonatentwicklungSummiert:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(DividendeMonatentwicklungSummiertView).Name))
+                        Container.NavigationService.Navigate(new DividendeMonatentwicklungSummiertView());
+                    break;
+                case ViewType.viewSteuerGesamtentwicklungSummiert:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(SteuerGesamtentwicklungSummiertView).Name))
+                        Container.NavigationService.Navigate(new SteuerGesamtentwicklungSummiertView());
+                    break;
+                case ViewType.viewSteuerartGesamtentwicklungSummiert:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(SteuerartGesamtentwicklungSummiertView).Name))
+                        Container.NavigationService.Navigate(new SteuerartGesamtentwicklungSummiertView());
+                    break;
+                case ViewType.viewInvestitionMonatlich:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(InvestitionMonatlichView).Name))
+                        Container.NavigationService.Navigate(new InvestitionMonatlichView());
+                    break;
+                case ViewType.viewInvestitionMonatlichSummiert:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(InvestitionMonatlichSummiertView).Name))
+                        Container.NavigationService.Navigate(new InvestitionMonatlichSummiertView());
+                    break;
                 default:
                     break;
 
@@ -184,6 +223,9 @@ namespace Aktien.UI.Desktop
                 case StammdatenTypes.steuerart:
                     view = new SteuerartStammdatenView();
                     break;
+                case StammdatenTypes.vorbelegung:
+                    view = new VorbelegungView();
+                    break;
                 default:
                     break;
             }
@@ -197,17 +239,20 @@ namespace Aktien.UI.Desktop
 
             }
             view.Owner = this;
-            view.ShowDialog();
+            _ = view.ShowDialog();
         }
 
         private void ReceiceOpenStartingViewMessage()
         {
-            new StartingProgrammView().ShowDialog();
+            _ = new StartingProgrammView().ShowDialog();
         }
 
         private void ReceiceOpenLoginViewMessage()
         {
-            new LoginView().ShowDialog();
+            _ = new LoginView()
+            {
+                Owner = Application.Current.MainWindow
+            }.ShowDialog();
         }
 
         private void ReceiceOpenKonfigurationViewMessage()

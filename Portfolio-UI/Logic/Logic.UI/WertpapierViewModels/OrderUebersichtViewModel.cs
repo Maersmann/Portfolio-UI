@@ -10,7 +10,7 @@ using Base.Logic.Messages;
 using Base.Logic.ViewModels;
 using Base.Logic.Wrapper;
 using Data.Model.WertpapierModels;
-using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Prism.Commands;
 using System;

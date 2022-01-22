@@ -1,6 +1,6 @@
 using Aktien.Data.Types;
 using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Aktien.Logic.Core;
 using Base.Logic.ViewModels;
@@ -13,6 +13,7 @@ using Logic.Core.OptionenLogic;
 using Logic.Messages.Base;
 using Base.Logic.Core;
 using Base.Logic.Messages;
+using Base.Logic.Types;
 
 namespace Aktien.Logic.UI
 {
@@ -41,7 +42,17 @@ namespace Aktien.Logic.UI
             OpenDividendenErhaltenImJahrCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewOpenDividendenErhaltenImJahr));
             OpenDividendenErhaltenImMonatCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewOpenDividendenErhaltenImMonat));
             OpenOrderBuchCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewOpenOrderBuch));
+            OpenSteuerJahresgesamtbetragAuswertungCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSteuerJahresgesamtbetragAuswertung));
+            OpenSteuerMonatgesamtbetragAuswertungCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSteuerMonatgesamtbetragAuswertung));
+            OpenDividendeGesamtentwicklungSummiertCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewDividendeGesamtentwicklungSummiert));
+            OpenDividendeJahresentwicklungSummiertCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewDividendeJahresentwicklungSummiert));
+            OpenDividendeMonatentwicklungSummiertCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewDividendeMonatentwicklungSummiert));
+            OpenSteuerGesamtentwicklungSummiertCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSteuerGesamtentwicklungSummiert));
+            OpenSteuerartGesamtentwicklungSummiertCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSteuerartGesamtentwicklungSummiert));
+            OpenInvestitionMonatlichCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewInvestitionMonatlich));
+            OpenInvestitionMonatlichSummiertCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewInvestitionMonatlichSummiert));
 
+            OpenVorbelegungCommand = new RelayCommand(() => ExecuteStammdatenViewCommand(StammdatenTypes.vorbelegung));
 
             Messenger.Default.Register<AktualisiereBerechtigungenMessage>(this, m => ReceiveOpenViewMessage());
         }
@@ -63,11 +74,27 @@ namespace Aktien.Logic.UI
         public ICommand OpenDividendenErhaltenImMonatCommand { get; private set; }
         public ICommand OpenDividendenErhaltenImJahrCommand { get; private set; }
         public ICommand OpenOrderBuchCommand { get; private set; }
+        public ICommand OpenSteuerJahresgesamtbetragAuswertungCommand { get; private set; }
+        public ICommand OpenSteuerMonatgesamtbetragAuswertungCommand { get; private set; }
+        public ICommand OpenDividendeGesamtentwicklungSummiertCommand { get; set; }
+        public ICommand OpenDividendeJahresentwicklungSummiertCommand { get; set; }
+        public ICommand OpenDividendeMonatentwicklungSummiertCommand { get; set; }
+        public ICommand OpenVorbelegungCommand { get; set; }
+        public ICommand OpenSteuerGesamtentwicklungSummiertCommand { get; set; }
+        public ICommand OpenSteuerartGesamtentwicklungSummiertCommand { get; set; }
+        public ICommand OpenInvestitionMonatlichCommand { get; set; }
+        public ICommand OpenInvestitionMonatlichSummiertCommand { get; set; }
+
+
         public bool MenuIsEnabled => GlobalVariables.ServerIsOnline;
 
         private void ExecuteOpenViewCommand(ViewType viewType)
         {
             Messenger.Default.Send(new OpenViewMessage { ViewType = viewType });
+        }
+        private void ExecuteStammdatenViewCommand(StammdatenTypes stammdatenTypes)
+        {
+            Messenger.Default.Send(new BaseStammdatenMessage<StammdatenTypes> { State = State.Bearbeiten, ID = 0, Stammdaten = stammdatenTypes });
         }
         private void ExecuteOpenStartingViewCommand()
         {

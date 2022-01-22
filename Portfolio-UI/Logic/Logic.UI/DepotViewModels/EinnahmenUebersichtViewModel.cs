@@ -3,7 +3,7 @@ using Aktien.Logic.Core;
 using Aktien.Logic.Core.DepotLogic;
 using Base.Logic.ViewModels;
 using Data.Model.DepotModels;
-using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Generic;

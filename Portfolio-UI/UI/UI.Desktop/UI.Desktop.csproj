@@ -5,8 +5,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>resource\bank.ico</ApplicationIcon>
-    <AssemblyVersion>4.0.3.0</AssemblyVersion>
-    <Version>4.0.3</Version>
+    <AssemblyVersion>4.1.0.0</AssemblyVersion>
+    <Version>4.1.0</Version>
     <RootNamespace>UI.Desktop</RootNamespace>
     <AssemblyName>Portfolio</AssemblyName>
     <Authors>Rene Märsmann</Authors>
@@ -19,6 +19,8 @@
     <None Remove="resource\bank.ico" />
     <None Remove="resource\bearbeiten.png" />
     <None Remove="resource\book-open-blank-variant.png" />
+    <None Remove="resource\book-open-outline.png" />
+    <None Remove="resource\book-open-variant.png" />
     <None Remove="resource\calendar-month-outline.png" />
     <None Remove="resource\calendar-star.png" />
     <None Remove="resource\chart-areaspline.png" />
@@ -32,8 +34,12 @@
     <None Remove="resource\derivate.png" />
     <None Remove="resource\entfernen.png" />
     <None Remove="resource\etf.png" />
+    <None Remove="resource\finance.png" />
     <None Remove="resource\gesamt.png" />
     <None Remove="resource\plus-minus-variant.png" />
+    <None Remove="resource\vector-polyline.png" />
+    <None Remove="resource\vector-square-open.png" />
+    <None Remove="resource\vector-square.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,6 +48,8 @@
     <Resource Include="resource\bank.ico" />
     <Resource Include="resource\bearbeiten.png" />
     <Resource Include="resource\book-open-blank-variant.png" />
+    <Resource Include="resource\book-open-outline.png" />
+    <Resource Include="resource\book-open-variant.png" />
     <Resource Include="resource\calendar-month-outline.png" />
     <Resource Include="resource\calendar-star.png" />
     <Resource Include="resource\chart-areaspline.png" />
@@ -55,14 +63,19 @@
     <Resource Include="resource\derivate.png" />
     <Resource Include="resource\entfernen.png" />
     <Resource Include="resource\etf.png" />
+    <Resource Include="resource\finance.png" />
     <Resource Include="resource\gesamt.png" />
     <Resource Include="resource\plus-minus-variant.png" />
+    <Resource Include="resource\vector-polyline.png" />
+    <Resource Include="resource\vector-square-open.png" />
+    <Resource Include="resource\vector-square.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Fluent.Ribbon" Version="8.0.3" />
-    <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
-    <PackageReference Include="MaterialDesignThemes" Version="4.0.0" />
+    <PackageReference Include="Fluent.Ribbon" Version="9.0.1" />
+    <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-beta.90" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.4.0-ci57" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
     <PackageReference Include="MvvmLight" Version="5.4.1.1" />
     <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
     <PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />

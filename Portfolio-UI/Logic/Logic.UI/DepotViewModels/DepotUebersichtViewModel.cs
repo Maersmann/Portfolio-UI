@@ -6,7 +6,7 @@ using Aktien.Logic.Messages.DividendeMessages;
 using Aktien.Logic.Messages.WertpapierMessages;
 using Base.Logic.ViewModels;
 using Data.Model.DepotModels;
-using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Prism.Commands;
 using System;

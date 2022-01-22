@@ -31,19 +31,26 @@ namespace UI.Desktop.Steuer
 
         private void ReceiveOpenSteuerStammdatenMessage(OpenSteuerStammdatenMessage<StammdatenTypes> m)
         {
-            var view = new SteuerStammdatenView()
+            SteuerStammdatenView view = new SteuerStammdatenView()
             { 
                 Owner = Application.Current.MainWindow
             };
             if (view.DataContext is SteuerStammdatenViewModel model)
             {
-                model.setGruppeInfos(m.SteuergruppeID, m.Typ, m.IstVerknuepfungGespeichert);
+                model.LoadSteuerArts(m.Steuerarts);
                 if (m.State.Equals(State.Bearbeiten))
                 {
-                    model.ZeigeStammdatenAn(m.ID.Value);
+                    model.ZeigeStammdatenAn(m.Steuer);
                 }
-
-                view.ShowDialog();
+                _ = view.ShowDialog();
+                if(model.Gespeichert)
+                {
+                    m.Callback(true, model.NewData);
+                }
+                else
+                {
+                    m.Callback(false, null);
+                }
             }
         }
 

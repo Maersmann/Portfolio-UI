@@ -1,5 +1,5 @@
 ﻿using Aktien.Data.Types;
-using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Aktien.Logic.Messages.DividendeMessages;
 using Base.Logic.ViewModels;

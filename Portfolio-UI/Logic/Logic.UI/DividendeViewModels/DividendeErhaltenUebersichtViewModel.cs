@@ -32,6 +32,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
         }
         protected override string GetREST_API() { return $"/api/Wertpapier/{wertpapierID}/ErhalteneDividenden/"; }
         protected override bool WithPagination() { return true; }
+        protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.dividendeErhalten;
 
         public  override void LoadData(int id)
         {

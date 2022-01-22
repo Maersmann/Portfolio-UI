@@ -87,11 +87,8 @@ namespace Aktien.UI.Desktop.Dividende
 
             if (view.DataContext is SteuernUebersichtViewModel model)
             {
-                model.IstVerknuepfungGespeichert(m.IstVerknuepfungGespeichert);
-                if(m.SteuergruppeID.HasValue)
-                    model.LoadData(m.SteuergruppeID.Value);
                 model.SetCallback(m.Callback);
-                model.setHerkunftTyp(SteuerHerkunftTyp.shtDividende);             
+                model.setSteuern(m.Steuern);
             }
             Window window = new Window
             {

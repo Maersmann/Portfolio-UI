@@ -1,8 +1,6 @@
 ﻿using Aktien.Logic.Core;
 using Aktien.Logic.Core.Validierung.Base;
 using Data.Model.AuswertungModels;
-using LiveCharts;
-using LiveCharts.Wpf;
 using Base.Logic.ViewModels;
 using Prism.Commands;
 using System;
@@ -14,6 +12,7 @@ using System.Text;
 using System.Windows.Input;
 using Base.Logic.Core;
 using Data.Types.AuswertungTypes;
+using LiveChartsCore.SkiaSharpView;
 
 namespace Logic.UI.AuswertungViewModels
 {
@@ -26,11 +25,10 @@ namespace Logic.UI.AuswertungViewModels
         public DividendeVergleichMonatViewModel()
         {
             Title = "Auswertung Dividende je Monat - Jahresvergleich";
-            jahrvon = DateTime.Now.Year;
+            jahrvon = GlobalUserVariables.JahrVon;
             jahrbis = DateTime.Now.Year;
             typ = DividendenBetragTyp.Netto;
             LoadDataCommand = new DelegateCommand(ExcecuteLoadDataCommand, CanExcecuteLoadDataCommand);
-            Formatter = value => string.Format("{0:N2}€", value);
         }
 
         private bool CanExcecuteLoadDataCommand()
@@ -55,37 +53,42 @@ namespace Logic.UI.AuswertungViewModels
         private void SetDataIntoChart()
         {
             Labels = new string[12];
-            SeriesCollection = new SeriesCollection();
+            ColumnSeries<double>[] series = new ColumnSeries<double>[ItemList.Count];
+            int index = 0;
             ItemList.ToList().ForEach(item =>
             {
-                ColumnSeries coloumn = new ColumnSeries
+                ColumnSeries<double> coloumn = new ColumnSeries<double>
                 {
-                    Title = item.Jahr.ToString(),
-                    Values = new ChartValues<double>()
+                    Name = item.Jahr.ToString(),
+                    Values = new List<double>(),
+                    TooltipLabelFormatter = (point) => point.Label + point.PrimaryValue.ToString("N2") + "€",
                 };
+                coloumn.TooltipLabelFormatter = (point) => item.Jahr + " " + point.PrimaryValue.ToString("N2") + "€";
+                List<double> betraege = new List<double>();
                 item.Monatswerte.ToList().ForEach(mw =>
                 {
-                    Double Betrag = typ.Equals(DividendenBetragTyp.Brutto) ? mw.Brutto : mw.Netto;
-                    coloumn.Values.Add(Betrag);
-                    if (Betrag > HighestValue)
-                    {
-                        HighestValue = Betrag;
-                    }
+                    double Betrag = typ.Equals(DividendenBetragTyp.Brutto) ? mw.Brutto : mw.Netto;
+                    betraege.Add(Betrag);
                 });
-
-                SeriesCollection.Add(coloumn);
-            });
-
-            BerechneSeperator();
+                coloumn.Values = betraege;
+                series.SetValue(coloumn, index);
+                index++;
+            });        
 
             for (int monat = 1; monat <= 12; monat++)
             {
                 Labels[monat - 1] = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(monat);
             }
 
-            RaisePropertyChanged(nameof(SeriesCollection));
+            XAxes.First().Labels = Labels;
+            XAxes.First().Name = "Monat";
+            YAxes.First().Name = "Betrag";
+            Series = series;
+
+            RaisePropertyChanged(nameof(Series));
             RaisePropertyChanged(nameof(Labels));
-            RaisePropertyChanged(nameof(Formatter));
+            RaisePropertyChanged(nameof(XAxes));
+            RaisePropertyChanged(nameof(YAxes));
         }
 
         #region Bindings

@@ -10,4 +10,9 @@ namespace Aktien.Logic.UI.InterfaceViewModels
     {
         void ZeigeStammdatenAn(int id);
     }
+
+    public interface IViewModelOfflineStammdaten<T>
+    {
+        void ZeigeStammdatenAn(T data);
+    }
 }

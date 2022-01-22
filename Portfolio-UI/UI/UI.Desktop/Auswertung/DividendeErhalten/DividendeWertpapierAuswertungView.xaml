@@ -7,7 +7,7 @@
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
              xmlns:Behaviors="clr-namespace:Base.Logic.Core.Behavior;assembly=Base.Logic"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
@@ -155,15 +155,9 @@
                     </DataGrid.Columns>
                 </DataGrid>
 
-                <lvc:PieChart Grid.Column="1" Grid.Row="1" Series="{Binding SeriesCollection}" LegendLocation="Bottom" Hoverable="true" DataClick="PieChart_DataClick" >
-                    <lvc:PieChart.ChartLegend>
-                        <lvc:DefaultLegend BulletSize="15" TextBlock.FontSize="10" ></lvc:DefaultLegend>
-                    </lvc:PieChart.ChartLegend>
-                    <lvc:PieChart.DataTooltip>
-                        <lvc:DefaultTooltip BulletSize="20"></lvc:DefaultTooltip>
-                    </lvc:PieChart.DataTooltip>
-
+                <lvc:PieChart Grid.Column="1" Grid.Row="1" Series="{Binding Series}" LegendPosition="Bottom" LegendBackground="{DynamicResource MaterialDesignPaper}" LegendTextBrush="White" >
                 </lvc:PieChart>
+                
             </Grid>
         </Grid>
 

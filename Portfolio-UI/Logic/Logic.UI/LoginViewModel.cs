@@ -4,8 +4,9 @@ using Aktien.Logic.Messages.Base;
 using Base.Logic.Core;
 using Base.Logic.Messages;
 using Base.Logic.ViewModels;
+using Base.Logic.Wrapper;
 using Data.Model.UserModels;
-using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Logic.Messages.Base;
 using Prism.Commands;
@@ -13,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -45,6 +47,7 @@ namespace Logic.UI
                 {
                     AuthenticateResponseModel Response = await resp.Content.ReadAsAsync<AuthenticateResponseModel>();
                     GlobalVariables.Token = Response.Token;
+                    await LoadingVorbelegung(Response.Id);
                     Messenger.Default.Send(new AktualisiereBerechtigungenMessage());
                     Messenger.Default.Send(new OpenViewMessage { ViewType = ViewType.viewWertpapierUebersicht });
                     Messenger.Default.Send(new CloseViewMessage(), "Login");
@@ -67,6 +70,22 @@ namespace Logic.UI
             if ( string.IsNullOrEmpty(GlobalVariables.Token))
             {
                 Messenger.Default.Send(new CloseApplicationMessage());
+            }
+        }
+
+        private async Task LoadingVorbelegung(int userid)
+        {
+            if (GlobalVariables.ServerIsOnline)
+            {
+                SetConnection();
+                HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/Vorbelegung/{userid}");
+                if (resp.IsSuccessStatusCode)
+                {
+                    Response<VorbelegungModel> Response = await resp.Content.ReadAsAsync<Response<VorbelegungModel>>();
+                    GlobalUserVariables.JahrVon = Response.Data.JahrVon;
+                    GlobalUserVariables.VorbelegungID = Response.Data.ID;
+                    GlobalUserVariables.UserID = Response.Data.UserID;
+                }
             }
         }
 
