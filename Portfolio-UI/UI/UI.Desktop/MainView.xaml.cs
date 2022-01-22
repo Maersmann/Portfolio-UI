@@ -37,6 +37,7 @@ using UI.Desktop.Depot;
 using UI.Desktop;
 using UI.Desktop.Auswertung.Steuer;
 using UI.Desktop.User;
+using UI.Desktop.Auswertung.Investition;
 
 namespace Aktien.UI.Desktop
 {
@@ -186,6 +187,10 @@ namespace Aktien.UI.Desktop
                 case ViewType.viewInvestitionMonatlich:
                     if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(InvestitionMonatlichView).Name))
                         Container.NavigationService.Navigate(new InvestitionMonatlichView());
+                    break;
+                case ViewType.viewInvestitionMonatlichSummiert:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(InvestitionMonatlichSummiertView).Name))
+                        Container.NavigationService.Navigate(new InvestitionMonatlichSummiertView());
                     break;
                 default:
                     break;

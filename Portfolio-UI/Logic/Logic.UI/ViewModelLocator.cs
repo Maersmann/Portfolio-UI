@@ -96,6 +96,7 @@ namespace Aktien.Logic.UI
             SimpleIoc.Default.Register<SteuerGesamtentwicklungSummiertViewModel>();
             SimpleIoc.Default.Register<SteuerartGesamtentwicklungSummiertViewModel>();
             SimpleIoc.Default.Register<InvestitionMonatlichViewModel>();
+            SimpleIoc.Default.Register<InvestitionMonatlichSummiertViewModel>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
@@ -155,6 +156,7 @@ namespace Aktien.Logic.UI
         public SteuerGesamtentwicklungSummiertViewModel SteuerGesamtentwicklungSummiert => new SteuerGesamtentwicklungSummiertViewModel();
         public SteuerartGesamtentwicklungSummiertViewModel SteuerartGesamtentwicklungSummiert => new SteuerartGesamtentwicklungSummiertViewModel();
         public InvestitionMonatlichViewModel InvestitionMonatlich => new InvestitionMonatlichViewModel();
+        public InvestitionMonatlichSummiertViewModel InvestitionMonatlichSummiert => new InvestitionMonatlichSummiertViewModel();
         public static void Cleanup()
         {
 
