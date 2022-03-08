@@ -1,9 +1,10 @@
-﻿using Aktien.Logic.Messages.AuswahlMessages;
+﻿using Aktien.Data.Types;
+using Aktien.Logic.Messages.AuswahlMessages;
 using Aktien.Logic.Messages.DividendeMessages;
 using Aktien.Logic.UI.AuswahlViewModels;
 using Aktien.Logic.UI.DividendeViewModels;
 using Aktien.UI.Desktop.Auswahl;
-using Aktien.UI.Desktop.Base;
+using Aktien.UI.Desktop.Dividende;
 using Data.Types.SteuerTypes;
 using GalaSoft.MvvmLight.Messaging;
 using Logic.Messages.SteuernMessages;
@@ -22,9 +23,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using UI.Desktop.Base;
 using UI.Desktop.Steuer;
 
-namespace Aktien.UI.Desktop.Dividende
+namespace UI.Desktop.Dividende
 {
     /// <summary>
     /// Interaktionslogik für DividendeErhaltenView.xaml
@@ -34,7 +36,7 @@ namespace Aktien.UI.Desktop.Dividende
         public DividendeErhaltenView()
         {
             InitializeComponent();
-            RegisterStammdatenGespeichertMessage(Data.Types.StammdatenTypes.dividendeErhalten);
+            RegisterStammdatenGespeichertMessage(StammdatenTypes.dividendeErhalten);
             Messenger.Default.Register<OpenDividendenAuswahlMessage>(this, "DividendeErhalten", m => ReceiveOpenDividendeAuswahlMessage(m));
             Messenger.Default.Register<OpenSteuernUebersichtMessage>(this, "DividendeErhalten", m => ReceiveOpenSteuernUebersichtMessage(m));
             Messenger.Default.Register<OpenDividendeProStueckAnpassenMessage>(this, m => ReceiveOpenDividendeProStueckAnpassenMessage(m));

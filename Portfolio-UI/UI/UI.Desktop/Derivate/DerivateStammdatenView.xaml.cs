@@ -1,4 +1,4 @@
-﻿using Aktien.UI.Desktop.Base;
+﻿using UI.Desktop.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +13,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Aktien.Data.Types;
 
-namespace Aktien.UI.Desktop.Derivate
+namespace UI.Desktop.Derivate
 {
     /// <summary>
     /// Interaktionslogik für DerivateStammdatenView.xaml
@@ -24,7 +25,7 @@ namespace Aktien.UI.Desktop.Derivate
         public DerivateStammdatenView()
         {
             InitializeComponent();
-            RegisterStammdatenGespeichertMessage(Data.Types.StammdatenTypes.derivate);
+            RegisterStammdatenGespeichertMessage(StammdatenTypes.derivate);
         }
     }
 }

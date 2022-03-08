@@ -17,18 +17,21 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Base.Logic.Types;
+using UI.Desktop.Dividende;
+using UI.Desktop.Base;
 
-namespace Aktien.UI.Desktop.Dividende
+namespace UI.Desktop.Dividende
 {
     /// <summary>
     /// Interaktionslogik für DividendenUebersicht.xaml
     /// </summary>
-    public partial class DividendenUebersichtView : UserControl
+    public partial class DividendenUebersichtView : BaseUsercontrol
     {
         public DividendenUebersichtView()
         {
             InitializeComponent();
             Messenger.Default.Register<OpenDividendeStammdatenMessage<StammdatenTypes>>(this, m => ReceiveOpenDividendeStammdatenMessage(m));
+            RegisterMessages("DividendeUebersicht");
         }
 
 

@@ -19,20 +19,22 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using UI.Desktop.Base;
 using UI.Desktop.Dividende;
 
-namespace Aktien.UI.Desktop.Dividende
+namespace UI.Desktop.Dividende
 {
     /// <summary>
     /// Interaktionslogik für DividendeErhaltenUebersichtView.xaml
     /// </summary>
-    public partial class DividendeErhaltenUebersichtView : UserControl
+    public partial class DividendeErhaltenUebersichtView : BaseUsercontrol
     {
         public DividendeErhaltenUebersichtView()
         {
             InitializeComponent();
             Messenger.Default.Register<OpenErhaltendeDividendeStammdatenMessage<StammdatenTypes>>(this, m => ReceiveOpenErhaltendeDividendeStammdatenMessage(m));
             Messenger.Default.Register<OpenDividendeReitAkualiserungMessage>(this, "DividendeErhaltenUebersicht", m => ReceivOpenDividendeReitAkualiserungMessage(m));
+            RegisterMessages("DividendeErhaltenUebersicht");
         }
 
         private void ReceivOpenDividendeReitAkualiserungMessage(OpenDividendeReitAkualiserungMessage m)

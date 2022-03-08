@@ -22,7 +22,7 @@ using Aktien.Logic.Messages;
 using Aktien.UI.Desktop.ETF;
 using Aktien.UI.Desktop.Wertpapier;
 using Aktien.UI.Desktop.Derivate;
-using Aktien.UI.Desktop.Base;
+using UI.Desktop.Base;
 using Aktien.Logic.UI.InterfaceViewModels;
 using Aktien.UI.Desktop.Dividende;
 using Aktien.UI.Desktop.Optionen;
@@ -38,6 +38,9 @@ using UI.Desktop;
 using UI.Desktop.Auswertung.Steuer;
 using UI.Desktop.User;
 using UI.Desktop.Auswertung.Investition;
+using UI.Desktop.Aktie;
+using UI.Desktop.ETF;
+using UI.Desktop.Derivate;
 
 namespace Aktien.UI.Desktop
 {

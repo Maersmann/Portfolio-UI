@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Aktien.Data.Types;
 
-namespace Aktien.UI.Desktop.Base
+namespace UI.Desktop.Base
 {
     public class StammdatenView : Window
     {

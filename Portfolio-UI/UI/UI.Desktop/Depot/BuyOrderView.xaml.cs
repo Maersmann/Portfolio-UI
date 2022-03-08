@@ -11,14 +11,15 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Aktien.UI.Desktop.Base;
+using UI.Desktop.Base;
 using Data.Types.SteuerTypes;
 using GalaSoft.MvvmLight.Messaging;
 using Logic.Messages.SteuernMessages;
 using Logic.UI.SteuerViewModels;
 using UI.Desktop.Steuer;
+using Aktien.Data.Types;
 
-namespace Aktien.UI.Desktop.Depot
+namespace UI.Desktop.Depot
 {
     /// <summary>
     /// Interaktionslogik für AktieGekauftView.xaml
@@ -28,7 +29,7 @@ namespace Aktien.UI.Desktop.Depot
         public BuyOrderView()
         {
             InitializeComponent();
-            base.RegisterStammdatenGespeichertMessage(Data.Types.StammdatenTypes.buysell);
+            base.RegisterStammdatenGespeichertMessage(StammdatenTypes.buysell);
             Messenger.Default.Register<OpenSteuernUebersichtMessage>(this, "BuyOrder", m => ReceiveOpenSteuernUebersichtMessage(m));
         }
 

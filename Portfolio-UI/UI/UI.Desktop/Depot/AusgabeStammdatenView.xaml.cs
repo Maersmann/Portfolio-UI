@@ -1,4 +1,4 @@
-﻿using Aktien.UI.Desktop.Base;
+﻿using UI.Desktop.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +13,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Aktien.Data.Types;
 
-namespace Aktien.UI.Desktop.Depot
+namespace UI.Desktop.Depot
 {
     /// <summary>
     /// Interaktionslogik für AusgabeStammdatenView.xaml
@@ -24,7 +25,7 @@ namespace Aktien.UI.Desktop.Depot
         public AusgabeStammdatenView()
         {
             InitializeComponent();
-            base.RegisterStammdatenGespeichertMessage(Data.Types.StammdatenTypes.ausgaben);
+            base.RegisterStammdatenGespeichertMessage(StammdatenTypes.ausgaben);
         }
     }
 }

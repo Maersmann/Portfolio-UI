@@ -1,5 +1,5 @@
 ﻿using Aktien.Data.Types;
-using Aktien.UI.Desktop.Base;
+using UI.Desktop.Base;
 using GalaSoft.MvvmLight.Messaging;
 using Logic.Messages.SteuernMessages;
 using Logic.UI.SteuerViewModels;

@@ -14,9 +14,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Aktien.UI.Desktop.Base;
+using UI.Desktop.Base;
+using Aktien.Data.Types;
 
-namespace Aktien.UI.Desktop.Dividende
+namespace UI.Desktop.Dividende
 {
     /// <summary>
     /// Interaktionslogik für DividendeStammdatenView.xaml
@@ -26,7 +27,7 @@ namespace Aktien.UI.Desktop.Dividende
         public DividendeStammdatenView()
         {
             InitializeComponent();
-            base.RegisterStammdatenGespeichertMessage(Data.Types.StammdatenTypes.dividende);
+            base.RegisterStammdatenGespeichertMessage(StammdatenTypes.dividende);
         }
 
     }

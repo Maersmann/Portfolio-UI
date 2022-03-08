@@ -9,6 +9,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Logic.Messages.DividendeMessages;
+using Logic.Messages.UtilMessages;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -58,19 +59,26 @@ namespace Aktien.Logic.UI.DividendeViewModels
         }
 
 
-        protected async override void ExecuteEntfernenCommand()
+        protected override void ExecuteEntfernenCommand()
         {
-            if (GlobalVariables.ServerIsOnline)
+            Messenger.Default.Send(new OpenBestaetigungViewMessage
             {
-                RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/DividendeErhalten/{SelectedItem.ID}");
-                RequestIsWorking = false;
-                if (resp.IsSuccessStatusCode)
-                {
-                    SendInformationMessage("Dividende Erhalten gelöscht");
-                    base.ExecuteEntfernenCommand();
-                }
-            }
+                Beschreibung = "Soll der Eintrag gelöscht werden?",
+                Command = async () =>
+                                {
+                                    if (GlobalVariables.ServerIsOnline)
+                                    {
+                                        RequestIsWorking = true;
+                                        HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL + $"/api/DividendeErhalten/{SelectedItem.ID}");
+                                        RequestIsWorking = false;
+                                        if (resp.IsSuccessStatusCode)
+                                        {
+                                            SendInformationMessage("Dividende Erhalten gelöscht");
+                                            base.ExecuteEntfernenCommand();
+                                        }
+                                    }
+                                }
+            },"DividendeErhaltenUebersicht");
         }
         #endregion
 
