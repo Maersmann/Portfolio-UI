@@ -8,6 +8,7 @@ using Data.Model.DividendeModels;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using Logic.Messages.DividendeMessages;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,8 @@ namespace Aktien.Logic.UI.DividendeViewModels
         public DividendeErhaltenUebersichtViewModel()
         {
             Title = "Übersicht aller erhaltene Dividenden";
-            RegisterAktualisereViewMessage(StammdatenTypes.steuergruppe.ToString());
+            RegisterAktualisereViewMessage(StammdatenTypes.dividendeErhalten.ToString());
+            OpenReitAktualisierungCommand = new RelayCommand(() => ExecuteOpenReitAktualisierungCommand());
         }
         protected override string GetREST_API() { return $"/api/Wertpapier/{wertpapierID}/ErhalteneDividenden/"; }
         protected override bool WithPagination() { return true; }
@@ -50,6 +52,12 @@ namespace Aktien.Logic.UI.DividendeViewModels
             Messenger.Default.Send(new OpenErhaltendeDividendeStammdatenMessage<StammdatenTypes> { WertpapierID = wertpapierID, State = State.Bearbeiten, ID = SelectedItem.ID });
         }
 
+        private void ExecuteOpenReitAktualisierungCommand()
+        {
+            Messenger.Default.Send(new OpenDividendeReitAkualiserungMessage { ID = SelectedItem.ID }, "DividendeErhaltenUebersicht");
+        }
+
+
         protected async override void ExecuteEntfernenCommand()
         {
             if (GlobalVariables.ServerIsOnline)
@@ -64,6 +72,10 @@ namespace Aktien.Logic.UI.DividendeViewModels
                 }
             }
         }
+        #endregion
+
+        #region Bindings
+        public ICommand OpenReitAktualisierungCommand { get; set; }
         #endregion
     }
 }

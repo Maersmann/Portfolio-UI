@@ -6,8 +6,8 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:UI.Desktop"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
-             Height="400" Width="auto"  MinHeight="400" MinWidth="650"
+             d:DesignHeight="500" d:DesignWidth="800"
+             Height="500" Width="auto"  MinHeight="400" MinWidth="650"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              Background="{DynamicResource MaterialDesignPaper}"
              DataContext="{Binding DividendeErhaltenUebersicht, Source={StaticResource Locator}}" Unloaded="UserControl_Unloaded">
@@ -37,13 +37,21 @@
 
         <DataGrid Grid.Row="1" Margin="5" Width="auto"  ItemsSource="{Binding ItemList}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" >
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Ex-Tag" Binding="{Binding Exdatum, StringFormat=dd.MM.yyyy}" Width="auto"/>
-                <DataGridTextColumn Header="Erhalten" Binding="{Binding Zahldatum, StringFormat=dd.MM.yyyy}" Width="auto"/>
-                <DataGridTextColumn Header="Bestand" Binding="{Binding Bestand}" Width="auto"/>
-                <DataGridTextColumn Header="Bemessungsgrundlage" Binding="{Binding Bemessungsgrundlage, StringFormat={}{0:N2}€, ConverterCulture='de-DE'}" Width="auto"/>
-                <DataGridTextColumn Header="Steuern" Binding="{Binding Steuern,StringFormat={}{0:N2}€, ConverterCulture='de-DE', TargetNullValue='0,00'}" Width="auto"/>
-                <DataGridTextColumn Header="Erhalten" Binding="{Binding Erhalten, StringFormat={}{0:N2}€, ConverterCulture='de-DE'}" Width="auto"/>
-                <DataGridTextColumn Header="Währung" Binding="{Binding Waehrung}" Width="auto"/>
+                <DataGridTextColumn Header="Ex-Tag" Binding="{Binding Exdatum, StringFormat=dd.MM.yyyy}" Width="auto" ElementStyle="{StaticResource verticalCenter}"/>
+                <DataGridTextColumn Header="Erhalten" Binding="{Binding Zahldatum, StringFormat=dd.MM.yyyy}" Width="auto" ElementStyle="{StaticResource verticalCenter}"/>
+                <DataGridTextColumn Header="Bestand" Binding="{Binding Bestand}" Width="auto" ElementStyle="{StaticResource verticalCenter}"/>
+                <DataGridTextColumn Header="Bemessungsgrundlage" Binding="{Binding Bemessungsgrundlage, StringFormat={}{0:N2}€, ConverterCulture='de-DE'}" Width="auto" ElementStyle="{StaticResource verticalHorizontalCenter}"/>
+                <DataGridTextColumn Header="Steuern" Binding="{Binding Steuern,StringFormat={}{0:N2}€, ConverterCulture='de-DE', TargetNullValue='0,00'}" Width="auto" ElementStyle="{StaticResource verticalHorizontalCenter}"/>
+                <DataGridTextColumn Header="Erhalten" Binding="{Binding Erhalten, StringFormat={}{0:N2}€, ConverterCulture='de-DE'}" Width="auto" ElementStyle="{StaticResource verticalHorizontalCenter}"/>
+                <DataGridTextColumn Header="Währung" Binding="{Binding Waehrung}" Width="auto" ElementStyle="{StaticResource verticalCenter}"/>
+                <DataGridTextColumn Header="Art" Binding="{Binding Art}" Width="auto" ElementStyle="{StaticResource verticalCenter}"/>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="REIT-Aktualisierung" Style="{DynamicResource MaterialDesignOutlinedButton}" Command="{Binding DataContext.OpenReitAktualisierungCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding}" IsEnabled="{Binding CanAktualisieren}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
 

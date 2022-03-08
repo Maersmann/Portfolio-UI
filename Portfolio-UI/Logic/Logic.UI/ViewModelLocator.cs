@@ -37,6 +37,7 @@ using Logic.UI;
 using Logic.UI.AuswertungViewModels.SteuerViewModels;
 using Logic.UI.UserViewModels;
 using Logic.UI.AuswertungViewModels.InvestitionViewModels;
+using Logic.UI.DividendeViewModels;
 
 namespace Aktien.Logic.UI
 {
@@ -97,6 +98,7 @@ namespace Aktien.Logic.UI
             SimpleIoc.Default.Register<SteuerartGesamtentwicklungSummiertViewModel>();
             SimpleIoc.Default.Register<InvestitionMonatlichViewModel>();
             SimpleIoc.Default.Register<InvestitionMonatlichSummiertViewModel>();
+            SimpleIoc.Default.Register<DividendeReitAktualisierungViewModel>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
@@ -157,6 +159,7 @@ namespace Aktien.Logic.UI
         public SteuerartGesamtentwicklungSummiertViewModel SteuerartGesamtentwicklungSummiert => new SteuerartGesamtentwicklungSummiertViewModel();
         public InvestitionMonatlichViewModel InvestitionMonatlich => new InvestitionMonatlichViewModel();
         public InvestitionMonatlichSummiertViewModel InvestitionMonatlichSummiert => new InvestitionMonatlichSummiertViewModel();
+        public DividendeReitAktualisierungViewModel DividendeReitAktualisierung => new DividendeReitAktualisierungViewModel();
         public static void Cleanup()
         {
 

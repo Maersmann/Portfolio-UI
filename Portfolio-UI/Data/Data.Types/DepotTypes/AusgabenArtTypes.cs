@@ -14,6 +14,8 @@ namespace Aktien.Data.Types.DepotTypes
         [Description("Auszahlung")]
         Auszahlung = 0,
         [Description("Kauf")]
-        Kauf = 1
+        Kauf = 1,
+        [Description("Storno")]
+        Storno = 2
     }
 }
