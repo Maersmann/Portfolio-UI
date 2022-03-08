@@ -14,12 +14,16 @@ namespace Logic.UI.DepotViewModels
         private KaufTypes kaufTyp;
         private BuySell buySell;
         private OrderTypes orderTyp;
+        private DateTime von;
+        private DateTime bis;
 
         public OrderBuchViewModel()
         {
             kaufTyp = Data.Types.ParamTypes.KaufTypes.Alle;
             buySell = BuySell.Alle;
             orderTyp = Data.Types.ParamTypes.OrderTypes.Alle;
+            bis = DateTime.Now;
+            von = DateTime.Now.AddYears(-1);
             Title = "Orderbuch";
             _ = LoadData();
         }
@@ -27,7 +31,7 @@ namespace Logic.UI.DepotViewModels
         protected override bool LoadingOnCreate() => false;
         protected override string GetREST_API() 
         {
-            string REST = $"/api/OrderHistory";
+            string REST = $"/api/OrderHistory?von={von:MM/dd/yyyy}&bis={bis:MM/dd/yyyy}";
             if (kaufTyp != Data.Types.ParamTypes.KaufTypes.Alle)
             {
                 REST += REST.Contains("?") ? $"&kauftyp={(int) kaufTyp}" : $"?kauftyp={(int) kaufTyp}";
@@ -42,6 +46,7 @@ namespace Logic.UI.DepotViewModels
             {
                 REST += REST.Contains("?") ? $"&buysell={(int)buySell}" : $"?buysell={(int)buySell}";
             }
+
 
             return REST;
         }
@@ -70,13 +75,44 @@ namespace Logic.UI.DepotViewModels
                 RaisePropertyChanged();
             }
         }
-
         public BuySell BuySell
         {
             get => buySell;
             set
             {
                 buySell = value;
+                RaisePropertyChanged();
+            }
+        }
+        public DateTime? Von
+        {
+            get => von;
+            set
+            {
+                if (!value.HasValue)
+                { 
+                    value = von;
+                }
+                if (RequestIsWorking || !Equals(von, value))
+                {
+                    von = value.Value;
+                }
+                RaisePropertyChanged();
+            }
+        }
+        public DateTime? Bis
+        {
+            get =>bis;
+            set
+            {
+                if (!value.HasValue)
+                {
+                    value = bis;
+                }
+                if (RequestIsWorking || !Equals(bis, value))
+                {
+                    bis = value.Value;       
+                }
                 RaisePropertyChanged();
             }
         }
