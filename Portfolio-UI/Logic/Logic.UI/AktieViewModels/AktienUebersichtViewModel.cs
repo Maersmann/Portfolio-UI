@@ -83,6 +83,16 @@ namespace Aktien.Logic.UI.AktieViewModels
                             SendExceptionMessage("Aktie ist im Depot vorhanden.");
                             return;
                         }
+                        if ((int)resp.StatusCode == 907)
+                        {
+                            SendExceptionMessage("Aktie hat Dividenden verteilt.");
+                            return;
+                        }
+                        if ((int)resp.StatusCode == 908)
+                        {
+                            SendExceptionMessage("Für die Aktie sind Orders ausgeführt.");
+                            return;
+                        }
 
                     }
                     Messenger.Default.Send(new LoadWertpapierOrderMessage { WertpapierID = 0, WertpapierTyp = WertpapierTypes.Aktie }, messageToken);

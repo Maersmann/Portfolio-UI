@@ -73,6 +73,16 @@ namespace Aktien.Logic.UI.ETFViewModels
                     SendExceptionMessage("ETF ist im Depot vorhanden.");
                     return;
                 }
+                if ((int)resp.StatusCode == 907)
+                {
+                    SendExceptionMessage("ETF hat Dividenden verteilt.");
+                    return;
+                }
+                if ((int)resp.StatusCode == 908)
+                {
+                    SendExceptionMessage("Für den ETF sind Orders ausgeführt.");
+                    return;
+                }
 
             }
             base.ExecuteEntfernenCommand();

@@ -34,7 +34,6 @@ namespace UI.Desktop.Wertpapier
         {
             InitializeComponent();
             RegisterMessages("OrderUebersicht");
-
         }
 
         public string MessageToken

@@ -65,6 +65,16 @@ namespace Aktien.Logic.UI.DerivateViewModels
                     SendExceptionMessage("Derivate ist im Depot vorhanden.");
                     return;
                 }
+                if ((int)resp.StatusCode == 907)
+                {
+                    SendExceptionMessage("Derivate hat Dividenden verteilt.");
+                    return;
+                }
+                if ((int)resp.StatusCode == 908)
+                {
+                    SendExceptionMessage("Für das Derivate sind Orders ausgeführt.");
+                    return;
+                }
 
             }
             Messenger.Default.Send(new LoadWertpapierOrderMessage { WertpapierID = 0, WertpapierTyp = SelectedItem.WertpapierTyp }, messageToken);

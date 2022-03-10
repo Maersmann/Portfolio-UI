@@ -60,6 +60,11 @@ namespace Aktien.Logic.UI.DividendeViewModels
                             SendInformationMessage("Dividende gelöscht");
                             base.ExecuteEntfernenCommand();
                         }
+                        if ((int)resp.StatusCode == 906)
+                        {
+                            SendExceptionMessage("Dividende wurde schon verteilt.");
+                            return;
+                        }
                     }
                 }
             }, "DividendeUebersicht");

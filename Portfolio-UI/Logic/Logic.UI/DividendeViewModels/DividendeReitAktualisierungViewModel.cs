@@ -140,6 +140,8 @@ namespace Logic.UI.DividendeViewModels
                         }
                     });
                     dividendeErhalten = DividendeErhaltenResponse.Data;
+                    RundungArtStornierung = dividendeErhalten.RundungArt;
+                    RundungArtAktualisierung = dividendeErhalten.RundungArt;
 
                     BerechneGesamtWerte();
                 }
