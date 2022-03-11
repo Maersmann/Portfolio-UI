@@ -21,6 +21,7 @@ using Aktien.Logic.Core;
 using System.Net;
 using Data.Model.AktieModels;
 using Base.Logic.Core;
+using Logic.Messages.UtilMessages;
 
 namespace Aktien.Logic.UI.AktieViewModels
 {
@@ -63,25 +64,44 @@ namespace Aktien.Logic.UI.AktieViewModels
 
         private void ExecuteOpenNeueDividendeCommand()
         {
-            Messenger.Default.Send<OpenDividendenUebersichtAuswahlMessage>(new OpenDividendenUebersichtAuswahlMessage { WertpapierID = SelectedItem.ID }, messageToken);
+            Messenger.Default.Send(new OpenDividendenUebersichtAuswahlMessage { WertpapierID = SelectedItem.ID }, messageToken);
         }
-        protected async override void ExecuteEntfernenCommand()
+        protected override void ExecuteEntfernenCommand()
         {
-            if (GlobalVariables.ServerIsOnline)
+            Messenger.Default.Send(new OpenBestaetigungViewMessage
             {
-                RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+$"/api/Wertpapier/{SelectedItem.ID}");
-                RequestIsWorking = false;
-                if ((int)resp.StatusCode == 905)
+                Beschreibung = "Soll der Eintrag gelöscht werden?",
+                Command = async () =>
                 {
-                    SendExceptionMessage("Aktie ist im Depot vorhanden.");
-                    return;
+                    if (GlobalVariables.ServerIsOnline)
+                    {
+                        RequestIsWorking = true;
+                        HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL + $"/api/Wertpapier/{SelectedItem.ID}");
+                        RequestIsWorking = false;
+                        if ((int)resp.StatusCode == 905)
+                        {
+                            SendExceptionMessage("Aktie ist im Depot vorhanden.");
+                            return;
+                        }
+                        if ((int)resp.StatusCode == 907)
+                        {
+                            SendExceptionMessage("Aktie hat Dividenden verteilt.");
+                            return;
+                        }
+                        if ((int)resp.StatusCode == 908)
+                        {
+                            SendExceptionMessage("Für die Aktie sind Orders ausgeführt.");
+                            return;
+                        }
+
+                    }
+                    Messenger.Default.Send(new LoadWertpapierOrderMessage { WertpapierID = 0, WertpapierTyp = WertpapierTypes.Aktie }, messageToken);
+                    SendInformationMessage("Aktie gelöscht");
+                    base.ExecuteEntfernenCommand();
                 }
-      
-            }
-            Messenger.Default.Send(new LoadWertpapierOrderMessage { WertpapierID = 0, WertpapierTyp = WertpapierTypes.Aktie }, messageToken);
-            SendInformationMessage("Aktie gelöscht");
-            base.ExecuteEntfernenCommand();
+            }, "AktienUebersicht");
+
+           
         }
 
         #endregion

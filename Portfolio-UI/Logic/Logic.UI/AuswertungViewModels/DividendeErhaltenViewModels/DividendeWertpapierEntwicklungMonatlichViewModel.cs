@@ -89,6 +89,7 @@ namespace Logic.UI.AuswertungViewModels
                 RaisePropertyChanged(nameof(Series));
                 RaisePropertyChanged(nameof(XAxes));
                 RaisePropertyChanged(nameof(YAxes));
+                RaisePropertyChanged(nameof(Data));
             }
             RequestIsWorking = false;
         }

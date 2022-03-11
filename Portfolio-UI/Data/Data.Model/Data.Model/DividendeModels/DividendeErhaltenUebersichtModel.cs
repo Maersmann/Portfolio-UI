@@ -11,5 +11,7 @@ namespace Data.Model.DividendeModels
         public DateTime? Exdatum { get; set; }
         public DateTime Zahldatum { get; set; }
         public Waehrungen Waehrung { get; set; }
+
+        public bool CanAktualisieren => !Aktualisiert;
     }
 }

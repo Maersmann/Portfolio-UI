@@ -1,5 +1,6 @@
 ﻿using Aktien.Data.Types.DividendenTypes;
 using Data.Model.SteuerModels;
+using Data.Types.DividendenTypes;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,5 +20,7 @@ namespace Data.Model.DividendeModels
         public DividendeModel Dividende { get; set; }
         public double Erhalten { get; set; }
         public double Bemessungsgrundlage { get; set; }
+        public DividendeErhaltenArt Art { get; set; }
+        public bool Aktualisiert { get; set; }
     }
 }

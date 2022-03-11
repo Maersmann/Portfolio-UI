@@ -1,5 +1,5 @@
 ﻿using Aktien.Data.Types;
-using Aktien.UI.Desktop.Base;
+using UI.Desktop.Base;
 using System;
 using System.Collections.Generic;
 using System.Text;

@@ -16,6 +16,7 @@ using Data.Model.DividendeModels;
 using Aktien.Logic.Core;
 using Base.Logic.Core;
 using Base.Logic.Types;
+using Logic.Messages.UtilMessages;
 
 namespace Aktien.Logic.UI.DividendeViewModels
 {
@@ -32,6 +33,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         protected override string GetREST_API() { return $"/api/Wertpapier/{wertpapierID}/Dividenden/"; }
         protected override bool WithPagination() { return true; }
+        protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.dividende;
 
         public override void LoadData(int id)
         {
@@ -41,19 +43,31 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         #region Commands
 
-        protected async override void ExecuteEntfernenCommand()
+        protected override void ExecuteEntfernenCommand()
         {
-            if (GlobalVariables.ServerIsOnline)
+            Messenger.Default.Send(new OpenBestaetigungViewMessage
             {
-                RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.DeleteAsync(" GlobalVariables.BackendServer_URL/api/Dividende/" + SelectedItem.ID.ToString());
-                RequestIsWorking = false;
-                if (resp.IsSuccessStatusCode)
+                Beschreibung = "Soll der Eintrag gelöscht werden?",
+                Command = async () =>
                 {
-                    SendInformationMessage("Dividende gelöscht");
-                    base.ExecuteEntfernenCommand();
+                    if (GlobalVariables.ServerIsOnline)
+                    {
+                        RequestIsWorking = true;
+                        HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL + $"/api/Dividende/" + SelectedItem.ID.ToString());
+                        RequestIsWorking = false;
+                        if (resp.IsSuccessStatusCode)
+                        {
+                            SendInformationMessage("Dividende gelöscht");
+                            base.ExecuteEntfernenCommand();
+                        }
+                        if ((int)resp.StatusCode == 906)
+                        {
+                            SendExceptionMessage("Dividende wurde schon verteilt.");
+                            return;
+                        }
+                    }
                 }
-            }
+            }, "DividendeUebersicht");
         }
 
         protected override void ExecuteNeuCommand()

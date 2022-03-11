@@ -1,8 +1,11 @@
-﻿using System;
+﻿using Aktien.Data.Types;
+using UI.Desktop.Base;
+using GalaSoft.MvvmLight.Messaging;
+using Logic.Messages.SteuernMessages;
+using Logic.UI.SteuerViewModels;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -11,31 +14,26 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using UI.Desktop.Base;
-using Data.Types.SteuerTypes;
-using GalaSoft.MvvmLight.Messaging;
-using Logic.Messages.SteuernMessages;
-using Logic.UI.SteuerViewModels;
 using UI.Desktop.Steuer;
-using Aktien.Data.Types;
 
-namespace UI.Desktop.Depot
+namespace UI.Desktop.Dividende
 {
     /// <summary>
-    /// Interaktionslogik für AktieGekauftView.xaml
+    /// Interaktionslogik für DividendeReitAktualisierungView.xaml
     /// </summary>
-    public partial class BuyOrderView : StammdatenView
+    public partial class DividendeReitAktualisierungView : StammdatenView
     {
-        public BuyOrderView()
+        public DividendeReitAktualisierungView()
         {
             InitializeComponent();
-            base.RegisterStammdatenGespeichertMessage(StammdatenTypes.buysell);
-            Messenger.Default.Register<OpenSteuernUebersichtMessage>(this, "BuyOrder", m => ReceiveOpenSteuernUebersichtMessage(m));
+            RegisterStammdatenGespeichertMessage(StammdatenTypes.dividendeErhalten);
+            Messenger.Default.Register<OpenSteuernUebersichtMessage>(this, "DividendeErhaltenReit", m => ReceiveOpenSteuernUebersichtMessage(m));
         }
 
         private void ReceiveOpenSteuernUebersichtMessage(OpenSteuernUebersichtMessage m)
         {
             var view = new SteuernUebersichtView();
+
             if (view.DataContext is SteuernUebersichtViewModel model)
             {
                 model.SetCallback(m.Callback);

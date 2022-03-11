@@ -3,6 +3,8 @@ using Aktien.Logic.Messages.DividendeMessages;
 using Aktien.Logic.UI.DividendeViewModels;
 using Base.Logic.Types;
 using GalaSoft.MvvmLight.Messaging;
+using Logic.Messages.DividendeMessages;
+using Logic.UI.DividendeViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,18 +19,35 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using UI.Desktop.Base;
+using UI.Desktop.Dividende;
 
-namespace Aktien.UI.Desktop.Dividende
+namespace UI.Desktop.Dividende
 {
     /// <summary>
     /// Interaktionslogik für DividendeErhaltenUebersichtView.xaml
     /// </summary>
-    public partial class DividendeErhaltenUebersichtView : UserControl
+    public partial class DividendeErhaltenUebersichtView : BaseUsercontrol
     {
         public DividendeErhaltenUebersichtView()
         {
             InitializeComponent();
             Messenger.Default.Register<OpenErhaltendeDividendeStammdatenMessage<StammdatenTypes>>(this, m => ReceiveOpenErhaltendeDividendeStammdatenMessage(m));
+            Messenger.Default.Register<OpenDividendeReitAkualiserungMessage>(this, "DividendeErhaltenUebersicht", m => ReceivOpenDividendeReitAkualiserungMessage(m));
+            RegisterMessages("DividendeErhaltenUebersicht");
+        }
+
+        private void ReceivOpenDividendeReitAkualiserungMessage(OpenDividendeReitAkualiserungMessage m)
+        {
+            DividendeReitAktualisierungView view = new DividendeReitAktualisierungView();
+            if (view.DataContext is DividendeReitAktualisierungViewModel model)
+            {
+                model.LoadingDividendeErhalten(m.ID);
+            }
+
+            view.Owner = Application.Current.MainWindow;
+
+            _ = view.ShowDialog();
         }
 
         private void ReceiveOpenErhaltendeDividendeStammdatenMessage(OpenErhaltendeDividendeStammdatenMessage<StammdatenTypes> m)
@@ -47,7 +66,7 @@ namespace Aktien.UI.Desktop.Dividende
             }
             bool? Result = view.ShowDialog();
 
-            if ((Result.GetValueOrDefault(false)) && (this.DataContext is DividendeErhaltenUebersichtViewModel modelUebersicht))
+            if (Result.GetValueOrDefault(false) && (this.DataContext is DividendeErhaltenUebersichtViewModel modelUebersicht))
             {
                 modelUebersicht.LoadData(m.WertpapierID);
             }
@@ -56,6 +75,7 @@ namespace Aktien.UI.Desktop.Dividende
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             Messenger.Default.Unregister<OpenErhaltendeDividendeStammdatenMessage<StammdatenTypes>>(this);
+            Messenger.Default.Unregister<OpenDividendeReitAkualiserungMessage>(this);
         }
     }
 }

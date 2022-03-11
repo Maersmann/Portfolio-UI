@@ -8,6 +8,8 @@ using Data.Model.DividendeModels;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using Logic.Messages.DividendeMessages;
+using Logic.Messages.UtilMessages;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -28,7 +30,8 @@ namespace Aktien.Logic.UI.DividendeViewModels
         public DividendeErhaltenUebersichtViewModel()
         {
             Title = "Übersicht aller erhaltene Dividenden";
-            RegisterAktualisereViewMessage(StammdatenTypes.steuergruppe.ToString());
+            RegisterAktualisereViewMessage(StammdatenTypes.dividendeErhalten.ToString());
+            OpenReitAktualisierungCommand = new RelayCommand(() => ExecuteOpenReitAktualisierungCommand());
         }
         protected override string GetREST_API() { return $"/api/Wertpapier/{wertpapierID}/ErhalteneDividenden/"; }
         protected override bool WithPagination() { return true; }
@@ -50,20 +53,37 @@ namespace Aktien.Logic.UI.DividendeViewModels
             Messenger.Default.Send(new OpenErhaltendeDividendeStammdatenMessage<StammdatenTypes> { WertpapierID = wertpapierID, State = State.Bearbeiten, ID = SelectedItem.ID });
         }
 
-        protected async override void ExecuteEntfernenCommand()
+        private void ExecuteOpenReitAktualisierungCommand()
         {
-            if (GlobalVariables.ServerIsOnline)
-            {
-                RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL+ $"/api/DividendeErhalten/{SelectedItem.ID}");
-                RequestIsWorking = false;
-                if (resp.IsSuccessStatusCode)
-                {
-                    SendInformationMessage("Dividende Erhalten gelöscht");
-                    base.ExecuteEntfernenCommand();
-                }
-            }
+            Messenger.Default.Send(new OpenDividendeReitAkualiserungMessage { ID = SelectedItem.ID }, "DividendeErhaltenUebersicht");
         }
+
+
+        protected override void ExecuteEntfernenCommand()
+        {
+            Messenger.Default.Send(new OpenBestaetigungViewMessage
+            {
+                Beschreibung = "Soll der Eintrag gelöscht werden?",
+                Command = async () =>
+                                {
+                                    if (GlobalVariables.ServerIsOnline)
+                                    {
+                                        RequestIsWorking = true;
+                                        HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL + $"/api/DividendeErhalten/{SelectedItem.ID}");
+                                        RequestIsWorking = false;
+                                        if (resp.IsSuccessStatusCode)
+                                        {
+                                            SendInformationMessage("Dividende Erhalten gelöscht");
+                                            base.ExecuteEntfernenCommand();
+                                        }
+                                    }
+                                }
+            },"DividendeErhaltenUebersicht");
+        }
+        #endregion
+
+        #region Bindings
+        public ICommand OpenReitAktualisierungCommand { get; set; }
         #endregion
     }
 }

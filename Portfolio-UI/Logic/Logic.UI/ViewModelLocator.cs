@@ -37,6 +37,8 @@ using Logic.UI;
 using Logic.UI.AuswertungViewModels.SteuerViewModels;
 using Logic.UI.UserViewModels;
 using Logic.UI.AuswertungViewModels.InvestitionViewModels;
+using Logic.UI.DividendeViewModels;
+using Logic.UI.UtilsViewModels;
 
 namespace Aktien.Logic.UI
 {
@@ -65,11 +67,8 @@ namespace Aktien.Logic.UI
             SimpleIoc.Default.Register<AktienUebersichtViewModel>();
             SimpleIoc.Default.Register<DividendeStammdatenViewModel>();
             SimpleIoc.Default.Register<DividendenUebersichtViewModel>();
-            SimpleIoc.Default.Register<BuyOrderViewModel>();
             SimpleIoc.Default.Register<DepotUebersichtViewModel>();
-            SimpleIoc.Default.Register<OrderUebersichtViewModel>();
             SimpleIoc.Default.Register<AktieUebersichtPageViewModel>();
-            SimpleIoc.Default.Register<DividendeErhaltenViewModel>();
             SimpleIoc.Default.Register<DividendenUebersichtAuswahlViewModel>();
             SimpleIoc.Default.Register<DividendenAuswahlViewModel>();
             SimpleIoc.Default.Register<DividendeErhaltenUebersichtViewModel>();
@@ -85,18 +84,8 @@ namespace Aktien.Logic.UI
             SimpleIoc.Default.Register<AusgabeStammdatenViewModel>();
             SimpleIoc.Default.Register<AusgabenUebersichtViewModel>();
             SimpleIoc.Default.Register<EinnahmenAusgabenUebersichtViewModel>();
-            SimpleIoc.Default.Register<DatenAnpassungViewModel>();
             SimpleIoc.Default.Register<SteuerartenUebersichtViewModel>();
             SimpleIoc.Default.Register<BackendSettingsViewModel>();
-            SimpleIoc.Default.Register<SteuerJahresgesamtbetragAuswertungViewModel>();
-            SimpleIoc.Default.Register<SteuerMonatgesamtbetragAuswertungViewModel>();
-            SimpleIoc.Default.Register<DividendeGesamtentwicklungSummiertViewModel>();
-            SimpleIoc.Default.Register<DividendeJahresentwicklungSummiertViewModel>();
-            SimpleIoc.Default.Register<VorbelegungViewModel>();
-            SimpleIoc.Default.Register<SteuerGesamtentwicklungSummiertViewModel>();
-            SimpleIoc.Default.Register<SteuerartGesamtentwicklungSummiertViewModel>();
-            SimpleIoc.Default.Register<InvestitionMonatlichViewModel>();
-            SimpleIoc.Default.Register<InvestitionMonatlichSummiertViewModel>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
@@ -157,6 +146,8 @@ namespace Aktien.Logic.UI
         public SteuerartGesamtentwicklungSummiertViewModel SteuerartGesamtentwicklungSummiert => new SteuerartGesamtentwicklungSummiertViewModel();
         public InvestitionMonatlichViewModel InvestitionMonatlich => new InvestitionMonatlichViewModel();
         public InvestitionMonatlichSummiertViewModel InvestitionMonatlichSummiert => new InvestitionMonatlichSummiertViewModel();
+        public DividendeReitAktualisierungViewModel DividendeReitAktualisierung => new DividendeReitAktualisierungViewModel();
+        public BestaetigungViewModel Bestaetigung => new BestaetigungViewModel();
         public static void Cleanup()
         {
 

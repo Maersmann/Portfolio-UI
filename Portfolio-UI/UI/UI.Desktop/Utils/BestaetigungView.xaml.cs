@@ -1,10 +1,8 @@
-﻿using Aktien.Data.Types;
+﻿using Aktien.Logic.Messages.Base;
 using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -13,20 +11,23 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using UI.Desktop.Base;
 
-namespace UI.Desktop.Aktie
+namespace UI.Desktop.Utils
 {
     /// <summary>
-    /// Interaktionslogik für NeueAktieView.xaml
+    /// Interaktionslogik für BestaetigungView.xaml
     /// </summary>
-    public partial class AktieStammdatenView : StammdatenView
+    public partial class BestaetigungView : Window
     {
-        public AktieStammdatenView()
+        public BestaetigungView()
         {
             InitializeComponent();
-            base.RegisterStammdatenGespeichertMessage(StammdatenTypes.aktien);
+            Messenger.Default.Register<CloseViewMessage>(this, "Bestaetigung", m => ReceivCloseViewMessage());
         }
 
+        private void ReceivCloseViewMessage()
+        {
+            GetWindow(this).Close();
+        }
     }
 }

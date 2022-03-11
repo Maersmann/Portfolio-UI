@@ -20,18 +20,20 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using UI.Desktop.Base;
+using UI.Desktop.Depot;
 
-namespace Aktien.UI.Desktop.Wertpapier
+namespace UI.Desktop.Wertpapier
 {
     /// <summary>
     /// Interaktionslogik für AktieOrderUebersichtView.xaml
     /// </summary>
-    public partial class OrderUebersichtView : UserControl
+    public partial class OrderUebersichtView : BaseUsercontrol
     {
         public OrderUebersichtView()
         {
             InitializeComponent();
-            
+            RegisterMessages("OrderUebersicht");
         }
 
         public string MessageToken

@@ -8,7 +8,7 @@
              xmlns:command="http://www.galasoft.ch/mvvmlight"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="850" d:DesignWidth="400" MinWidth="650px"         
+             d:DesignHeight="850" d:DesignWidth="650" MinWidth="1000px"         
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              Background="{DynamicResource MaterialDesignPaper}"
              DataContext="{Binding OrderBuch, Source={StaticResource Locator}}">
@@ -47,18 +47,27 @@
                     <ColumnDefinition Width="125px"/>
                     <ColumnDefinition Width="75px"/>
                     <ColumnDefinition Width="80px"/>
+                    <ColumnDefinition Width="65px"/>
+                    <ColumnDefinition Width="110px"/>
+                    <ColumnDefinition Width="65px"/>
+                    <ColumnDefinition Width="110px"/>
                     <ColumnDefinition Width="75px"/>
                 </Grid.ColumnDefinitions>
 
                 <Label Grid.Column="0" Content="Orderart" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <Label Grid.Column="2" Content="Kaufart" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <Label Grid.Column="4" Content="Sell/Buy" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Label Grid.Column="6" Content="Von" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Label Grid.Column="8" Content="Bis" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
                 <ComboBox Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="110" ItemsSource="{Binding OrderTypes}" SelectedItem="{Binding OrderTyp}" />
                 <ComboBox Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Width="110" ItemsSource="{Binding KaufTypes}" SelectedItem="{Binding KaufTyp}" />
                 <ComboBox Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center" Width="70" ItemsSource="{Binding BuySellTypes}" SelectedItem="{Binding BuySell}" />
 
-                <Button Grid.Column ="7" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80"  Style="{DynamicResource MaterialDesignFlatDarkBgButton}" Command="{Binding SucheCommand}" Cursor="Hand" >Suchen</Button>
+                <DatePicker Grid.Column="7" Width="100"  SelectedDate="{Binding Von, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
+                <DatePicker Grid.Column="9" Width="100"  SelectedDate="{Binding Bis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
+                
+                <Button Grid.Column ="11" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80"  Style="{DynamicResource MaterialDesignFlatDarkBgButton}" Command="{Binding SucheCommand}" Cursor="Hand" >Suchen</Button>
 
             </Grid>
         </materialDesign:Card>

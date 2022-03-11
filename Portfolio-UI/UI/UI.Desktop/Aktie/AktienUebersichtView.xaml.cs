@@ -23,24 +23,26 @@ using Aktien.UI.Desktop.Aktie;
 using Aktien.UI.Desktop.Depot;
 using Aktien.UI.Desktop.Dividende;
 using Aktien.Logic.Messages.AktieMessages;
+using UI.Desktop.Base;
 
-namespace Aktien.UI.Desktop.Aktie
+namespace UI.Desktop.Aktie
 {
     /// <summary>
     /// Interaktionslogik für AktienUebersichtView.xaml
     /// </summary>
-    public partial class AktienUebersichtView : UserControl
+    public partial class AktienUebersichtView : BaseUsercontrol
     {
         public AktienUebersichtView()
         {
-            InitializeComponent();  
+            InitializeComponent();
+            RegisterMessages("AktienUebersicht");
         }
 
         public string MessageToken
         {
             set
             {
-                if (this.DataContext is AktienUebersichtViewModel modelUebersicht)
+                if (DataContext is AktienUebersichtViewModel modelUebersicht)
                 {
                     Messenger.Default.Register<OpenDividendenUebersichtAuswahlMessage>(this, value , m => ReceiveOpenDividendeUebersichtMessage(m));
                     modelUebersicht.MessageToken = value;
@@ -50,11 +52,14 @@ namespace Aktien.UI.Desktop.Aktie
 
         private void ReceiveOpenDividendeUebersichtMessage(OpenDividendenUebersichtAuswahlMessage m)
         {
-            var view = new DividendenUebersichtAuswahlView();
+            DividendenUebersichtAuswahlView view = new DividendenUebersichtAuswahlView();
 
             if (view.DataContext is DividendenUebersichtAuswahlViewModel model)
+            {
                 model.WertpapierID = m.WertpapierID;
-            view.ShowDialog();
+            }
+
+            _ = view.ShowDialog();
         }
     }
 }

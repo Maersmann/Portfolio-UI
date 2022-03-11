@@ -1,4 +1,4 @@
-﻿using Aktien.UI.Desktop.Base;
+﻿using UI.Desktop.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Aktien.UI.Desktop.Dividende
+namespace UI.Desktop.Dividende
 {
     /// <summary>
     /// Interaktionslogik für DividendeProStueckAnpassenView.xaml

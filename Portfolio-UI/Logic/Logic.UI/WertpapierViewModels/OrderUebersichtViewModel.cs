@@ -12,6 +12,7 @@ using Base.Logic.Wrapper;
 using Data.Model.WertpapierModels;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using Logic.Messages.UtilMessages;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
 
         public OrderUebersichtViewModel()
         {
-            canExecuteAktieVerkaufCommand = false;      
+            canExecuteAktieVerkaufCommand = false;    
             Title = "Übersicht der Order";
             wertpapierID = 0;
             wertpapierTypes = WertpapierTypes.Aktie;
@@ -116,20 +117,30 @@ namespace Aktien.Logic.UI.WertpapierViewModels
         {
             Messenger.Default.Send(new OpenWertpapierGekauftViewMessage { WertpapierID = wertpapierID, BuySell = BuySell.Sell, WertpapierTypes = wertpapierTypes }, messagtoken);
         }
-        protected async override void ExecuteEntfernenCommand()
+        protected override void ExecuteEntfernenCommand()
         {
-            if (GlobalVariables.ServerIsOnline)
+            Messenger.Default.Send(new OpenBestaetigungViewMessage
             {
-                RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL + $"/api/Depot/Order/{SelectedItem.ID}/Delete?buysell={SelectedItem.BuySell}");
-                RequestIsWorking = false;
-                if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
+                Beschreibung = "Soll der Eintrag gelöscht werden?",
+                Command = async () =>
                 {
-                    return;
-                }
+                    if (GlobalVariables.ServerIsOnline)
+                    {
+                        RequestIsWorking = true;
+                        HttpResponseMessage resp = await Client.DeleteAsync(GlobalVariables.BackendServer_URL + $"/api/Depot/Order/{SelectedItem.ID}/Delete?buysell={SelectedItem.BuySell}");
+                        RequestIsWorking = false;
+                        if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
+                        {
+                            return;
+                        }
+                        if (resp.IsSuccessStatusCode)
+                        {
+                            base.ExecuteEntfernenCommand();
+                        }
 
-            }
-            base.ExecuteEntfernenCommand();
+                    }
+                }
+            }, "OrderUebersicht");
         }
 
         protected override bool CanExecuteCommand()

@@ -13,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using UI.Desktop.Aktie;
+using UI.Desktop.Wertpapier;
 
 namespace Aktien.UI.Desktop.Aktie
 {
