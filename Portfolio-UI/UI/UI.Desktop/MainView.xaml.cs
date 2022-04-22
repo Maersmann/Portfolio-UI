@@ -55,7 +55,6 @@ namespace Aktien.UI.Desktop
         private static ETFUebersichtPage etfGesamtUebersicht;
         private static WertpapierGesamtUebersichtPage wertpapierGesamtUebersichtPage;
         private static DerivateUebersichtPage derivateGesamtUebersichtPage;
-        private static EinnahmenAusgabenUebersichtPage EinnahmenAusgabenUebersichtPage;
 
         public MainView()
         {
@@ -116,8 +115,8 @@ namespace Aktien.UI.Desktop
                     Container.NavigationService.Navigate(derivateGesamtUebersichtPage);
                     break;
                 case ViewType.viewEinAusgabenUebersicht:
-                    EinnahmenAusgabenUebersichtPage ??= new EinnahmenAusgabenUebersichtPage();
-                    Container.NavigationService.Navigate(EinnahmenAusgabenUebersichtPage);
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(EinnahmenAusgabenUebersichtPage).Name))
+                        Container.NavigationService.Navigate(new EinnahmenAusgabenUebersichtPage());
                     break;
                 case ViewType.viewDivideneMonatAuswertung:
                     if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(DividendeEntwicklungMonatlichView).Name))

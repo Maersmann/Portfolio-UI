@@ -20,12 +20,12 @@ namespace Aktien.Logic.UI.DepotViewModels.Page
 
         private void ExecuteShowShowDividendenViewCommand()
         {
-            Messenger.Default.Send<OpenDetailViewMessage>(new OpenDetailViewMessage { ViewType = Data.Types.ViewType.viewDividendeUebersicht });
+            Messenger.Default.Send(new OpenDetailViewMessage { ViewType = Data.Types.ViewType.viewDividendeUebersicht });
         }
 
         private void ExecuteShowOrderHistoryViewCommand()
         {
-            Messenger.Default.Send<OpenDetailViewMessage>(new OpenDetailViewMessage { ViewType = Data.Types.ViewType.viewOrderUebersicht });
+            Messenger.Default.Send(new OpenDetailViewMessage { ViewType = Data.Types.ViewType.viewOrderUebersicht });
         }
 
         public ICommand ShowDividendenViewCommand { get; set; }

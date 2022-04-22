@@ -21,10 +21,6 @@ namespace Aktien.Logic.UI.DepotViewModels
         public EinnahmenUebersichtViewModel()
         {
             Title = "Übersicht aller Einnahmen";
-            RegisterAktualisereViewMessage(StammdatenTypes.einnahmen.ToString());
-            RegisterAktualisereViewMessage(StammdatenTypes.dividendeErhalten.ToString());
-            RegisterAktualisereViewMessage(StammdatenTypes.steuer.ToString());
-            RegisterAktualisereViewMessage(StammdatenTypes.buysell.ToString());
         }
 
         protected override int GetID() { return SelectedItem.ID; }

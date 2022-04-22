@@ -15,7 +15,7 @@ namespace Aktien.Data.Types.DepotTypes
         Auszahlung = 0,
         [Description("Kauf")]
         Kauf = 1,
-        [Description("Storno")]
-        Storno = 2
+        [Description("Storno-Dividende")]
+        StornoDividende = 2
     }
 }

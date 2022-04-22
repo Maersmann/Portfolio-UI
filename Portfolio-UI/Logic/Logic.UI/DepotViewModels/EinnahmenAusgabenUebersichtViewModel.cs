@@ -22,12 +22,6 @@ namespace Aktien.Logic.UI.DepotViewModels
         {
             data = new EinnahmenAusgabenGesamtModel();
             Title = "Einnahmen & Ausgaben Gesamtwerte";
-            RegisterAktualisereViewMessage(StammdatenTypes.ausgaben.ToString());
-            RegisterAktualisereViewMessage(StammdatenTypes.einnahmen.ToString());
-            RegisterAktualisereViewMessage(StammdatenTypes.dividendeErhalten.ToString());
-            RegisterAktualisereViewMessage(StammdatenTypes.buysell.ToString());
-            RegisterAktualisereViewMessage(StammdatenTypes.steuer.ToString());
-            _ = LoadData();
         }
 
         public override async Task LoadData()
