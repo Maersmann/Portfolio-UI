@@ -166,13 +166,13 @@ namespace Aktien.UI.Desktop
                     if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(SteuerMonatgesamtbetragAuswertungView).Name))
                         Container.NavigationService.Navigate(new SteuerMonatgesamtbetragAuswertungView());
                     break;
-                case ViewType.viewDividendeGesamtentwicklungSummiert:
-                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(DividendeGesamtentwicklungSummiertView).Name))
-                        Container.NavigationService.Navigate(new DividendeGesamtentwicklungSummiertView());
+                case ViewType.viewDividendeGesamtentwicklungMonatlichSummiert:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(DividendeGesamtentwicklungMonatlichSummiertView).Name))
+                        Container.NavigationService.Navigate(new DividendeGesamtentwicklungMonatlichSummiertView());
                     break;
-                case ViewType.viewDividendeJahresentwicklungSummiert:
-                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(DividendeJahresentwicklungSummiertView).Name))
-                        Container.NavigationService.Navigate(new DividendeJahresentwicklungSummiertView());
+                case ViewType.viewDividendeGesamtentwicklungJaehrlichSummiert:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(DividendeGesamtentwicklungJaehrlichSummiertView).Name))
+                        Container.NavigationService.Navigate(new DividendeGesamtentwicklungJaehrlichSummiertView());
                     break;
                 case ViewType.viewDividendeMonatentwicklungSummiert:
                     if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(DividendeMonatentwicklungSummiertView).Name))

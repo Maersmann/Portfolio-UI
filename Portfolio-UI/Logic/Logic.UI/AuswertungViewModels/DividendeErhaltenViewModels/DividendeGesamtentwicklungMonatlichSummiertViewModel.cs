@@ -14,15 +14,15 @@ using System.Windows.Input;
 
 namespace Logic.UI.AuswertungViewModels.DividendeErhaltenViewModels
 {
-    public class DividendeJahresentwicklungSummiertViewModel : ViewModelAuswertung<DividendeJahresentwicklungSummiertModel>
+    public class DividendeGesamtentwicklungMonatlichSummiertViewModel : ViewModelAuswertung<DividendeGesamtentwicklungMonatlichSummiertModel>
     {
         private int jahrvon;
         private int jahrbis;
         private LineSeries<double> nettoSeries;
         private LineSeries<double> bruttoSeries;
-        public DividendeJahresentwicklungSummiertViewModel()
+        public DividendeGesamtentwicklungMonatlichSummiertViewModel()
         {
-            Title = "Auswertung Dividende Summiert im Jahr";
+            Title = "Auswertung Gesamtdividende monatlich Summiert";
             jahrvon = GlobalUserVariables.JahrVon;
             jahrbis = DateTime.Now.Year;
             LoadDataCommand = new DelegateCommand(ExcecuteLoadDataCommand, CanExcecuteLoadDataCommand);
@@ -38,10 +38,10 @@ namespace Logic.UI.AuswertungViewModels.DividendeErhaltenViewModels
         private async void ExcecuteLoadDataCommand()
         {
             RequestIsWorking = true;
-            HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/auswertung/dividendenErhalten/Summiert/Jahr?jahrVon={jahrvon}&jahrBis={jahrbis}");
+            HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/auswertung/dividendenErhalten/Summiert/Monatlich?jahrVon={jahrvon}&jahrBis={jahrbis}");
             if (resp.IsSuccessStatusCode)
             {
-                ItemList = await resp.Content.ReadAsAsync<List<DividendeJahresentwicklungSummiertModel>>();
+                ItemList = await resp.Content.ReadAsAsync<List<DividendeGesamtentwicklungMonatlichSummiertModel>>();
 
                 IList<double> NettoChart = new List<double>();
                 IList<double> BruttoChart = new List<double>();
@@ -52,7 +52,7 @@ namespace Logic.UI.AuswertungViewModels.DividendeErhaltenViewModels
                 {
                     NettoChart.Add(a.Netto);
                     BruttoChart.Add(a.Brutto);
-                    Labels[index] = a.Jahr.ToString();
+                    Labels[index] = a.Datum.ToString("MM.yyyy", CultureInfo.CurrentCulture);
                     index++;
                 });
 

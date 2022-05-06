@@ -135,8 +135,8 @@ namespace Aktien.Logic.UI
         public LoginViewModel Login => new LoginViewModel();
         public SteuerJahresgesamtbetragAuswertungViewModel SteuerJahresgesamtbetragAuswertung => new SteuerJahresgesamtbetragAuswertungViewModel();
         public SteuerMonatgesamtbetragAuswertungViewModel SteuerMonatgesamtbetragAuswertung => new SteuerMonatgesamtbetragAuswertungViewModel();
-        public DividendeGesamtentwicklungSummiertViewModel DividendeGesamtentwicklungSummiert => new DividendeGesamtentwicklungSummiertViewModel();
-        public DividendeJahresentwicklungSummiertViewModel DividendeJahresentwicklungSummiert => new DividendeJahresentwicklungSummiertViewModel();
+        public DividendeGesamtentwicklungMonatlichSummiertViewModel DividendeGesamtentwicklungSummiert => new DividendeGesamtentwicklungMonatlichSummiertViewModel();
+        public DividendeGesamtentwicklungJaehrlichSummiertViewModel DividendeJahresentwicklungSummiert => new DividendeGesamtentwicklungJaehrlichSummiertViewModel();
         public DividendeMonatentwicklungSummiertViewModel DividendeMonatentwicklungSummiert => new DividendeMonatentwicklungSummiertViewModel();
         public VorbelegungViewModel Vorbelegung => new VorbelegungViewModel();
         public SteuerGesamtentwicklungSummiertViewModel SteuerGesamtentwicklungSummiert => new SteuerGesamtentwicklungSummiertViewModel();

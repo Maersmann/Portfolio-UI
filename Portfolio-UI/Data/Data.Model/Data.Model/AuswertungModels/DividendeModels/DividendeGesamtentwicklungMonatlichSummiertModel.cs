@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Data.Model.AuswertungModels.DividendeModels
 {
-    public class DividendeGesamtentwicklungSummiertModel
+    public class DividendeGesamtentwicklungMonatlichSummiertModel
     {
         public DateTime Datum { get; set; }
         public double Netto { get; set; }
