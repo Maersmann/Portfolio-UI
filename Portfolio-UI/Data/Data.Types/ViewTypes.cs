@@ -38,7 +38,8 @@
         viewSteuerGesamtentwicklungSummiert,
         viewSteuerartGesamtentwicklungSummiert,
         viewInvestitionMonatlich,
-        viewInvestitionMonatlichSummiert
+        viewInvestitionMonatlichSummiert,
+        viewOpenDivideneMonatJahresentwicklungAuswertung
     }
 
 }

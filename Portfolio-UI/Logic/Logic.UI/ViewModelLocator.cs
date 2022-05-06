@@ -145,6 +145,7 @@ namespace Aktien.Logic.UI
         public InvestitionMonatlichSummiertViewModel InvestitionMonatlichSummiert => new InvestitionMonatlichSummiertViewModel();
         public DividendeReitAktualisierungViewModel DividendeReitAktualisierung => new DividendeReitAktualisierungViewModel();
         public BestaetigungViewModel Bestaetigung => new BestaetigungViewModel();
+        public DividendeMonatlichJahresentwicklungViewModel DividendeMonatlichJahresentwicklung => new DividendeMonatlichJahresentwicklungViewModel();
         public static void Cleanup()
         {
 

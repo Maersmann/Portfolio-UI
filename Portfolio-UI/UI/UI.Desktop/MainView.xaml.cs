@@ -194,6 +194,10 @@ namespace Aktien.UI.Desktop
                     if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(InvestitionMonatlichSummiertView).Name))
                         Container.NavigationService.Navigate(new InvestitionMonatlichSummiertView());
                     break;
+                case ViewType.viewOpenDivideneMonatJahresentwicklungAuswertung:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(DividendeMonatlichJahresentwicklungView).Name))
+                        Container.NavigationService.Navigate(new DividendeMonatlichJahresentwicklungView());
+                    break;
                 default:
                     break;
 
