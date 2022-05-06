@@ -25,16 +25,16 @@ namespace Logic.UI.AuswertungViewModels
     {
         private int jahrvon;
         private int jahrbis;
-        private ColumnSeries<double> nettoSeries;
-        private ColumnSeries<double> bruttoSeries;
+        private LineSeries<double> nettoSeries;
+        private LineSeries<double> bruttoSeries;
         public DividendeEntwicklungMonatlichViewModel()
         {
             Title = "Auswertung Dividende je Monat";
             jahrvon = GlobalUserVariables.JahrVon;
             jahrbis = DateTime.Now.Year;
             LoadDataCommand = new DelegateCommand(ExcecuteLoadDataCommand, CanExcecuteLoadDataCommand);     
-            nettoSeries = new ColumnSeries<double>();
-            bruttoSeries = new ColumnSeries<double>();
+            nettoSeries = new LineSeries<double>();
+            bruttoSeries = new LineSeries<double>();
         }
 
         private bool CanExcecuteLoadDataCommand()
@@ -63,13 +63,13 @@ namespace Logic.UI.AuswertungViewModels
                     index++;
                 });
 
-                nettoSeries = new ColumnSeries<double>
+                nettoSeries = new LineSeries<double>
                 {
                     Values = NettoChart,
                     Name = "Netto",
                     TooltipLabelFormatter = (point) => "Netto " + point.PrimaryValue.ToString("N2") + "€"
                 };
-                bruttoSeries = new ColumnSeries<double>
+                bruttoSeries = new LineSeries<double>
                 {
                     Values = BruttoChart,
                     Name = "Brutto",
@@ -79,7 +79,7 @@ namespace Logic.UI.AuswertungViewModels
                 XAxes.First().Labels = Labels;
                 XAxes.First().Name = "Monat";
                 YAxes.First().Name = "Betrag";
-                Series = new ColumnSeries<double>[2] { bruttoSeries, nettoSeries };
+                Series = new LineSeries<double>[2] { bruttoSeries, nettoSeries };
 
                 RaisePropertyChanged(nameof(Series));
                 RaisePropertyChanged(nameof(XAxes));
