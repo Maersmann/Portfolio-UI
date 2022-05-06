@@ -39,9 +39,12 @@
         <DataGrid Grid.Row="1" Margin="5"  ItemsSource="{Binding ItemList}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow" >
             <DataGrid.Columns >
                 <materialDesign:DataGridTextColumn Header="Datum" Binding="{Binding Orderdatum, StringFormat=dd.MM.yyyy}"  Width="auto"/>
-                <materialDesign:DataGridTextColumn Header="Anzahl" Binding="{Binding Anzahl,ConverterCulture='de-DE'}" Width="auto"/>
-                <materialDesign:DataGridTextColumn Header="Preis" Binding="{Binding Preis, StringFormat={}{0:N3}€,ConverterCulture='de-DE'}"  Width="auto"/>
-                <materialDesign:DataGridTextColumn Header="Fremdkosten" Binding="{Binding Fremdkostenzuschlag, StringFormat={}{0:N2}€}"  Width="auto"/>
+                <materialDesign:DataGridTextColumn Header="Anzahl" Binding="{Binding Anzahl,ConverterCulture='de-DE'}" ElementStyle="{StaticResource verticalHorizontalCenter}" Width="auto"/>
+                <materialDesign:DataGridTextColumn Header="Preis" Binding="{Binding Preis, StringFormat={}{0:N3}€,ConverterCulture='de-DE'}" ElementStyle="{StaticResource verticalHorizontalCenter}" Width="auto"/>
+                <materialDesign:DataGridTextColumn Header="Fremdkosten" Binding="{Binding Fremdkostenzuschlag, StringFormat={}{0:N2}€, ConverterCulture='de-DE'}" ElementStyle="{StaticResource verticalHorizontalCenter}" Width="auto"/>
+                <materialDesign:DataGridTextColumn Header="Gesamt" Binding="{Binding Gesamt, StringFormat={}{0:N2}€, ConverterCulture='de-DE'}" ElementStyle="{StaticResource verticalHorizontalCenter}"  Width="auto"/>
+                <materialDesign:DataGridTextColumn Header="Kauf-Art" Binding="{Binding KaufartTyp}"  Width="auto"/>
+                <materialDesign:DataGridTextColumn Header="Order-Art" Binding="{Binding OrderartTyp }"  Width="auto"/>
             </DataGrid.Columns>
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow">
