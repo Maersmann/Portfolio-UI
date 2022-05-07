@@ -80,10 +80,7 @@ namespace Aktien.Logic.UI
             SimpleIoc.Default.Register<DerivateGesamtUebersichtViewModel>();
             SimpleIoc.Default.Register<DerivateStammdatenViewModel>();
             SimpleIoc.Default.Register<EinnahmeStammdatenViewModel>();
-            SimpleIoc.Default.Register<EinnahmenUebersichtViewModel>();
             SimpleIoc.Default.Register<AusgabeStammdatenViewModel>();
-            SimpleIoc.Default.Register<AusgabenUebersichtViewModel>();
-            SimpleIoc.Default.Register<EinnahmenAusgabenUebersichtViewModel>();
             SimpleIoc.Default.Register<SteuerartenUebersichtViewModel>();
             SimpleIoc.Default.Register<BackendSettingsViewModel>();
         }
@@ -109,11 +106,11 @@ namespace Aktien.Logic.UI
         public DerivateStammdatenViewModel DerivateStammdaten => ServiceLocator.Current.GetInstance<DerivateStammdatenViewModel>();
         public DerivateGesamtUebersichtViewModel DerivateGesamtUebersicht => ServiceLocator.Current.GetInstance<DerivateGesamtUebersichtViewModel>();
         public EinnahmeStammdatenViewModel EinnahmeStammdaten => ServiceLocator.Current.GetInstance<EinnahmeStammdatenViewModel>();
-        public EinnahmenUebersichtViewModel EinnahmenUebersicht => ServiceLocator.Current.GetInstance<EinnahmenUebersichtViewModel>();
+        public EinnahmenUebersichtViewModel EinnahmenUebersicht =>  new EinnahmenUebersichtViewModel();
         public AusgabeStammdatenViewModel AusgabeStammdaten => ServiceLocator.Current.GetInstance<AusgabeStammdatenViewModel>();
-        public AusgabenUebersichtViewModel AusgabenUebersicht => ServiceLocator.Current.GetInstance<AusgabenUebersichtViewModel>();
+        public AusgabenUebersichtViewModel AusgabenUebersicht => new AusgabenUebersichtViewModel();
         public DividendeProStueckAnpassenViewModel DividendeProStueckAnpassen => new DividendeProStueckAnpassenViewModel();
-        public EinnahmenAusgabenUebersichtViewModel EinnahmenAusgaben => ServiceLocator.Current.GetInstance<EinnahmenAusgabenUebersichtViewModel>();
+        public EinnahmenAusgabenUebersichtViewModel EinnahmenAusgaben => new EinnahmenAusgabenUebersichtViewModel();
         public DatenAnpassungViewModel DatenAnpassung => new DatenAnpassungViewModel();
         public WertpapierAuswahlViewModel WertpapierAuswahl => new WertpapierAuswahlViewModel();
         public ReverseSplitEintragenViewModel ReverseSplitEintragen => new ReverseSplitEintragenViewModel();
@@ -138,8 +135,8 @@ namespace Aktien.Logic.UI
         public LoginViewModel Login => new LoginViewModel();
         public SteuerJahresgesamtbetragAuswertungViewModel SteuerJahresgesamtbetragAuswertung => new SteuerJahresgesamtbetragAuswertungViewModel();
         public SteuerMonatgesamtbetragAuswertungViewModel SteuerMonatgesamtbetragAuswertung => new SteuerMonatgesamtbetragAuswertungViewModel();
-        public DividendeGesamtentwicklungSummiertViewModel DividendeGesamtentwicklungSummiert => new DividendeGesamtentwicklungSummiertViewModel();
-        public DividendeJahresentwicklungSummiertViewModel DividendeJahresentwicklungSummiert => new DividendeJahresentwicklungSummiertViewModel();
+        public DividendeGesamtentwicklungMonatlichSummiertViewModel DividendeGesamtentwicklungSummiert => new DividendeGesamtentwicklungMonatlichSummiertViewModel();
+        public DividendeGesamtentwicklungJaehrlichSummiertViewModel DividendeJahresentwicklungSummiert => new DividendeGesamtentwicklungJaehrlichSummiertViewModel();
         public DividendeMonatentwicklungSummiertViewModel DividendeMonatentwicklungSummiert => new DividendeMonatentwicklungSummiertViewModel();
         public VorbelegungViewModel Vorbelegung => new VorbelegungViewModel();
         public SteuerGesamtentwicklungSummiertViewModel SteuerGesamtentwicklungSummiert => new SteuerGesamtentwicklungSummiertViewModel();
@@ -148,6 +145,7 @@ namespace Aktien.Logic.UI
         public InvestitionMonatlichSummiertViewModel InvestitionMonatlichSummiert => new InvestitionMonatlichSummiertViewModel();
         public DividendeReitAktualisierungViewModel DividendeReitAktualisierung => new DividendeReitAktualisierungViewModel();
         public BestaetigungViewModel Bestaetigung => new BestaetigungViewModel();
+        public DividendeMonatlichJahresentwicklungViewModel DividendeMonatlichJahresentwicklung => new DividendeMonatlichJahresentwicklungViewModel();
         public static void Cleanup()
         {
 

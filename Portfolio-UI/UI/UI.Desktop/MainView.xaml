@@ -90,10 +90,11 @@
                 <Fluent:RibbonGroupBox Header="Monatlich" >
                     <Fluent:Button Header="Monatliche Entwicklung" LargeIcon="/resource/chart-line.png"  Command="{Binding OpenDivideneMonatAuswertungCommand}" Width="100" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                     <Fluent:Button Header="Monatlich Jahresvergleich" LargeIcon="/resource/chart-bar.png"  Command="{Binding OpenDivideneMonatJahresvergleichAuswertungCommand}" Width="100" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                    <Fluent:Button Header="Monatlich Jahresentwicklung" LargeIcon="/resource/chart-areaspline.png"  Command="{Binding OpenDivideneMonatJahresentwicklungAuswertungCommand}" Width="110" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                   </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="Summiert" >
-                    <Fluent:Button Header="Gesamt" LargeIcon="/resource/vector-polyline.png"  Command="{Binding OpenDividendeGesamtentwicklungSummiertCommand}" Width="80" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
-                    <Fluent:Button Header="Jahr" LargeIcon="/resource/vector-square.png"  Command="{Binding OpenDividendeJahresentwicklungSummiertCommand}" Width="80" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                    <Fluent:Button Header="Gesamt Monatlich" LargeIcon="/resource/vector-polyline.png"  Command="{Binding OpenDividendeGesamtentwicklungSummiertCommand}" Width="80" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                    <Fluent:Button Header="Gesamt Jährlich" LargeIcon="/resource/vector-square.png"  Command="{Binding OpenDividendeJahresentwicklungSummiertCommand}" Width="80" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                     <Fluent:Button Header="Monat" LargeIcon="/resource/vector-square-open.png"  Command="{Binding OpenDividendeMonatentwicklungSummiertCommand}" Width="80" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>

@@ -11,9 +11,6 @@ namespace Aktien.Logic.UI.DepotViewModels
         public AusgabenUebersichtViewModel()
         {
             Title = "Übersicht aller Ausgaben";
-            LoadData();
-            RegisterAktualisereViewMessage(StammdatenTypes.ausgaben.ToString());
-            RegisterAktualisereViewMessage(StammdatenTypes.buysell.ToString());
         }
 
         protected override int GetID() { return SelectedItem.ID; }
