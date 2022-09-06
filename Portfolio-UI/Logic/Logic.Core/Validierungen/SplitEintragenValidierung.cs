@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Aktien.Logic.Core.Validierungen
 {
-    public class ReverseSplitEintragenValidierung : BaseValidierung
+    public class SplitEintragenValidierung : BaseValidierung
     {
         public bool ValidateAktie(String name,  out ICollection<string> validationErrors)
         {

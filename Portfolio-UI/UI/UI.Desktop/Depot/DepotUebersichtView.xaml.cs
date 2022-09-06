@@ -7,6 +7,8 @@ using Aktien.Logic.UI.WertpapierViewModels;
 using Aktien.UI.Desktop.Dividende;
 using Aktien.UI.Desktop.Wertpapier;
 using GalaSoft.MvvmLight.Messaging;
+using Logic.Messages.WertpapierMessages;
+using Logic.UI.WertpapierViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +23,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using UI.Desktop.Wertpapier;
 
 namespace Aktien.UI.Desktop.Depot
 {
@@ -34,8 +37,8 @@ namespace Aktien.UI.Desktop.Depot
             InitializeComponent();
             Messenger.Default.Register<OpenDividendenUebersichtAuswahlMessage>(this, "DepotUebersicht", m => ReceiveOpenDividendeUebersichtMessage(m));
             Messenger.Default.Register<OpenReverseSplitEintragenMessage>(this, "DepotUebersicht", m => ReceivOpenReverseSplitEintragenMessage(m));
+            Messenger.Default.Register<OpenAktienSplitEintragenMessage>(this, "DepotUebersicht", m => ReceiveOpenAktienSplitEintragenMessage(m));
         }
-
         public string MessageToken
         {
             set
@@ -75,5 +78,19 @@ namespace Aktien.UI.Desktop.Depot
 
             window.ShowDialog();
         }
+
+        private void ReceiveOpenAktienSplitEintragenMessage(OpenAktienSplitEintragenMessage m)
+        {
+            var view = new AktienSplitEintragenView
+            {
+                Owner = Application.Current.MainWindow
+            };
+
+            if (view.DataContext is AktienSplitEintragenViewModel model)
+                model.DepotWertpapierID = m.DepotWertpapierID;
+
+            view.ShowDialog();
+        }
+
     }
 }

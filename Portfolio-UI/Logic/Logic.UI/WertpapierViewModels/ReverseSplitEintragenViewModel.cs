@@ -169,7 +169,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
         #region Validierungen
         private bool ValidateNeueAktie(string bezeichnung)
         {
-            var Validierung = new ReverseSplitEintragenValidierung();
+            var Validierung = new SplitEintragenValidierung();
 
             bool isValid = Validierung.ValidateAktie(bezeichnung, out ICollection<string> validationErrors);
 
@@ -180,7 +180,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
 
         private bool ValidateVerhaeltnis(int verhaeltnis)
         {
-            var Validierung = new ReverseSplitEintragenValidierung();
+            var Validierung = new SplitEintragenValidierung();
 
             bool isValid = Validierung.ValidateAnzahl(verhaeltnis, out ICollection<string> validationErrors);
 

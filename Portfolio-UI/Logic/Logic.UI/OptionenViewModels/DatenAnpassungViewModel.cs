@@ -78,12 +78,12 @@ namespace Aktien.Logic.UI.OptionenViewModels
         }
         private void ExecuteAuswahlBuyInAktie()
         {
-            Messenger.Default.Send(new OpenWertpapierAuswahlMessage(OpenOpenWertpapierAuswahlMessageCallback), "DatenAnpassung");
+            Messenger.Default.Send(new OpenWertpapierAuswahlMessage(OpenWertpapierAuswahlMessageCallback), "DatenAnpassung");
         }
         #endregion
 
         #region Callbacks
-        private async void OpenOpenWertpapierAuswahlMessageCallback(bool confirmed, int id)
+        private async void OpenWertpapierAuswahlMessageCallback(bool confirmed, int id)
         {
             if (confirmed)
             {

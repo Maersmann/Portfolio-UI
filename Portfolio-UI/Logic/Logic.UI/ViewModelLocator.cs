@@ -39,6 +39,7 @@ using Logic.UI.UserViewModels;
 using Logic.UI.AuswertungViewModels.InvestitionViewModels;
 using Logic.UI.DividendeViewModels;
 using Logic.UI.UtilsViewModels;
+using Logic.UI.WertpapierViewModels;
 
 namespace Aktien.Logic.UI
 {
@@ -146,6 +147,7 @@ namespace Aktien.Logic.UI
         public DividendeReitAktualisierungViewModel DividendeReitAktualisierung => new DividendeReitAktualisierungViewModel();
         public BestaetigungViewModel Bestaetigung => new BestaetigungViewModel();
         public DividendeMonatlichJahresentwicklungViewModel DividendeMonatlichJahresentwicklung => new DividendeMonatlichJahresentwicklungViewModel();
+        public AktienSplitEintragenViewModel AktienSplitEintragen => new AktienSplitEintragenViewModel();
         public static void Cleanup()
         {
 
