@@ -26,10 +26,10 @@
         viewSteuerMonatJahresAuswertung,
         viewDivideneWertpapierAuswertung,
         viewSteuerMonatAuswertung,
-        viewOpenDividendeWertpapierEntwicklungAuswertung,
-        viewOpenDividendenErhaltenImJahr,
-        viewOpenDividendenErhaltenImMonat,
-        viewOpenOrderBuch,
+        viewDividendeWertpapierEntwicklungAuswertung,
+        viewDividendenErhaltenImJahr,
+        viewDividendenErhaltenImMonat,
+        viewOrderBuch,
         viewSteuerJahresgesamtbetragAuswertung,
         viewSteuerMonatgesamtbetragAuswertung,
         viewDividendeGesamtentwicklungMonatlichSummiert,
@@ -39,7 +39,9 @@
         viewSteuerartGesamtentwicklungSummiert,
         viewInvestitionMonatlich,
         viewInvestitionMonatlichSummiert,
-        viewOpenDivideneMonatJahresentwicklungAuswertung
+        viewDivideneMonatJahresentwicklungAuswertung,
+        viewSparplanUebersichtCommand,
+        viewSparplanAusfuehrenUebersichtCommand
     }
 
 }

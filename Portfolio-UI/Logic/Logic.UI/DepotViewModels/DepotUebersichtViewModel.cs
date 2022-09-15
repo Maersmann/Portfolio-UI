@@ -21,7 +21,7 @@ using System.Windows.Input;
 
 namespace Aktien.Logic.UI.DepotViewModels
 {
-    public class DepotUebersichtViewModel: ViewModelUebersicht<DepotGesamtUebersichtModel, StammdatenTypes>
+    public class DepotUebersichtViewModel : ViewModelUebersicht<DepotGesamtUebersichtModel, StammdatenTypes>
     {
 
         public DepotUebersichtViewModel()

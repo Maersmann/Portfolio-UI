@@ -1,9 +1,6 @@
-﻿using UI.Desktop.Base;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -13,19 +10,19 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Aktien.Data.Types;
+using UI.Desktop.Base;
 
-namespace UI.Desktop.ETF
+namespace UI.Desktop.Sparplan
 {
     /// <summary>
-    /// Interaktionslogik für ETFStammdatenView.xaml
+    /// Interaktionslogik für SparplanUebersichtView.xaml
     /// </summary>
-    public partial class ETFStammdatenView : StammdatenView
+    public partial class SparplanUebersichtView : BaseUsercontrol
     {
-        public ETFStammdatenView()
+        public SparplanUebersichtView()
         {
             InitializeComponent();
-            RegisterStammdatenGespeichertMessage(StammdatenTypes.etf);
+            RegisterMessages("SparplanUebersicht");
         }
     }
 }

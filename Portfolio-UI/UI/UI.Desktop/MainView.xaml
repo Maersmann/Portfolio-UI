@@ -76,9 +76,13 @@
                     <Fluent:Button Header="Einahmen Ausgaben" LargeIcon="/resource/plus-minus-variant.png" Command="{Binding OpenEinAusgabenUebersichtCommand}"  Width="70" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
                     <Fluent:Button Header="Orderbuch" LargeIcon="/resource/book-open-blank-variant.png" Command="{Binding OpenOrderBuchCommand}"  Width="70" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
                 </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Sparplan">
+                    <Fluent:Button Header="Gesamt Übersicht" LargeIcon="/resource/depot.png" Command="{Binding OpenSparplanUebersichtCommand}" Width="70" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
+                    <Fluent:Button Header="Ausführen Übersicht" LargeIcon="/resource/depot.png" Command="{Binding OpenSparplanAusfuehrenUebersichtCommand}" Width="70" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
+                </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
             
-            <Fluent:RibbonTabItem Header="Dividenden Erhalten"  ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White">
+            <Fluent:RibbonTabItem Header="Auswertung - Dividenden Erhalten"  ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White">
                 <Fluent:RibbonGroupBox Header="Listen" >
                     <Fluent:Button Header="Monat" LargeIcon="/resource/calendar-month-outline.png"  Command="{Binding OpenDividendenErhaltenImMonatCommand}" Width="80" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                     <Fluent:Button Header="Jahr" LargeIcon="/resource/calendar-star.png"  Command="{Binding OpenDividendenErhaltenImJahrCommand}" Width="80" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
@@ -98,8 +102,8 @@
                     <Fluent:Button Header="Monat" LargeIcon="/resource/vector-square-open.png"  Command="{Binding OpenDividendeMonatentwicklungSummiertCommand}" Width="80" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
-            
-            <Fluent:RibbonTabItem Header="Steuern"  ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White">
+
+            <Fluent:RibbonTabItem Header="Auswertung - Steuern"  ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White">
                 <Fluent:RibbonGroupBox Header="Gesamt" >
                     <Fluent:Button Header="Jahr" LargeIcon="/resource/book-open-variant.png"  Command="{Binding OpenSteuerJahresgesamtbetragAuswertungCommand}" Width="80" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
                     <Fluent:Button Header="Monat" LargeIcon="/resource/book-open-outline.png"  Command="{Binding OpenSteuerMonatgesamtbetragAuswertungCommand}" Width="80" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
@@ -117,7 +121,7 @@
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
-            <Fluent:RibbonTabItem Header="Investition"  ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White">
+            <Fluent:RibbonTabItem Header="Auswertung - Investition"  ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White">
                 <Fluent:RibbonGroupBox Header="Monatlich" >
                     <Fluent:Button Header="Einzel" LargeIcon="/resource/chart-bar.png"  Command="{Binding OpenInvestitionMonatlichCommand}" Width="80" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
                     <Fluent:Button Header="Summiert" LargeIcon="/resource/finance.png"  Command="{Binding OpenInvestitionMonatlichSummiertCommand}" Width="80" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>

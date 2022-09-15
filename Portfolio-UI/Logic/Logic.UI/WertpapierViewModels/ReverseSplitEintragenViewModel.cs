@@ -36,8 +36,8 @@ namespace Aktien.Logic.UI.WertpapierViewModels
         {
             Title = "Reverse-Split eintragen";
             model = new ReverseSplitEintragenModel();
-            OpenAuswahlCommand = new RelayCommand(this.ExecuteOpenAuswahlCommand);
-            SaveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand);
+            OpenAuswahlCommand = new RelayCommand(ExecuteOpenAuswahlCommand);
+            SaveCommand = new DelegateCommand(ExecuteSaveCommand, CanExecuteSaveCommand);
             Verhaeltnis = 1;
             ValidateNeueAktie("");
             depotWertpapierID = 0;
