@@ -21,7 +21,7 @@ namespace Aktien.Logic.Core.Validierung.Base
             return validatonErrors.Count == 0;
         }
 
-        public bool ValidateBetrag(string betrag, out ICollection<string> validatonErrors)
+        public bool ValidateBetrag(string betrag, out ICollection<string> validatonErrors, bool erlaubeNull = false)
         {
             validatonErrors = new List<string>();
 
@@ -31,7 +31,7 @@ namespace Aktien.Logic.Core.Validierung.Base
                 return false;
             }
 
-            if (Betrag == 0)
+            if (!erlaubeNull && Betrag == 0)
             {
                 validatonErrors.Add("Der Betrag darf nicht 0 sein");
             }

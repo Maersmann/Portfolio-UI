@@ -7,7 +7,9 @@ using Aktien.Logic.UI.WertpapierViewModels;
 using Aktien.UI.Desktop.Dividende;
 using Aktien.UI.Desktop.Wertpapier;
 using GalaSoft.MvvmLight.Messaging;
+using Logic.Messages.DepotMessages;
 using Logic.Messages.WertpapierMessages;
+using Logic.UI.DepotViewModels;
 using Logic.UI.WertpapierViewModels;
 using System;
 using System.Collections.Generic;
@@ -23,6 +25,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using UI.Desktop.Depot;
 using UI.Desktop.Wertpapier;
 
 namespace Aktien.UI.Desktop.Depot
@@ -38,13 +41,15 @@ namespace Aktien.UI.Desktop.Depot
             Messenger.Default.Register<OpenDividendenUebersichtAuswahlMessage>(this, "DepotUebersicht", m => ReceiveOpenDividendeUebersichtMessage(m));
             Messenger.Default.Register<OpenReverseSplitEintragenMessage>(this, "DepotUebersicht", m => ReceivOpenReverseSplitEintragenMessage(m));
             Messenger.Default.Register<OpenAktienSplitEintragenMessage>(this, "DepotUebersicht", m => ReceiveOpenAktienSplitEintragenMessage(m));
+            Messenger.Default.Register<OpenErhalteneDividendeEintragenMessage>(this, "DepotUebersicht", m => ReceiveOpenDividendeErhaltenMessage(m));         
         }
+
         public string MessageToken
         {
             set
             {
                
-                if (this.DataContext is DepotUebersichtViewModel modelUebersicht)
+                if (DataContext is DepotUebersichtViewModel modelUebersicht)
                 {
                     modelUebersicht.MessageToken = value;
                 }
@@ -53,18 +58,41 @@ namespace Aktien.UI.Desktop.Depot
 
         private void ReceiveOpenDividendeUebersichtMessage(OpenDividendenUebersichtAuswahlMessage m)
         {
-            var view = new DividendenUebersichtAuswahlView();
+            DividendenUebersichtAuswahlView view = new DividendenUebersichtAuswahlView()
+            {
+                Owner = Application.Current.MainWindow
+            };
 
             if (view.DataContext is DividendenUebersichtAuswahlViewModel model)
+            {
                 model.WertpapierID = m.WertpapierID;
-            view.ShowDialog();
+            }
+
+            _ = view.ShowDialog();
+        }
+
+        private void ReceiveOpenDividendeErhaltenMessage(OpenErhalteneDividendeEintragenMessage m)
+        {
+            ErhalteneDividendeEintragenView view = new ErhalteneDividendeEintragenView()
+            {
+                Owner = Application.Current.MainWindow
+            };
+
+            if (view.DataContext is ErhalteneDividendeEintragenViewModel model)
+            {
+                model.Wertpapier( m.WertpapierID, m.WertpapierName);
+            }
+
+            _ = view.ShowDialog();
         }
 
         private void ReceivOpenReverseSplitEintragenMessage(OpenReverseSplitEintragenMessage m)
         {
-            var view = new ReverseSplitEintragenView();
+            ReverseSplitEintragenView view = new ReverseSplitEintragenView();
             if (view.DataContext is ReverseSplitEintragenViewModel model)
+            {
                 model.DepotWertpapierID = m.DepotWertpapierID;
+            }
 
             Window window = new Window
             {
@@ -76,12 +104,12 @@ namespace Aktien.UI.Desktop.Depot
                 Owner = Application.Current.MainWindow
             };
 
-            window.ShowDialog();
+            _ = window.ShowDialog();
         }
 
         private void ReceiveOpenAktienSplitEintragenMessage(OpenAktienSplitEintragenMessage m)
         {
-            var view = new AktienSplitEintragenView
+            AktienSplitEintragenView view = new AktienSplitEintragenView
             {
                 Owner = Application.Current.MainWindow
             };
@@ -89,7 +117,7 @@ namespace Aktien.UI.Desktop.Depot
             if (view.DataContext is AktienSplitEintragenViewModel model)
                 model.DepotWertpapierID = m.DepotWertpapierID;
 
-            view.ShowDialog();
+            _ = view.ShowDialog();
         }
 
     }

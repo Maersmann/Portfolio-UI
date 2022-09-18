@@ -66,7 +66,13 @@
                     <DataGridTextColumn Header="Gesamt" Binding="{Binding Gesamt, ConverterCulture=de-DE, StringFormat={}{0:N2}€}"  Width="auto" ElementStyle="{StaticResource verticalHorizontalCenter}"/>
                     <DataGridTextColumn Header="Wertpapier-Art" Binding="{Binding WertpapierTyp}"  Width="auto" ElementStyle="{StaticResource verticalHorizontalCenter}"/>
 
-
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Dividende erhalten" Style="{DynamicResource MaterialDesignOutlinedButton}" Command="{Binding DataContext.OpenErhaltendeDividendeEintragenCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <DataGridTemplateColumn>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>

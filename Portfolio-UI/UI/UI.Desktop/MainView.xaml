@@ -77,8 +77,8 @@
                     <Fluent:Button Header="Orderbuch" LargeIcon="/resource/book-open-blank-variant.png" Command="{Binding OpenOrderBuchCommand}"  Width="70" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="Sparplan">
-                    <Fluent:Button Header="Gesamt Übersicht" LargeIcon="/resource/depot.png" Command="{Binding OpenSparplanUebersichtCommand}" Width="70" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
-                    <Fluent:Button Header="Ausführen Übersicht" LargeIcon="/resource/depot.png" Command="{Binding OpenSparplanAusfuehrenUebersichtCommand}" Width="70" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
+                    <Fluent:Button Header="Gesamt Übersicht" LargeIcon="/resource/notebook.png" Command="{Binding OpenSparplanUebersichtCommand}" Width="70" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
+                    <Fluent:Button Header="Ausführen Übersicht" LargeIcon="/resource/send-circle-outline.png" Command="{Binding OpenSparplanAusfuehrenUebersichtCommand}" Width="70" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
             

@@ -154,6 +154,7 @@ namespace Aktien.Logic.UI
         public SparplanAusfuehrenUebersichtViewModel SparplanAusfuehrenUebersicht => new SparplanAusfuehrenUebersichtViewModel();
         public SparplanAusfuehrenViewModel SparplanAusfuehren => new SparplanAusfuehrenViewModel();
         public SparplanHistoryUebersichtViewModel SparplanHistoryUebersicht => new SparplanHistoryUebersichtViewModel();
+        public ErhalteneDividendeEintragenViewModel ErhalteneDividendeEintragen => new ErhalteneDividendeEintragenViewModel();
         public static void Cleanup()
         {
 
