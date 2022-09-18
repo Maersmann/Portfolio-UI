@@ -5,8 +5,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>resource\bank.ico</ApplicationIcon>
-    <AssemblyVersion>4.3.0.0</AssemblyVersion>
-    <Version>4.3.0</Version>
+    <AssemblyVersion>4.4.0.0</AssemblyVersion>
+    <Version>4.4.0</Version>
     <RootNamespace>UI.Desktop</RootNamespace>
     <AssemblyName>Portfolio</AssemblyName>
     <Authors>Rene Märsmann</Authors>
@@ -36,7 +36,10 @@
     <None Remove="resource\etf.png" />
     <None Remove="resource\finance.png" />
     <None Remove="resource\gesamt.png" />
+    <None Remove="resource\notebook.png" />
     <None Remove="resource\plus-minus-variant.png" />
+    <None Remove="resource\send-circle-outline.png" />
+    <None Remove="resource\stop.png" />
     <None Remove="resource\vector-polyline.png" />
     <None Remove="resource\vector-square-open.png" />
     <None Remove="resource\vector-square.png" />
@@ -65,7 +68,10 @@
     <Resource Include="resource\etf.png" />
     <Resource Include="resource\finance.png" />
     <Resource Include="resource\gesamt.png" />
+    <Resource Include="resource\notebook.png" />
     <Resource Include="resource\plus-minus-variant.png" />
+    <Resource Include="resource\send-circle-outline.png" />
+    <Resource Include="resource\stop.png" />
     <Resource Include="resource\vector-polyline.png" />
     <Resource Include="resource\vector-square-open.png" />
     <Resource Include="resource\vector-square.png" />

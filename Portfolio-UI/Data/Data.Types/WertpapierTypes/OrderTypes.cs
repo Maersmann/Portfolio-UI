@@ -36,7 +36,8 @@ namespace Aktien.Data.Types.WertpapierTypes
         Sparplan = 3,
         [Description("Reverse-Split")]
         ReverseSplit = 4,
-
+        [Description("Aktien-Split")]
+        AktienSplit = 5,
     }
 
     public enum BuySell

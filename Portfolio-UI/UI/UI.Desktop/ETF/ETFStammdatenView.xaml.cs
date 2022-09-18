@@ -25,7 +25,7 @@ namespace UI.Desktop.ETF
         public ETFStammdatenView()
         {
             InitializeComponent();
-            base.RegisterStammdatenGespeichertMessage(StammdatenTypes.etf); 
+            RegisterStammdatenGespeichertMessage(StammdatenTypes.etf);
         }
     }
 }

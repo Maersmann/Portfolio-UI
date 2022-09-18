@@ -41,6 +41,7 @@ using UI.Desktop.Auswertung.Investition;
 using UI.Desktop.Aktie;
 using UI.Desktop.ETF;
 using UI.Desktop.Derivate;
+using UI.Desktop.Sparplan;
 
 namespace Aktien.UI.Desktop
 {
@@ -142,19 +143,19 @@ namespace Aktien.UI.Desktop
                     if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(SteuerMonatAuswertungView).Name))
                         Container.NavigationService.Navigate(new SteuerMonatAuswertungView());
                     break;
-                case ViewType.viewOpenDividendeWertpapierEntwicklungAuswertung:
+                case ViewType.viewDividendeWertpapierEntwicklungAuswertung:
                     if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(DividendeWertpapierEntwicklungView).Name))
                         Container.NavigationService.Navigate(new DividendeWertpapierEntwicklungView());
                     break;
-                case ViewType.viewOpenDividendenErhaltenImJahr:
+                case ViewType.viewDividendenErhaltenImJahr:
                     if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(DividendenErhaltenImJahrView).Name))
                         Container.NavigationService.Navigate(new DividendenErhaltenImJahrView());
                     break;
-                case ViewType.viewOpenDividendenErhaltenImMonat:
+                case ViewType.viewDividendenErhaltenImMonat:
                     if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(DividendenErhaltenImMonatView).Name))
                         Container.NavigationService.Navigate(new DividendenErhaltenImMonatView());
                     break;
-                case ViewType.viewOpenOrderBuch:
+                case ViewType.viewOrderBuch:
                     if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(OrderBuchView).Name))
                         Container.NavigationService.Navigate(new OrderBuchView());
                     break;
@@ -194,9 +195,21 @@ namespace Aktien.UI.Desktop
                     if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(InvestitionMonatlichSummiertView).Name))
                         Container.NavigationService.Navigate(new InvestitionMonatlichSummiertView());
                     break;
-                case ViewType.viewOpenDivideneMonatJahresentwicklungAuswertung:
+                case ViewType.viewDivideneMonatJahresentwicklungAuswertung:
                     if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(DividendeMonatlichJahresentwicklungView).Name))
                         Container.NavigationService.Navigate(new DividendeMonatlichJahresentwicklungView());
+                    break;
+                case ViewType.viewSparplanUebersichtCommand:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(nameof(SparplanUebersichtPage)))
+                    {
+                        _ = Container.NavigationService.Navigate(new SparplanUebersichtPage());
+                    }
+                    break;
+                case ViewType.viewSparplanAusfuehrenUebersichtCommand:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(nameof(SparplanAusfuehrenPage)))
+                    {
+                        _ = Container.NavigationService.Navigate(new SparplanAusfuehrenPage());
+                    }
                     break;
                 default:
                     break;
@@ -231,6 +244,9 @@ namespace Aktien.UI.Desktop
                     break;
                 case StammdatenTypes.vorbelegung:
                     view = new VorbelegungView();
+                    break;
+                case StammdatenTypes.sparplan:
+                    view = new SparplanStammdatenView();
                     break;
                 default:
                     break;

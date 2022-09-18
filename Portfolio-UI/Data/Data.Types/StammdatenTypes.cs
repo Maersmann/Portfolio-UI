@@ -19,6 +19,7 @@ namespace Aktien.Data.Types
         steuerart,
         steuer,
         steuergruppe,
-        vorbelegung
+        vorbelegung,
+        sparplan
     }
 }

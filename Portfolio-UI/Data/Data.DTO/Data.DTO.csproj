@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Authors>Märsmann</Authors>
+    <Product>Portfolio</Product>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Data.Model\Data.Model\Data.Model.csproj" />
+    <ProjectReference Include="..\Data.Types\Data.Types.csproj" />
+  </ItemGroup>
+
+</Project>

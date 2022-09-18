@@ -9,7 +9,7 @@ namespace Aktien.Logic.Core.DepotLogic
 {
     public class KaufBerechnungen
     { 
-        public Double BuyInAktieGekauft(Double buyIn, double alteAnzahl, double neueGesamtAnzahl, double preis, double neueAnzahl, double? fremdkosten, OrderTypes orderTypes)
+        public double BuyInAktieGekauft(double buyIn, double alteAnzahl, double neueGesamtAnzahl, double preis, double neueAnzahl, double? fremdkosten, OrderTypes orderTypes)
         {
             var BuyIn = Math.Round(((buyIn * alteAnzahl) + ((preis * neueAnzahl) + fremdkosten.GetValueOrDefault(0))) / neueGesamtAnzahl, 3, MidpointRounding.AwayFromZero);
 
@@ -19,7 +19,7 @@ namespace Aktien.Logic.Core.DepotLogic
             return BuyIn;
         }
 
-        public Double BuyInAktieEntfernt(Double buyIn, double alteAnzahl, double neueGesamtAnzahl, double preis, double neueAnzahl, double? fremdkosten, OrderTypes orderTypes)
+        public double BuyInAktieEntfernt(double buyIn, double alteAnzahl, double neueGesamtAnzahl, double preis, double neueAnzahl, double? fremdkosten, OrderTypes orderTypes)
         {
             var BuyIn = Math.Round(((buyIn * alteAnzahl) - ((preis * neueAnzahl) - fremdkosten.GetValueOrDefault(0))) / neueGesamtAnzahl, 3, MidpointRounding.AwayFromZero);
 

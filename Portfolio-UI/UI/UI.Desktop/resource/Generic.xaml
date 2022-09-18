@@ -17,7 +17,7 @@
     <Color R="111" G="126" B="149" A="80" x:Key="colorDetailBG" />
     <SolidColorBrush Color="{StaticResource colorDetailBG}" x:Key="brushDetail" />
 
-    <Color R="190" G="190" B="190" A="255" x:Key="colorStammdatenBereich" />
+    <Color R="139" G="139" B="139" A="255" x:Key="colorStammdatenBereich" />
     <SolidColorBrush Color="{StaticResource colorStammdatenBereich}" x:Key="brushStammdatenBereich" />
 
     <Color R="0" G="0" B="139" A="150" x:Key="colorUebersicht" />

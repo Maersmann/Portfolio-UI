@@ -40,7 +40,7 @@ namespace Logic.UI
             {
                 RequestIsWorking = true;
 
-                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL+"/api/Users/authenticate", authenticate);
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + "/api/Users/authenticate", authenticate);
 
                 RequestIsWorking = false;
                 if (resp.IsSuccessStatusCode)

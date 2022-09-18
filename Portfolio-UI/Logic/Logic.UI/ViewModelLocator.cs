@@ -39,6 +39,8 @@ using Logic.UI.UserViewModels;
 using Logic.UI.AuswertungViewModels.InvestitionViewModels;
 using Logic.UI.DividendeViewModels;
 using Logic.UI.UtilsViewModels;
+using Logic.UI.WertpapierViewModels;
+using Logic.UI.SparplanViewModels;
 
 namespace Aktien.Logic.UI
 {
@@ -146,6 +148,13 @@ namespace Aktien.Logic.UI
         public DividendeReitAktualisierungViewModel DividendeReitAktualisierung => new DividendeReitAktualisierungViewModel();
         public BestaetigungViewModel Bestaetigung => new BestaetigungViewModel();
         public DividendeMonatlichJahresentwicklungViewModel DividendeMonatlichJahresentwicklung => new DividendeMonatlichJahresentwicklungViewModel();
+        public SplitEintragenViewModel AktienSplitEintragen => new SplitEintragenViewModel();
+        public SparplanUebersichtViewModel SparplanUebersicht => new SparplanUebersichtViewModel();
+        public SparplanStammdatenViewModel SparplanStammdaten => new SparplanStammdatenViewModel();
+        public SparplanAusfuehrenUebersichtViewModel SparplanAusfuehrenUebersicht => new SparplanAusfuehrenUebersichtViewModel();
+        public SparplanAusfuehrenViewModel SparplanAusfuehren => new SparplanAusfuehrenViewModel();
+        public SparplanHistoryUebersichtViewModel SparplanHistoryUebersicht => new SparplanHistoryUebersichtViewModel();
+        public ErhalteneDividendeEintragenViewModel ErhalteneDividendeEintragen => new ErhalteneDividendeEintragenViewModel();
         public static void Cleanup()
         {
 

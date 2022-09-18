@@ -8,6 +8,8 @@ using Base.Logic.ViewModels;
 using Data.Model.DepotModels;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using Logic.Messages.DepotMessages;
+using Logic.Messages.WertpapierMessages;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -20,14 +22,16 @@ using System.Windows.Input;
 
 namespace Aktien.Logic.UI.DepotViewModels
 {
-    public class DepotUebersichtViewModel: ViewModelUebersicht<DepotGesamtUebersichtModel, StammdatenTypes>
+    public class DepotUebersichtViewModel : ViewModelUebersicht<DepotGesamtUebersichtModel, StammdatenTypes>
     {
 
         public DepotUebersichtViewModel()
         {
             Title = "Übersicht der Aktien im Depot";
-            OpenDividendeCommand = new DelegateCommand(ExecuteOpenDividendeCommandCommand, this.CanExecuteCommand);
+            OpenDividendeCommand = new DelegateCommand(ExecuteOpenDividendeCommandCommand, CanExecuteCommand);
             OpenReverseSplitCommand = new RelayCommand(() => ExecuteOpenReverseSplitCommand());
+            OpenAktienSplitCommand = new RelayCommand(() => ExecuteOpenAktienSplitCommand());
+            OpenErhaltendeDividendeEintragenCommand = new RelayCommand(() => ExecuteOpenErhaltendeDividendeEintragenCommand());
             RegisterAktualisereViewMessage(StammdatenTypes.buysell.ToString());
         }
 
@@ -55,12 +59,19 @@ namespace Aktien.Logic.UI.DepotViewModels
 
         public ICommand OpenDividendeCommand { get; set; }
         public ICommand OpenReverseSplitCommand { get; set; }
+        public ICommand OpenAktienSplitCommand { get; set; }
+        public ICommand OpenErhaltendeDividendeEintragenCommand { get; set; }
         #endregion
 
         #region Commands
         protected override bool CanExecuteCommand()
         {
-            return base.CanExecuteCommand() && (SelectedItem.WertpapierTyp.Equals(WertpapierTypes.Aktie));
+            return base.CanExecuteCommand() && SelectedItem.WertpapierTyp.Equals(WertpapierTypes.Aktie);
+        }
+
+        private void ExecuteOpenErhaltendeDividendeEintragenCommand()
+        {
+            Messenger.Default.Send(new OpenErhalteneDividendeEintragenMessage { WertpapierID = SelectedItem.WertpapierID, WertpapierName = SelectedItem.Bezeichnung }, "DepotUebersicht");
         }
 
         private void ExecuteOpenDividendeCommandCommand()
@@ -71,6 +82,11 @@ namespace Aktien.Logic.UI.DepotViewModels
         private void ExecuteOpenReverseSplitCommand()
         {
             Messenger.Default.Send(new OpenReverseSplitEintragenMessage { DepotWertpapierID = SelectedItem.WertpapierID}, "DepotUebersicht");
+        }
+
+        private void ExecuteOpenAktienSplitCommand()
+        {
+            Messenger.Default.Send(new OpenSplitEintragenMessage { DepotWertpapierID = SelectedItem.WertpapierID }, "DepotUebersicht");
         }
         #endregion
     }

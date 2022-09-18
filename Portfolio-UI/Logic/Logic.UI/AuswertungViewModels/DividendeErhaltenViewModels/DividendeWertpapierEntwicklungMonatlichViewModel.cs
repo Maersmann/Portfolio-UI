@@ -44,7 +44,7 @@ namespace Logic.UI.AuswertungViewModels
 
         private void ExcecuteAuswahlCommand()
         {
-            Messenger.Default.Send(new OpenWertpapierAuswahlMessage(OpenOpenWertpapierAuswahlMessageCallback), "DividendeWertpapierEntwicklung");
+            Messenger.Default.Send(new OpenWertpapierAuswahlMessage(OpenWertpapierAuswahlMessageCallback), "DividendeWertpapierEntwicklung");
         }
 
         private async void LoadData()
@@ -94,7 +94,7 @@ namespace Logic.UI.AuswertungViewModels
             RequestIsWorking = false;
         }
         #region Callbacks
-        private void OpenOpenWertpapierAuswahlMessageCallback(bool confirmed, int id)
+        private void OpenWertpapierAuswahlMessageCallback(bool confirmed, int id)
         {
             if (confirmed)
             {
