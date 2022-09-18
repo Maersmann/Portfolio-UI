@@ -83,7 +83,7 @@
                     <DataGridTemplateColumn>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="Aktien-Split" Style="{DynamicResource MaterialDesignOutlinedButton}" Command="{Binding DataContext.OpenAktienSplitCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding}"/>
+                                <Button Content="Split" Style="{DynamicResource MaterialDesignOutlinedButton}" Command="{Binding DataContext.OpenAktienSplitCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding}"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
