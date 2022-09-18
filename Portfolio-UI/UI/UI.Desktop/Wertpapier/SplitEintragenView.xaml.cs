@@ -15,14 +15,14 @@ using System.Windows.Shapes;
 namespace UI.Desktop.Wertpapier
 {
     /// <summary>
-    /// Interaktionslogik für AktienSplitEintragenView.xaml
+    /// Interaktionslogik für SplitEintragenView.xaml
     /// </summary>
-    public partial class AktienSplitEintragenView : Window
+    public partial class SplitEintragenView : Window
     {
-        public AktienSplitEintragenView()
+        public SplitEintragenView()
         {
             InitializeComponent();
-            Messenger.Default.Register<CloseViewMessage>(this, "AktienSplitEintragen", m => ReceivCloseViewMessage());
+            Messenger.Default.Register<CloseViewMessage>(this, "SplitEintragen", m => ReceivCloseViewMessage());
         }
         private void ReceivCloseViewMessage()
         {

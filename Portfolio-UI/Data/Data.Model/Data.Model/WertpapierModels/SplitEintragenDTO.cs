@@ -4,9 +4,10 @@ using System.Text;
 
 namespace Data.Model.WertpapierModels
 {
-    public class AktienSplitEintragenDTO
+    public class SplitEintragenDTO
     {
         public int WertpapierID { get; set; }
         public int Verhaeltnis { get; set; }
+        public DateTime? Datum { get; set; }
     }
 }

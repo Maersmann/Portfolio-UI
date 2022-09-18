@@ -1,4 +1,4 @@
-﻿<Window x:Class="UI.Desktop.Wertpapier.AktienSplitEintragenView"
+﻿<Window x:Class="UI.Desktop.Wertpapier.SplitEintragenView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -59,6 +59,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="40px" />
                     <RowDefinition Height="40px" />
+                    <RowDefinition Height="40px" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="100px" />
@@ -67,6 +68,7 @@
 
                 <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Aktie</Label>
                 <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Verhältnis</Label>
+                <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Datum</Label>
 
                 <TextBox Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="106" IsReadOnly="True"  Text="{Binding Model.WertpapierName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged,ValidatesOnNotifyDataErrors=True}">
                     <Validation.ErrorTemplate>
@@ -84,8 +86,6 @@
                         </ControlTemplate>
                     </Validation.ErrorTemplate>
                 </TextBox>
-
-  
 
                 <Grid Grid.Row="1" Grid.Column="1">
                     <Grid.ColumnDefinitions>
@@ -114,6 +114,24 @@
                         </Validation.ErrorTemplate>
                     </TextBox>
                 </Grid>
+
+                <DatePicker Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Width="100" SelectedDate="{Binding Datum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <materialDesign:HintAssist.Hint>01.01.2021</materialDesign:HintAssist.Hint>
+                    <Validation.ErrorTemplate>
+                        <ControlTemplate>
+                            <StackPanel>
+                                <AdornedElementPlaceholder x:Name="textBox"/>
+                                <ItemsControl ItemsSource="{Binding}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding ErrorContent}" Foreground="Red" />
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </ControlTemplate>
+                    </Validation.ErrorTemplate>
+                </DatePicker>
 
             </Grid>
 

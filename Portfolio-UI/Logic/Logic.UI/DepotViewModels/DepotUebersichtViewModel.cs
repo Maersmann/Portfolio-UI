@@ -86,7 +86,7 @@ namespace Aktien.Logic.UI.DepotViewModels
 
         private void ExecuteOpenAktienSplitCommand()
         {
-            Messenger.Default.Send(new OpenAktienSplitEintragenMessage { DepotWertpapierID = SelectedItem.WertpapierID }, "DepotUebersicht");
+            Messenger.Default.Send(new OpenSplitEintragenMessage { DepotWertpapierID = SelectedItem.WertpapierID }, "DepotUebersicht");
         }
         #endregion
     }

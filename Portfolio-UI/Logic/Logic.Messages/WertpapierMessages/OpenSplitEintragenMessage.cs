@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Logic.Messages.WertpapierMessages
 {
-    public class OpenAktienSplitEintragenMessage
+    public class OpenSplitEintragenMessage
     {
         public int DepotWertpapierID { get; set; }
     }

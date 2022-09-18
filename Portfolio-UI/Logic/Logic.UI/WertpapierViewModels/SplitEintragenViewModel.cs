@@ -1,6 +1,7 @@
 ﻿using Aktien.Data.Types;
 using Aktien.Data.Types.WertpapierTypes;
 using Aktien.Logic.Core.DepotLogic;
+using Aktien.Logic.Core.Validierung.Base;
 using Aktien.Logic.Core.Validierungen;
 using Aktien.Logic.Messages.Base;
 using Base.Logic.Core;
@@ -19,17 +20,17 @@ using System.Windows.Input;
 
 namespace Logic.UI.WertpapierViewModels
 {
-    public class AktienSplitEintragenViewModel : ViewModelValidate
+    public class SplitEintragenViewModel : ViewModelValidate
     {
-        private readonly AktienSplitEintragenDTO aktienSplit;
-        private readonly AktienSplitModel model;
+        private readonly SplitEintragenDTO split;
+        private readonly SplitModel model;
 
 
-        public AktienSplitEintragenViewModel()
+        public SplitEintragenViewModel()
         {
-            Title = "Aktien-Split eintragen";
-            model = new AktienSplitModel(); 
-            aktienSplit = new AktienSplitEintragenDTO { Verhaeltnis = 1, WertpapierID = 0 };
+            Title = "Split eintragen";
+            model = new SplitModel { Datum = DateTime.Now };
+            split = new SplitEintragenDTO { Verhaeltnis = 1, WertpapierID = 0, Datum = DateTime.Now };
             SaveCommand = new DelegateCommand(ExecuteSaveCommand, CanExecuteSaveCommand);
             Verhaeltnis = 1;
         }
@@ -38,7 +39,7 @@ namespace Logic.UI.WertpapierViewModels
         {
             set
             {
-                aktienSplit.WertpapierID = value;
+                split.WertpapierID = value;
                 LoadData(value);
             }
         }
@@ -67,8 +68,8 @@ namespace Logic.UI.WertpapierViewModels
 
         public void BerechneWerte()
         {
-            model.NeueAnzahl = model.AlteAnzahl * aktienSplit.Verhaeltnis;
-            model.NeuerBuyIn = new KaufBerechnungen().BuyInAktieGekauft(0, 0, model.NeueAnzahl, model.AlterBuyIn / aktienSplit.Verhaeltnis, model.NeueAnzahl, 0, OrderTypes.Normal);
+            model.NeueAnzahl = model.AlteAnzahl * split.Verhaeltnis;
+            model.NeuerBuyIn = new KaufBerechnungen().BuyInAktieGekauft(0, 0, model.NeueAnzahl, model.AlterBuyIn / split.Verhaeltnis, model.NeueAnzahl, 0, OrderTypes.Normal);
             if (double.IsNaN(model.NeuerBuyIn))
             {
                 model.NeuerBuyIn = 0;
@@ -79,18 +80,33 @@ namespace Logic.UI.WertpapierViewModels
 
         #region Bindings
 
-        public AktienSplitModel Model => model;
+        public SplitModel Model => model;
         public ICommand OpenAuswahlCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public int? Verhaeltnis
         {
-            get => aktienSplit.Verhaeltnis;
+            get => split.Verhaeltnis;
             set
             {
-                aktienSplit.Verhaeltnis = value.GetValueOrDefault(0);
-                ValidateVerhaeltnis(aktienSplit.Verhaeltnis);
+                split.Verhaeltnis = value.GetValueOrDefault(0);
+                ValidateVerhaeltnis(split.Verhaeltnis);
                 BerechneWerte();
                 RaisePropertyChanged();
+            }
+        }
+
+        public DateTime? Datum
+        {
+            get => split.Datum;
+            set
+            {
+                if (RequestIsWorking || !Equals(split.Datum, value))
+                {
+                    ValidateDatum(value, nameof(Datum));
+                    split.Datum = value;
+                    RaisePropertyChanged();
+                    (SaveCommand as DelegateCommand).RaiseCanExecuteChanged();
+                }
             }
         }
 
@@ -108,14 +124,14 @@ namespace Logic.UI.WertpapierViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/depot/wertpapier/{model.DepotWertpapierID}/AktienSplit", aktienSplit);
+                HttpResponseMessage resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + $"/api/depot/wertpapier/{model.DepotWertpapierID}/Split", split);
                 RequestIsWorking = false;
 
                 if (resp.IsSuccessStatusCode)
                 {
                     Messenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.aktien.ToString());
                     Messenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.buysell.ToString());
-                    Messenger.Default.Send(new CloseViewMessage(), "AktienSplitEintragen");
+                    Messenger.Default.Send(new CloseViewMessage(), "SplitEintragen");
                     SendInformationMessage("Gespeichert");
                 }
                 else
@@ -130,6 +146,16 @@ namespace Logic.UI.WertpapierViewModels
 
 
         #region Validierungen
+
+        private bool ValidateDatum(DateTime? datun, string fieldname)
+        {
+            var Validierung = new BaseValidierung();
+
+            bool isValid = Validierung.ValidateDatum(datun, out ICollection<string> validationErrors);
+
+            AddValidateInfo(isValid, fieldname, validationErrors);
+            return isValid;
+        }
 
         private bool ValidateVerhaeltnis(int verhaeltnis)
         {
