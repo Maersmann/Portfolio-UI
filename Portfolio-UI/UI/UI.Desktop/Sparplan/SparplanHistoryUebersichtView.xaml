@@ -41,6 +41,7 @@
                 <DataGridTextColumn Header="Anzahl" Binding="{Binding Anzahl}" Width="auto" />
                 <DataGridTextColumn Header="Preis" Binding="{Binding Preis,StringFormat={}{0:N2}€, ConverterCulture='de-DE'}" Width="auto"/>
                 <DataGridTextColumn Header="Gesamt" Binding="{Binding Gesamt, StringFormat={}{0:N2}€, ConverterCulture='de-DE'}" Width="auto"/>
+                <DataGridTextColumn Header="Art" Binding="{Binding Art}" Width="auto" />
             </DataGrid.Columns>
         </DataGrid>
 
