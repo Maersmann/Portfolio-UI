@@ -41,6 +41,8 @@ using Logic.UI.DividendeViewModels;
 using Logic.UI.UtilsViewModels;
 using Logic.UI.WertpapierViewModels;
 using Logic.UI.SparplanViewModels;
+using Logic.UI.ZinsenViewModels;
+using Logic.UI.AuswertungViewModels.ZinsenViewModels;
 
 namespace Aktien.Logic.UI
 {
@@ -155,6 +157,13 @@ namespace Aktien.Logic.UI
         public SparplanAusfuehrenViewModel SparplanAusfuehren => new SparplanAusfuehrenViewModel();
         public SparplanHistoryUebersichtViewModel SparplanHistoryUebersicht => new SparplanHistoryUebersichtViewModel();
         public ErhalteneDividendeEintragenViewModel ErhalteneDividendeEintragen => new ErhalteneDividendeEintragenViewModel();
+        public ZinsenErhaltenUebersichtViewModel ZinsenErhaltenUebersicht => new ZinsenErhaltenUebersichtViewModel();
+        public ZinsenEintragenViewModel ZinsenEintragen => new ZinsenEintragenViewModel();
+        public ZinsenEntwicklungMonatlichViewModel zinsenEntwicklungMonatlich => new ZinsenEntwicklungMonatlichViewModel();
+        public ZinsenMonatlichJahresentwicklungViewModel ZinsenMonatlichJahresentwicklung => new ZinsenMonatlichJahresentwicklungViewModel();
+        public ZinsenVergleichMonatViewModel ZinsenVergleichMonat => new ZinsenVergleichMonatViewModel();
+        public ZinsenGesamtentwicklungMonatlichSummiertViewModel ZinsenGesamtentwicklungMonatlichSummiert => new ZinsenGesamtentwicklungMonatlichSummiertViewModel();
+        public ZinsenGesamtentwicklungJaehrlichSummiertViewModel ZinsenGesamtentwicklungJaehrlichSummiert => new ZinsenGesamtentwicklungJaehrlichSummiertViewModel();
         public static void Cleanup()
         {
 

@@ -40,8 +40,14 @@
         viewInvestitionMonatlich,
         viewInvestitionMonatlichSummiert,
         viewDivideneMonatJahresentwicklungAuswertung,
-        viewSparplanUebersichtCommand,
-        viewSparplanAusfuehrenUebersichtCommand
+        viewSparplanUebersicht,
+        viewSparplanAusfuehrenUebersicht,
+        viewZinsenErhaltenUebersicht,
+        viewZinsenEntwicklungMonatlich,
+        viewZinsenMonatlichJahresentwicklung,
+        viewZZinsenVergleichMonat,
+        viewZinsenGesamtentwicklungJaehrlichSummiert,
+        viewZinsenGesamtentwicklungMonatlichSummiert
     }
 
 }

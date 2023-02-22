@@ -38,6 +38,7 @@
     <None Remove="resource\finance.png" />
     <None Remove="resource\gesamt.png" />
     <None Remove="resource\notebook.png" />
+    <None Remove="resource\percent.png" />
     <None Remove="resource\plus-minus-variant.png" />
     <None Remove="resource\send-circle-outline.png" />
     <None Remove="resource\stop.png" />
@@ -71,6 +72,7 @@
     <Resource Include="resource\finance.png" />
     <Resource Include="resource\gesamt.png" />
     <Resource Include="resource\notebook.png" />
+    <Resource Include="resource\percent.png" />
     <Resource Include="resource\plus-minus-variant.png" />
     <Resource Include="resource\send-circle-outline.png" />
     <Resource Include="resource\stop.png" />

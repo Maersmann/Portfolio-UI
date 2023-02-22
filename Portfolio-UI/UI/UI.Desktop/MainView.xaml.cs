@@ -42,6 +42,8 @@ using UI.Desktop.Aktie;
 using UI.Desktop.ETF;
 using UI.Desktop.Derivate;
 using UI.Desktop.Sparplan;
+using UI.Desktop.Zinsen;
+using UI.Desktop.Auswertung.Zinsen;
 
 namespace Aktien.UI.Desktop
 {
@@ -199,17 +201,41 @@ namespace Aktien.UI.Desktop
                     if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(DividendeMonatlichJahresentwicklungView).Name))
                         Container.NavigationService.Navigate(new DividendeMonatlichJahresentwicklungView());
                     break;
-                case ViewType.viewSparplanUebersichtCommand:
+                case ViewType.viewSparplanUebersicht:
                     if (Container.Content == null || !Container.Content.GetType().Name.Equals(nameof(SparplanUebersichtPage)))
                     {
                         _ = Container.NavigationService.Navigate(new SparplanUebersichtPage());
                     }
                     break;
-                case ViewType.viewSparplanAusfuehrenUebersichtCommand:
+                case ViewType.viewSparplanAusfuehrenUebersicht:
                     if (Container.Content == null || !Container.Content.GetType().Name.Equals(nameof(SparplanAusfuehrenPage)))
                     {
                         _ = Container.NavigationService.Navigate(new SparplanAusfuehrenPage());
                     }
+                    break;
+                case ViewType.viewZinsenErhaltenUebersicht:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(ZinsenErhaltenUebersichtView).Name))
+                        Container.NavigationService.Navigate(new ZinsenErhaltenUebersichtView());
+                    break;
+                case ViewType.viewZinsenEntwicklungMonatlich:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(ZinsenEntwicklungMonatlichView).Name))
+                        Container.NavigationService.Navigate(new ZinsenEntwicklungMonatlichView());
+                    break;
+                case ViewType.viewZinsenGesamtentwicklungJaehrlichSummiert:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(ZinsenGesamtentwicklungJaehrlichSummiertView).Name))
+                        Container.NavigationService.Navigate(new ZinsenGesamtentwicklungJaehrlichSummiertView());
+                    break;
+                case ViewType.viewZinsenGesamtentwicklungMonatlichSummiert:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(ZinsenGesamtentwicklungMonatlichSummiertView).Name))
+                        Container.NavigationService.Navigate(new ZinsenGesamtentwicklungMonatlichSummiertView());
+                    break;
+                case ViewType.viewZinsenMonatlichJahresentwicklung:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(ZinsenMonatlichJahresentwicklungView).Name))
+                        Container.NavigationService.Navigate(new ZinsenMonatlichJahresentwicklungView());
+                    break;
+                case ViewType.viewZZinsenVergleichMonat:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(ZinsenVergleichMonatView).Name))
+                        Container.NavigationService.Navigate(new ZinsenVergleichMonatView());
                     break;
                 default:
                     break;
@@ -247,6 +273,9 @@ namespace Aktien.UI.Desktop
                     break;
                 case StammdatenTypes.sparplan:
                     view = new SparplanStammdatenView();
+                    break;
+                case StammdatenTypes.zinsenErhalten:
+                    view = new ZinsenEintragenView();
                     break;
                 default:
                     break;

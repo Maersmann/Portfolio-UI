@@ -40,6 +40,8 @@ namespace Aktien.Logic.Core.Validierung.Base
         }
 
 
+
+
         public bool ValidateDatum(DateTime? date, out ICollection<string> validationErrors)
         {
             validationErrors = new List<string>();
@@ -128,7 +130,7 @@ namespace Aktien.Logic.Core.Validierung.Base
         {
             validationErrors = new List<string>();
 
-            if (!int.TryParse(zahl, out int Zahl))
+            if (!Double.TryParse(zahl, out double Zahl))
             {
                 validationErrors.Add("Keine Zahl hinterlegt");
                 return false;
@@ -141,6 +143,24 @@ namespace Aktien.Logic.Core.Validierung.Base
                 validationErrors.Add("Die Zahl zu niedrig");
 
             return validationErrors.Count == 0;
+        }
+
+        public bool ValidateZahl(string betrag, out ICollection<string> validatonErrors, bool erlaubeNull = false)
+        {
+            validatonErrors = new List<string>();
+
+            if (!double.TryParse(betrag, out double Betrag))
+            {
+                validatonErrors.Add("Keine Zahl hinterlegt");
+                return false;
+            }
+
+            if (!erlaubeNull && Betrag == 0)
+            {
+                validatonErrors.Add("Die Zahl darf nicht 0 sein");
+            }
+
+            return validatonErrors.Count == 0;
         }
     }
 }

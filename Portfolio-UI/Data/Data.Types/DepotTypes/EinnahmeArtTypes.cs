@@ -16,6 +16,8 @@ namespace Aktien.Data.Types.DepotTypes
         [Description("Dividende")]
         Dividende = 1,
         [Description("Verkauf")]
-        Verkauf = 2
+        Verkauf = 2,
+        [Description("Zinsen")]
+        Zinsen = 3
     }
 }

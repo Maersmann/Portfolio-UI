@@ -20,6 +20,7 @@ namespace Aktien.Data.Types
         steuer,
         steuergruppe,
         vorbelegung,
-        sparplan
+        sparplan,
+        zinsenErhalten
     }
 }
