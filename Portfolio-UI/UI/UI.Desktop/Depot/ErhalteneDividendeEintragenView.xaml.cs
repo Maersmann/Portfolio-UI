@@ -1,4 +1,6 @@
-﻿using Aktien.Logic.Messages.Base;
+﻿using Aktien.Data.Types;
+using Aktien.Logic.Messages.Base;
+using Aktien.Logic.Messages.DividendeMessages;
 using GalaSoft.MvvmLight.Messaging;
 using Logic.Messages.SteuernMessages;
 using Logic.UI.SteuerViewModels;
@@ -53,6 +55,11 @@ namespace UI.Desktop.Depot
         private void ReceivCloseViewMessage()
         {
             GetWindow(this).Close();
+        }
+
+        private void Window_Unloaded(object sender, RoutedEventArgs e)
+        {
+            Messenger.Default.Unregister<OpenSteuernUebersichtMessage>(this);       
         }
     }
 }
