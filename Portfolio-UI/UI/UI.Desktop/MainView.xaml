@@ -80,6 +80,9 @@
                     <Fluent:Button Header="Gesamt Übersicht" LargeIcon="/resource/notebook.png" Command="{Binding OpenSparplanUebersichtCommand}" Width="70" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
                     <Fluent:Button Header="Ausführen Übersicht" LargeIcon="/resource/send-circle-outline.png" Command="{Binding OpenSparplanAusfuehrenUebersichtCommand}" Width="70" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
                 </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Zinsen">
+                    <Fluent:Button Header="Übersicht" LargeIcon="/resource/percent.png" Command="{Binding OpenZinsenErhaltenUebersichtCommand}" Width="70" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
+                </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
             
             <Fluent:RibbonTabItem Header="Auswertung - Dividenden Erhalten"  ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White">
@@ -100,6 +103,18 @@
                     <Fluent:Button Header="Gesamt Monatlich" LargeIcon="/resource/vector-polyline.png"  Command="{Binding OpenDividendeGesamtentwicklungSummiertCommand}" Width="80" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                     <Fluent:Button Header="Gesamt Jährlich" LargeIcon="/resource/vector-square.png"  Command="{Binding OpenDividendeJahresentwicklungSummiertCommand}" Width="80" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                     <Fluent:Button Header="Monat" LargeIcon="/resource/vector-square-open.png"  Command="{Binding OpenDividendeMonatentwicklungSummiertCommand}" Width="80" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+
+            <Fluent:RibbonTabItem Header="Auswertung - Zinsen"  ActiveTabBackground="{Binding Mode=OneWay, Source={StaticResource brusRibbonSelected}}" Foreground="White">
+                <Fluent:RibbonGroupBox Header="Monatlich" >
+                    <Fluent:Button Header="Monatliche Entwicklung" LargeIcon="/resource/chart-line.png"  Command="{Binding OpenZinsenEntwicklungMonatlichCommand}" Width="100" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                    <Fluent:Button Header="Monatlich Jahresvergleich" LargeIcon="/resource/chart-bar.png"  Command="{Binding OpenZinsenVergleichMonatCommand}" Width="100" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                    <Fluent:Button Header="Monatlich Jahresentwicklung" LargeIcon="/resource/chart-areaspline.png"  Command="{Binding OpenZinsenMonatlichJahresentwicklungCommand}" Width="110" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Summiert" >
+                    <Fluent:Button Header="Gesamt Monatlich" LargeIcon="/resource/vector-polyline.png"  Command="{Binding OpenZinsenGesamtentwicklungMonatlichSummiertCommand}" Width="80" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
+                    <Fluent:Button Header="Gesamt Jährlich" LargeIcon="/resource/vector-square.png"  Command="{Binding OpenZinsenGesamtentwicklungJaehrlichSummiertCommand}" Width="80" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 

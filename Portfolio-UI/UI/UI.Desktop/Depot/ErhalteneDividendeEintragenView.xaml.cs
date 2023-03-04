@@ -1,4 +1,6 @@
-﻿using Aktien.Logic.Messages.Base;
+﻿using Aktien.Data.Types;
+using Aktien.Logic.Messages.Base;
+using Aktien.Logic.Messages.DividendeMessages;
 using GalaSoft.MvvmLight.Messaging;
 using Logic.Messages.SteuernMessages;
 using Logic.UI.SteuerViewModels;
@@ -37,22 +39,18 @@ namespace UI.Desktop.Depot
                 model.SetCallback(m.Callback);
                 model.setSteuern(m.Steuern);
             }
-            Window window = new Window
-            {
-                Content = view,
-                SizeToContent = SizeToContent.WidthAndHeight,
-                ResizeMode = ResizeMode.NoResize,
-                WindowStartupLocation = WindowStartupLocation.CenterScreen,
-                ShowInTaskbar = false,
-                Owner = Application.Current.MainWindow
-            };
-            window.ShowDialog();
-
+            view.Owner = Application.Current.MainWindow;
+            view.ShowDialog();
         }
 
         private void ReceivCloseViewMessage()
         {
             GetWindow(this).Close();
+        }
+
+        private void Window_Unloaded(object sender, RoutedEventArgs e)
+        {
+            Messenger.Default.Unregister<OpenSteuernUebersichtMessage>(this);       
         }
     }
 }

@@ -8,6 +8,7 @@ using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using Logic.Messages.SparplanMessages;
 using Logic.Messages.UtilMessages;
+using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -24,6 +25,7 @@ namespace Logic.UI.SparplanViewModels
         {
             Title = "Übersicht der Sparpläne";
             BeendeSparplanCommand = new RelayCommand(() => ExecuteBeendeSparplanCommand());
+            BearbeitenCommand = new DelegateCommand(ExecuteBearbeitenCommand, CanBearbeitenExecuteCommand);
         }
 
         protected override string GetREST_API() { return $"/api/sparplan"; }
@@ -127,6 +129,13 @@ namespace Logic.UI.SparplanViewModels
             base.ExecuteBearbeitenCommand();
             await LoadData();
         }
+
+        private bool CanBearbeitenExecuteCommand()
+        {
+            return (SelectedItem != null) && SelectedItem.Status.Equals(SparplanStatus.aktiv);
+        }
+
+
         #endregion
     }
 }

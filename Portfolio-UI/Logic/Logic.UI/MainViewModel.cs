@@ -52,8 +52,14 @@ namespace Aktien.Logic.UI
             OpenInvestitionMonatlichCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewInvestitionMonatlich));
             OpenInvestitionMonatlichSummiertCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewInvestitionMonatlichSummiert));
             OpenDivideneMonatJahresentwicklungAuswertungCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewDivideneMonatJahresentwicklungAuswertung));
-            OpenSparplanUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSparplanUebersichtCommand));
-            OpenSparplanAusfuehrenUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSparplanAusfuehrenUebersichtCommand));
+            OpenSparplanUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSparplanUebersicht));
+            OpenSparplanAusfuehrenUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewSparplanAusfuehrenUebersicht));
+            OpenZinsenErhaltenUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewZinsenErhaltenUebersicht));
+            OpenZinsenEntwicklungMonatlichCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewZinsenEntwicklungMonatlich));
+            OpenZinsenGesamtentwicklungJaehrlichSummiertCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewZinsenGesamtentwicklungJaehrlichSummiert));
+            OpenZinsenGesamtentwicklungMonatlichSummiertCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewZinsenGesamtentwicklungMonatlichSummiert));
+            OpenZinsenMonatlichJahresentwicklungCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewZinsenMonatlichJahresentwicklung));
+            OpenZinsenVergleichMonatCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewZZinsenVergleichMonat));
 
             OpenVorbelegungCommand = new RelayCommand(() => ExecuteStammdatenViewCommand(StammdatenTypes.vorbelegung));
 
@@ -90,6 +96,13 @@ namespace Aktien.Logic.UI
         public ICommand OpenDivideneMonatJahresentwicklungAuswertungCommand { get; set; }
         public ICommand OpenSparplanUebersichtCommand { get; set; }
         public ICommand OpenSparplanAusfuehrenUebersichtCommand { get; set; }
+        public ICommand OpenZinsenErhaltenUebersichtCommand { get; set; }
+
+        public ICommand OpenZinsenEntwicklungMonatlichCommand { get; set; }
+        public ICommand OpenZinsenGesamtentwicklungJaehrlichSummiertCommand { get; set; }
+        public ICommand OpenZinsenGesamtentwicklungMonatlichSummiertCommand { get; set; }
+        public ICommand OpenZinsenMonatlichJahresentwicklungCommand { get; set; }
+        public ICommand OpenZinsenVergleichMonatCommand { get; set; }
         public bool MenuIsEnabled => GlobalVariables.ServerIsOnline;
 
         private void ExecuteOpenViewCommand(ViewType viewType)

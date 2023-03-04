@@ -46,6 +46,7 @@ namespace Aktien.Logic.UI.DepotViewModels
             RaisePropertyChanged("AusgabeKauf");
             RaisePropertyChanged("AusgabeGesamt");
             RaisePropertyChanged("Differenz");
+            RaisePropertyChanged("EinnahmeZinsen");
         }
 
         #region Bindings
@@ -57,6 +58,7 @@ namespace Aktien.Logic.UI.DepotViewModels
         public double AusgabeKauf =>  data.AusgabeKauf;
         public double AusgabeGesamt =>  data.AusgabeGesamt; 
         public double Differenz => data.Differenz;
+        public double EinnahmeZinsen => data.EinnahmeZinsen;
         #endregion
     }
 }

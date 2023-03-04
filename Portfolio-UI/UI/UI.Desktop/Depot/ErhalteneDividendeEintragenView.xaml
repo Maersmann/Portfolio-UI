@@ -11,8 +11,9 @@
         xmlns:Behaviors="clr-namespace:Base.Logic.Core.Behavior;assembly=Base.Logic"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d" ShowInTaskbar="False"
+         Unloaded="Window_Unloaded"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-        Background="{DynamicResource MaterialDesignPaper}"
+        Background="{DynamicResource MaterialDesignPaper}" 
         DataContext="{Binding ErhalteneDividendeEintragen ,Source={StaticResource Locator}}" Width="auto" Height="auto" SizeToContent="WidthAndHeight">
 
     <i:Interaction.Triggers>

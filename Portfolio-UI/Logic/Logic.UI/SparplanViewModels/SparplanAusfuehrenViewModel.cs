@@ -1,8 +1,10 @@
-﻿using Aktien.Data.Types.WertpapierTypes;
+﻿using Aktien.Data.Types;
+using Aktien.Data.Types.WertpapierTypes;
 using Aktien.Logic.Core.DepotLogic;
 using Aktien.Logic.Core.Validierung.Base;
 using Aktien.Logic.Messages.Base;
 using Base.Logic.Core;
+using Base.Logic.Messages;
 using Base.Logic.ViewModels;
 using Data.DTO.SparplanDTOs;
 using Data.Model.SparplanModels;
@@ -131,6 +133,7 @@ namespace Logic.UI.SparplanViewModels
                 {
                     Messenger.Default.Send(new CloseViewMessage(), "SparplanAusfuehren");
                     SendInformationMessage("Gespeichert");
+                    Messenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.sparplan.ToString());
                 }
                 else
                 {

@@ -1,5 +1,4 @@
 ﻿using Aktien.Data.Types;
-using UI.Desktop.Base;
 using GalaSoft.MvvmLight.Messaging;
 using Logic.Messages.SteuernMessages;
 using Logic.UI.SteuerViewModels;
@@ -14,20 +13,21 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using UI.Desktop.Base;
 using UI.Desktop.Steuer;
 
-namespace UI.Desktop.Dividende
+namespace UI.Desktop.Zinsen
 {
     /// <summary>
-    /// Interaktionslogik für DividendeReitAktualisierungView.xaml
+    /// Interaktionslogik für ZinsenEintragenView.xaml
     /// </summary>
-    public partial class DividendeReitAktualisierungView : StammdatenView
+    public partial class ZinsenEintragenView : StammdatenView
     {
-        public DividendeReitAktualisierungView()
+        public ZinsenEintragenView()
         {
             InitializeComponent();
-            RegisterStammdatenGespeichertMessage(StammdatenTypes.dividendeErhalten);
-            Messenger.Default.Register<OpenSteuernUebersichtMessage>(this, "DividendeErhaltenReit", m => ReceiveOpenSteuernUebersichtMessage(m));
+            RegisterStammdatenGespeichertMessage(StammdatenTypes.zinsenErhalten);
+            Messenger.Default.Register<OpenSteuernUebersichtMessage>(this, "ZinsenEintragen", m => ReceiveOpenSteuernUebersichtMessage(m));
         }
 
         private void ReceiveOpenSteuernUebersichtMessage(OpenSteuernUebersichtMessage m)
@@ -42,12 +42,6 @@ namespace UI.Desktop.Dividende
             view.Owner = Application.Current.MainWindow;
             view.ShowDialog();
 
-        }
-
-        public override void Window_Unloaded(object sender, RoutedEventArgs e)
-        {
-            base.Window_Unloaded(sender, e);
-            Messenger.Default.Unregister<OpenSteuernUebersichtMessage>(this);
         }
     }
 }

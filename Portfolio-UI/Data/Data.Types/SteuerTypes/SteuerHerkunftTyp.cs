@@ -7,6 +7,7 @@ namespace Data.Types.SteuerTypes
     public enum SteuerHerkunftTyp
     {
         shtDividende = 0,
-        shtOrder = 1
+        shtOrder = 1,
+        shtZinsen = 2
     }
 }

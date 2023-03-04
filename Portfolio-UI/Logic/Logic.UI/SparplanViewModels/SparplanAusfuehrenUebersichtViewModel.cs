@@ -24,6 +24,7 @@ namespace Logic.UI.SparplanViewModels
             Title = "Übersicht der auszuführenden Sparpläne";
             FuehreSparplanAusCommmand = new RelayCommand(() => ExecuteFuehreSparplanAusCommmand());
             SparplanFehlgeschlagenCommand = new RelayCommand(() => ExecuteSparplanFehlgeschlagenCommand());
+            RegisterAktualisereViewMessage(StammdatenTypes.sparplan.ToString());
         }
 
         protected override string GetREST_API() { return $"/api/sparplan/ausfuehren"; }

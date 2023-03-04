@@ -41,16 +41,8 @@ namespace UI.Desktop.Depot
                 model.SetCallback(m.Callback);
                 model.setSteuern(m.Steuern);
             }
-            Window window = new Window
-            {
-                Content = view,
-                SizeToContent = SizeToContent.WidthAndHeight,
-                ResizeMode = ResizeMode.NoResize,
-                WindowStartupLocation = WindowStartupLocation.CenterScreen,
-                ShowInTaskbar = false,
-                Owner = Application.Current.MainWindow
-            };
-            window.ShowDialog();
+            view.Owner = Application.Current.MainWindow;
+            view.ShowDialog();
 
         }
 
