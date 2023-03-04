@@ -6,9 +6,11 @@ using Base.Logic.ViewModels;
 using Base.Logic.Wrapper;
 using Data.Model.SteuerModels;
 using Data.Types.SteuerTypes;
+using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using Logic.Core.SteuernLogic;
 using Logic.Messages.SteuernMessages;
+using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,6 +18,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Windows;
+using System.Windows.Input;
 
 namespace Logic.UI.SteuerViewModels
 {
@@ -50,6 +53,7 @@ namespace Logic.UI.SteuerViewModels
         }
 
         #region Commands
+
 
         protected override void ExecuteEntfernenCommand()
         {

@@ -21,7 +21,7 @@ namespace UI.Desktop.Steuer
     /// <summary>
     /// Interaktionslogik für SteuernUebersichtView.xaml
     /// </summary>
-    public partial class SteuernUebersichtView : UserControl
+    public partial class SteuernUebersichtView : Window
     {
         public SteuernUebersichtView()
         {
