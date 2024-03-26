@@ -25,11 +25,14 @@ using Data.Model.SteuerModels;
 using Data.DTO.ZinsenDTOs;
 using Logic.Core.SteuernLogic;
 using CommunityToolkit.Mvvm.Input;
+using System.Globalization;
+using System.Linq;
 
 namespace Logic.UI.ZinsenViewModels
 {
     public class ZinsenEintragenViewModel : ViewModelStammdaten<ZinsenEintragenModel, StammdatenTypes>, IViewModelStammdaten
     {
+        private IEnumerable<string> monateNamen;
         public ZinsenEintragenViewModel()
         {
             Title = "Zinsen erhalten";
@@ -57,18 +60,19 @@ namespace Logic.UI.ZinsenViewModels
                 RequestIsWorking = true;
                 HttpResponseMessage resp;
                 if (state.Equals(State.Neu))
-                { 
-                resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + "/api/zinsen",
-                    new ZinsenEintragenDTO
-                    {
-                        DurchschnittlicherKontostand = Double.Parse(Data.DurchschnittlicherKontostand),
-                        Gesamt = Double.Parse(Data.Gesamt),
-                        Prozent = Double.Parse(Data.Prozent),
-                        ID = 0,   
-                        ErhaltenAm = Data.ErhaltenAm.Value,
-                        Erhalten = Double.Parse(Data.Erhalten),
-                        Steuer = Data.Steuer
-                    });
+                {
+                    resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + "/api/zinsen",
+                        new ZinsenEintragenDTO
+                        {
+                            DurchschnittlicherKontostand = Double.Parse(Data.DurchschnittlicherKontostand),
+                            Gesamt = Double.Parse(Data.Gesamt),
+                            Prozent = Double.Parse(Data.Prozent),
+                            ID = 0,
+                            ErhaltenAm = Data.ErhaltenAm.Value,
+                            Erhalten = Double.Parse(Data.Erhalten),
+                            Steuer = Data.Steuer,
+                            Abrechnungsmonat = new DateTime( int.Parse(Data.Jahr), DateTime.ParseExact(Data.Monat, "MMMM", CultureInfo.CurrentCulture).Month, 1)
+                        }) ;
                 }
                 else
                 {
@@ -186,9 +190,48 @@ namespace Logic.UI.ZinsenViewModels
             }
         }
 
+
         public string SteuernGesamt => Data.SteuernGesamt;
         public string Erhalten => Data.Erhalten;
 
+
+        public IEnumerable<string> Monate => monateNamen;
+
+        public string Monat
+        {
+            get { return Data.Monat; }
+            set
+            {
+                if (RequestIsWorking || (Data.Monat != value))
+                {
+                    Data.Monat = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public string Jahr
+        {
+            get { return Data.Jahr; }
+            set
+            {
+                if (RequestIsWorking || !string.Equals(Data.Jahr, value))
+                {
+                    if (!ValidateJahr(value))
+                    {
+                        if (!value.Equals("0"))
+                        {
+                            Data.Jahr = "";
+                            OnPropertyChanged();
+                        }
+                        return;
+                    }
+                    Data.Jahr = value;
+                    OnPropertyChanged();
+                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                }
+            }
+        }
 
         #endregion
 
@@ -241,6 +284,16 @@ namespace Logic.UI.ZinsenViewModels
             return isValid;
         }
 
+        private bool ValidateJahr(string jahr)
+        {
+            BaseValidierung Validierung = new();
+
+            bool isValid = Validierung.ValidateZahl(jahr, out ICollection<string> validationErrors);
+
+            AddValidateInfo(isValid, "Jahr", validationErrors);
+            return isValid;
+        }
+
         private bool ValidateDatum(DateTime? datun, string fieldname)
         {
             BaseValidierung Validierung = new();
@@ -255,13 +308,16 @@ namespace Logic.UI.ZinsenViewModels
 
         protected override void OnActivated()
         {
+            OnPropertyChanged(nameof(Monate));
             state = State.Neu;
             Data = new ZinsenEintragenModel { };
             Kontostand = "";
             Prozent = "";
             Gesamt = "";
             ErhaltenAm = DateTime.Now;
-
+            Monat = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(DateTime.Now.Month);
+            Jahr = DateTime.Now.Year.ToString();
+            monateNamen = DateTimeFormatInfo.CurrentInfo.MonthNames.Take(12);
         }
 
     }

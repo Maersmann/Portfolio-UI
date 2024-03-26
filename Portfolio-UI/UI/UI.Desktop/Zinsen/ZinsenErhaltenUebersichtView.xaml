@@ -39,6 +39,7 @@
         <DataGrid Grid.Row="1" Margin="5"  ItemsSource="{Binding ItemList}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" SelectionUnit="FullRow" >
             <DataGrid.Columns >
                 <DataGridTextColumn Header="Datum" Binding="{Binding ErhaltenAm, StringFormat=dd.MM.yyyy}" Width="auto" />
+                <DataGridTextColumn Header="Abrechnung" Binding="{Binding Abrechnungsmonat, StringFormat=MM.yyyy}" Width="auto" />
                 <DataGridTextColumn Header="Kontostand" Binding="{Binding DurchschnittlicherKontostand,StringFormat={}{0:N2}€, ConverterCulture='de-DE'}" Width="auto" />
                 <DataGridTextColumn Header="Zinsen p.a." Binding="{Binding Prozent,StringFormat={}{0:N2}%, ConverterCulture='de-DE'}" Width="auto"/>
                 <DataGridTextColumn Header="Gesamt" Binding="{Binding Gesamt,StringFormat={}{0:N2}€, ConverterCulture='de-DE'}" Width="auto"/>
