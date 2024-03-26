@@ -3,8 +3,7 @@ using Aktien.Logic.Core;
 using Aktien.Logic.Core.DepotLogic;
 using Base.Logic.ViewModels;
 using Data.Model.DepotModels;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -21,6 +20,7 @@ namespace Aktien.Logic.UI.DepotViewModels
         public EinnahmenUebersichtViewModel()
         {
             Title = "Übersicht aller Einnahmen";
+            RegisterAktualisereViewMessage(StammdatenTypes.einnahmen.ToString());
         }
 
         protected override int GetID() { return SelectedItem.ID; }

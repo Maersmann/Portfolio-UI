@@ -1,5 +1,6 @@
 ﻿using Aktien.Data.Types;
-using GalaSoft.MvvmLight.Messaging;
+using Aktien.Logic.Messages.Base;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.SteuernMessages;
 using Logic.UI.SteuerViewModels;
 using System;
@@ -27,7 +28,7 @@ namespace UI.Desktop.Zinsen
         {
             InitializeComponent();
             RegisterStammdatenGespeichertMessage(StammdatenTypes.zinsenErhalten);
-            Messenger.Default.Register<OpenSteuernUebersichtMessage>(this, "ZinsenEintragen", m => ReceiveOpenSteuernUebersichtMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenSteuernUebersichtMessage, string>(this, "ZinsenEintragen", (r,m) => ReceiveOpenSteuernUebersichtMessage(m));
         }
 
         private void ReceiveOpenSteuernUebersichtMessage(OpenSteuernUebersichtMessage m)
@@ -42,6 +43,12 @@ namespace UI.Desktop.Zinsen
             view.Owner = Application.Current.MainWindow;
             view.ShowDialog();
 
+        }
+
+        public override void Window_Unloaded(object sender, RoutedEventArgs e)
+        {
+            base.Window_Unloaded(sender, e);
+            WeakReferenceMessenger.Default.Unregister<OpenSteuernUebersichtMessage, string>(this, "ZinsenEintragen");
         }
     }
 }

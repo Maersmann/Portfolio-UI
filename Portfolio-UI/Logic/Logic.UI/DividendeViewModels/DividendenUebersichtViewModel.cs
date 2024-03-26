@@ -1,6 +1,6 @@
 ﻿using Aktien.Data.Types;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
+
+using CommunityToolkit.Mvvm.Messaging;
 using Aktien.Logic.Messages.DividendeMessages;
 using Base.Logic.ViewModels;
 using Prism.Commands;
@@ -45,7 +45,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         protected override void ExecuteEntfernenCommand()
         {
-            Messenger.Default.Send(new OpenBestaetigungViewMessage
+             WeakReferenceMessenger.Default.Send(new OpenBestaetigungViewMessage
             {
                 Beschreibung = "Soll der Eintrag gelöscht werden?",
                 Command = async () =>
@@ -72,11 +72,11 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         protected override void ExecuteNeuCommand()
         {
-            Messenger.Default.Send(new OpenDividendeStammdatenMessage<StammdatenTypes> { WertpapierID = wertpapierID, State = State.Neu });
+             WeakReferenceMessenger.Default.Send(new OpenDividendeStammdatenMessage<StammdatenTypes> { WertpapierID = wertpapierID, State = State.Neu });
         }
         protected override void ExecuteBearbeitenCommand()
         {
-            Messenger.Default.Send(new OpenDividendeStammdatenMessage<StammdatenTypes> { WertpapierID = wertpapierID, State = State.Bearbeiten, DividendeID = SelectedItem.ID });
+             WeakReferenceMessenger.Default.Send(new OpenDividendeStammdatenMessage<StammdatenTypes> { WertpapierID = wertpapierID, State = State.Bearbeiten, DividendeID = SelectedItem.ID });
         }
 
         #endregion

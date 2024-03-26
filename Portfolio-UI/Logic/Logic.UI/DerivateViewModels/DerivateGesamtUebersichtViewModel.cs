@@ -5,8 +5,8 @@ using Aktien.Logic.Messages.WertpapierMessages;
 using Base.Logic.Core;
 using Base.Logic.ViewModels;
 using Data.Model.DerivateModels;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
+
+using CommunityToolkit.Mvvm.Messaging;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -43,7 +43,7 @@ namespace Aktien.Logic.UI.DerivateViewModels
                 base.SelectedItem = value;
                 if (SelectedItem != null)
                 {
-                    Messenger.Default.Send(new LoadWertpapierOrderMessage { WertpapierID = SelectedItem.ID, WertpapierTyp = SelectedItem.WertpapierTyp }, messageToken);
+                     WeakReferenceMessenger.Default.Send(new LoadWertpapierOrderMessage { WertpapierID = SelectedItem.ID, WertpapierTyp = SelectedItem.WertpapierTyp }, messageToken);
                 }
             }
         }
@@ -77,7 +77,7 @@ namespace Aktien.Logic.UI.DerivateViewModels
                 }
 
             }
-            Messenger.Default.Send(new LoadWertpapierOrderMessage { WertpapierID = 0, WertpapierTyp = SelectedItem.WertpapierTyp }, messageToken);
+             WeakReferenceMessenger.Default.Send(new LoadWertpapierOrderMessage { WertpapierID = 0, WertpapierTyp = SelectedItem.WertpapierTyp }, messageToken);
             SendInformationMessage("Derivate gelöscht");
             base.ExecuteEntfernenCommand();
         }

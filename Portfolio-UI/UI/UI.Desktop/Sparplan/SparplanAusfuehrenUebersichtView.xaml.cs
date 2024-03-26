@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.SparplanMessages;
 using Logic.UI.SparplanViewModels;
 using System;
@@ -26,7 +26,7 @@ namespace UI.Desktop.Sparplan
         {
             InitializeComponent();
             RegisterMessages("SparplanAusfuehrenUebersicht");
-            Messenger.Default.Register<OpenSparplanAusfuehrenMessage>(this, "SparplanAusfuehrenUebersicht", m => ReceiveOpenSparplanAusfuehrenMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenSparplanAusfuehrenMessage, string>(this, "SparplanAusfuehrenUebersicht", (r,m) => ReceiveOpenSparplanAusfuehrenMessage(m));
         }
 
         private void ReceiveOpenSparplanAusfuehrenMessage(OpenSparplanAusfuehrenMessage m)
@@ -46,7 +46,7 @@ namespace UI.Desktop.Sparplan
         protected override void Window_Unloaded(object sender, RoutedEventArgs e)
         {
             base.Window_Unloaded(sender, e);
-            Messenger.Default.Unregister<OpenSparplanAusfuehrenMessage>(this);
+            WeakReferenceMessenger.Default.Unregister<OpenSparplanAusfuehrenMessage, string>(this, "SparplanAusfuehrenUebersicht");
         }
     }
 }

@@ -11,7 +11,7 @@ using Data.DTO.SparplanDTOs;
 using Data.Model.AktieModels;
 using Data.Model.SparplanModels;
 using Data.Types.SparplanTypes;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -20,16 +20,19 @@ using System.Net;
 using System.Text;
 using System.Windows.Input;
 using Data.Model.ZinsenModels;
-using GalaSoft.MvvmLight.CommandWpf;
 using Logic.Messages.SteuernMessages;
 using Data.Model.SteuerModels;
 using Data.DTO.ZinsenDTOs;
 using Logic.Core.SteuernLogic;
+using CommunityToolkit.Mvvm.Input;
+using System.Globalization;
+using System.Linq;
 
 namespace Logic.UI.ZinsenViewModels
 {
     public class ZinsenEintragenViewModel : ViewModelStammdaten<ZinsenEintragenModel, StammdatenTypes>, IViewModelStammdaten
     {
+        private IEnumerable<string> monateNamen;
         public ZinsenEintragenViewModel()
         {
             Title = "Zinsen erhalten";
@@ -46,8 +49,8 @@ namespace Logic.UI.ZinsenViewModels
 
             Data.Erhalten = Math.Round( Double.Parse(Data.Gesamt) - Double.Parse(Data.SteuernGesamt), 2, MidpointRounding.AwayFromZero).ToString();
 
-            RaisePropertyChanged(nameof(SteuernGesamt));
-            RaisePropertyChanged(nameof(Erhalten));
+            OnPropertyChanged(nameof(SteuernGesamt));
+            OnPropertyChanged(nameof(Erhalten));
         }
 
         protected async override void ExecuteSaveCommand()
@@ -55,20 +58,21 @@ namespace Logic.UI.ZinsenViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = null;
+                HttpResponseMessage resp;
                 if (state.Equals(State.Neu))
-                { 
-                resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + "/api/zinsen",
-                    new ZinsenEintragenDTO
-                    {
-                        DurchschnittlicherKontostand = Double.Parse(Data.DurchschnittlicherKontostand),
-                        Gesamt = Double.Parse(Data.Gesamt),
-                        Prozent = Double.Parse(Data.Prozent),
-                        ID = 0,   
-                        ErhaltenAm = Data.ErhaltenAm.Value,
-                        Erhalten = Double.Parse(Data.Erhalten),
-                        Steuer = Data.Steuer
-                    });
+                {
+                    resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + "/api/zinsen",
+                        new ZinsenEintragenDTO
+                        {
+                            DurchschnittlicherKontostand = Double.Parse(Data.DurchschnittlicherKontostand),
+                            Gesamt = Double.Parse(Data.Gesamt),
+                            Prozent = Double.Parse(Data.Prozent),
+                            ID = 0,
+                            ErhaltenAm = Data.ErhaltenAm.Value,
+                            Erhalten = Double.Parse(Data.Erhalten),
+                            Steuer = Data.Steuer,
+                            Abrechnungsmonat = new DateTime( int.Parse(Data.Jahr), DateTime.ParseExact(Data.Monat, "MMMM", CultureInfo.CurrentCulture).Month, 1)
+                        }) ;
                 }
                 else
                 {
@@ -78,7 +82,7 @@ namespace Logic.UI.ZinsenViewModels
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
+                     WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp().ToString());
                 }
                 else if (resp.StatusCode.Equals(HttpStatusCode.Conflict))
                 {
@@ -113,13 +117,13 @@ namespace Logic.UI.ZinsenViewModels
                         if (!value.Equals("0"))
                         {
                             Data.Gesamt = "";
-                            RaisePropertyChanged();
+                            OnPropertyChanged();
                         }
                         return;
                     }
                     Data.Gesamt = value;
                     BerechneGesamtWerte();
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -137,12 +141,12 @@ namespace Logic.UI.ZinsenViewModels
                         if (!value.Equals("0"))
                         {
                             Data.DurchschnittlicherKontostand = "";
-                            RaisePropertyChanged();
+                            OnPropertyChanged();
                         }
                         return;
                     }
                     Data.DurchschnittlicherKontostand = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -160,12 +164,12 @@ namespace Logic.UI.ZinsenViewModels
                         if (!value.Equals("0"))
                         {
                             Data.Prozent = "";
-                            RaisePropertyChanged();
+                            OnPropertyChanged();
                         }
                         return;
                     }
                     Data.Prozent = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -180,15 +184,54 @@ namespace Logic.UI.ZinsenViewModels
                 {
                     ValidateDatum(value, nameof(ErhaltenAm));
                     Data.ErhaltenAm = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     (SaveCommand as DelegateCommand).RaiseCanExecuteChanged();
                 }
             }
         }
 
+
         public string SteuernGesamt => Data.SteuernGesamt;
         public string Erhalten => Data.Erhalten;
 
+
+        public IEnumerable<string> Monate => monateNamen;
+
+        public string Monat
+        {
+            get { return Data.Monat; }
+            set
+            {
+                if (RequestIsWorking || (Data.Monat != value))
+                {
+                    Data.Monat = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public string Jahr
+        {
+            get { return Data.Jahr; }
+            set
+            {
+                if (RequestIsWorking || !string.Equals(Data.Jahr, value))
+                {
+                    if (!ValidateJahr(value))
+                    {
+                        if (!value.Equals("0"))
+                        {
+                            Data.Jahr = "";
+                            OnPropertyChanged();
+                        }
+                        return;
+                    }
+                    Data.Jahr = value;
+                    OnPropertyChanged();
+                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                }
+            }
+        }
 
         #endregion
 
@@ -196,7 +239,7 @@ namespace Logic.UI.ZinsenViewModels
 
         private void ExecuteOpenSteuernCommand()
         {
-            Messenger.Default.Send(new OpenSteuernUebersichtMessage(OpenSteuernUebersichtMessageCallback, Data.Steuer.Steuern), "ZinsenEintragen");
+             WeakReferenceMessenger.Default.Send(new OpenSteuernUebersichtMessage(OpenSteuernUebersichtMessageCallback, Data.Steuer.Steuern), "ZinsenEintragen");
         }
 
         private void OpenSteuernUebersichtMessageCallback(bool confirmed, IList<SteuerModel> steuern)
@@ -213,7 +256,7 @@ namespace Logic.UI.ZinsenViewModels
         #region Validate
         private bool ValidateGesamt(string betrag)
         {
-            BaseValidierung Validierung = new BaseValidierung();
+            BaseValidierung Validierung = new();
 
             bool isValid = Validierung.ValidateZahl(betrag, out ICollection<string> validationErrors);
 
@@ -223,7 +266,7 @@ namespace Logic.UI.ZinsenViewModels
 
         private bool ValidateKontostand(string kontostand)
         {
-            BaseValidierung Validierung = new BaseValidierung();
+            BaseValidierung Validierung = new();
 
             bool isValid = Validierung.ValidateZahl(kontostand, out ICollection<string> validationErrors);
 
@@ -233,7 +276,7 @@ namespace Logic.UI.ZinsenViewModels
 
         private bool ValidateProzent(string prozent)
         {
-            BaseValidierung Validierung = new BaseValidierung();
+            BaseValidierung Validierung = new();
 
             bool isValid = Validierung.ValidateZahl(prozent, out ICollection<string> validationErrors);
 
@@ -241,9 +284,19 @@ namespace Logic.UI.ZinsenViewModels
             return isValid;
         }
 
+        private bool ValidateJahr(string jahr)
+        {
+            BaseValidierung Validierung = new();
+
+            bool isValid = Validierung.ValidateZahl(jahr, out ICollection<string> validationErrors);
+
+            AddValidateInfo(isValid, "Jahr", validationErrors);
+            return isValid;
+        }
+
         private bool ValidateDatum(DateTime? datun, string fieldname)
         {
-            var Validierung = new BaseValidierung();
+            BaseValidierung Validierung = new();
 
             bool isValid = Validierung.ValidateDatum(datun, out ICollection<string> validationErrors);
 
@@ -253,15 +306,18 @@ namespace Logic.UI.ZinsenViewModels
 
         #endregion
 
-        public override void Cleanup()
+        protected override void OnActivated()
         {
+            OnPropertyChanged(nameof(Monate));
             state = State.Neu;
             Data = new ZinsenEintragenModel { };
             Kontostand = "";
             Prozent = "";
             Gesamt = "";
             ErhaltenAm = DateTime.Now;
-
+            Monat = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(DateTime.Now.Month);
+            Jahr = DateTime.Now.Year.ToString();
+            monateNamen = DateTimeFormatInfo.CurrentInfo.MonthNames.Take(12);
         }
 
     }

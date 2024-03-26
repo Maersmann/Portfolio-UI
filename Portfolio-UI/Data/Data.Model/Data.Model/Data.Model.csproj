@@ -1,22 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <AssemblyVersion>3.3.0.0</AssemblyVersion>
-    <FileVersion>3.3.0.0</FileVersion>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <Authors>Märsmann</Authors>
-    <Version>3.3.0</Version>
+    <Version>5.0.0</Version>
     <Product>Portfolio</Product>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Remove="OptionModels\**" />
     <EmbeddedResource Remove="OptionModels\**" />
     <None Remove="OptionModels\**" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\Data.Types\Data.Types.csproj" />
   </ItemGroup>
-
 </Project>

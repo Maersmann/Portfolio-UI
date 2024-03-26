@@ -3,7 +3,7 @@ using Aktien.Logic.Core.Validierung.Base;
 using Aktien.Logic.Messages.AuswahlMessages;
 using Data.Model.AuswertungModels;
 using Data.Types.AuswertungTypes;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Base.Logic.ViewModels;
 using Prism.Commands;
 using System;
@@ -18,7 +18,8 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Controls;
 using LiveChartsCore.SkiaSharpView;
-using GalaSoft.MvvmLight.Command;
+using CommunityToolkit.Mvvm.Input;
+
 
 namespace Logic.UI.AuswertungViewModels
 {
@@ -44,7 +45,7 @@ namespace Logic.UI.AuswertungViewModels
 
         private void ExcecuteAuswahlCommand()
         {
-            Messenger.Default.Send(new OpenWertpapierAuswahlMessage(OpenWertpapierAuswahlMessageCallback), "DividendeWertpapierEntwicklung");
+             WeakReferenceMessenger.Default.Send(new OpenWertpapierAuswahlMessage(OpenWertpapierAuswahlMessageCallback), "DividendeWertpapierEntwicklung");
         }
 
         private async void LoadData()
@@ -55,8 +56,8 @@ namespace Logic.UI.AuswertungViewModels
             {
                 Data = await resp.Content.ReadAsAsync<DividendeWertpapierEntwicklungMonatlichModel>();
 
-                IList<double> NettoChart = new List<double>();
-                IList<double> BruttoChart = new List<double>();
+                IList<double> NettoChart = [];
+                IList<double> BruttoChart = [];
                 Labels = new string[Data.Betraege.Count];
                 int index = 0;
 
@@ -72,13 +73,11 @@ namespace Logic.UI.AuswertungViewModels
                 {
                     Values = NettoChart,
                     Name = "Netto",
-                    TooltipLabelFormatter = (point) => "Netto " + point.PrimaryValue.ToString("N2") + "€"
                 };
                 bruttoSeries = new LineSeries<double>
                 {
                     Values = BruttoChart,
                     Name = "Brutto",
-                    TooltipLabelFormatter = (point) => "Brutto " + point.PrimaryValue.ToString("N2") + "€"
                 };
 
                 XAxes.First().Labels = Labels;
@@ -86,10 +85,10 @@ namespace Logic.UI.AuswertungViewModels
                 YAxes.First().Name = "Betrag";
                 Series = new LineSeries<double>[2] { bruttoSeries, nettoSeries };
 
-                RaisePropertyChanged(nameof(Series));
-                RaisePropertyChanged(nameof(XAxes));
-                RaisePropertyChanged(nameof(YAxes));
-                RaisePropertyChanged(nameof(Data));
+                OnPropertyChanged(nameof(Series));
+                OnPropertyChanged(nameof(XAxes));
+                OnPropertyChanged(nameof(YAxes));
+                OnPropertyChanged(nameof(Data));
             }
             RequestIsWorking = false;
         }
@@ -111,7 +110,7 @@ namespace Logic.UI.AuswertungViewModels
             set
             {
                 ValidatZahl(value, nameof(JahrVon));
-                this.RaisePropertyChanged();
+                this.OnPropertyChanged();
                 jahrvon = value.GetValueOrDefault(0);
             }
         }
@@ -121,7 +120,7 @@ namespace Logic.UI.AuswertungViewModels
             set
             {
                 ValidatZahl(value, nameof(JahrBis));
-                this.RaisePropertyChanged();
+                this.OnPropertyChanged();
                 jahrbis = value.GetValueOrDefault(0);
             }
         }
@@ -133,7 +132,7 @@ namespace Logic.UI.AuswertungViewModels
             set
             {
                 bruttoSeries.IsVisible = value;
-                RaisePropertyChanged(nameof(Series));
+                OnPropertyChanged(nameof(Series));
             }
         }
 
@@ -143,7 +142,7 @@ namespace Logic.UI.AuswertungViewModels
             set
             {
                 nettoSeries.IsVisible = value;
-                RaisePropertyChanged(nameof(Series));
+                OnPropertyChanged(nameof(Series));
             }
         }
         #endregion

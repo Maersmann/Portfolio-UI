@@ -1,7 +1,6 @@
 using Aktien.Data.Types;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
+
+using CommunityToolkit.Mvvm.Messaging;
 using Aktien.Logic.Core;
 using Base.Logic.ViewModels;
 using System;
@@ -14,6 +13,7 @@ using Logic.Messages.Base;
 using Base.Logic.Core;
 using Base.Logic.Messages;
 using Base.Logic.Types;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Aktien.Logic.UI
 {
@@ -60,10 +60,8 @@ namespace Aktien.Logic.UI
             OpenZinsenGesamtentwicklungMonatlichSummiertCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewZinsenGesamtentwicklungMonatlichSummiert));
             OpenZinsenMonatlichJahresentwicklungCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewZinsenMonatlichJahresentwicklung));
             OpenZinsenVergleichMonatCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewZZinsenVergleichMonat));
-
+            
             OpenVorbelegungCommand = new RelayCommand(() => ExecuteStammdatenViewCommand(StammdatenTypes.vorbelegung));
-
-            Messenger.Default.Register<AktualisiereBerechtigungenMessage>(this, m => ReceiveOpenViewMessage());
         }
 
         public ICommand OpenAktienUebersichtCommand { get; private set; }
@@ -105,33 +103,35 @@ namespace Aktien.Logic.UI
         public ICommand OpenZinsenVergleichMonatCommand { get; set; }
         public bool MenuIsEnabled => GlobalVariables.ServerIsOnline;
 
-        private void ExecuteOpenViewCommand(ViewType viewType)
+        private static void ExecuteOpenViewCommand(ViewType viewType)
         {
-            Messenger.Default.Send(new OpenViewMessage { ViewType = viewType });
+             WeakReferenceMessenger.Default.Send(new OpenViewMessage { ViewType = viewType });
         }
-        private void ExecuteStammdatenViewCommand(StammdatenTypes stammdatenTypes)
+        private static void ExecuteStammdatenViewCommand(StammdatenTypes stammdatenTypes)
         {
-            Messenger.Default.Send(new BaseStammdatenMessage<StammdatenTypes> { State = State.Bearbeiten, ID = 0, Stammdaten = stammdatenTypes });
+             WeakReferenceMessenger.Default.Send(new BaseStammdatenMessage<StammdatenTypes> { State = State.Bearbeiten, ID = 0, Stammdaten = stammdatenTypes });
         }
-        private void ExecuteOpenStartingViewCommand()
+        private static void ExecuteOpenStartingViewCommand()
         {
-            BackendLogic backendlogic = new BackendLogic();
+            BackendLogic backendlogic = new();
             if(!backendlogic.istINIVorhanden())
             {
-                Messenger.Default.Send(new OpenKonfigurationViewMessage { });
+                 WeakReferenceMessenger.Default.Send(new OpenKonfigurationViewMessage { });
             }
             backendlogic.LoadData();
             GlobalVariables.BackendServer_IP = backendlogic.getBackendIP();
             GlobalVariables.BackendServer_URL = backendlogic.getURL();
             GlobalVariables.BackendServer_Port = backendlogic.getBackendPort();
 
-            Messenger.Default.Send(new OpenStartingViewMessage { });
+             WeakReferenceMessenger.Default.Send(new OpenStartingViewMessage { });
         }
 
-        private void ReceiveOpenViewMessage()
+        protected override void ReceiveOpenViewMessage()
         {
-            RaisePropertyChanged("MenuIsEnabled");
+            OnPropertyChanged(nameof(MenuIsEnabled));
+            base.ReceiveOpenViewMessage();
         }
+
 
     }
 }

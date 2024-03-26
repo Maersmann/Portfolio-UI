@@ -14,8 +14,8 @@ using Base.Logic.Wrapper;
 using Data.Model.DividendeModels;
 using Data.Model.SteuerModels;
 using Data.Types.SteuerTypes;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
+
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Core.SteuernLogic;
 using Logic.Messages.SteuernMessages;
 using Prism.Commands;
@@ -30,6 +30,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Aktien.Logic.UI.DividendeViewModels
 {
@@ -53,7 +54,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
         {
             DateTimeFormatInfo fmt = (new CultureInfo("de-DE")).DateTimeFormat;
             DividendeText = datum.ToString("d", fmt) + " (" + betrag.ToString("N2") + ")";
-            RaisePropertyChanged(nameof(DividendeText));
+            OnPropertyChanged(nameof(DividendeText));
             DividendeID = id;
             LadeAnzahlWertpapier();
             this.betrag = betrag;
@@ -100,7 +101,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
             {
                 Data.DividendeID = value;
                 ValidateDividende(value);
-                this.RaisePropertyChanged(nameof(DividendeText));
+                this.OnPropertyChanged(nameof(DividendeText));
                 ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 if (OpenDividendeCommand != null)
                     ((DelegateCommand)OpenDividendeCommand).RaiseCanExecuteChanged();
@@ -135,14 +136,14 @@ namespace Aktien.Logic.UI.DividendeViewModels
                 Data.Erhalten = Data.ZwischensummeUmgerechnet.GetValueOrDefault(0) + Data.SteuernNachZwischensumme.GetValueOrDefault(0);       
             }
 
-            RaisePropertyChanged(nameof(ZwischensummeTxt));
-            RaisePropertyChanged(nameof(Bemessungsgrundlage));
-            RaisePropertyChanged(nameof(Erhalten));
-            RaisePropertyChanged(nameof(SteuerNachZwischensumme));
-            RaisePropertyChanged(nameof(SteuerVorZwischensumme));
-            RaisePropertyChanged(nameof(Zwischensumme));
-            RaisePropertyChanged(nameof(ErhaltenUmgerechnetUngerundet));
-            RaisePropertyChanged(nameof(ZwischensummeUmgerechnet));
+            OnPropertyChanged(nameof(ZwischensummeTxt));
+            OnPropertyChanged(nameof(Bemessungsgrundlage));
+            OnPropertyChanged(nameof(Erhalten));
+            OnPropertyChanged(nameof(SteuerNachZwischensumme));
+            OnPropertyChanged(nameof(SteuerVorZwischensumme));
+            OnPropertyChanged(nameof(Zwischensumme));
+            OnPropertyChanged(nameof(ErhaltenUmgerechnetUngerundet));
+            OnPropertyChanged(nameof(ZwischensummeUmgerechnet));
         }
 
         #region Bindings
@@ -160,7 +161,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
                 {
                     ValidateBestand(Bestand);
                     Data.Bestand = Bestand;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                     BerechneGesamtWerte();
                 }
@@ -177,15 +178,15 @@ namespace Aktien.Logic.UI.DividendeViewModels
                 if (RequestIsWorking || Data.Umrechnungskurs != Wechselkurs)
                 {
                     Data.Umrechnungskurs = Wechselkurs;
-                    RaisePropertyChanged();
-                    RaisePropertyChanged(nameof(WechsellkursHasValue));
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(WechsellkursHasValue));
                     ((DelegateCommand)OpenDividendeCommand).RaiseCanExecuteChanged();
                     BerechneGesamtWerte();
                 }
             }
         }
 
-        public IEnumerable<DividendenRundungTypes> RundungTypes => Enum.GetValues(typeof(DividendenRundungTypes)).Cast<DividendenRundungTypes>();
+        public static IEnumerable<DividendenRundungTypes> RundungTypes => Enum.GetValues(typeof(DividendenRundungTypes)).Cast<DividendenRundungTypes>();
 
         public DividendenRundungTypes RundungTyp
         {
@@ -195,7 +196,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
                 if (RequestIsWorking || (Data.RundungArt != value))
                 {
                     Data.RundungArt = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     BerechneGesamtWerte();
                 }
             }
@@ -227,12 +228,12 @@ namespace Aktien.Logic.UI.DividendeViewModels
         #region Commands
         private void ExecuteOpenAuswahlCommand()
         {
-            Messenger.Default.Send(new OpenDividendenAuswahlMessage(OpenDividendenAuswahlMessageCallback, Data.WertpapierID), "DividendeErhalten");
+             WeakReferenceMessenger.Default.Send(new OpenDividendenAuswahlMessage(OpenDividendenAuswahlMessageCallback, Data.WertpapierID), "DividendeErhalten");
         }
 
         private void ExecuteOpenSteuernCommand()
         {
-            Messenger.Default.Send(new OpenSteuernUebersichtMessage(OpenSteuernUebersichtMessageCallback, Data.Steuer.Steuern), "DividendeErhalten");
+             WeakReferenceMessenger.Default.Send(new OpenSteuernUebersichtMessage(OpenSteuernUebersichtMessageCallback, Data.Steuer.Steuern), "DividendeErhalten");
         }
 
         protected async override void ExecuteSaveCommand()
@@ -245,8 +246,8 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
+                     WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp().ToString());
+                     WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else
                 {
@@ -261,7 +262,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
         }
         private void ExecuteOpenDividendeCommand()
         {
-            Messenger.Default.Send(new OpenDividendeProStueckAnpassenMessage { DividendeID = Data.DividendeID,  Umrechnungskurs = Data.Umrechnungskurs.Value });
+             WeakReferenceMessenger.Default.Send(new OpenDividendeProStueckAnpassenMessage { DividendeID = Data.DividendeID,  Umrechnungskurs = Data.Umrechnungskurs.Value });
         }
 
         #endregion
@@ -306,10 +307,10 @@ namespace Aktien.Logic.UI.DividendeViewModels
         }
         #endregion
 
-        public override void Cleanup()
+        protected override void OnActivated()
         {
             betrag = 0;
-            Data = new DividendeErhaltenStammdatenModel { Steuer = new SteuergruppeModel { SteuerHerkunftTyp = SteuerHerkunftTyp.shtDividende, Steuern = new List<SteuerModel>() } };
+            Data = new DividendeErhaltenStammdatenModel { Steuer = new SteuergruppeModel { SteuerHerkunftTyp = SteuerHerkunftTyp.shtDividende, Steuern = [] } };
             DividendeText = "";
             DividendeID = -1;
             Bestand = "";

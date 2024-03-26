@@ -8,7 +8,7 @@
         Title="Bitte warten..." Height="150" Width="320"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{DynamicResource MaterialDesignPaper}"
-        DataContext="{Binding Bestaetigung, Source={StaticResource Locator}}" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False">
+        DataContext="{Binding Bestaetigung, Source={StaticResource Locator}}" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False" Unloaded="Window_Unloaded">
     <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="25px" />

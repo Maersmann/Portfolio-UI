@@ -11,8 +11,8 @@ using Base.Logic.Wrapper;
 using Data.Model.AktieModels;
 using Data.Model.DepotModels;
 using Data.Model.WertpapierModels;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
+
+using CommunityToolkit.Mvvm.Messaging;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -23,6 +23,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Aktien.Logic.UI.WertpapierViewModels
 {
@@ -67,7 +68,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
                     
                 RequestIsWorking = false;
             }
-            RaisePropertyChanged("AlteAktieText");
+            OnPropertyChanged("AlteAktieText");
         }
 
         public void BerechneWerte()
@@ -79,8 +80,8 @@ namespace Aktien.Logic.UI.WertpapierViewModels
                 model.NeuWertpapier.BuyIn = 0;
             }
 
-            RaisePropertyChanged(nameof(NeueAnzahl));
-            RaisePropertyChanged(nameof(NeuerBuyIn));
+            OnPropertyChanged(nameof(NeueAnzahl));
+            OnPropertyChanged(nameof(NeuerBuyIn));
         }
 
         #region Bindings
@@ -99,7 +100,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
                 verhaeltnis = value.GetValueOrDefault(0);
                 ValidateVerhaeltnis(verhaeltnis);
                 BerechneWerte();
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -109,7 +110,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
 
         private void ExecuteOpenAuswahlCommand()
         {
-            Messenger.Default.Send(new OpenWertpapierAuswahlMessage(OpenAktieMessageCallback) { WertpapierTypes = Data.Types.WertpapierTypes.WertpapierTypes.Aktie}, "ReverseSplitEintragen");
+             WeakReferenceMessenger.Default.Send(new OpenWertpapierAuswahlMessage(OpenAktieMessageCallback) { WertpapierTypes = Data.Types.WertpapierTypes.WertpapierTypes.Aktie}, "ReverseSplitEintragen");
         }
 
         private bool CanExecuteSaveCommand()
@@ -127,9 +128,9 @@ namespace Aktien.Logic.UI.WertpapierViewModels
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.aktien.ToString());
-                    Messenger.Default.Send<AktualisiereViewMessage>(new AktualisiereViewMessage(), StammdatenTypes.buysell.ToString());
-                    Messenger.Default.Send<CloseViewMessage>(new CloseViewMessage(), "ReverseSplitEintragen");
+                     WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.aktien.ToString());
+                     WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.buysell.ToString());
+                     WeakReferenceMessenger.Default.Send(new CloseViewMessage(), "ReverseSplitEintragen");
                     SendInformationMessage("Gespeichert");
                 }
                 else if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
@@ -161,7 +162,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
                 }
                 ValidateNeueAktie(model.NeuWertpapier.Name);
                 BerechneWerte();
-                RaisePropertyChanged("NeueAktieText");
+                OnPropertyChanged("NeueAktieText");
             }
         }
         #endregion

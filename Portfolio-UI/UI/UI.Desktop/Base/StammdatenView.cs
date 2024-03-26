@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Aktien.Logic.Messages.Base;
 using System;
 using System.Collections.Generic;
@@ -12,6 +12,7 @@ namespace UI.Desktop.Base
 {
     public class StammdatenView : Window
     {
+        string registerToken;
         public StammdatenView()
         {
             this.Unloaded += Window_Unloaded;
@@ -19,7 +20,8 @@ namespace UI.Desktop.Base
 
         public void RegisterStammdatenGespeichertMessage(StammdatenTypes types)
         {
-            Messenger.Default.Register<StammdatenGespeichertMessage>(this, types, m => ReceiveStmmdatenGespeichertMessage(m));
+            registerToken = types.ToString();
+            WeakReferenceMessenger.Default.Register<StammdatenGespeichertMessage, string>(this, types.ToString(), (r, m) => ReceiveStmmdatenGespeichertMessage(m));
         }
 
         private void ReceiveStmmdatenGespeichertMessage(StammdatenGespeichertMessage m)
@@ -37,12 +39,13 @@ namespace UI.Desktop.Base
 
         internal void MessageWithToken(string token)
         {
-            Messenger.Default.Register<StammdatenGespeichertMessage>(this, token, m => ReceiveStmmdatenGespeichertMessage(m));
+            registerToken = token;
+            WeakReferenceMessenger.Default.Register<StammdatenGespeichertMessage, string>(this, token, (r, m) => ReceiveStmmdatenGespeichertMessage(m));
         }
 
         public virtual void Window_Unloaded(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Unregister<StammdatenGespeichertMessage>(this);
+            WeakReferenceMessenger.Default.Unregister<StammdatenGespeichertMessage, string>(this, registerToken);
         }
     }
 }

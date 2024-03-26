@@ -3,7 +3,7 @@ using Aktien.Logic.Messages.DividendeMessages;
 using Aktien.Logic.UI.AuswahlViewModels;
 using Aktien.Logic.UI.DividendeViewModels;
 using Aktien.UI.Desktop.Dividende;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +29,7 @@ namespace Aktien.UI.Desktop.Auswahl
         public DividendenAuswahlView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenDividendeStammdatenMessage<StammdatenTypes>>(this, m => ReceiveOpenDividendeStammdatenMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenDividendeStammdatenMessage<StammdatenTypes>>(this, (r,m) => ReceiveOpenDividendeStammdatenMessage(m));
         }
 
         private void ReceiveOpenDividendeStammdatenMessage(OpenDividendeStammdatenMessage<StammdatenTypes> m)
@@ -54,7 +54,7 @@ namespace Aktien.UI.Desktop.Auswahl
 
         private void Window_Unloaded(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Unregister<OpenDividendeStammdatenMessage<StammdatenTypes>>(this);
+            WeakReferenceMessenger.Default.Unregister<OpenDividendeStammdatenMessage<StammdatenTypes>>(this);
         }
     }
 }

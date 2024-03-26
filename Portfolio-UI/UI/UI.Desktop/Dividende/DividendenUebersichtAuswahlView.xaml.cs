@@ -3,7 +3,7 @@ using Aktien.Logic.Messages.Base;
 using Aktien.Logic.Messages.DividendeMessages;
 using Aktien.Logic.UI.DividendeViewModels;
 using Base.Logic.Messages;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,20 +29,20 @@ namespace Aktien.UI.Desktop.Dividende
         public DividendenUebersichtAuswahlView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenDividendeUebersichtMessage>(this, m => ReceiveOpenDividendeUebersichtMessage(m)); 
-            Messenger.Default.Register<OpenDividendeErhaltenUebersichtViewMessage>(this, m => ReceiveOpenDividendeErhaltenViewMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenDividendeUebersichtMessage>(this, (r,m)=> ReceiveOpenDividendeUebersichtMessage(m)); 
+            WeakReferenceMessenger.Default.Register<OpenDividendeErhaltenUebersichtViewMessage>(this, (r, m) => ReceiveOpenDividendeErhaltenViewMessage(m));
         }
 
         private void ReceiveOpenDividendeErhaltenViewMessage(OpenDividendeErhaltenUebersichtViewMessage m)
         {
             Close();
-            DividendeErhaltenUebersichtView view = new DividendeErhaltenUebersichtView();
+            DividendeErhaltenUebersichtView view = new();
 
             if (view.DataContext is DividendeErhaltenUebersichtViewModel model)
                 model.LoadData(m.WertpapierID);
 
-            Window window = new Window
-            {
+            Window window = new()
+            { 
                 Content = view,
                 SizeToContent = SizeToContent.WidthAndHeight,
                 ResizeMode = ResizeMode.NoResize,
@@ -57,11 +57,11 @@ namespace Aktien.UI.Desktop.Dividende
         private void ReceiveOpenDividendeUebersichtMessage(OpenDividendeUebersichtMessage m)
         {
             Close();
-            DividendenUebersichtView view = new DividendenUebersichtView();
+            DividendenUebersichtView view = new();
 
-            Messenger.Default.Send(new AktualisiereViewMessage {  ID = m.WertpapierID }, StammdatenTypes.dividende.ToString());
+             WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage {  ID = m.WertpapierID }, StammdatenTypes.dividende.ToString());
 
-            Window window = new Window
+            Window window = new()
             {
                 Content = view,
                 SizeToContent = SizeToContent.WidthAndHeight,
@@ -76,8 +76,8 @@ namespace Aktien.UI.Desktop.Dividende
 
         private void Window_Unloaded(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Unregister<OpenDividendeUebersichtMessage>(this);
-            Messenger.Default.Unregister<OpenDividendeErhaltenUebersichtViewMessage>(this);
+            WeakReferenceMessenger.Default.Unregister<OpenDividendeUebersichtMessage>(this);
+            WeakReferenceMessenger.Default.Unregister<OpenDividendeErhaltenUebersichtViewMessage>(this);
         }
     }
 }

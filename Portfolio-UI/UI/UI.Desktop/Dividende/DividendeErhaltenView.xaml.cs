@@ -6,7 +6,7 @@ using Aktien.Logic.UI.DividendeViewModels;
 using Aktien.UI.Desktop.Auswahl;
 using Aktien.UI.Desktop.Dividende;
 using Data.Types.SteuerTypes;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.SteuernMessages;
 using Logic.UI.SteuerViewModels;
 using System;
@@ -37,13 +37,13 @@ namespace UI.Desktop.Dividende
         {
             InitializeComponent();
             RegisterStammdatenGespeichertMessage(StammdatenTypes.dividendeErhalten);
-            Messenger.Default.Register<OpenDividendenAuswahlMessage>(this, "DividendeErhalten", m => ReceiveOpenDividendeAuswahlMessage(m));
-            Messenger.Default.Register<OpenSteuernUebersichtMessage>(this, "DividendeErhalten", m => ReceiveOpenSteuernUebersichtMessage(m));
-            Messenger.Default.Register<OpenDividendeProStueckAnpassenMessage>(this, m => ReceiveOpenDividendeProStueckAnpassenMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenDividendenAuswahlMessage, string>(this, "DividendeErhalten", (r, m) => ReceiveOpenDividendeAuswahlMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenSteuernUebersichtMessage, string>(this, "DividendeErhalten", (r, m) => ReceiveOpenSteuernUebersichtMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenDividendeProStueckAnpassenMessage, string>(this, "DividendeErhalten",(r, m) => ReceiveOpenDividendeProStueckAnpassenMessage(m));
         }
 
 
-        private void ReceiveOpenDividendeProStueckAnpassenMessage(OpenDividendeProStueckAnpassenMessage m)
+        private static void ReceiveOpenDividendeProStueckAnpassenMessage(OpenDividendeProStueckAnpassenMessage m)
         {
             var View = new DividendeProStueckAnpassenView()
             {
@@ -59,9 +59,9 @@ namespace UI.Desktop.Dividende
         }
 
 
-        private void ReceiveOpenDividendeAuswahlMessage(OpenDividendenAuswahlMessage m)
+        private static void ReceiveOpenDividendeAuswahlMessage(OpenDividendenAuswahlMessage m)
         {
-            DividendenAuswahlView view = new DividendenAuswahlView()
+            DividendenAuswahlView view = new()
             {
                 Owner = Application.Current.MainWindow
             };
@@ -83,7 +83,7 @@ namespace UI.Desktop.Dividende
             }
         }
 
-        private void ReceiveOpenSteuernUebersichtMessage(OpenSteuernUebersichtMessage m)
+        private static void ReceiveOpenSteuernUebersichtMessage(OpenSteuernUebersichtMessage m)
         {
             var view = new SteuernUebersichtView();
 
@@ -100,9 +100,9 @@ namespace UI.Desktop.Dividende
         public override void Window_Unloaded(object sender, RoutedEventArgs e)
         {
             base.Window_Unloaded(sender,e);
-            Messenger.Default.Unregister<OpenDividendenAuswahlMessage>(this);
-            Messenger.Default.Unregister<OpenDividendeProStueckAnpassenMessage>(this);
-            Messenger.Default.Unregister<OpenSteuernUebersichtMessage>(this);
+            WeakReferenceMessenger.Default.Unregister<OpenDividendenAuswahlMessage, string>(this, "DividendeErhalten");
+            WeakReferenceMessenger.Default.Unregister<OpenDividendeProStueckAnpassenMessage, string>(this, "DividendeErhalten");
+            WeakReferenceMessenger.Default.Unregister<OpenSteuernUebersichtMessage, string>(this, "DividendeErhalten");
         }
     }
 }

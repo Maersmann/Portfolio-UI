@@ -44,8 +44,8 @@ namespace Logic.UI.AuswertungViewModels.DividendeErhaltenViewModels
             {
                 ItemList = await resp.Content.ReadAsAsync<List<DividendeMonatentwicklungSummiertModel>>();
 
-                IList<double> NettoChart = new List<double>();
-                IList<double> BruttoChart = new List<double>();
+                IList<double> NettoChart = [];
+                IList<double> BruttoChart = [];
                 Labels = new string[ItemList.Count];
                 int index = 0;
 
@@ -61,13 +61,11 @@ namespace Logic.UI.AuswertungViewModels.DividendeErhaltenViewModels
                 {
                     Values = NettoChart,
                     Name = "Netto",
-                    TooltipLabelFormatter = (point) => "Netto " + point.PrimaryValue.ToString("N2") + "€"
                 };
                 bruttoSeries = new LineSeries<double>
                 {
                     Values = BruttoChart,
                     Name = "Brutto",
-                    TooltipLabelFormatter = (point) => "Brutto " + point.PrimaryValue.ToString("N2") + "€"
                 };
 
                 XAxes.First().Labels = Labels;
@@ -75,9 +73,9 @@ namespace Logic.UI.AuswertungViewModels.DividendeErhaltenViewModels
                 YAxes.First().Name = "Betrag";
                 Series = new LineSeries<double>[2] { bruttoSeries, nettoSeries };
 
-                RaisePropertyChanged(nameof(Series));
-                RaisePropertyChanged(nameof(XAxes));
-                RaisePropertyChanged(nameof(YAxes));
+                OnPropertyChanged(nameof(Series));
+                OnPropertyChanged(nameof(XAxes));
+                OnPropertyChanged(nameof(YAxes));
             }
             RequestIsWorking = false;
         }
@@ -92,7 +90,7 @@ namespace Logic.UI.AuswertungViewModels.DividendeErhaltenViewModels
             set
             {
                 ValidatZahl(value, nameof(JahrVon));
-                RaisePropertyChanged();
+                OnPropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahrvon = value.GetValueOrDefault(0);
             }
@@ -103,7 +101,7 @@ namespace Logic.UI.AuswertungViewModels.DividendeErhaltenViewModels
             set
             {
                 ValidatZahl(value, nameof(JahrBis));
-                RaisePropertyChanged();
+                OnPropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahrbis = value.GetValueOrDefault(0);
             }
@@ -114,7 +112,7 @@ namespace Logic.UI.AuswertungViewModels.DividendeErhaltenViewModels
             set
             {
                 ValidatZahl(value, nameof(Monat));
-                RaisePropertyChanged();
+                OnPropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 monat = value.GetValueOrDefault(0);
             }
@@ -126,7 +124,7 @@ namespace Logic.UI.AuswertungViewModels.DividendeErhaltenViewModels
             set
             {
                 bruttoSeries.IsVisible = value;
-                RaisePropertyChanged(nameof(Series));
+                OnPropertyChanged(nameof(Series));
             }
         }
         public bool NettoSeriesVisibility
@@ -135,7 +133,7 @@ namespace Logic.UI.AuswertungViewModels.DividendeErhaltenViewModels
             set
             {
                 nettoSeries.IsVisible = value;
-                RaisePropertyChanged(nameof(Series));
+                OnPropertyChanged(nameof(Series));
             }
         }
         #endregion
@@ -143,7 +141,7 @@ namespace Logic.UI.AuswertungViewModels.DividendeErhaltenViewModels
         #region Validate
         private bool ValidatZahl(int? zahl, string fieldname)
         {
-            BaseValidierung Validierung = new BaseValidierung();
+            BaseValidierung Validierung = new();
 
             bool isValid = Validierung.ValidateAnzahl(zahl, out ICollection<string> validationErrors);
 

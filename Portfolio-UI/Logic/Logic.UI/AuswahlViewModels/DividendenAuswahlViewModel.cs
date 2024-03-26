@@ -7,8 +7,8 @@ using Base.Logic.Core;
 using Base.Logic.Types;
 using Base.Logic.ViewModels;
 using Data.Model.AuswahlModels;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
+
+using CommunityToolkit.Mvvm.Messaging;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -62,7 +62,7 @@ namespace Aktien.Logic.UI.AuswahlViewModels
 
         protected override void ExcecuteNewItemCommand()
         {
-            Messenger.Default.Send(new OpenDividendeStammdatenMessage<StammdatenTypes> { WertpapierID = wertpapierID, State = State.Neu });
+             WeakReferenceMessenger.Default.Send(new OpenDividendeStammdatenMessage<StammdatenTypes> { WertpapierID = wertpapierID, State = State.Neu });
         }
 
         protected override void ExecuteCloseWindowCommand(Window window)

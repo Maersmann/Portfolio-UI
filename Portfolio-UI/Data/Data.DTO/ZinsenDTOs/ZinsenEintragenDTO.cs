@@ -9,6 +9,8 @@ namespace Data.DTO.ZinsenDTOs
     {
         public int ID { get; set; }
         public DateTime ErhaltenAm { get; set; }
+        public DateTime Abrechnungsmonat { get; set; }
+
         public double Gesamt { get; set; }
         public double Prozent { get; set; }
         public double DurchschnittlicherKontostand { get; set; }

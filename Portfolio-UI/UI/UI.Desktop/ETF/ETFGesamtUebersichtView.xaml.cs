@@ -2,7 +2,7 @@
 using Aktien.Logic.UI.DividendeViewModels;
 using Aktien.Logic.UI.ETFViewModels;
 using Aktien.UI.Desktop.Dividende;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +25,7 @@ namespace Aktien.UI.Desktop.ETF
     /// </summary>
     public partial class ETFGesamtUebersichtView : UserControl
     {
-       
+        private string token;
         public ETFGesamtUebersichtView()
         {
             InitializeComponent();
@@ -37,7 +37,8 @@ namespace Aktien.UI.Desktop.ETF
             {
                 if (this.DataContext is ETFGesamtUebersichtViewModel modelUebersicht)
                 {
-                    Messenger.Default.Register<OpenDividendenUebersichtAuswahlMessage>(this, value, m => ReceiveOpenDividendeUebersichtMessage(m));
+                    token = value;
+                    WeakReferenceMessenger.Default.Register<OpenDividendenUebersichtAuswahlMessage, string>(this, value, (r,m)=> ReceiveOpenDividendeUebersichtMessage(m));
                     modelUebersicht.MessageToken = value;
                 }
             } 
@@ -50,6 +51,11 @@ namespace Aktien.UI.Desktop.ETF
             if (view.DataContext is DividendenUebersichtAuswahlViewModel model)
                 model.WertpapierID = m.WertpapierID;
             view.ShowDialog();
+        }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            WeakReferenceMessenger.Default.Unregister<OpenDividendenUebersichtAuswahlMessage, string>(this, token);
         }
     }
 }

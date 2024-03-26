@@ -5,7 +5,8 @@ using Aktien.Logic.UI.AktieViewModels;
 using Aktien.Logic.UI.DepotViewModels;
 using Aktien.Logic.UI.WertpapierViewModels;
 using Aktien.UI.Desktop.Depot;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
+using Logic.Messages.UtilMessages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,7 @@ namespace UI.Desktop.Wertpapier
     /// </summary>
     public partial class OrderUebersichtView : BaseUsercontrol
     {
+        string token;
         public OrderUebersichtView()
         {
             InitializeComponent();
@@ -40,7 +42,8 @@ namespace UI.Desktop.Wertpapier
         {
             set
             {
-                Messenger.Default.Register<OpenWertpapierGekauftViewMessage>(this, value, m => ReceiveOpenAktieGekauftViewMessage(m));
+                token = value;
+                WeakReferenceMessenger.Default.Register<OpenWertpapierGekauftViewMessage, string>(this, value, (r,m) => ReceiveOpenAktieGekauftViewMessage(m));
                 if (this.DataContext is OrderUebersichtViewModel modelUebersicht)
                 {
                     modelUebersicht.MessageToken = value;
@@ -49,7 +52,7 @@ namespace UI.Desktop.Wertpapier
         }
 
 
-        private void ReceiveOpenAktieGekauftViewMessage(OpenWertpapierGekauftViewMessage m)
+        private static void ReceiveOpenAktieGekauftViewMessage(OpenWertpapierGekauftViewMessage m)
         {
 
             var view = new BuyOrderView()
@@ -63,6 +66,12 @@ namespace UI.Desktop.Wertpapier
             }
             view.ShowDialog();
 
+        }
+
+        protected override void Window_Unloaded(object sender, RoutedEventArgs e)
+        {
+            base.Window_Unloaded(sender, e);
+            WeakReferenceMessenger.Default.Unregister<OpenWertpapierGekauftViewMessage, string>(this, token);
         }
     }
 }

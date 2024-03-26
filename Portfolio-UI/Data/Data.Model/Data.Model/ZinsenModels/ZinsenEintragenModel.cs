@@ -14,14 +14,15 @@ namespace Data.Model.ZinsenModels
         public String Prozent { get; set; }
         public String DurchschnittlicherKontostand { get; set; }
         public String Erhalten { get; set; }
-       
         public String SteuernGesamt { get; set; }
 
         public SteuergruppeModel Steuer { get; set; }
+        public string Monat { get; set; }
+        public string Jahr { get; set; }
 
         public ZinsenEintragenModel() 
         {
-            Steuer = new SteuergruppeModel { SteuerHerkunftTyp = SteuerHerkunftTyp.shtZinsen,  Steuern = new List<SteuerModel>() };
+            Steuer = new SteuergruppeModel { SteuerHerkunftTyp = SteuerHerkunftTyp.shtZinsen,  Steuern = [] };
         }
     }
 }

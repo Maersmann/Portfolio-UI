@@ -1,5 +1,6 @@
 ﻿using Aktien.Logic.Messages.Base;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
+using Logic.Messages.DepotMessages;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,12 +23,18 @@ namespace UI.Desktop.Utils
         public BestaetigungView()
         {
             InitializeComponent();
-            Messenger.Default.Register<CloseViewMessage>(this, "Bestaetigung", m => ReceivCloseViewMessage());
+            WeakReferenceMessenger.Default.Register<CloseViewMessage, string>(this, "Bestaetigung", (r,m) => ReceivCloseViewMessage());
         }
 
         private void ReceivCloseViewMessage()
         {
             GetWindow(this).Close();
+        }
+
+        private void Window_Unloaded(object sender, RoutedEventArgs e)
+        {
+            WeakReferenceMessenger.Default.Unregister<CloseViewMessage, string>(this, "Bestaetigung");
+
         }
     }
 }

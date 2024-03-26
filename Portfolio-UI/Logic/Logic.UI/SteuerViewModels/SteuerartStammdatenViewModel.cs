@@ -6,7 +6,7 @@ using Base.Logic.ViewModels;
 using Aktien.Logic.UI.InterfaceViewModels;
 using Data.Model.SteuerModels;
 using Data.Types.SteuerTypes;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -38,8 +38,8 @@ namespace Logic.UI.SteuerViewModels
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
+                     WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp().ToString());
+                     WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else
                 {
@@ -75,7 +75,7 @@ namespace Logic.UI.SteuerViewModels
                 {
                     ValidateBezeichnung(value);
                     Data.Bezeichnung = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -91,7 +91,7 @@ namespace Logic.UI.SteuerViewModels
                 if (RequestIsWorking || (Data.BerechnungZwischensumme != value))
                 {
                     Data.BerechnungZwischensumme = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
         }
@@ -110,7 +110,7 @@ namespace Logic.UI.SteuerViewModels
 
         #endregion
 
-        public override void Cleanup()
+        protected override void OnActivated()
         {
             state = State.Neu;
             Data = new SteuerartModel();

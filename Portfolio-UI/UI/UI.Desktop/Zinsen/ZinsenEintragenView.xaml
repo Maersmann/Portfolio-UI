@@ -6,11 +6,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UI.Desktop.Zinsen"
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
-                    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                     xmlns:command="http://www.galasoft.ch/mvvmlight"
                     xmlns:Behaviors="clr-namespace:Base.Logic.Core.Behavior;assembly=Base.Logic"
                     mc:Ignorable="d"
-                    Height="320" Width="302.644"
+                    Height="350" Width="302.644"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                     ResizeMode="NoResize"
                     WindowStartupLocation="CenterScreen" ShowInTaskbar="False"
@@ -20,7 +20,7 @@
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closed">
-            <command:EventToCommand Command="{Binding CleanUpCommand}"/>
+            <i:InvokeCommandAction Command="{Binding CleanUpCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
@@ -56,6 +56,8 @@
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50*"/>
@@ -63,11 +65,13 @@
             </Grid.ColumnDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Erhalten am</Label>
-            <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Kontostand</Label>
-            <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Zinsen p.a.</Label>
-            <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Gesamt</Label>
-            <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Steuern</Label>
-            <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Erhalten</Label>
+            <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Abrechnungsmonat</Label>
+            <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Abrechnungsjahr</Label>
+            <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Kontostand</Label>
+            <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Zinsen p.a.</Label>
+            <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Gesamt</Label>
+            <Label Grid.Row="6" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Steuern</Label>
+            <Label Grid.Row="7" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >Erhalten</Label>
 
             <DatePicker Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" SelectedDate="{Binding ErhaltenAm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" >
                 <materialDesign:HintAssist.Hint>01.01.2023</materialDesign:HintAssist.Hint>
@@ -87,7 +91,9 @@
                 </Validation.ErrorTemplate>
             </DatePicker>
 
-            <TextBox Grid.Row="1"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Kontostand, UpdateSourceTrigger=LostFocus, ValidatesOnNotifyDataErrors=True, StringFormat=N2,ConverterCulture='de-DE'}" Cursor="IBeam"  >
+            <ComboBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" ItemsSource="{Binding Monate}" SelectedItem="{Binding Monat}"/>
+
+            <TextBox Grid.Row="2"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Jahr, UpdateSourceTrigger=LostFocus, ValidatesOnNotifyDataErrors=True, StringFormat=N2,ConverterCulture='de-DE'}" Cursor="IBeam"  >
                 <materialDesign:HintAssist.Hint>0</materialDesign:HintAssist.Hint>
                 <i:Interaction.Behaviors>
                     <Behaviors:TextBoxInputBehavior InputMode="DecimalInput"/>
@@ -108,7 +114,8 @@
                 </Validation.ErrorTemplate>
             </TextBox>
 
-            <TextBox Grid.Row="2"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Prozent, UpdateSourceTrigger=LostFocus, ValidatesOnNotifyDataErrors=True, StringFormat=N2,ConverterCulture='de-DE'}" Cursor="IBeam"  >
+
+            <TextBox Grid.Row="3"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Kontostand, UpdateSourceTrigger=LostFocus, ValidatesOnNotifyDataErrors=True, StringFormat=N2,ConverterCulture='de-DE'}" Cursor="IBeam"  >
                 <materialDesign:HintAssist.Hint>0</materialDesign:HintAssist.Hint>
                 <i:Interaction.Behaviors>
                     <Behaviors:TextBoxInputBehavior InputMode="DecimalInput"/>
@@ -129,7 +136,7 @@
                 </Validation.ErrorTemplate>
             </TextBox>
 
-            <TextBox Grid.Row="3"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Gesamt, UpdateSourceTrigger=LostFocus, ValidatesOnNotifyDataErrors=True, StringFormat=N2,ConverterCulture='de-DE'}" Cursor="IBeam"  >
+            <TextBox Grid.Row="4"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Prozent, UpdateSourceTrigger=LostFocus, ValidatesOnNotifyDataErrors=True, StringFormat=N2,ConverterCulture='de-DE'}" Cursor="IBeam"  >
                 <materialDesign:HintAssist.Hint>0</materialDesign:HintAssist.Hint>
                 <i:Interaction.Behaviors>
                     <Behaviors:TextBoxInputBehavior InputMode="DecimalInput"/>
@@ -150,10 +157,31 @@
                 </Validation.ErrorTemplate>
             </TextBox>
 
-            <TextBox Grid.Row="4"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding SteuernGesamt, Mode=OneWay}" IsReadOnly="True" >
+            <TextBox Grid.Row="5"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Gesamt, UpdateSourceTrigger=LostFocus, ValidatesOnNotifyDataErrors=True, StringFormat=N2,ConverterCulture='de-DE'}" Cursor="IBeam"  >
+                <materialDesign:HintAssist.Hint>0</materialDesign:HintAssist.Hint>
+                <i:Interaction.Behaviors>
+                    <Behaviors:TextBoxInputBehavior InputMode="DecimalInput"/>
+                </i:Interaction.Behaviors>
+                <Validation.ErrorTemplate>
+                    <ControlTemplate>
+                        <StackPanel>
+                            <AdornedElementPlaceholder x:Name="textBox"/>
+                            <ItemsControl ItemsSource="{Binding}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding ErrorContent}" Foreground="Red" TextWrapping="Wrap" FontSize="10" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </ControlTemplate>
+                </Validation.ErrorTemplate>
             </TextBox>
 
-            <TextBox Grid.Row="5"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Erhalten, Mode=OneWay}" IsReadOnly="True" >
+            <TextBox Grid.Row="6"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding SteuernGesamt, Mode=OneWay}" IsReadOnly="True" >
+            </TextBox>
+
+            <TextBox Grid.Row="7"  Grid.Column="1" HorizontalAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="100" Text="{Binding Erhalten, Mode=OneWay}" IsReadOnly="True" >
             </TextBox>
 
         </Grid>

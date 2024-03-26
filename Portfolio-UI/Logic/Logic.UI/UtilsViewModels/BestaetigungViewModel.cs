@@ -1,7 +1,7 @@
 ﻿using Aktien.Logic.Messages.Base;
 using Base.Logic.ViewModels;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -27,7 +27,7 @@ namespace Logic.UI.UtilsViewModels
             set
             {
                 beschreibung = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -38,13 +38,13 @@ namespace Logic.UI.UtilsViewModels
         private void ExecuteJaCommand()
         {
             Bestaetigt = true;
-            Messenger.Default.Send(new CloseViewMessage(), "Bestaetigung");
+             WeakReferenceMessenger.Default.Send(new CloseViewMessage(), "Bestaetigung");
         }
 
         private void ExecuteNeinCommand()
         {
             Bestaetigt = false;
-            Messenger.Default.Send(new CloseViewMessage(), "Bestaetigung");
+             WeakReferenceMessenger.Default.Send(new CloseViewMessage(), "Bestaetigung");
         }
     }
 }

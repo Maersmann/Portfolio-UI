@@ -81,13 +81,14 @@ namespace Logic.Core.OptionenLogic
             this.port = port;
             this.url = url;
 
-            iniData = new IniData();
-            iniData.Sections.AddSection("Backend-Settings");
 
-            iniData.Sections.GetSectionData("Backend-Settings").Keys.AddKey("IP", ip);
-            iniData.Sections.GetSectionData("Backend-Settings").Keys.AddKey("URL", url);
-            iniData.Sections.GetSectionData("Backend-Settings").Keys.AddKey("Protokoll", Convert.ToString ( Convert.ToInt32(protokollTyp) ) );
-            iniData.Sections.GetSectionData("Backend-Settings").Keys.AddKey("Port", Convert.ToString(port));
+            iniData = new IniData();
+            iniData.Sections.Add("Backend-Settings");
+
+            iniData["Backend-Settings"]["IP"] = ip;
+            iniData["Backend-Settings"]["URL"] = url;
+            iniData["Backend-Settings"]["Protokoll"] = Convert.ToString(Convert.ToInt32(protokollTyp));
+            iniData["Backend-Settings"]["Port"] = Convert.ToString(port);
 
             parser.WriteFile(iniPath, iniData);
         }
@@ -95,15 +96,15 @@ namespace Logic.Core.OptionenLogic
 
         private void LoadBackendSettings()
         {
-            if (isFieldVorhanden("Backend-Settings", "IP"))
-                ip = iniData.Sections["Backend-Settings"].GetKeyData("IP").Value;
-            if (isFieldVorhanden("Backend-Settings", "URL"))
-                url = iniData.Sections["Backend-Settings"].GetKeyData("URL").Value;
+            if (IsFieldVorhanden("Backend-Settings", "IP"))
+                ip = iniData["Backend-Settings"]["IP"];
+            if (IsFieldVorhanden("Backend-Settings", "URL"))
+                url = iniData["Backend-Settings"]["URL"];
 
-            if ((isFieldVorhanden("Backend-Settings", "Protokoll")) && int.TryParse(iniData.Sections["Backend-Settings"].GetKeyData("Protokoll").Value, out _))
-                typ = (BackendProtokollTypes)int.Parse(iniData.Sections["Backend-Settings"].GetKeyData("Protokoll").Value);
-            if ((isFieldVorhanden("Backend-Settings", "Port")) && int.TryParse(iniData.Sections["Backend-Settings"].GetKeyData("Port").Value, out _))
-                port = int.Parse(iniData.Sections["Backend-Settings"].GetKeyData("Port").Value);
+            if ((IsFieldVorhanden("Backend-Settings", "Protokoll")) && int.TryParse(iniData.Sections["Backend-Settings"].GetKeyData("Protokoll").Value, out _))
+                typ = (BackendProtokollTypes)int.Parse(iniData["Backend-Settings"]["Protokoll"]);
+            if ((IsFieldVorhanden("Backend-Settings", "Port")) && int.TryParse(iniData.Sections["Backend-Settings"].GetKeyData("Port").Value, out _))
+                port = int.Parse(iniData["Backend-Settings"]["Port"]);
         }
 
         public int? getBackendPort()
@@ -114,9 +115,9 @@ namespace Logic.Core.OptionenLogic
         {
             return url;
         }
-        public bool isFieldVorhanden(string section, string key)
+        private bool IsFieldVorhanden(string section, string key)
         {
-            return (iniData.Sections[section].GetKeyData(key) != null);
+            return iniData.Sections[section].GetKeyData(key) != null;
         }
     }
 }

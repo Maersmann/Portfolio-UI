@@ -63,7 +63,7 @@ namespace Logic.UI.DepotViewModels
             set
             {
                 kaufTyp = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
         public OrderTypes OrderTyp
@@ -72,7 +72,7 @@ namespace Logic.UI.DepotViewModels
             set
             {
                 orderTyp = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
         public BuySell BuySell
@@ -81,7 +81,7 @@ namespace Logic.UI.DepotViewModels
             set
             {
                 buySell = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
         public DateTime? Von
@@ -97,7 +97,7 @@ namespace Logic.UI.DepotViewModels
                 {
                     von = value.Value;
                 }
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
         public DateTime? Bis
@@ -113,7 +113,7 @@ namespace Logic.UI.DepotViewModels
                 {
                     bis = value.Value;       
                 }
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
         #endregion

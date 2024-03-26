@@ -40,7 +40,7 @@ namespace Logic.UI.AuswertungViewModels.SteuerViewModels
                 {
                     SelectedItem = ItemList.ElementAt(0);
                 }
-                RaisePropertyChanged(nameof(ItemList));
+                OnPropertyChanged(nameof(ItemList));
             }
             RequestIsWorking = false;
         }
@@ -54,7 +54,7 @@ namespace Logic.UI.AuswertungViewModels.SteuerViewModels
             set
             {
                 ValidatZahl(value, nameof(JahrVon));
-                RaisePropertyChanged();
+                OnPropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahrvon = value.GetValueOrDefault(0);
             }
@@ -65,7 +65,7 @@ namespace Logic.UI.AuswertungViewModels.SteuerViewModels
             set
             {
                 ValidatZahl(value, nameof(JahrBis));
-                RaisePropertyChanged();
+                OnPropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahrbis = value.GetValueOrDefault(0);
             }
@@ -78,7 +78,7 @@ namespace Logic.UI.AuswertungViewModels.SteuerViewModels
             set
             {
                 base.SelectedItem = value;
-                RaisePropertyChanged(nameof(DetailItemList));
+                OnPropertyChanged(nameof(DetailItemList));
             }
         }
 

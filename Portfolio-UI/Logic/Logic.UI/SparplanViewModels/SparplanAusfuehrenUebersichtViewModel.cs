@@ -4,8 +4,7 @@ using Base.Logic.Core;
 using Base.Logic.ViewModels;
 using Data.DTO.SparplanDTOs;
 using Data.Model.SparplanModels;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.SparplanMessages;
 using Logic.Messages.UtilMessages;
 using System;
@@ -13,6 +12,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Logic.UI.SparplanViewModels
 {
@@ -42,10 +42,10 @@ namespace Logic.UI.SparplanViewModels
             set
             {
                 base.SelectedItem = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
                 if (SelectedItem != null)
                 {
-                    Messenger.Default.Send(new LoadSparplanHistoryMessage { SparplanID = SelectedItem.ID }, "SparplanHistory");
+                     WeakReferenceMessenger.Default.Send(new LoadSparplanHistoryMessage { SparplanID = SelectedItem.ID }, "SparplanHistory");
                 }
             }
         }
@@ -58,7 +58,7 @@ namespace Logic.UI.SparplanViewModels
 
         private void ExecuteFuehreSparplanAusCommmand()
         {
-            Messenger.Default.Send(new OpenSparplanAusfuehrenMessage { SparplanAusfuehren = SelectedItem }, "SparplanAusfuehrenUebersicht");
+             WeakReferenceMessenger.Default.Send(new OpenSparplanAusfuehrenMessage { SparplanAusfuehren = SelectedItem }, "SparplanAusfuehrenUebersicht");
         }
 
         private async void ExecuteSparplanFehlgeschlagenCommand()

@@ -6,7 +6,7 @@ using Aktien.Logic.Messages.DividendeMessages;
 using Aktien.Logic.Messages.WertpapierMessages;
 using Base.Logic.ViewModels;
 using Data.Model.WertpapierModels;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -50,7 +50,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
                 ((DelegateCommand)OpenNeueDividendeCommand).RaiseCanExecuteChanged();
                 if (SelectedItem != null)
                 {
-                    Messenger.Default.Send(new LoadWertpapierOrderMessage { WertpapierID = SelectedItem.ID, WertpapierTyp = SelectedItem.WertpapierTyp }, messageToken);
+                     WeakReferenceMessenger.Default.Send(new LoadWertpapierOrderMessage { WertpapierID = SelectedItem.ID, WertpapierTyp = SelectedItem.WertpapierTyp }, messageToken);
                 }
             }
         }
@@ -66,7 +66,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
 
         private void ExecuteOpenNeueDividendeCommand()
         {
-            Messenger.Default.Send(new OpenDividendenUebersichtAuswahlMessage { WertpapierID = SelectedItem.ID }, messageToken);
+             WeakReferenceMessenger.Default.Send(new OpenDividendenUebersichtAuswahlMessage { WertpapierID = SelectedItem.ID }, messageToken);
         }
         #endregion
     }

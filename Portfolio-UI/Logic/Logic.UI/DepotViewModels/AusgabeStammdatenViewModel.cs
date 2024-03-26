@@ -1,12 +1,11 @@
 ﻿using Aktien.Data.Types;
-using Aktien.Data.Types.DepotTypes;
 using Aktien.Logic.Core;
 using Aktien.Logic.Core.Validierung.Base;
 using Aktien.Logic.Messages.Base;
 using Base.Logic.ViewModels;
 using Aktien.Logic.UI.InterfaceViewModels;
 using Data.Model.DepotModels;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -17,6 +16,7 @@ using System.Threading.Tasks;
 using Base.Logic.Core;
 using Base.Logic.Messages;
 using Base.Logic.Types;
+using Data.Types.DepotTypes;
 
 namespace Aktien.Logic.UI.DepotViewModels
 {
@@ -42,7 +42,7 @@ namespace Aktien.Logic.UI.DepotViewModels
                 if ((Data.Art != value))
                 {
                     Data.Art = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -56,7 +56,7 @@ namespace Aktien.Logic.UI.DepotViewModels
                 {
                     ValidateDatum(value);
                     Data.Datum = value.GetValueOrDefault();
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -71,7 +71,7 @@ namespace Aktien.Logic.UI.DepotViewModels
                     ValidateBetrag(Betrag);
                     betrag = "";
                     Data.Betrag = 0;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     return;
                 }
                 betrag = value;
@@ -79,7 +79,7 @@ namespace Aktien.Logic.UI.DepotViewModels
                 {
                     ValidateBetrag(Betrag);
                     Data.Betrag = Betrag;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
         }
@@ -91,7 +91,7 @@ namespace Aktien.Logic.UI.DepotViewModels
                 if (Data.Beschreibung != value)
                 {
                     Data.Beschreibung = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
         }
@@ -108,8 +108,8 @@ namespace Aktien.Logic.UI.DepotViewModels
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Ausgabe gespeichert." }, GetStammdatenTyp());
-                    Messenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.ausgaben.ToString());
+                     WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Ausgabe gespeichert." }, GetStammdatenTyp().ToString());
+                     WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.ausgaben.ToString());
                 }
                 else
                 {
@@ -144,7 +144,7 @@ namespace Aktien.Logic.UI.DepotViewModels
         }
         #endregion
 
-        public override void Cleanup()
+        protected override void OnActivated()
         {
             state = State.Neu;
             Data = new AusgabeModel();

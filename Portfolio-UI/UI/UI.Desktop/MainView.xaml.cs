@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Aktien.Logic.Messages.AktieMessages;
 using Aktien.Logic.Messages.Base;
 using System;
@@ -62,14 +62,14 @@ namespace Aktien.UI.Desktop
         public MainView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenViewMessage>(this, m => ReceiveOpenViewMessage(m));
-            Messenger.Default.Register<ExceptionMessage>(this, m => ReceiveExceptionMessage(m));
-            Messenger.Default.Register<InformationMessage>(this, m => ReceiveInformationMessage(m));
-            Messenger.Default.Register<BaseStammdatenMessage<StammdatenTypes>>(this, m => ReceiceOpenStammdatenMessage(m));
-            Messenger.Default.Register<OpenStartingViewMessage>(this, m => ReceiceOpenStartingViewMessage());
-            Messenger.Default.Register<OpenLoginViewMessage>(this, m => ReceiceOpenLoginViewMessage());
-            Messenger.Default.Register<OpenKonfigurationViewMessage>(this, m => ReceiceOpenKonfigurationViewMessage());
-            Messenger.Default.Register<CloseApplicationMessage>(this, m => ReceiceCloseApplicationMessage());
+            WeakReferenceMessenger.Default.Register<OpenViewMessage>(this, (r,m) => ReceiveOpenViewMessage(m));
+            WeakReferenceMessenger.Default.Register<ExceptionMessage>(this, (r, m) => ReceiveExceptionMessage(m));
+            WeakReferenceMessenger.Default.Register<InformationMessage>(this, (r, m) => ReceiveInformationMessage(m));
+            WeakReferenceMessenger.Default.Register<BaseStammdatenMessage<StammdatenTypes>>(this, (r, m) => ReceiceOpenStammdatenMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenStartingViewMessage>(this, (r, m) => ReceiceOpenStartingViewMessage());
+            WeakReferenceMessenger.Default.Register<OpenLoginViewMessage>(this, (r, m) => ReceiceOpenLoginViewMessage());
+            WeakReferenceMessenger.Default.Register<OpenKonfigurationViewMessage>(this, (r, m) => ReceiceOpenKonfigurationViewMessage());
+            WeakReferenceMessenger.Default.Register<CloseApplicationMessage>(this, (r, m) => ReceiceCloseApplicationMessage());
             
 
             DatenAnpassungFrame.Navigate(new DatenAnpassungView());

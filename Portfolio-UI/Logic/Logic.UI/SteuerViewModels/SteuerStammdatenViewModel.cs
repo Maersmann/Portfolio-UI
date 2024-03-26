@@ -7,8 +7,8 @@ using Base.Logic.ViewModels;
 using Aktien.Logic.UI.InterfaceViewModels;
 using Data.Model.SteuerModels;
 using Data.Types.SteuerTypes;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
+
+using CommunityToolkit.Mvvm.Messaging;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -31,7 +31,7 @@ namespace Logic.UI.SteuerViewModels
 
         public SteuerStammdatenViewModel()
         {
-            steuerarts = new List<SteuerartModel>();
+            steuerarts = [];
             Title = "Informationen Steuer";
         }
 
@@ -39,7 +39,7 @@ namespace Logic.UI.SteuerViewModels
         {
             Gespeichert = true;
             newData = Data.DeepCopy();
-            Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
+             WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp().ToString());
         }
 
         protected override StammdatenTypes GetStammdatenTyp() => StammdatenTypes.steuer;
@@ -54,7 +54,7 @@ namespace Logic.UI.SteuerViewModels
             Optimierung = Data.Optimierung;
             steuerarts.Add(Data.Steuerart);
             Steuerart = Data.Steuerart;    
-            RaisePropertyChanged(nameof(Steuerarts));
+            OnPropertyChanged(nameof(Steuerarts));
             ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             RequestIsWorking = false;
             state = State.Bearbeiten;
@@ -71,7 +71,7 @@ namespace Logic.UI.SteuerViewModels
                     ValidateBetrag(0);
                     betrag = "";
                     Data.Betrag = 0;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     return;
                 }
                 betrag = value;
@@ -79,7 +79,7 @@ namespace Logic.UI.SteuerViewModels
                 {
                     ValidateBetrag(Betrag);
                     Data.Betrag = Betrag;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
         }
@@ -91,7 +91,7 @@ namespace Logic.UI.SteuerViewModels
                 if (RequestIsWorking || !bool.Equals(Data.Optimierung, value))
                 {
                     Data.Optimierung = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
         }
@@ -105,7 +105,7 @@ namespace Logic.UI.SteuerViewModels
                 if (RequestIsWorking || (Data.Steuerart != value))
                 {
                     Data.Steuerart = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
 
                 }
             }
@@ -119,7 +119,7 @@ namespace Logic.UI.SteuerViewModels
                 if (RequestIsWorking || (Data.Waehrung != value))
                 {
                     Data.Waehrung = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
         }
@@ -142,7 +142,7 @@ namespace Logic.UI.SteuerViewModels
         #endregion
 
 
-        public override void Cleanup()
+        protected override void OnActivated()
         {
             state = State.Neu;
             Data = new SteuerModel { Steuerart = new SteuerartModel() };
@@ -173,7 +173,7 @@ namespace Logic.UI.SteuerViewModels
             });
             
 
-            RaisePropertyChanged(nameof(Steuerarts));
+            OnPropertyChanged(nameof(Steuerarts));
             ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             if (steuerarts.Count > 0)
             {

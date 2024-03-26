@@ -8,18 +8,18 @@
         WindowStartupLocation="CenterScreen"
         ShowInTaskbar="False"
         SizeToContent="WidthAndHeight"
-        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:command="http://www.galasoft.ch/mvvmlight"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
         xmlns:Behaviors="clr-namespace:Base.Logic.Core.Behavior;assembly=Base.Logic"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{DynamicResource MaterialDesignPaper}"
         mc:Ignorable="d"
-        DataContext="{Binding AktienSplitEintragen ,Source={StaticResource Locator}}" Height="auto" Width="auto"  >
+        DataContext="{Binding AktienSplitEintragen ,Source={StaticResource Locator}}" Height="auto" Width="auto" Unloaded="AktienSplit_Unloaded"  >
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closed">
-            <command:EventToCommand Command="{Binding CleanUpCommand}"/>
+            <i:InvokeCommandAction Command="{Binding CleanUpCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
 

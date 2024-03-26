@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Aktien.Logic.Messages.Base;
 using Aktien.Logic.Messages.DividendeMessages;
 using System;

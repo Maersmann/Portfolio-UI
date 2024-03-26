@@ -45,8 +45,8 @@ namespace Logic.UI.AuswertungViewModels.ZinsenViewModels
             {
                 ItemList = await resp.Content.ReadAsAsync<List<ZinsenGesamtentwicklungJaehrlichSummiertModel>>();
 
-                IList<decimal> GesamtChart = new List<decimal>();
-                IList<decimal> ErhaltenChart = new List<decimal>();
+                IList<decimal> GesamtChart = [];
+                IList<decimal> ErhaltenChart = [];
                 Labels = new string[ItemList.Count];
                 int index = 0;
 
@@ -62,13 +62,11 @@ namespace Logic.UI.AuswertungViewModels.ZinsenViewModels
                 {
                     Values = ErhaltenChart,
                     Name = "Erhalten",
-                    TooltipLabelFormatter = (point) => "Erhalten " + point.PrimaryValue.ToString("N2") + "€"
                 };
                 gesamtSeries = new LineSeries<decimal>
                 {
                     Values = GesamtChart,
                     Name = "Gesamt",
-                    TooltipLabelFormatter = (point) => "Gesamt " + point.PrimaryValue.ToString("N2") + "€"
                 };
 
                 XAxes.First().Labels = Labels;
@@ -76,9 +74,9 @@ namespace Logic.UI.AuswertungViewModels.ZinsenViewModels
                 YAxes.First().Name = "Betrag";
                 Series = new LineSeries<decimal>[2] { gesamtSeries, erhaltenSeries };
 
-                RaisePropertyChanged(nameof(Series));
-                RaisePropertyChanged(nameof(XAxes));
-                RaisePropertyChanged(nameof(YAxes));
+                OnPropertyChanged(nameof(Series));
+                OnPropertyChanged(nameof(XAxes));
+                OnPropertyChanged(nameof(YAxes));
             }
             RequestIsWorking = false;
         }
@@ -93,7 +91,7 @@ namespace Logic.UI.AuswertungViewModels.ZinsenViewModels
             set
             {
                 ValidatZahl(value, nameof(JahrVon));
-                RaisePropertyChanged();
+                OnPropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahrvon = value.GetValueOrDefault(0);
             }
@@ -104,7 +102,7 @@ namespace Logic.UI.AuswertungViewModels.ZinsenViewModels
             set
             {
                 ValidatZahl(value, nameof(JahrBis));
-                RaisePropertyChanged();
+                OnPropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahrbis = value.GetValueOrDefault(0);
             }
@@ -116,7 +114,7 @@ namespace Logic.UI.AuswertungViewModels.ZinsenViewModels
             set
             {
                 erhaltenSeries.IsVisible = value;
-                RaisePropertyChanged(nameof(Series));
+                OnPropertyChanged(nameof(Series));
             }
         }
         public bool GesamtSeriesVisibility
@@ -125,7 +123,7 @@ namespace Logic.UI.AuswertungViewModels.ZinsenViewModels
             set
             {
                 gesamtSeries.IsVisible = value;
-                RaisePropertyChanged(nameof(Series));
+                OnPropertyChanged(nameof(Series));
             }
         }
         #endregion
@@ -133,7 +131,7 @@ namespace Logic.UI.AuswertungViewModels.ZinsenViewModels
         #region Validate
         private bool ValidatZahl(int? zahl, string fieldname)
         {
-            BaseValidierung Validierung = new BaseValidierung();
+            BaseValidierung Validierung = new();
 
             bool isValid = Validierung.ValidateAnzahl(zahl, out ICollection<string> validationErrors);
 

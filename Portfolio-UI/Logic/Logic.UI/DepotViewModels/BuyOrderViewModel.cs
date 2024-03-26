@@ -1,5 +1,5 @@
 ﻿using Aktien.Data.Types.WertpapierTypes;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Aktien.Logic.Core.Validierung;
 using Aktien.Logic.Messages.Base;
 using Base.Logic.ViewModels;
@@ -18,7 +18,7 @@ using System.Net;
 using System.Collections.ObjectModel;
 using Data.Model.SteuerModels;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.Command;
+
 using Logic.Messages.SteuernMessages;
 using Logic.Core.SteuernLogic;
 using Logic.UI.DepotViewModels.Helper;
@@ -78,28 +78,28 @@ namespace Aktien.Logic.UI.DepotViewModels
                 ? Data.Bemessungsgrundlage + Data.Fremdkostenzuschlag.GetValueOrDefault(0)
                 : Data.Bemessungsgrundlage - Data.Fremdkostenzuschlag.GetValueOrDefault(0) + steuern;
 
-            RaisePropertyChanged(nameof(Gesamt));
-            RaisePropertyChanged(nameof(Bemessungsgrundlage));
-            RaisePropertyChanged("PreisBerechnet");
-            RaisePropertyChanged("BuyIn");
-            RaisePropertyChanged(nameof(Steuern));
+            OnPropertyChanged(nameof(Gesamt));
+            OnPropertyChanged(nameof(Bemessungsgrundlage));
+            OnPropertyChanged(nameof(PreisBerechnet));
+            OnPropertyChanged(nameof(BuyIn));
+            OnPropertyChanged(nameof(Steuern));
         }
         public void SetTitle(BuySell buySell, WertpapierTypes types)
         {
             this.buySell = buySell;
             typ = types;
             ((DelegateCommand)OpenSteuernCommand).RaiseCanExecuteChanged();
-            RaisePropertyChanged("KauftypBez");
-            RaisePropertyChanged("Titel");
-            RaisePropertyChanged("BuySell");
-            RaisePropertyChanged("KaufTypes");
-            RaisePropertyChanged("OrderTypes");
+            OnPropertyChanged(nameof(KauftypBez));
+            OnPropertyChanged(nameof(Titel));
+            OnPropertyChanged(nameof(BuySell));
+            OnPropertyChanged(nameof(KaufTypes));
+            OnPropertyChanged(nameof(OrderTypes));
         }
 
         #region Commands
         private void ExecuteOpenOpenSteuernCommand()
         {
-            Messenger.Default.Send(new OpenSteuernUebersichtMessage(OpenSteuernUebersichtMessageCallback), "BuyOrder");
+             WeakReferenceMessenger.Default.Send(new OpenSteuernUebersichtMessage(OpenSteuernUebersichtMessageCallback), "BuyOrder");
         }
         protected async override void ExecuteSaveCommand()
         {
@@ -111,8 +111,8 @@ namespace Aktien.Logic.UI.DepotViewModels
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Buy-Order gespeichert." }, GetStammdatenTyp());
-                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());              
+                     WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Buy-Order gespeichert." }, GetStammdatenTyp().ToString());
+                     WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());              
                 }
                 else
                 {
@@ -154,7 +154,7 @@ namespace Aktien.Logic.UI.DepotViewModels
                 {
                     ValidateBetrag(Data.Preis, value, "Preis");
                     Data.KaufartTyp = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -180,10 +180,10 @@ namespace Aktien.Logic.UI.DepotViewModels
                     }
                     Data.OrderartTyp = value;
                     BerechneWerte();
-                    RaisePropertyChanged();
-                    RaisePropertyChanged("EingabePreisEnabled");
-                    RaisePropertyChanged("EingabeGesamtbetragEnabled");
-                    RaisePropertyChanged("isOrderTypSparplan");
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(EingabePreisEnabled));
+                    OnPropertyChanged(nameof(EingabeGesamtbetragEnabled));
+                    OnPropertyChanged(nameof(isOrderTypSparplan));
                 }
             }
         }
@@ -197,7 +197,7 @@ namespace Aktien.Logic.UI.DepotViewModels
                     ValidateAnzahl(0);
                     anzahl = "";
                     Data.Anzahl = 0;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     return;
                 }
                 anzahl = value;
@@ -205,7 +205,7 @@ namespace Aktien.Logic.UI.DepotViewModels
                 {
                     ValidateAnzahl(Anzahl);
                     Data.Anzahl = Anzahl;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     BerechneWerte();
                 }
             }
@@ -219,15 +219,15 @@ namespace Aktien.Logic.UI.DepotViewModels
                 {
                     fremdkosten = "";
                     Data.Fremdkostenzuschlag = 0;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     return;
                 }
                 fremdkosten = value;
                 if (RequestIsWorking || (Data.Fremdkostenzuschlag != Fremdkosten))
                 {
                     Data.Fremdkostenzuschlag = Fremdkosten;
-                    RaisePropertyChanged();
-                    RaisePropertyChanged(nameof(FremdkostenNegativ));
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(FremdkostenNegativ));
                     BerechneWerte();
                 }
             }
@@ -242,7 +242,7 @@ namespace Aktien.Logic.UI.DepotViewModels
                     ValidateBetrag(0, KaufTyp, "Preis");
                     preis = "";
                     Data.Preis = 0;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     return; 
                 }
                 preis = value;
@@ -250,7 +250,7 @@ namespace Aktien.Logic.UI.DepotViewModels
                 {
                     ValidateBetrag(Preis, KaufTyp, "Preis");
                     Data.Preis = Preis;
-                    RaisePropertyChanged();                  
+                    OnPropertyChanged();                  
                     BerechneWerte();
                 }
             }
@@ -264,7 +264,7 @@ namespace Aktien.Logic.UI.DepotViewModels
                 {
                     ValidateDatum(value);
                     Data.Orderdatum = value.GetValueOrDefault();
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -303,7 +303,7 @@ namespace Aktien.Logic.UI.DepotViewModels
                 {
                     ValidateBetrag(0, KaufTyp, "Betrag");
                     betrag = "";
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     return; 
                 }
                 
@@ -311,7 +311,7 @@ namespace Aktien.Logic.UI.DepotViewModels
                 {
                     ValidateBetrag(Betrag, KaufTyp, "Betrag");
                     betrag = value;
-                    RaisePropertyChanged();   
+                    OnPropertyChanged();   
                     BerechneWerte();
                 }
             }
@@ -388,11 +388,11 @@ namespace Aktien.Logic.UI.DepotViewModels
         }
         #endregion
 
-        public override void Cleanup()
+        protected override void OnActivated()
         {
             DeleteValidateInfo("Betrag");
             state = State.Neu;
-            Data = new BuyOrderModel { Steuer = new SteuergruppeModel { SteuerHerkunftTyp = SteuerHerkunftTyp.shtOrder, Steuern = new List<SteuerModel>() } };
+            Data = new BuyOrderModel { Steuer = new SteuergruppeModel { SteuerHerkunftTyp = SteuerHerkunftTyp.shtOrder, Steuern = [] } };
             KaufTyp = Aktien.Data.Types.WertpapierTypes.KaufTypes.Kauf;
             OrderTyp = Aktien.Data.Types.WertpapierTypes.OrderTypes.Normal;
             Preis = "";

@@ -1,5 +1,5 @@
 ﻿using Aktien.Logic.UI.DerivateViewModels;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;

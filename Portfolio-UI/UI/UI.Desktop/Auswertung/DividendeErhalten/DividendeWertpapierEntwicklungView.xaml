@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
              xmlns:Behaviors="clr-namespace:Base.Logic.Core.Behavior;assembly=Base.Logic"
              mc:Ignorable="d" 
@@ -181,7 +181,7 @@
                     </StackPanel>
                 </Grid>
 
-                <lvc:CartesianChart Grid.Row="2" Series="{Binding Series}" Height="auto" Margin="10" XAxes="{Binding XAxes}" YAxes="{Binding YAxes}" LegendPosition="Bottom" LegendBackground="{DynamicResource MaterialDesignPaper}" LegendTextBrush="White">
+                <lvc:CartesianChart Grid.Row="2" Series="{Binding Series}" Height="auto" Margin="10" XAxes="{Binding XAxes}" YAxes="{Binding YAxes}" LegendPosition="Bottom"  >
                 </lvc:CartesianChart>
             </Grid>
 

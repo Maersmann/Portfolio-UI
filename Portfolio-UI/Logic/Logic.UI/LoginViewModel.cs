@@ -6,8 +6,8 @@ using Base.Logic.Messages;
 using Base.Logic.ViewModels;
 using Base.Logic.Wrapper;
 using Data.Model.UserModels;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
+
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.Base;
 using Prism.Commands;
 using System;
@@ -17,6 +17,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Logic.UI
 {
@@ -48,9 +49,9 @@ namespace Logic.UI
                     AuthenticateResponseModel Response = await resp.Content.ReadAsAsync<AuthenticateResponseModel>();
                     GlobalVariables.Token = Response.Token;
                     await LoadingVorbelegung(Response.Id);
-                    Messenger.Default.Send(new AktualisiereBerechtigungenMessage());
-                    Messenger.Default.Send(new OpenViewMessage { ViewType = ViewType.viewWertpapierUebersicht });
-                    Messenger.Default.Send(new CloseViewMessage(), "Login");
+                     WeakReferenceMessenger.Default.Send(new AktualisiereBerechtigungenMessage());
+                     WeakReferenceMessenger.Default.Send(new OpenViewMessage { ViewType = ViewType.viewWertpapierUebersicht });
+                     WeakReferenceMessenger.Default.Send(new CloseViewMessage(), "Login");
                 }
                 else if (resp.StatusCode == System.Net.HttpStatusCode.BadRequest)
                 { 
@@ -64,12 +65,12 @@ namespace Logic.UI
             return ValidationErrors.Count == 0;
         }
 
-        protected override void ExecuteCleanUpCommand()
+        protected override void ExecuteOnDeactivatedCommand()
         {
-            base.ExecuteCleanUpCommand();
+            base.ExecuteOnDeactivatedCommand();
             if ( string.IsNullOrEmpty(GlobalVariables.Token))
             {
-                Messenger.Default.Send(new CloseApplicationMessage());
+                 WeakReferenceMessenger.Default.Send(new CloseApplicationMessage());
             }
         }
 
@@ -102,7 +103,7 @@ namespace Logic.UI
                 {
                     ValidateName(value);
                     authenticate.Username = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)LoginCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -117,7 +118,7 @@ namespace Logic.UI
                 {
                     ValidatePassword(value);
                     authenticate.Password = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)LoginCommand).RaiseCanExecuteChanged();
                 }
             }

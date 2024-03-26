@@ -4,8 +4,7 @@ using Base.Logic.ViewModels;
 using Data.DTO.SparplanDTOs;
 using Data.Model.SparplanModels;
 using Data.Types.SparplanTypes;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.SparplanMessages;
 using Logic.Messages.UtilMessages;
 using Prism.Commands;
@@ -15,6 +14,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Logic.UI.SparplanViewModels
 {
@@ -43,10 +43,10 @@ namespace Logic.UI.SparplanViewModels
             set
             {
                 base.SelectedItem = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
                 if (SelectedItem != null)
                 {
-                    Messenger.Default.Send(new LoadSparplanHistoryMessage { SparplanID = SelectedItem.ID }, "SparplanHistory");
+                     WeakReferenceMessenger.Default.Send(new LoadSparplanHistoryMessage { SparplanID = SelectedItem.ID }, "SparplanHistory");
                 }
             }
         }
@@ -58,7 +58,7 @@ namespace Logic.UI.SparplanViewModels
 
         private void ExecuteBeendeSparplanCommand()
         {
-            Messenger.Default.Send(new OpenBestaetigungViewMessage
+             WeakReferenceMessenger.Default.Send(new OpenBestaetigungViewMessage
             {
                 Beschreibung = "Soll der Sparplan beendet werden?",
                 Command = async () =>
@@ -79,7 +79,7 @@ namespace Logic.UI.SparplanViewModels
                         }
 
                     }
-                    Messenger.Default.Send(new LoadSparplanHistoryMessage { SparplanID = 0 }, "SparplanHistory");
+                     WeakReferenceMessenger.Default.Send(new LoadSparplanHistoryMessage { SparplanID = 0 }, "SparplanHistory");
 
                 }
             }, "SparplanUebersicht");
@@ -87,7 +87,7 @@ namespace Logic.UI.SparplanViewModels
 
         protected override void ExecuteEntfernenCommand()
         {
-            Messenger.Default.Send(new OpenBestaetigungViewMessage
+             WeakReferenceMessenger.Default.Send(new OpenBestaetigungViewMessage
             {
                 Beschreibung = "Soll der Sparplan gelöscht werden?",
                 Command = async () =>
@@ -112,7 +112,7 @@ namespace Logic.UI.SparplanViewModels
                         }
 
                     }
-                    Messenger.Default.Send(new LoadSparplanHistoryMessage { SparplanID = 0 }, "SparplanHistory");
+                     WeakReferenceMessenger.Default.Send(new LoadSparplanHistoryMessage { SparplanID = 0 }, "SparplanHistory");
 
                 }
             }, "SparplanUebersicht");

@@ -1,5 +1,4 @@
-﻿using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Aktien.Logic.Messages.AktieMessages;
 using Aktien.Logic.Messages.Base;
 using Aktien.Logic.Messages.DepotMessages;
@@ -52,7 +51,7 @@ namespace Aktien.Logic.UI.AktieViewModels
                 ((DelegateCommand)OpenNeueDividendeCommand).RaiseCanExecuteChanged();
                 if (SelectedItem != null)
                 {
-                    Messenger.Default.Send<LoadWertpapierOrderMessage>(new LoadWertpapierOrderMessage { WertpapierID = SelectedItem.ID, WertpapierTyp = WertpapierTypes.Aktie }, messageToken);
+                     WeakReferenceMessenger.Default.Send(new LoadWertpapierOrderMessage { WertpapierID = SelectedItem.ID, WertpapierTyp = WertpapierTypes.Aktie }, messageToken);
                 }
             }
         }
@@ -64,11 +63,11 @@ namespace Aktien.Logic.UI.AktieViewModels
 
         private void ExecuteOpenNeueDividendeCommand()
         {
-            Messenger.Default.Send(new OpenDividendenUebersichtAuswahlMessage { WertpapierID = SelectedItem.ID }, messageToken);
+             WeakReferenceMessenger.Default.Send(new OpenDividendenUebersichtAuswahlMessage { WertpapierID = SelectedItem.ID }, messageToken);
         }
         protected override void ExecuteEntfernenCommand()
         {
-            Messenger.Default.Send(new OpenBestaetigungViewMessage
+             WeakReferenceMessenger.Default.Send(new OpenBestaetigungViewMessage
             {
                 Beschreibung = "Soll der Eintrag gelöscht werden?",
                 Command = async () =>
@@ -95,7 +94,7 @@ namespace Aktien.Logic.UI.AktieViewModels
                         }
 
                     }
-                    Messenger.Default.Send(new LoadWertpapierOrderMessage { WertpapierID = 0, WertpapierTyp = WertpapierTypes.Aktie }, messageToken);
+                     WeakReferenceMessenger.Default.Send(new LoadWertpapierOrderMessage { WertpapierID = 0, WertpapierTyp = WertpapierTypes.Aktie }, messageToken);
                     SendInformationMessage("Aktie gelöscht");
                     base.ExecuteEntfernenCommand();
                 }

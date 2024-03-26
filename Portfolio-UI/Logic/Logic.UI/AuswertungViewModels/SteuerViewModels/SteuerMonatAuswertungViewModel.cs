@@ -40,7 +40,7 @@ namespace Logic.UI.AuswertungViewModels
             {
                 ItemList = await resp.Content.ReadAsAsync<List<SteuerMonatAuswertungModel>>();
 
-                IList<double> values = new List<double>();
+                IList<double> values = [];
                 Labels = new string[ItemList.Count];
                 int index = 0;
 
@@ -55,11 +55,11 @@ namespace Logic.UI.AuswertungViewModels
                 XAxes.First().Name = "Monat";
                 YAxes.First().Name = "Betrag";
 
-                Series = new ColumnSeries<double>[1] { new ColumnSeries<double> { Values = values, Name = "Betrag", TooltipLabelFormatter = (point) => "Betrag " + point.PrimaryValue.ToString("N2") + "€" } };
+                Series = new ColumnSeries<double>[1] { new() { Values = values, Name = "Betrag" } };
 
-                RaisePropertyChanged(nameof(Series));
-                RaisePropertyChanged(nameof(XAxes));
-                RaisePropertyChanged(nameof(YAxes));
+                OnPropertyChanged(nameof(Series));
+                OnPropertyChanged(nameof(XAxes));
+                OnPropertyChanged(nameof(YAxes));
             }
             RequestIsWorking = false;
         }
@@ -73,7 +73,7 @@ namespace Logic.UI.AuswertungViewModels
             set
             {
                 ValidatZahl(value, nameof(JahrVon));
-                this.RaisePropertyChanged();
+                this.OnPropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahrvon = value.GetValueOrDefault(0);
             }
@@ -84,7 +84,7 @@ namespace Logic.UI.AuswertungViewModels
             set
             {
                 ValidatZahl(value, nameof(JahrBis));
-                this.RaisePropertyChanged();
+                this.OnPropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahrbis = value.GetValueOrDefault(0);
             }

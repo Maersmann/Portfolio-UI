@@ -1,5 +1,5 @@
 ﻿using Aktien.Data.Types.WertpapierTypes;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Aktien.Logic.Core.Validierung;
 using Aktien.Logic.Messages.Base;
 using Aktien.Logic.Messages.DividendeMessages;
@@ -42,8 +42,8 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
+                     WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp().ToString());
+                     WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
                 {
@@ -63,7 +63,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
                 if (RequestIsWorking || !DateTime.Equals(Data.Exdatum, value))
                 {
                     Data.Exdatum = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     (SaveCommand as DelegateCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -78,7 +78,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
                 {
                     ValidateDatum(value);
                     Data.Zahldatum = value.GetValueOrDefault();
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     (SaveCommand as DelegateCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -94,7 +94,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
                     ValidateBetrag(0);
                     betrag = "";
                     Data.Betrag = 0;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     return;
                 }
                 betrag = value;
@@ -102,7 +102,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
                 {
                     ValidateBetrag(Betrag);
                     Data.Betrag = Betrag;
-                    RaisePropertyChanged(); 
+                    OnPropertyChanged(); 
                 }
             }
         }
@@ -115,13 +115,13 @@ namespace Aktien.Logic.UI.DividendeViewModels
                 {
                     betragUmgerechnet = "";
                     Data.BetragUmgerechnet = 0;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     return;
                 }
                 if (RequestIsWorking || Data.BetragUmgerechnet != BetragUmgerechnet)
                 {
                     Data.BetragUmgerechnet = BetragUmgerechnet;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
         }
@@ -133,7 +133,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
                 if (RequestIsWorking || (Data.Waehrung != value))
                 {
                     Data.Waehrung = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
         }
@@ -189,7 +189,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
         }
         #endregion
 
-        public override void Cleanup()
+        protected override void OnActivated()
         {
             Data = new DividendeUebersichtModel();
             Zahldatum = DateTime.Now;
@@ -197,7 +197,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
             state = State.Neu;
             Betrag = null;
             Waehrung = Aktien.Data.Types.WertpapierTypes.Waehrungen.Euro;
-            RaisePropertyChanged();
+            OnPropertyChanged();
         }
 
     }

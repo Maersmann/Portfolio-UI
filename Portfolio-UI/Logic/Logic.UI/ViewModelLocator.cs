@@ -13,9 +13,7 @@
 */
 
 using CommonServiceLocator;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Ioc;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Aktien.Logic.UI.AktieViewModels;
 using Aktien.Logic.UI.DepotViewModels;
 using Aktien.Logic.UI.DividendeViewModels;
@@ -57,113 +55,84 @@ namespace Aktien.Logic.UI
         /// </summary>
         public ViewModelLocator()
         {
-            ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
-            if (ViewModelBase.IsInDesignModeStatic)
-            {
-                // Create design time view services and models                
-            }
-            else
-            {
-                // Create run time view services and models                
-            }
-            SimpleIoc.Default.Register<MainViewModel>();
-            SimpleIoc.Default.Register<AktieStammdatenViewModel>();
-            SimpleIoc.Default.Register<AktienUebersichtViewModel>();
-            SimpleIoc.Default.Register<DividendeStammdatenViewModel>();
-            SimpleIoc.Default.Register<DividendenUebersichtViewModel>();
-            SimpleIoc.Default.Register<DepotUebersichtViewModel>();
-            SimpleIoc.Default.Register<AktieUebersichtPageViewModel>();
-            SimpleIoc.Default.Register<DividendenUebersichtAuswahlViewModel>();
-            SimpleIoc.Default.Register<DividendenAuswahlViewModel>();
-            SimpleIoc.Default.Register<DividendeErhaltenUebersichtViewModel>();
-            SimpleIoc.Default.Register<ETFStammdatenViewModel>();
-            SimpleIoc.Default.Register<ETFGesamtUebersichtViewModel>(); 
-            SimpleIoc.Default.Register<ETFUebersichtPageViewModel>();
-            SimpleIoc.Default.Register<DepotUebersichtPageViewModel>();
-            SimpleIoc.Default.Register<WertpapierGesamtUebersichtViewModel>();
-            SimpleIoc.Default.Register<DerivateGesamtUebersichtViewModel>();
-            SimpleIoc.Default.Register<DerivateStammdatenViewModel>();
-            SimpleIoc.Default.Register<EinnahmeStammdatenViewModel>();
-            SimpleIoc.Default.Register<AusgabeStammdatenViewModel>();
-            SimpleIoc.Default.Register<SteuerartenUebersichtViewModel>();
-            SimpleIoc.Default.Register<BackendSettingsViewModel>();
+
         }
 
-        public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
-        public AktieStammdatenViewModel AktieStammdaten => ServiceLocator.Current.GetInstance<AktieStammdatenViewModel>();
-        public AktienUebersichtViewModel AktienUebersicht => ServiceLocator.Current.GetInstance<AktienUebersichtViewModel>();
-        public DividendeStammdatenViewModel DividendeStammdaten => ServiceLocator.Current.GetInstance<DividendeStammdatenViewModel>();
-        public DividendenUebersichtViewModel DividendenUebersicht => ServiceLocator.Current.GetInstance<DividendenUebersichtViewModel>();
-        public BuyOrderViewModel BuyOrder => new BuyOrderViewModel();
-        public DepotUebersichtViewModel DepotUebersicht => ServiceLocator.Current.GetInstance<DepotUebersichtViewModel>();
-        public OrderUebersichtViewModel OrderUebersicht => new OrderUebersichtViewModel();
-        public AktieUebersichtPageViewModel AktieUebersichtPage => ServiceLocator.Current.GetInstance<AktieUebersichtPageViewModel>();
-        public DividendeErhaltenViewModel DividendeErhalten => new DividendeErhaltenViewModel();
-        public DividendenUebersichtAuswahlViewModel DividendenUebersichtAuswahl => ServiceLocator.Current.GetInstance<DividendenUebersichtAuswahlViewModel>();
-        public DividendenAuswahlViewModel DividendenAuswahl => ServiceLocator.Current.GetInstance<DividendenAuswahlViewModel>();
-        public DividendeErhaltenUebersichtViewModel DividendeErhaltenUebersicht => ServiceLocator.Current.GetInstance<DividendeErhaltenUebersichtViewModel>();
-        public ETFStammdatenViewModel ETFStammdaten => ServiceLocator.Current.GetInstance<ETFStammdatenViewModel>();
-        public ETFGesamtUebersichtViewModel ETFGesamtUebersicht => ServiceLocator.Current.GetInstance<ETFGesamtUebersichtViewModel>(); 
-        public ETFUebersichtPageViewModel ETFUebersichtPage => ServiceLocator.Current.GetInstance<ETFUebersichtPageViewModel>();
-        public DepotUebersichtPageViewModel DepotUebersichtPage => ServiceLocator.Current.GetInstance<DepotUebersichtPageViewModel>();
-        public WertpapierGesamtUebersichtViewModel WertpapierGesamtUebersicht => ServiceLocator.Current.GetInstance<WertpapierGesamtUebersichtViewModel>();
-        public DerivateStammdatenViewModel DerivateStammdaten => ServiceLocator.Current.GetInstance<DerivateStammdatenViewModel>();
-        public DerivateGesamtUebersichtViewModel DerivateGesamtUebersicht => ServiceLocator.Current.GetInstance<DerivateGesamtUebersichtViewModel>();
-        public EinnahmeStammdatenViewModel EinnahmeStammdaten => ServiceLocator.Current.GetInstance<EinnahmeStammdatenViewModel>();
-        public EinnahmenUebersichtViewModel EinnahmenUebersicht =>  new EinnahmenUebersichtViewModel();
-        public AusgabeStammdatenViewModel AusgabeStammdaten => ServiceLocator.Current.GetInstance<AusgabeStammdatenViewModel>();
-        public AusgabenUebersichtViewModel AusgabenUebersicht => new AusgabenUebersichtViewModel();
-        public DividendeProStueckAnpassenViewModel DividendeProStueckAnpassen => new DividendeProStueckAnpassenViewModel();
-        public EinnahmenAusgabenUebersichtViewModel EinnahmenAusgaben => new EinnahmenAusgabenUebersichtViewModel();
-        public DatenAnpassungViewModel DatenAnpassung => new DatenAnpassungViewModel();
-        public WertpapierAuswahlViewModel WertpapierAuswahl => new WertpapierAuswahlViewModel();
-        public ReverseSplitEintragenViewModel ReverseSplitEintragen => new ReverseSplitEintragenViewModel();
-        public StartingProgrammViewModel StartingProgramm => new StartingProgrammViewModel();
-        public SteuerartenUebersichtViewModel SteuerartenUebersicht => ServiceLocator.Current.GetInstance<SteuerartenUebersichtViewModel>();
-        public SteuerartStammdatenViewModel SteuerartStammdaten => new SteuerartStammdatenViewModel();
-        public SteuernUebersichtViewModel SteuernUebersicht => new SteuernUebersichtViewModel();
-        public SteuerStammdatenViewModel SteuerStammdaten => new SteuerStammdatenViewModel();
-        public BackendSettingsViewModel BackendSettings => ServiceLocator.Current.GetInstance<BackendSettingsViewModel>();
-        public KonfigruationViewModel Konfigruation => new KonfigruationViewModel();
-        public DividendeEntwicklungMonatlichViewModel DividendeEntwicklungMonatlich => new DividendeEntwicklungMonatlichViewModel();
-        public DividendeVergleichMonatViewModel DividendeVergleichMonat => new DividendeVergleichMonatViewModel();
-        public SteuerartMonatAuswertungViewModel SteuerartMonatAuswertung => new SteuerartMonatAuswertungViewModel();
-        public SteuerMonatJahresVergleichAuswertungViewModel SteuerartMonatJahresVergleichAuswertung => new SteuerMonatJahresVergleichAuswertungViewModel();
-        public DividendeWertpapierAuswertungViewModel DividendeWertpapierAuswertung => new DividendeWertpapierAuswertungViewModel();
-        public SteuerMonatAuswertungViewModel SteuerMonatAuswertung => new SteuerMonatAuswertungViewModel();
-        public DividendeWertpapierEntwicklungMonatlichViewModel DividendeWertpapierEntwicklung => new DividendeWertpapierEntwicklungMonatlichViewModel();
-        public InfoViewModel Info => new InfoViewModel();
-        public DividendenErhaltenImMonatViewModel DividendenErhaltenImMonat => new DividendenErhaltenImMonatViewModel();
-        public DividendenErhaltenImJahrViewModel DividendenErhaltenImJahr => new DividendenErhaltenImJahrViewModel();
-        public OrderBuchViewModel OrderBuch => new OrderBuchViewModel();
-        public LoginViewModel Login => new LoginViewModel();
-        public SteuerJahresgesamtbetragAuswertungViewModel SteuerJahresgesamtbetragAuswertung => new SteuerJahresgesamtbetragAuswertungViewModel();
-        public SteuerMonatgesamtbetragAuswertungViewModel SteuerMonatgesamtbetragAuswertung => new SteuerMonatgesamtbetragAuswertungViewModel();
-        public DividendeGesamtentwicklungMonatlichSummiertViewModel DividendeGesamtentwicklungSummiert => new DividendeGesamtentwicklungMonatlichSummiertViewModel();
-        public DividendeGesamtentwicklungJaehrlichSummiertViewModel DividendeJahresentwicklungSummiert => new DividendeGesamtentwicklungJaehrlichSummiertViewModel();
-        public DividendeMonatentwicklungSummiertViewModel DividendeMonatentwicklungSummiert => new DividendeMonatentwicklungSummiertViewModel();
-        public VorbelegungViewModel Vorbelegung => new VorbelegungViewModel();
-        public SteuerGesamtentwicklungSummiertViewModel SteuerGesamtentwicklungSummiert => new SteuerGesamtentwicklungSummiertViewModel();
-        public SteuerartGesamtentwicklungSummiertViewModel SteuerartGesamtentwicklungSummiert => new SteuerartGesamtentwicklungSummiertViewModel();
-        public InvestitionMonatlichViewModel InvestitionMonatlich => new InvestitionMonatlichViewModel();
-        public InvestitionMonatlichSummiertViewModel InvestitionMonatlichSummiert => new InvestitionMonatlichSummiertViewModel();
-        public DividendeReitAktualisierungViewModel DividendeReitAktualisierung => new DividendeReitAktualisierungViewModel();
-        public BestaetigungViewModel Bestaetigung => new BestaetigungViewModel();
-        public DividendeMonatlichJahresentwicklungViewModel DividendeMonatlichJahresentwicklung => new DividendeMonatlichJahresentwicklungViewModel();
-        public SplitEintragenViewModel AktienSplitEintragen => new SplitEintragenViewModel();
-        public SparplanUebersichtViewModel SparplanUebersicht => new SparplanUebersichtViewModel();
-        public SparplanStammdatenViewModel SparplanStammdaten => new SparplanStammdatenViewModel();
-        public SparplanAusfuehrenUebersichtViewModel SparplanAusfuehrenUebersicht => new SparplanAusfuehrenUebersichtViewModel();
-        public SparplanAusfuehrenViewModel SparplanAusfuehren => new SparplanAusfuehrenViewModel();
-        public SparplanHistoryUebersichtViewModel SparplanHistoryUebersicht => new SparplanHistoryUebersichtViewModel();
-        public ErhalteneDividendeEintragenViewModel ErhalteneDividendeEintragen => new ErhalteneDividendeEintragenViewModel();
-        public ZinsenErhaltenUebersichtViewModel ZinsenErhaltenUebersicht => new ZinsenErhaltenUebersichtViewModel();
-        public ZinsenEintragenViewModel ZinsenEintragen => new ZinsenEintragenViewModel();
-        public ZinsenEntwicklungMonatlichViewModel zinsenEntwicklungMonatlich => new ZinsenEntwicklungMonatlichViewModel();
-        public ZinsenMonatlichJahresentwicklungViewModel ZinsenMonatlichJahresentwicklung => new ZinsenMonatlichJahresentwicklungViewModel();
-        public ZinsenVergleichMonatViewModel ZinsenVergleichMonat => new ZinsenVergleichMonatViewModel();
-        public ZinsenGesamtentwicklungMonatlichSummiertViewModel ZinsenGesamtentwicklungMonatlichSummiert => new ZinsenGesamtentwicklungMonatlichSummiertViewModel();
-        public ZinsenGesamtentwicklungJaehrlichSummiertViewModel ZinsenGesamtentwicklungJaehrlichSummiert => new ZinsenGesamtentwicklungJaehrlichSummiertViewModel();
+        public MainViewModel Main => new();
+        public AktieStammdatenViewModel AktieStammdaten => new();
+        public AktienUebersichtViewModel AktienUebersicht => new();
+        public DividendeStammdatenViewModel DividendeStammdaten => new();
+        public DividendenUebersichtViewModel DividendenUebersicht => new();
+        public BuyOrderViewModel BuyOrder => new ();
+        public DepotUebersichtViewModel DepotUebersicht => new();
+        public OrderUebersichtViewModel OrderUebersicht => new();
+        public AktieUebersichtPageViewModel AktieUebersichtPage => new();
+        public DividendeErhaltenViewModel DividendeErhalten => new();
+        public DividendenUebersichtAuswahlViewModel DividendenUebersichtAuswahl => new();
+        public DividendenAuswahlViewModel DividendenAuswahl => new();
+        public DividendeErhaltenUebersichtViewModel DividendeErhaltenUebersicht => new();
+        public ETFStammdatenViewModel ETFStammdaten => new();
+        public ETFGesamtUebersichtViewModel ETFGesamtUebersicht => new();
+        public ETFUebersichtPageViewModel ETFUebersichtPage => new();
+        public DepotUebersichtPageViewModel DepotUebersichtPage => new();
+        public WertpapierGesamtUebersichtViewModel WertpapierGesamtUebersicht => new();
+        public DerivateStammdatenViewModel DerivateStammdaten => new();
+        public DerivateGesamtUebersichtViewModel DerivateGesamtUebersicht => new();
+        public EinnahmeStammdatenViewModel EinnahmeStammdaten => new();
+        public EinnahmenUebersichtViewModel EinnahmenUebersicht =>  new();
+        public AusgabeStammdatenViewModel AusgabeStammdaten => new();
+        public AusgabenUebersichtViewModel AusgabenUebersicht => new();
+        public DividendeProStueckAnpassenViewModel DividendeProStueckAnpassen => new();
+        public EinnahmenAusgabenUebersichtViewModel EinnahmenAusgaben => new();
+        public DatenAnpassungViewModel DatenAnpassung => new();
+        public WertpapierAuswahlViewModel WertpapierAuswahl => new();
+        public ReverseSplitEintragenViewModel ReverseSplitEintragen => new();
+        public StartingProgrammViewModel StartingProgramm => new();
+        public SteuerartenUebersichtViewModel SteuerartenUebersicht => new();
+        public SteuerartStammdatenViewModel SteuerartStammdaten => new();
+        public SteuernUebersichtViewModel SteuernUebersicht => new ();
+        public SteuerStammdatenViewModel SteuerStammdaten => new ();
+        public BackendSettingsViewModel BackendSettings => new();
+        public KonfigruationViewModel Konfigruation => new();
+        public DividendeEntwicklungMonatlichViewModel DividendeEntwicklungMonatlich => new();
+        public DividendeVergleichMonatViewModel DividendeVergleichMonat => new();
+        public SteuerartMonatAuswertungViewModel SteuerartMonatAuswertung => new();
+        public SteuerMonatJahresVergleichAuswertungViewModel SteuerartMonatJahresVergleichAuswertung => new();
+        public DividendeWertpapierAuswertungViewModel DividendeWertpapierAuswertung => new();
+        public SteuerMonatAuswertungViewModel SteuerMonatAuswertung => new();
+        public DividendeWertpapierEntwicklungMonatlichViewModel DividendeWertpapierEntwicklung => new();
+        public InfoViewModel Info => new();
+        public DividendenErhaltenImMonatViewModel DividendenErhaltenImMonat => new();
+        public DividendenErhaltenImJahrViewModel DividendenErhaltenImJahr => new();
+        public OrderBuchViewModel OrderBuch => new();
+        public LoginViewModel Login => new();
+        public SteuerJahresgesamtbetragAuswertungViewModel SteuerJahresgesamtbetragAuswertung => new();
+        public SteuerMonatgesamtbetragAuswertungViewModel SteuerMonatgesamtbetragAuswertung => new();
+        public DividendeGesamtentwicklungMonatlichSummiertViewModel DividendeGesamtentwicklungSummiert => new();
+        public DividendeGesamtentwicklungJaehrlichSummiertViewModel DividendeJahresentwicklungSummiert => new();
+        public DividendeMonatentwicklungSummiertViewModel DividendeMonatentwicklungSummiert => new();
+        public VorbelegungViewModel Vorbelegung => new();
+        public SteuerGesamtentwicklungSummiertViewModel SteuerGesamtentwicklungSummiert => new();
+        public SteuerartGesamtentwicklungSummiertViewModel SteuerartGesamtentwicklungSummiert => new();
+        public InvestitionMonatlichViewModel InvestitionMonatlich => new();
+        public InvestitionMonatlichSummiertViewModel InvestitionMonatlichSummiert => new();
+        public DividendeReitAktualisierungViewModel DividendeReitAktualisierung => new();
+        public BestaetigungViewModel Bestaetigung => new();
+        public DividendeMonatlichJahresentwicklungViewModel DividendeMonatlichJahresentwicklung => new();
+        public SplitEintragenViewModel AktienSplitEintragen => new();
+        public SparplanUebersichtViewModel SparplanUebersicht => new();
+        public SparplanStammdatenViewModel SparplanStammdaten => new();
+        public SparplanAusfuehrenUebersichtViewModel SparplanAusfuehrenUebersicht => new();
+        public SparplanAusfuehrenViewModel SparplanAusfuehren => new();
+        public SparplanHistoryUebersichtViewModel SparplanHistoryUebersicht => new();
+        public ErhalteneDividendeEintragenViewModel ErhalteneDividendeEintragen => new();
+        public ZinsenErhaltenUebersichtViewModel ZinsenErhaltenUebersicht => new();
+        public ZinsenEintragenViewModel ZinsenEintragen => new();
+        public ZinsenEntwicklungMonatlichViewModel zinsenEntwicklungMonatlich => new();
+        public ZinsenMonatlichJahresentwicklungViewModel ZinsenMonatlichJahresentwicklung => new();
+        public ZinsenVergleichMonatViewModel ZinsenVergleichMonat => new();
+        public ZinsenGesamtentwicklungMonatlichSummiertViewModel ZinsenGesamtentwicklungMonatlichSummiert => new();
+        public ZinsenGesamtentwicklungJaehrlichSummiertViewModel ZinsenGesamtentwicklungJaehrlichSummiert => new();
         public static void Cleanup()
         {
 

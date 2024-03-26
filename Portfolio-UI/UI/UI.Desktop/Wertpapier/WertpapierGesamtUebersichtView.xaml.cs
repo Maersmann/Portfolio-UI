@@ -2,7 +2,8 @@
 using Aktien.Logic.UI.DividendeViewModels;
 using Aktien.Logic.UI.WertpapierViewModels;
 using Aktien.UI.Desktop.Dividende;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
+using Logic.Messages.SteuernMessages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,7 @@ namespace Aktien.UI.Desktop.Wertpapier
     /// </summary>
     public partial class WertpapierGesamtUebersichtView : UserControl
     {
+        string token;
         public WertpapierGesamtUebersichtView()
         {
             InitializeComponent();
@@ -36,7 +38,8 @@ namespace Aktien.UI.Desktop.Wertpapier
             {
                 if (this.DataContext is WertpapierGesamtUebersichtViewModel modelUebersicht)
                 {
-                    Messenger.Default.Register<OpenDividendenUebersichtAuswahlMessage>(this, value, m => ReceiveOpenDividendeUebersichtMessage(m));
+                    token = value;
+                    WeakReferenceMessenger.Default.Register<OpenDividendenUebersichtAuswahlMessage, string>(this, value, (r,m) => ReceiveOpenDividendeUebersichtMessage(m));
                     modelUebersicht.MessageToken = value;
                 }
             }
@@ -49,6 +52,12 @@ namespace Aktien.UI.Desktop.Wertpapier
             if (view.DataContext is DividendenUebersichtAuswahlViewModel model)
                 model.WertpapierID = m.WertpapierID;
             view.ShowDialog();
+        }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            WeakReferenceMessenger.Default.Unregister<OpenDividendenUebersichtAuswahlMessage, string>(this, token);
+
         }
     }
 }

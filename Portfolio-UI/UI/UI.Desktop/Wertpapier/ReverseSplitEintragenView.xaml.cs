@@ -2,7 +2,7 @@
 using Aktien.Logic.Messages.Base;
 using Aktien.Logic.UI.AuswahlViewModels;
 using Aktien.UI.Desktop.Auswahl;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,8 +28,8 @@ namespace Aktien.UI.Desktop.Wertpapier
         public ReverseSplitEintragenView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenWertpapierAuswahlMessage>(this, "ReverseSplitEintragen", m => ReceiveOpenWertpapierAuswahlMessage(m));
-            Messenger.Default.Register<CloseViewMessage>(this, "ReverseSplitEintragen", m => ReceivCloseViewMessage());
+            WeakReferenceMessenger.Default.Register<OpenWertpapierAuswahlMessage, string>(this, "ReverseSplitEintragen", (r,m) => ReceiveOpenWertpapierAuswahlMessage(m));
+            WeakReferenceMessenger.Default.Register<CloseViewMessage, string>(this, "ReverseSplitEintragen", (r, m) => ReceivCloseViewMessage());
             
         }
 
@@ -58,6 +58,13 @@ namespace Aktien.UI.Desktop.Wertpapier
                     m.Callback(false, 0);
                 }
             }
+        }
+
+        private void ReverseSplit_Unloaded(object sender, RoutedEventArgs e)
+        {
+            WeakReferenceMessenger.Default.Unregister<CloseViewMessage, string>(this, "ReverseSplitEintragen");
+            WeakReferenceMessenger.Default.Unregister<OpenWertpapierAuswahlMessage, string>(this, "ReverseSplitEintragen");
+
         }
     }
 }

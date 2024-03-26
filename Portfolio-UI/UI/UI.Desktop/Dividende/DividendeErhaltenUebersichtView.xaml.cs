@@ -2,7 +2,7 @@
 using Aktien.Logic.Messages.DividendeMessages;
 using Aktien.Logic.UI.DividendeViewModels;
 using Base.Logic.Types;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.DividendeMessages;
 using Logic.UI.DividendeViewModels;
 using System;
@@ -32,14 +32,14 @@ namespace UI.Desktop.Dividende
         public DividendeErhaltenUebersichtView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenErhaltendeDividendeStammdatenMessage<StammdatenTypes>>(this, m => ReceiveOpenErhaltendeDividendeStammdatenMessage(m));
-            Messenger.Default.Register<OpenDividendeReitAkualiserungMessage>(this, "DividendeErhaltenUebersicht", m => ReceivOpenDividendeReitAkualiserungMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenErhaltendeDividendeStammdatenMessage<StammdatenTypes>>(this, (r,m) => ReceiveOpenErhaltendeDividendeStammdatenMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenDividendeReitAkualiserungMessage, string>(this, "DividendeErhaltenUebersicht", (r, m) => ReceivOpenDividendeReitAkualiserungMessage(m));
             RegisterMessages("DividendeErhaltenUebersicht");
         }
 
-        private void ReceivOpenDividendeReitAkualiserungMessage(OpenDividendeReitAkualiserungMessage m)
+        private static void ReceivOpenDividendeReitAkualiserungMessage(OpenDividendeReitAkualiserungMessage m)
         {
-            DividendeReitAktualisierungView view = new DividendeReitAktualisierungView();
+            DividendeReitAktualisierungView view = new();
             if (view.DataContext is DividendeReitAktualisierungViewModel model)
             {
                 model.LoadingDividendeErhalten(m.ID);
@@ -74,8 +74,8 @@ namespace UI.Desktop.Dividende
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Unregister<OpenErhaltendeDividendeStammdatenMessage<StammdatenTypes>>(this);
-            Messenger.Default.Unregister<OpenDividendeReitAkualiserungMessage>(this);
+            WeakReferenceMessenger.Default.Unregister<OpenErhaltendeDividendeStammdatenMessage<StammdatenTypes>>(this);
+            WeakReferenceMessenger.Default.Unregister<OpenDividendeReitAkualiserungMessage, string>(this, "DividendeErhaltenUebersicht");
         }
     }
 }

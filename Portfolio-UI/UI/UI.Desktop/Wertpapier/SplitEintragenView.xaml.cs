@@ -1,5 +1,5 @@
 ﻿using Aktien.Logic.Messages.Base;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,11 +22,17 @@ namespace UI.Desktop.Wertpapier
         public SplitEintragenView()
         {
             InitializeComponent();
-            Messenger.Default.Register<CloseViewMessage>(this, "SplitEintragen", m => ReceivCloseViewMessage());
+            WeakReferenceMessenger.Default.Register<CloseViewMessage, string>(this, "SplitEintragen", (r,m) => ReceivCloseViewMessage());
         }
         private void ReceivCloseViewMessage()
         {
             GetWindow(this).Close();
+        }
+
+        private void AktienSplit_Unloaded(object sender, RoutedEventArgs e)
+        {
+            WeakReferenceMessenger.Default.Unregister<CloseViewMessage, string>(this, "SplitEintragen");
+
         }
     }
 }

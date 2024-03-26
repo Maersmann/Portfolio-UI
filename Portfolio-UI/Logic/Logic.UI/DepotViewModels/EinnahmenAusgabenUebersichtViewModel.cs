@@ -22,6 +22,9 @@ namespace Aktien.Logic.UI.DepotViewModels
         {
             data = new EinnahmenAusgabenGesamtModel();
             Title = "Einnahmen & Ausgaben Gesamtwerte";
+            RegisterAktualisereViewMessage(StammdatenTypes.einnahmen.ToString());
+            RegisterAktualisereViewMessage(StammdatenTypes.ausgaben.ToString());
+
         }
 
         public override async Task LoadData()
@@ -38,15 +41,15 @@ namespace Aktien.Logic.UI.DepotViewModels
                     
                 RequestIsWorking = false;
             }
-            RaisePropertyChanged("EinnahmeEinzahlung");
-            RaisePropertyChanged("EinnahmeVerkauf");
-            RaisePropertyChanged("EinnahmeDividende");
-            RaisePropertyChanged("EinnahmeGesamt");
-            RaisePropertyChanged("AusgabeAuszahlung");
-            RaisePropertyChanged("AusgabeKauf");
-            RaisePropertyChanged("AusgabeGesamt");
-            RaisePropertyChanged("Differenz");
-            RaisePropertyChanged("EinnahmeZinsen");
+            OnPropertyChanged(nameof(EinnahmeEinzahlung));
+            OnPropertyChanged(nameof(EinnahmeVerkauf));
+            OnPropertyChanged(nameof(EinnahmeDividende));
+            OnPropertyChanged(nameof(EinnahmeGesamt));
+            OnPropertyChanged(nameof(AusgabeAuszahlung));
+            OnPropertyChanged(nameof(AusgabeKauf));
+            OnPropertyChanged(nameof(AusgabeGesamt));
+            OnPropertyChanged(nameof(Differenz));
+            OnPropertyChanged(nameof(EinnahmeZinsen));
         }
 
         #region Bindings

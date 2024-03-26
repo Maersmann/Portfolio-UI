@@ -10,7 +10,7 @@ using Base.Logic.ViewModels;
 using Base.Logic.Wrapper;
 using Data.Model.DepotModels;
 using Data.Model.WertpapierModels;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -63,7 +63,7 @@ namespace Logic.UI.WertpapierViewModels
 
                 RequestIsWorking = false;
             }
-            RaisePropertyChanged("Model");
+            OnPropertyChanged("Model");
         }
 
         public void BerechneWerte()
@@ -75,7 +75,7 @@ namespace Logic.UI.WertpapierViewModels
                 model.NeuerBuyIn = 0;
             }
 
-            RaisePropertyChanged(nameof(Model));
+            OnPropertyChanged(nameof(Model));
         }
 
         #region Bindings
@@ -91,7 +91,7 @@ namespace Logic.UI.WertpapierViewModels
                 split.Verhaeltnis = value.GetValueOrDefault(0);
                 ValidateVerhaeltnis(split.Verhaeltnis);
                 BerechneWerte();
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -104,7 +104,7 @@ namespace Logic.UI.WertpapierViewModels
                 {
                     ValidateDatum(value, nameof(Datum));
                     split.Datum = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     (SaveCommand as DelegateCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -129,9 +129,9 @@ namespace Logic.UI.WertpapierViewModels
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.aktien.ToString());
-                    Messenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.buysell.ToString());
-                    Messenger.Default.Send(new CloseViewMessage(), "SplitEintragen");
+                     WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.aktien.ToString());
+                     WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.buysell.ToString());
+                     WeakReferenceMessenger.Default.Send(new CloseViewMessage(), "SplitEintragen");
                     SendInformationMessage("Gespeichert");
                 }
                 else

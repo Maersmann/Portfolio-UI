@@ -1,6 +1,6 @@
 ﻿using Aktien.Logic.Messages.DividendeMessages;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using System.Windows.Input;
 
 namespace Aktien.Logic.UI.DividendeViewModels
@@ -15,12 +15,12 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
         private void ExecuteOpenErhalteneDividendenViewCommand()
         {
-            Messenger.Default.Send(new OpenDividendeErhaltenUebersichtViewMessage { WertpapierID = WertpapierID });
+             WeakReferenceMessenger.Default.Send(new OpenDividendeErhaltenUebersichtViewMessage { WertpapierID = WertpapierID });
         }
 
         private void ExecuteOpenAlleDividendenViewCommand()
         {
-            Messenger.Default.Send(new OpenDividendeUebersichtMessage { WertpapierID = WertpapierID });
+             WeakReferenceMessenger.Default.Send(new OpenDividendeUebersichtMessage { WertpapierID = WertpapierID });
         }
 
         public ICommand OpenAlleDividendenViewCommand { get; set; }
