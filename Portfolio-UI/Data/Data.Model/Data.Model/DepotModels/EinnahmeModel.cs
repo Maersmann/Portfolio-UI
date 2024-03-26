@@ -1,4 +1,4 @@
-﻿using Aktien.Data.Types.DepotTypes;
+﻿using Data.Types.DepotTypes;
 using System;
 using System.Collections.Generic;
 using System.Text;

@@ -1,4 +1,5 @@
-﻿using Aktien.Logic.Messages.DepotMessages;
+﻿using Aktien.Logic.Messages.AuswahlMessages;
+using Aktien.Logic.Messages.DepotMessages;
 using Aktien.Logic.Messages.DividendeMessages;
 using Aktien.Logic.Messages.WertpapierMessages;
 using Aktien.Logic.UI.DepotViewModels;
@@ -6,7 +7,7 @@ using Aktien.Logic.UI.DividendeViewModels;
 using Aktien.Logic.UI.WertpapierViewModels;
 using Aktien.UI.Desktop.Dividende;
 using Aktien.UI.Desktop.Wertpapier;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.DepotMessages;
 using Logic.Messages.WertpapierMessages;
 using Logic.UI.DepotViewModels;
@@ -38,10 +39,10 @@ namespace Aktien.UI.Desktop.Depot
         public DepotUebersichtView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenDividendenUebersichtAuswahlMessage>(this, "DepotUebersicht", m => ReceiveOpenDividendeUebersichtMessage(m));
-            Messenger.Default.Register<OpenReverseSplitEintragenMessage>(this, "DepotUebersicht", m => ReceivOpenReverseSplitEintragenMessage(m));
-            Messenger.Default.Register<OpenSplitEintragenMessage>(this, "DepotUebersicht", m => ReceiveOpenSplitEintragenMessage(m));
-            Messenger.Default.Register<OpenErhalteneDividendeEintragenMessage>(this, "DepotUebersicht", m => ReceiveOpenDividendeErhaltenMessage(m));         
+            WeakReferenceMessenger.Default.Register<OpenDividendenUebersichtAuswahlMessage, string>(this, "DepotUebersicht", (r, m) => ReceiveOpenDividendeUebersichtMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenReverseSplitEintragenMessage, string>(this, "DepotUebersicht", (r, m) => ReceivOpenReverseSplitEintragenMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenSplitEintragenMessage, string>(this, "DepotUebersicht", (r, m) => ReceiveOpenSplitEintragenMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenErhalteneDividendeEintragenMessage, string>(this, "DepotUebersicht", (r,m) => ReceiveOpenDividendeErhaltenMessage(m));         
         }
 
         public string MessageToken
@@ -56,9 +57,9 @@ namespace Aktien.UI.Desktop.Depot
             }
         }
 
-        private void ReceiveOpenDividendeUebersichtMessage(OpenDividendenUebersichtAuswahlMessage m)
+        private static void ReceiveOpenDividendeUebersichtMessage(OpenDividendenUebersichtAuswahlMessage m)
         {
-            DividendenUebersichtAuswahlView view = new DividendenUebersichtAuswahlView()
+            DividendenUebersichtAuswahlView view = new()
             {
                 Owner = Application.Current.MainWindow
             };
@@ -71,9 +72,9 @@ namespace Aktien.UI.Desktop.Depot
             _ = view.ShowDialog();
         }
 
-        private void ReceiveOpenDividendeErhaltenMessage(OpenErhalteneDividendeEintragenMessage m)
+        private static void ReceiveOpenDividendeErhaltenMessage(OpenErhalteneDividendeEintragenMessage m)
         {
-            ErhalteneDividendeEintragenView view = new ErhalteneDividendeEintragenView()
+            ErhalteneDividendeEintragenView view = new()
             {
                 Owner = Application.Current.MainWindow
             };
@@ -86,15 +87,15 @@ namespace Aktien.UI.Desktop.Depot
             _ = view.ShowDialog();
         }
 
-        private void ReceivOpenReverseSplitEintragenMessage(OpenReverseSplitEintragenMessage m)
+        private static void ReceivOpenReverseSplitEintragenMessage(OpenReverseSplitEintragenMessage m)
         {
-            ReverseSplitEintragenView view = new ReverseSplitEintragenView();
+            ReverseSplitEintragenView view = new();
             if (view.DataContext is ReverseSplitEintragenViewModel model)
             {
                 model.DepotWertpapierID = m.DepotWertpapierID;
             }
 
-            Window window = new Window
+            Window window = new()
             {
                 Content = view,
                 SizeToContent = SizeToContent.WidthAndHeight,
@@ -107,9 +108,9 @@ namespace Aktien.UI.Desktop.Depot
             _ = window.ShowDialog();
         }
 
-        private void ReceiveOpenSplitEintragenMessage(OpenSplitEintragenMessage m)
+        private static void ReceiveOpenSplitEintragenMessage(OpenSplitEintragenMessage m)
         {
-            SplitEintragenView view = new SplitEintragenView
+            SplitEintragenView view = new()
             {
                 Owner = Application.Current.MainWindow
             };
@@ -120,5 +121,13 @@ namespace Aktien.UI.Desktop.Depot
             _ = view.ShowDialog();
         }
 
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            WeakReferenceMessenger.Default.Unregister<OpenDividendenUebersichtAuswahlMessage, string>(this, "DepotUebersicht");
+            WeakReferenceMessenger.Default.Unregister<OpenReverseSplitEintragenMessage, string>(this, "DepotUebersicht");
+            WeakReferenceMessenger.Default.Unregister<OpenSplitEintragenMessage, string>(this, "DepotUebersicht");
+            WeakReferenceMessenger.Default.Unregister<OpenErhalteneDividendeEintragenMessage, string>(this, "DepotUebersicht");
+
+        }
     }
 }

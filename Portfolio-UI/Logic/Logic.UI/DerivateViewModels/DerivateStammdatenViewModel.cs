@@ -6,7 +6,7 @@ using Aktien.Logic.Messages.Base;
 using Base.Logic.ViewModels;
 using Aktien.Logic.UI.InterfaceViewModels;
 using Data.Model.DerivateModels;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -40,8 +40,8 @@ namespace Aktien.Logic.UI.DerivateViewModels
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
+                     WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp().ToString());
+                     WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else if ((int)resp.StatusCode == 904)
                 {
@@ -71,7 +71,7 @@ namespace Aktien.Logic.UI.DerivateViewModels
             ISIN = Response.Data.ISIN;
             RequestIsWorking = false;
             state = State.Bearbeiten;
-            RaisePropertyChanged(nameof(ISIN_isEnabled));
+            OnPropertyChanged(nameof(ISIN_isEnabled));
         }
 
 
@@ -88,7 +88,7 @@ namespace Aktien.Logic.UI.DerivateViewModels
                 {
                     ValidateISIN(value);
                     Data.ISIN = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -102,7 +102,7 @@ namespace Aktien.Logic.UI.DerivateViewModels
                 {
                     ValidateName(value);
                     Data.Name = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -116,7 +116,7 @@ namespace Aktien.Logic.UI.DerivateViewModels
                 if (RequestIsWorking || !string.Equals(Data.WKN, value))
                 {
                     Data.WKN = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
         }
@@ -144,7 +144,7 @@ namespace Aktien.Logic.UI.DerivateViewModels
         }
         #endregion
 
-        public override void Cleanup()
+        protected override void OnActivated()
         {
             state = State.Neu;
             Data = new DerivateModel();

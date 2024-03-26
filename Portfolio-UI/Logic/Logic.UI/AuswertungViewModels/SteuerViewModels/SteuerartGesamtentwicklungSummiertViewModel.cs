@@ -40,7 +40,7 @@ namespace Logic.UI.AuswertungViewModels.SteuerViewModels
                 ItemList = await resp.Content.ReadAsAsync<List<SteuerartGesamtentwicklungSummiertModel>>();
 
                 Labels = new string[ItemList.Count];
-                IList<Betrag> werte = new List<Betrag>();
+                IList<Betrag> werte = [];
                 int index = 0;
                 ItemList.ToList().ForEach(item =>
                 {
@@ -50,7 +50,7 @@ namespace Logic.UI.AuswertungViewModels.SteuerViewModels
                         {
                             wert = new Betrag
                             {
-                                Betraege = new List<double>(),
+                                Betraege = [],
                                 Steuerart = steuer.Steuerart
                             };
                             werte.Add(wert);
@@ -71,7 +71,6 @@ namespace Logic.UI.AuswertungViewModels.SteuerViewModels
                     {
                         Values = wert.Betraege,
                         Name = wert.Steuerart,
-                        TooltipLabelFormatter = (point) => wert.Steuerart + " " + point.PrimaryValue.ToString("N2") + "€"
                     };
                     series.SetValue(StackedColoumn, index);
                     index++;
@@ -83,9 +82,9 @@ namespace Logic.UI.AuswertungViewModels.SteuerViewModels
                 YAxes.First().Name = "Betrag";
                 Series =  series;
 
-                RaisePropertyChanged(nameof(Series));
-                RaisePropertyChanged(nameof(XAxes));
-                RaisePropertyChanged(nameof(YAxes));
+                OnPropertyChanged(nameof(Series));
+                OnPropertyChanged(nameof(XAxes));
+                OnPropertyChanged(nameof(YAxes));
             }
             RequestIsWorking = false;
         }
@@ -100,7 +99,7 @@ namespace Logic.UI.AuswertungViewModels.SteuerViewModels
             set
             {
                 ValidatZahl(value, nameof(JahrVon));
-                RaisePropertyChanged();
+                OnPropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahrvon = value.GetValueOrDefault(0);
             }
@@ -111,7 +110,7 @@ namespace Logic.UI.AuswertungViewModels.SteuerViewModels
             set
             {
                 ValidatZahl(value, nameof(JahrBis));
-                RaisePropertyChanged();
+                OnPropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahrbis = value.GetValueOrDefault(0);
             }
@@ -122,7 +121,7 @@ namespace Logic.UI.AuswertungViewModels.SteuerViewModels
         #region Validate
         private bool ValidatZahl(int? zahl, string fieldname)
         {
-            BaseValidierung Validierung = new BaseValidierung();
+            BaseValidierung Validierung = new();
 
             bool isValid = Validierung.ValidateAnzahl(zahl, out ICollection<string> validationErrors);
 

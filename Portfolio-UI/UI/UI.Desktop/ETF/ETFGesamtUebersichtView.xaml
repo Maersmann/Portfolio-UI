@@ -9,7 +9,7 @@
              d:DesignHeight="450" d:DesignWidth="800"   
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              Background="{DynamicResource MaterialDesignPaper}"
-             DataContext="{Binding ETFGesamtUebersicht, Source={StaticResource Locator}}">
+             DataContext="{Binding ETFGesamtUebersicht, Source={StaticResource Locator}}" Unloaded="UserControl_Unloaded">
 
 
     <Grid>

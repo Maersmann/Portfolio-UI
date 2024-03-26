@@ -1,5 +1,5 @@
 ﻿using Aktien.Logic.Messages.Base;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,12 +22,18 @@ namespace UI.Desktop
         public LoginView()
         {
             InitializeComponent();
-            Messenger.Default.Register<CloseViewMessage>(this, "Login", m => ReceivCloseViewMessage());
+            WeakReferenceMessenger.Default.Register<CloseViewMessage, string>(this, "Login", (r,m) => ReceivCloseViewMessage());
         }
 
         private void ReceivCloseViewMessage()
         {
             Window.GetWindow(this).Close();
+        }
+
+        private void Window_Unloaded(object sender, RoutedEventArgs e)
+        {
+            WeakReferenceMessenger.Default.Unregister<CloseViewMessage, string>(this, "Login");
+
         }
     }
 }

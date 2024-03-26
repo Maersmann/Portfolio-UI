@@ -6,8 +6,7 @@ using Base.Logic.ViewModels;
 using Base.Logic.Wrapper;
 using Data.Model.SteuerModels;
 using Data.Types.SteuerTypes;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Core.SteuernLogic;
 using Logic.Messages.SteuernMessages;
 using Prism.Commands;
@@ -65,7 +64,7 @@ namespace Logic.UI.SteuerViewModels
         {
             if (ItemList.Count > 0)
             {
-                callback(true, ItemList.ToList());
+                callback(true, [.. ItemList]);
             }
             else
                 callback(false, null);
@@ -77,19 +76,19 @@ namespace Logic.UI.SteuerViewModels
             if(confirmed)
             {
                 ItemList.Add(steuer);
-                RaisePropertyChanged(nameof(ItemList));
+                OnPropertyChanged(nameof(ItemList));
             }
         }
 
 
         protected override void ExecuteNeuCommand()
         {
-            Messenger.Default.Send(new OpenSteuerStammdatenMessage<StammdatenTypes>(OpenSteuerStammdatenMessageCallback,null, SteuerartHelper.ErmittelAusSteuern(ItemList)) { State = State.Neu, ID = null, Stammdaten = GetStammdatenTyp()}, "SteuernUebersicht");
+             WeakReferenceMessenger.Default.Send(new OpenSteuerStammdatenMessage<StammdatenTypes>(OpenSteuerStammdatenMessageCallback,null, SteuerartHelper.ErmittelAusSteuern(ItemList)) { State = State.Neu, ID = null, Stammdaten = GetStammdatenTyp()}, "SteuernUebersicht");
         }
 
         protected override void ExecuteBearbeitenCommand()
         {
-            Messenger.Default.Send(new OpenSteuerStammdatenMessage<StammdatenTypes>(OpenSteuerStammdatenMessageCallback, SelectedItem, SteuerartHelper.ErmittelAusSteuern(ItemList)) { State = State.Bearbeiten, ID = SelectedItem.ID, Stammdaten = GetStammdatenTyp()}, "SteuernUebersicht");
+             WeakReferenceMessenger.Default.Send(new OpenSteuerStammdatenMessage<StammdatenTypes>(OpenSteuerStammdatenMessageCallback, SelectedItem, SteuerartHelper.ErmittelAusSteuern(ItemList)) { State = State.Bearbeiten, ID = SelectedItem.ID, Stammdaten = GetStammdatenTyp()}, "SteuernUebersicht");
         }
 
 

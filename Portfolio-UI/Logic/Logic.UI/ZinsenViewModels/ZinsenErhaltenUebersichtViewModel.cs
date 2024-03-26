@@ -3,7 +3,7 @@ using Base.Logic.Core;
 using Base.Logic.ViewModels;
 using Data.Model.SparplanModels;
 using Data.Model.ZinsenModels;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.SparplanMessages;
 using Logic.Messages.UtilMessages;
 using System;
@@ -27,7 +27,7 @@ namespace Logic.UI.ZinsenViewModels
 
         protected override void ExecuteEntfernenCommand()
         {
-            Messenger.Default.Send(new OpenBestaetigungViewMessage
+             WeakReferenceMessenger.Default.Send(new OpenBestaetigungViewMessage
             {
                 Beschreibung = "Soll der Eintrag gelöscht werden?",
                 Command = async () =>

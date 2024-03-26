@@ -38,15 +38,15 @@ namespace Aktien.Logic.UI.DepotViewModels
                     
                 RequestIsWorking = false;
             }
-            RaisePropertyChanged("EinnahmeEinzahlung");
-            RaisePropertyChanged("EinnahmeVerkauf");
-            RaisePropertyChanged("EinnahmeDividende");
-            RaisePropertyChanged("EinnahmeGesamt");
-            RaisePropertyChanged("AusgabeAuszahlung");
-            RaisePropertyChanged("AusgabeKauf");
-            RaisePropertyChanged("AusgabeGesamt");
-            RaisePropertyChanged("Differenz");
-            RaisePropertyChanged("EinnahmeZinsen");
+            OnPropertyChanged("EinnahmeEinzahlung");
+            OnPropertyChanged("EinnahmeVerkauf");
+            OnPropertyChanged("EinnahmeDividende");
+            OnPropertyChanged("EinnahmeGesamt");
+            OnPropertyChanged("AusgabeAuszahlung");
+            OnPropertyChanged("AusgabeKauf");
+            OnPropertyChanged("AusgabeGesamt");
+            OnPropertyChanged("Differenz");
+            OnPropertyChanged("EinnahmeZinsen");
         }
 
         #region Bindings

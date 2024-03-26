@@ -10,8 +10,7 @@ using Base.Logic.Wrapper;
 using Data.Model.DividendeModels;
 using Data.Model.SteuerModels;
 using Data.Types.SteuerTypes;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Core.SteuernLogic;
 using Logic.Messages.SteuernMessages;
 using System;
@@ -21,6 +20,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Logic.UI.DividendeViewModels
 {
@@ -46,8 +46,8 @@ namespace Logic.UI.DividendeViewModels
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
+                     WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp().ToString());
+                     WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
                 {
@@ -66,7 +66,7 @@ namespace Logic.UI.DividendeViewModels
             set
             {
                 ursprungsBetrag = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -76,7 +76,7 @@ namespace Logic.UI.DividendeViewModels
             set
             {
                 stornierterBetrag = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -86,7 +86,7 @@ namespace Logic.UI.DividendeViewModels
             set
             {
                 aktualisierterBetrag = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -100,7 +100,7 @@ namespace Logic.UI.DividendeViewModels
                 if (RequestIsWorking || (Data.RundungArtAktualisierung != value))
                 {
                     Data.RundungArtAktualisierung = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     BerechneGesamtWerte();
                 }
             }
@@ -114,7 +114,7 @@ namespace Logic.UI.DividendeViewModels
                 if (RequestIsWorking || (Data.RundungArtStornierung != value))
                 {
                     Data.RundungArtStornierung = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     BerechneGesamtWerte();
                 }
             }
@@ -151,7 +151,7 @@ namespace Logic.UI.DividendeViewModels
 
         private void ExecuteOpenSteuernCommand()
         {
-            Messenger.Default.Send(new OpenSteuernUebersichtMessage(OpenSteuernUebersichtMessageCallback, Data.SteuernNeu), "DividendeErhaltenReit");
+             WeakReferenceMessenger.Default.Send(new OpenSteuernUebersichtMessage(OpenSteuernUebersichtMessageCallback, Data.SteuernNeu), "DividendeErhaltenReit");
         }
 
         private void OpenSteuernUebersichtMessageCallback(bool confirmed, IList<SteuerModel> steuern)
@@ -204,11 +204,11 @@ namespace Logic.UI.DividendeViewModels
         }
 
 
-        public override void Cleanup()
+        protected override void OnActivated()
         {
             Data = new DividendeReitAktualisierungModel();
             state = State.Neu;
-            RaisePropertyChanged();
+            OnPropertyChanged();
             UrsprungsBetrag = 0;
             AktualisierterBetrag = 0;
             StornierterBetrag = 0;

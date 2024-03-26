@@ -4,7 +4,7 @@ using Aktien.Logic.Messages.Base;
 using Base.Logic.Core;
 using Base.Logic.ViewModels;
 using Data.Model.UserModels;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -34,7 +34,7 @@ namespace Logic.UI.UserViewModels
                     GlobalUserVariables.JahrVon = Data.JahrVon;
                     GlobalUserVariables.UserID = Data.UserID;
                     GlobalUserVariables.VorbelegungID = Data.ID;
-                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
+                     WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp().ToString());
                 }
                 else
                 {
@@ -61,7 +61,7 @@ namespace Logic.UI.UserViewModels
                 {
                     ValidateInt(value);
                     Data.JahrVon = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -71,7 +71,7 @@ namespace Logic.UI.UserViewModels
         #region Validate
         private bool ValidateInt(int jahrvon)
         {
-            BaseValidierung Validierung = new BaseValidierung();
+            BaseValidierung Validierung = new();
 
             bool isValid = Validierung.ValidateZahl(jahrvon, out ICollection<string> validationErrors);
 
@@ -81,7 +81,7 @@ namespace Logic.UI.UserViewModels
 
         #endregion
 
-        public override void Cleanup()
+        protected override void OnActivated()
         {
             Data = new VorbelegungModel { JahrVon = GlobalUserVariables.JahrVon, UserID = GlobalUserVariables.UserID, ID = GlobalUserVariables.VorbelegungID };
             JahrVon = GlobalUserVariables.JahrVon;

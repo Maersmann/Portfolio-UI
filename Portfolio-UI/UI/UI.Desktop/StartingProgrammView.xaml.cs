@@ -1,5 +1,7 @@
-﻿using Aktien.Logic.Messages.Base;
-using GalaSoft.MvvmLight.Messaging;
+﻿using Aktien.Data.Types;
+using Aktien.Logic.Messages.Base;
+using CommunityToolkit.Mvvm.Messaging;
+using Logic.Messages.SteuernMessages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,12 +26,18 @@ namespace Aktien.UI.Desktop
         public StartingProgrammView()
         {
             InitializeComponent();
-            Messenger.Default.Register<CloseViewMessage>(this, "StartingProgramm", m => ReceivCloseViewMessage());
+            WeakReferenceMessenger.Default.Register<CloseViewMessage, string>(this, "StartingProgramm", (r,m)=> ReceivCloseViewMessage());
         }
 
         private void ReceivCloseViewMessage()
         {
             Window.GetWindow(this).Close();
+        }
+
+        private void Window_Unloaded(object sender, RoutedEventArgs e)
+        {
+            WeakReferenceMessenger.Default.Unregister<CloseViewMessage, string>(this, "StartingProgramm");
+
         }
     }
 }

@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UI.Desktop.Depot"
-             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"      
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"      
              xmlns:command="http://www.galasoft.ch/mvvmlight"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
@@ -75,7 +75,7 @@
         <DataGrid Grid.Row="2" Margin="5"  ItemsSource="{Binding ItemList}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" SelectionUnit="FullRow" >
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="Sorting">
-                    <command:EventToCommand Command="{Binding SortingCommand}" PassEventArgsToCommand="True" />
+                    <i:InvokeCommandAction Command="{Binding SortingCommand}" PassEventArgsToCommand="True" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
             <DataGrid.Columns >

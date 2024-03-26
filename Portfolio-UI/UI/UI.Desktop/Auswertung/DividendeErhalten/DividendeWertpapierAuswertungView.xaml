@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UI.Desktop.Auswertung"
-             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
@@ -155,7 +155,7 @@
                     </DataGrid.Columns>
                 </DataGrid>
 
-                <lvc:PieChart Grid.Column="1" Grid.Row="1" Series="{Binding Series}" LegendPosition="Bottom" LegendBackground="{DynamicResource MaterialDesignPaper}" LegendTextBrush="White" >
+                <lvc:PieChart Grid.Column="1" Grid.Row="1" Series="{Binding Series}" LegendPosition="Bottom"   >
                 </lvc:PieChart>
                 
             </Grid>

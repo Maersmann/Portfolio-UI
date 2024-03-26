@@ -39,7 +39,7 @@ namespace Logic.UI.AuswertungViewModels.InvestitionViewModels
             {
                 ItemList = await resp.Content.ReadAsAsync<List<InvestitionMonatlichModel>>();
 
-                IList<double> values = new List<double>();
+                IList<double> values = [];
                 Labels = new string[ItemList.Count];
                 int index = 0;
 
@@ -54,11 +54,11 @@ namespace Logic.UI.AuswertungViewModels.InvestitionViewModels
                 XAxes.First().Name = "Monat";
                 YAxes.First().Name = "Betrag";
 
-                Series = new ColumnSeries<double>[1] { new ColumnSeries<double> { Values = values, Name = "Betrag", TooltipLabelFormatter = (point) => "Betrag " + point.PrimaryValue.ToString("N2") + "€" } };
+                Series = new ColumnSeries<double>[1] { new() { Values = values, Name = "Betrag" } };
 
-                RaisePropertyChanged(nameof(Series));
-                RaisePropertyChanged(nameof(XAxes));
-                RaisePropertyChanged(nameof(YAxes));
+                OnPropertyChanged(nameof(Series));
+                OnPropertyChanged(nameof(XAxes));
+                OnPropertyChanged(nameof(YAxes));
             }
             RequestIsWorking = false;
         }
@@ -72,7 +72,7 @@ namespace Logic.UI.AuswertungViewModels.InvestitionViewModels
             set
             {
                 ValidatZahl(value, nameof(JahrVon));
-                RaisePropertyChanged();
+                OnPropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahrvon = value.GetValueOrDefault(0);
             }
@@ -83,7 +83,7 @@ namespace Logic.UI.AuswertungViewModels.InvestitionViewModels
             set
             {
                 ValidatZahl(value, nameof(JahrBis));
-                RaisePropertyChanged();
+                OnPropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahrbis = value.GetValueOrDefault(0);
             }
@@ -93,7 +93,7 @@ namespace Logic.UI.AuswertungViewModels.InvestitionViewModels
         #region Validate
         private bool ValidatZahl(int? zahl, string fieldname)
         {
-            BaseValidierung Validierung = new BaseValidierung();
+            BaseValidierung Validierung = new();
 
             bool isValid = Validierung.ValidateAnzahl(zahl, out ICollection<string> validationErrors);
 

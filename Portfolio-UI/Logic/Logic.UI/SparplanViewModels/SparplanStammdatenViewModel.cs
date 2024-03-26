@@ -11,8 +11,7 @@ using Data.DTO.SparplanDTOs;
 using Data.Model.AktieModels;
 using Data.Model.SparplanModels;
 using Data.Types.SparplanTypes;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -21,6 +20,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Logic.UI.SparplanViewModels
 {
@@ -51,7 +51,7 @@ namespace Logic.UI.SparplanViewModels
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
+                     WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp().ToString());
                 }
                 else if (resp.StatusCode.Equals(HttpStatusCode.Conflict))
                 {
@@ -82,11 +82,11 @@ namespace Logic.UI.SparplanViewModels
                     Intervall = DTOResponse.Data.Intervall;
                     StartDatum = DTOResponse.Data.StartDatum;
                     ValidateAktie(Data.WertpapierName);
-                    RaisePropertyChanged(nameof(WertpapierName));
+                    OnPropertyChanged(nameof(WertpapierName));
                 }
             }
             state = State.Bearbeiten;
-            RaisePropertyChanged(nameof(CanWertpapierAuswaehlen));
+            OnPropertyChanged(nameof(CanWertpapierAuswaehlen));
             RequestIsWorking = false;
         }
 
@@ -108,20 +108,20 @@ namespace Logic.UI.SparplanViewModels
                         if (!value.Equals("0"))
                         {
                             Data.Betrag = "";
-                            RaisePropertyChanged();
+                            OnPropertyChanged();
                         }
                         return;
                     }
                     Data.Betrag = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
         }
         
-        public IEnumerable<SparplanIntervall> Intervalle => Enum.GetValues(typeof(SparplanIntervall)).Cast<SparplanIntervall>();
+        public static IEnumerable<SparplanIntervall> Intervalle => Enum.GetValues(typeof(SparplanIntervall)).Cast<SparplanIntervall>();
 
-        public IEnumerable<SparplanStartDatum> StartDatums => Enum.GetValues(typeof(SparplanStartDatum)).Cast<SparplanStartDatum>();
+        public static IEnumerable<SparplanStartDatum> StartDatums => Enum.GetValues(typeof(SparplanStartDatum)).Cast<SparplanStartDatum>();
         public SparplanIntervall Intervall
         {
             get { return Data.Intervall; }
@@ -130,7 +130,7 @@ namespace Logic.UI.SparplanViewModels
                 if (RequestIsWorking || (Data.Intervall != value))
                 {
                     Data.Intervall = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
         }
@@ -143,7 +143,7 @@ namespace Logic.UI.SparplanViewModels
                 if (RequestIsWorking || (Data.StartDatum != value))
                 {
                     Data.StartDatum = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
         }
@@ -153,7 +153,7 @@ namespace Logic.UI.SparplanViewModels
         #region Commands
         private void ExcecuteAuswahlCommand()
         {
-            Messenger.Default.Send(new OpenWertpapierAuswahlMessage(OpenWertpapierMessageCallback), "SparplanStammdaten");
+             WeakReferenceMessenger.Default.Send(new OpenWertpapierAuswahlMessage(OpenWertpapierMessageCallback), "SparplanStammdaten");
         }
         #endregion
 
@@ -174,7 +174,7 @@ namespace Logic.UI.SparplanViewModels
                     }
 
                 }
-                RaisePropertyChanged("WertpapierName");
+                OnPropertyChanged(nameof(WertpapierName));
             }
         }
         #endregion
@@ -182,7 +182,7 @@ namespace Logic.UI.SparplanViewModels
         #region Validate
         private bool ValidateBetrag(string betrag)
         {
-            BaseValidierung Validierung = new BaseValidierung();
+            BaseValidierung Validierung = new();
 
             bool isValid = Validierung.ValidateBetrag(betrag, out ICollection<string> validationErrors);
 
@@ -192,7 +192,7 @@ namespace Logic.UI.SparplanViewModels
 
         private bool ValidateAktie(string bezeichnung)
         {
-            BaseValidierung Validierung = new BaseValidierung();
+            BaseValidierung Validierung = new();
 
             bool isValid = Validierung.ValidateString(bezeichnung, "Aktie", out ICollection<string> validationErrors);
 
@@ -202,7 +202,7 @@ namespace Logic.UI.SparplanViewModels
         }
         #endregion
 
-        public override void Cleanup()
+        protected override void OnActivated()
         {
             state = State.Neu;
             Data = new SparplanModel { StartDatum = SparplanStartDatum.anfangDesMonats, Intervall = SparplanIntervall.monatlich };

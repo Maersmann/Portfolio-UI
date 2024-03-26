@@ -1,6 +1,6 @@
 ﻿using Aktien.Data.Types;
 using Base.Logic.Types;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.SteuernMessages;
 using Logic.UI.SteuerViewModels;
 using System;
@@ -26,12 +26,12 @@ namespace UI.Desktop.Steuer
         public SteuernUebersichtView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenSteuerStammdatenMessage<StammdatenTypes>>(this, "SteuernUebersicht", m => ReceiveOpenSteuerStammdatenMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenSteuerStammdatenMessage<StammdatenTypes>, string>(this, "SteuernUebersicht", (r,m) => ReceiveOpenSteuerStammdatenMessage(m));
         }
 
-        private void ReceiveOpenSteuerStammdatenMessage(OpenSteuerStammdatenMessage<StammdatenTypes> m)
+        private static void ReceiveOpenSteuerStammdatenMessage(OpenSteuerStammdatenMessage<StammdatenTypes> m)
         {
-            SteuerStammdatenView view = new SteuerStammdatenView()
+            SteuerStammdatenView view = new()
             { 
                 Owner = Application.Current.MainWindow
             };
@@ -56,7 +56,7 @@ namespace UI.Desktop.Steuer
 
         public void Window_Unloaded(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Unregister<OpenSteuerStammdatenMessage<StammdatenTypes>>(this);
+            WeakReferenceMessenger.Default.Unregister<OpenSteuerStammdatenMessage<StammdatenTypes>, string>(this, "SteuernUebersicht");
             if (DataContext is SteuernUebersichtViewModel model)
             {
                 model.ExceuteCallBack();

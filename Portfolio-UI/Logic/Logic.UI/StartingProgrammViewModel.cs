@@ -4,8 +4,8 @@ using Aktien.Logic.Messages.Base;
 using Base.Logic.Core;
 using Base.Logic.Messages;
 using Base.Logic.ViewModels;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.Base;
 using System;
 using System.Collections.Generic;
@@ -26,17 +26,17 @@ namespace Aktien.Logic.UI
             CheckServerIsOnlineCommand = new RelayCommand(() => ExecuteCheckServerIsOnlineCommand());
         }
 
-        private void ExecuteCheckServerIsOnlineCommand()
+        private static void ExecuteCheckServerIsOnlineCommand()
         {
-            new BackendHelper().CheckServerIsOnline();
-            Messenger.Default.Send(new CloseViewMessage(), "StartingProgramm");
+            BackendHelper.CheckServerIsOnline();
+            WeakReferenceMessenger.Default.Send(new CloseViewMessage(), "StartingProgramm");
             if (GlobalVariables.ServerIsOnline)
             {
-                Messenger.Default.Send(new OpenLoginViewMessage { });
+                 WeakReferenceMessenger.Default.Send(new OpenLoginViewMessage { });
             }
             else
             {
-                Messenger.Default.Send(new CloseApplicationMessage { });
+                 WeakReferenceMessenger.Default.Send(new CloseApplicationMessage { });
             }
                 
             

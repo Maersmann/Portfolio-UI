@@ -5,9 +5,7 @@ using Base.Logic.Core;
 using Base.Logic.Types;
 using Base.Logic.ViewModels;
 using Data.Model.DividendeModels;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.DividendeMessages;
 using Logic.Messages.UtilMessages;
 using Prism.Commands;
@@ -19,6 +17,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Aktien.Logic.UI.DividendeViewModels
 {
@@ -46,22 +45,22 @@ namespace Aktien.Logic.UI.DividendeViewModels
         #region Commands
         protected override void ExecuteNeuCommand()
         {
-            Messenger.Default.Send(new OpenErhaltendeDividendeStammdatenMessage<StammdatenTypes> { WertpapierID = wertpapierID, State = State.Neu });
+             WeakReferenceMessenger.Default.Send(new OpenErhaltendeDividendeStammdatenMessage<StammdatenTypes> { WertpapierID = wertpapierID, State = State.Neu });
         }
         protected override void ExecuteBearbeitenCommand()
         {
-            Messenger.Default.Send(new OpenErhaltendeDividendeStammdatenMessage<StammdatenTypes> { WertpapierID = wertpapierID, State = State.Bearbeiten, ID = SelectedItem.ID });
+             WeakReferenceMessenger.Default.Send(new OpenErhaltendeDividendeStammdatenMessage<StammdatenTypes> { WertpapierID = wertpapierID, State = State.Bearbeiten, ID = SelectedItem.ID });
         }
 
         private void ExecuteOpenReitAktualisierungCommand()
         {
-            Messenger.Default.Send(new OpenDividendeReitAkualiserungMessage { ID = SelectedItem.ID }, "DividendeErhaltenUebersicht");
+             WeakReferenceMessenger.Default.Send(new OpenDividendeReitAkualiserungMessage { ID = SelectedItem.ID }, "DividendeErhaltenUebersicht");
         }
 
 
         protected override void ExecuteEntfernenCommand()
         {
-            Messenger.Default.Send(new OpenBestaetigungViewMessage
+             WeakReferenceMessenger.Default.Send(new OpenBestaetigungViewMessage
             {
                 Beschreibung = "Soll der Eintrag gelöscht werden?",
                 Command = async () =>

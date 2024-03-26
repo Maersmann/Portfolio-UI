@@ -8,7 +8,7 @@ using Base.Logic.Messages;
 using Base.Logic.ViewModels;
 using Data.DTO.SparplanDTOs;
 using Data.Model.SparplanModels;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -37,9 +37,9 @@ namespace Logic.UI.SparplanViewModels
             model.NaechsteAusfuehrung = sparplanAusfuehrenUebersicht.NaechsteAusfuehrung;
             ValidateBetrag(model.Betrag);
             ValidateAnzahl(model.Anzahl);
-            RaisePropertyChanged(nameof(WertpapierName));
-            RaisePropertyChanged(nameof(Betrag));
-            RaisePropertyChanged(nameof(Anzahl));
+            OnPropertyChanged(nameof(WertpapierName));
+            OnPropertyChanged(nameof(Betrag));
+            OnPropertyChanged(nameof(Anzahl));
             BerechneWerte();
             ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
         }
@@ -50,7 +50,7 @@ namespace Logic.UI.SparplanViewModels
             model.BuyIn = !double.TryParse(model.Betrag, out double Betrag) || !double.TryParse(model.Anzahl, out double Anzahl)
                 ? 0
                 : Anzahl == 0 ? 0 : Math.Round(Betrag / Anzahl, 3, MidpointRounding.AwayFromZero);
-            RaisePropertyChanged(nameof(BuyIn));
+            OnPropertyChanged(nameof(BuyIn));
         }
 
         #region Bindings
@@ -71,13 +71,13 @@ namespace Logic.UI.SparplanViewModels
                         if (!value.Equals("0"))
                         {
                             model.Betrag = "";
-                            RaisePropertyChanged();
+                            OnPropertyChanged();
                         }
                         return;
                     }
                     model.Betrag = value;
                     BerechneWerte();
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -94,13 +94,13 @@ namespace Logic.UI.SparplanViewModels
                         if (!value.Equals("0"))
                         {
                             model.Anzahl = "";
-                            RaisePropertyChanged();
+                            OnPropertyChanged();
                         }
                         return;
                     }
                     model.Anzahl = value;
                     BerechneWerte();
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -131,9 +131,9 @@ namespace Logic.UI.SparplanViewModels
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new CloseViewMessage(), "SparplanAusfuehren");
+                     WeakReferenceMessenger.Default.Send(new CloseViewMessage(), "SparplanAusfuehren");
                     SendInformationMessage("Gespeichert");
-                    Messenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.sparplan.ToString());
+                     WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.sparplan.ToString());
                 }
                 else
                 {

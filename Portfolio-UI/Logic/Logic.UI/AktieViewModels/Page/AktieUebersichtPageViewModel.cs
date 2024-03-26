@@ -1,7 +1,7 @@
 ﻿using Aktien.Logic.Messages.AktieMessages;
 using Base.Logic.ViewModels;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,12 +21,12 @@ namespace Aktien.Logic.UI.AktieViewModels.Page
 
         private void ExecuteShowShowDividendenViewCommand()
         {
-            Messenger.Default.Send(new OpenDetailViewMessage { ViewType = Data.Types.ViewType.viewDividendeUebersicht });
+             WeakReferenceMessenger.Default.Send(new OpenDetailViewMessage { ViewType = Data.Types.ViewType.viewDividendeUebersicht });
         }
 
         private void ExecuteShowOrderHistoryViewCommand()
         {
-            Messenger.Default.Send(new OpenDetailViewMessage { ViewType = Data.Types.ViewType.viewOrderUebersicht });
+             WeakReferenceMessenger.Default.Send(new OpenDetailViewMessage { ViewType = Data.Types.ViewType.viewOrderUebersicht });
         }
 
         public ICommand ShowDividendenViewCommand { get; set; }

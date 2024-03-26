@@ -1,9 +1,6 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.UtilMessages;
 using Logic.UI.UtilsViewModels;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using UI.Desktop.Utils;
@@ -12,7 +9,7 @@ namespace UI.Desktop.Base
 {
     public class BaseUsercontrol : UserControl
     {
-
+        string token;
         public BaseUsercontrol()
         {
             Unloaded += Window_Unloaded;
@@ -20,7 +17,8 @@ namespace UI.Desktop.Base
 
         public void RegisterMessages(string token)
         {
-            Messenger.Default.Register<OpenBestaetigungViewMessage>(this, token, m => ReceiveOpenBestaetigungViewMessage(m));
+            this.token = token;
+            WeakReferenceMessenger.Default.Register<OpenBestaetigungViewMessage, string>(this, token, (r, m) => ReceiveOpenBestaetigungViewMessage(m));
         }
 
         private void ReceiveOpenBestaetigungViewMessage(OpenBestaetigungViewMessage m)
@@ -40,7 +38,7 @@ namespace UI.Desktop.Base
 
         protected virtual void Window_Unloaded(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Unregister<OpenBestaetigungViewMessage>(this);
+            WeakReferenceMessenger.Default.Unregister<OpenBestaetigungViewMessage, string>(this, token);
         }
     }
 }

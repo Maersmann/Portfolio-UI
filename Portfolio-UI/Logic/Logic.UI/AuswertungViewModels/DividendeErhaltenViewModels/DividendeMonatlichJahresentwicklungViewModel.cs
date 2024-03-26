@@ -54,14 +54,12 @@ namespace Logic.UI.AuswertungViewModels.DividendeErhaltenViewModels
             int index = 0;
             ItemList.ToList().ForEach(item =>
             {
-                LineSeries<double> coloumn = new LineSeries<double>
+                LineSeries<double> coloumn = new()
                 {
                     Name = item.Jahr.ToString(),
-                    Values = new List<double>(),
-                    TooltipLabelFormatter = (point) => point.Label + point.PrimaryValue.ToString("N2") + "€",
+                    Values = [],
                 };
-                coloumn.TooltipLabelFormatter = (point) => item.Jahr + " " + point.PrimaryValue.ToString("N2") + "€";
-                List<double> betraege = new List<double>();
+                List<double> betraege = [];
 
                 item.Werte.ToList().ForEach(mw =>
                 {
@@ -83,10 +81,10 @@ namespace Logic.UI.AuswertungViewModels.DividendeErhaltenViewModels
             YAxes.First().Name = "Betrag";
             Series = series;
 
-            RaisePropertyChanged(nameof(Series));
-            RaisePropertyChanged(nameof(Labels));
-            RaisePropertyChanged(nameof(XAxes));
-            RaisePropertyChanged(nameof(YAxes));
+            OnPropertyChanged(nameof(Series));
+            OnPropertyChanged(nameof(Labels));
+            OnPropertyChanged(nameof(XAxes));
+            OnPropertyChanged(nameof(YAxes));
         }
 
         #region Bindings
@@ -97,7 +95,7 @@ namespace Logic.UI.AuswertungViewModels.DividendeErhaltenViewModels
             set
             {
                 ValidatZahl(value, nameof(JahrVon));
-                RaisePropertyChanged();
+                OnPropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahrvon = value.GetValueOrDefault(0);
             }
@@ -108,7 +106,7 @@ namespace Logic.UI.AuswertungViewModels.DividendeErhaltenViewModels
             set
             {
                 ValidatZahl(value, nameof(JahrBis));
-                RaisePropertyChanged();
+                OnPropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahrbis = value.GetValueOrDefault(0);
             }
@@ -120,7 +118,7 @@ namespace Logic.UI.AuswertungViewModels.DividendeErhaltenViewModels
             get => typ;
             set
             {
-                RaisePropertyChanged();
+                OnPropertyChanged();
                 typ = value;
                 SetDataIntoChart();
             }
@@ -130,7 +128,7 @@ namespace Logic.UI.AuswertungViewModels.DividendeErhaltenViewModels
         #region Validate
         private bool ValidatZahl(int? zahl, string fieldname)
         {
-            BaseValidierung Validierung = new BaseValidierung();
+            BaseValidierung Validierung = new();
 
             bool isValid = Validierung.ValidateAnzahl(zahl, out ICollection<string> validationErrors);
 

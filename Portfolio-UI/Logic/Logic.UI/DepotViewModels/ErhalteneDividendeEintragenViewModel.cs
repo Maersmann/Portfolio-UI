@@ -12,8 +12,7 @@ using Base.Logic.Wrapper;
 using Data.DTO.DepotDTOs;
 using Data.Model.DepotModels;
 using Data.Model.SteuerModels;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.SteuernMessages;
 using Prism.Commands;
 using System;
@@ -22,6 +21,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Logic.UI.DepotViewModels
 {
@@ -42,7 +42,7 @@ namespace Logic.UI.DepotViewModels
         {
             Data.WertpapierID = wertpapierID;
             Title = "Dividende erhalten von " + wertpapierName;
-            RaisePropertyChanged(nameof(Title));
+            OnPropertyChanged(nameof(Title));
         }
 
         private void BetragGerundetBerechnen()
@@ -64,7 +64,7 @@ namespace Logic.UI.DepotViewModels
             {
                 Werte.BetragGerundet = new DividendenBerechnungen().BetragUmgerechnet(betrag, Umrechnungskurs, true, Data.RundungArtDividende).ToString();
             }        
-            RaisePropertyChanged(nameof(Werte));
+            OnPropertyChanged(nameof(Werte));
         }
 
 
@@ -81,7 +81,7 @@ namespace Logic.UI.DepotViewModels
                 {
                     ValidateDatum(value, nameof(Exdatum));
                     Data.Exdatum = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     (SaveCommand as DelegateCommand).RaiseCanExecuteChanged();
                     (ValidiereCommand as DelegateCommand).RaiseCanExecuteChanged();
                 }
@@ -97,7 +97,7 @@ namespace Logic.UI.DepotViewModels
                 {
                     ValidateDatum(value, nameof(Zahldatum));
                     Data.Zahldatum = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     (SaveCommand as DelegateCommand).RaiseCanExecuteChanged();
                     (ValidiereCommand as DelegateCommand).RaiseCanExecuteChanged();
                 }
@@ -116,12 +116,12 @@ namespace Logic.UI.DepotViewModels
                         if (value == null || !value.Equals("0"))
                         {
                             Data.Betrag = "";
-                            RaisePropertyChanged();
+                            OnPropertyChanged();
                         }
                         return;
                     }
                     Data.Betrag = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                     (ValidiereCommand as DelegateCommand).RaiseCanExecuteChanged();
                     BetragGerundetBerechnen();
@@ -137,8 +137,8 @@ namespace Logic.UI.DepotViewModels
                 if (RequestIsWorking || !string.Equals(Data.Umrechnungskurs, value))
                 {
                     Data.Umrechnungskurs = value ?? "";
-                    RaisePropertyChanged(nameof(WechsellkursHasValue));
-                    RaisePropertyChanged();
+                    OnPropertyChanged(nameof(WechsellkursHasValue));
+                    OnPropertyChanged();
                     BetragGerundetBerechnen();
                 }
             }
@@ -152,14 +152,14 @@ namespace Logic.UI.DepotViewModels
                 if (RequestIsWorking || (Data.Waehrung != value))
                 {
                     Data.Waehrung = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
         }
        
         public static IEnumerable<Waehrungen> Waehrungen => Enum.GetValues(typeof(Waehrungen)).Cast<Waehrungen>();
 
-        public IEnumerable<DividendenRundungTypes> RundungTypes => Enum.GetValues(typeof(DividendenRundungTypes)).Cast<DividendenRundungTypes>();
+        public static IEnumerable<DividendenRundungTypes> RundungTypes => Enum.GetValues(typeof(DividendenRundungTypes)).Cast<DividendenRundungTypes>();
 
         public DividendenRundungTypes RundungArtDividende
         {
@@ -169,7 +169,7 @@ namespace Logic.UI.DepotViewModels
                 if (RequestIsWorking || (Data.RundungArtDividende != value))
                 {
                     Data.RundungArtDividende = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     BetragGerundetBerechnen();
                 }
             }
@@ -183,7 +183,7 @@ namespace Logic.UI.DepotViewModels
                 if (RequestIsWorking || (Data.RundungArtErhalten != value))
                 {
                     Data.RundungArtErhalten = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
         }
@@ -198,7 +198,7 @@ namespace Logic.UI.DepotViewModels
 
         private void ExecuteOpenSteuernCommand()
         {
-            Messenger.Default.Send(new OpenSteuernUebersichtMessage(OpenSteuernUebersichtMessageCallback, Data.Steuer.Steuern), "ErhalteneDividendeEintragen");
+             WeakReferenceMessenger.Default.Send(new OpenSteuernUebersichtMessage(OpenSteuernUebersichtMessageCallback, Data.Steuer.Steuern), "ErhalteneDividendeEintragen");
         }
 
         protected async override void ExecuteSaveCommand()
@@ -224,7 +224,7 @@ namespace Logic.UI.DepotViewModels
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new CloseViewMessage { }, "ErhalteneDividendeEintragen");
+                     WeakReferenceMessenger.Default.Send(new CloseViewMessage { }, "ErhalteneDividendeEintragen");
                 }
                 else
                 {
@@ -261,7 +261,7 @@ namespace Logic.UI.DepotViewModels
                     Werte.SteuerNachZwischensumme= WerteResponse.SteuerNachZwischensumme.ToString();
                     Werte.SteuerVorZwischensumme = WerteResponse.SteuerVorZwischensumme.ToString();
                     Werte.Zwischensumme = WerteResponse.Zwischensumme.ToString();
-                    RaisePropertyChanged(nameof(Werte));
+                    OnPropertyChanged(nameof(Werte));
                 }
                 RequestIsWorking = false;
             }
@@ -284,7 +284,7 @@ namespace Logic.UI.DepotViewModels
 
         private bool ValidateDatum(DateTime? datun, string fieldname)
         {
-            var Validierung = new BaseValidierung();
+            BaseValidierung Validierung = new();
 
             bool isValid = Validierung.ValidateDatum(datun, out ICollection<string> validationErrors);
 
@@ -294,7 +294,7 @@ namespace Logic.UI.DepotViewModels
 
         private bool ValidateBetrag(string betrag)
         {
-            BaseValidierung Validierung = new BaseValidierung();
+            BaseValidierung Validierung = new();
 
             bool isValid = Validierung.ValidateBetrag(betrag, out ICollection<string> validationErrors, true);
 
@@ -304,10 +304,10 @@ namespace Logic.UI.DepotViewModels
 
         #endregion
 
-        public override void Cleanup()
+        protected override void OnActivated()
         {
-            Data = new ErhalteneDividendeEintragenModel { Steuer = new SteuergruppeModel { Steuern = new List<SteuerModel>() } };
-            Werte = new ErhalteneDividendeEintragenWerteModel();
+            Data = new ErhalteneDividendeEintragenModel { Steuer = new SteuergruppeModel { Steuern = [] } };
+            Werte = new();
             state = State.Neu;
         }
     }

@@ -45,11 +45,10 @@ namespace Logic.UI.AuswertungViewModels
                 int index = 0;
                 ItemList.ToList().ForEach(item =>
                 {
-                    ColumnSeries<double> coloumn = new ColumnSeries<double>
+                    ColumnSeries<double> coloumn = new()
                     {
                         Name = item.Jahr.ToString(),
-                        Values = new List<double>(),
-                        TooltipLabelFormatter = (point) => item.Jahr + " " + point.PrimaryValue.ToString("N2") + "€"
+                        Values = [],
                     };
 
                     var betraege = new List<double>();
@@ -73,9 +72,9 @@ namespace Logic.UI.AuswertungViewModels
 
                 Series = series;
 
-                RaisePropertyChanged(nameof(Series));
-                RaisePropertyChanged(nameof(XAxes));
-                RaisePropertyChanged(nameof(YAxes));
+                OnPropertyChanged(nameof(Series));
+                OnPropertyChanged(nameof(XAxes));
+                OnPropertyChanged(nameof(YAxes));
 
             }
             RequestIsWorking = false;
@@ -90,7 +89,7 @@ namespace Logic.UI.AuswertungViewModels
             set
             {
                 ValidatZahl(value, nameof(JahrVon));
-                RaisePropertyChanged();
+                OnPropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahrvon = value.GetValueOrDefault(0);
             }
@@ -101,7 +100,7 @@ namespace Logic.UI.AuswertungViewModels
             set
             {
                 ValidatZahl(value, nameof(JahrBis));
-                RaisePropertyChanged();
+                OnPropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahrbis = value.GetValueOrDefault(0);
             }

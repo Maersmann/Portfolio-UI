@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aktien.Data.Types.DepotTypes
+namespace Data.Types.DepotTypes
 {
     [TypeConverter(typeof(EnumDescriptionTypeConverter))]
     public enum EinnahmeArtTypes

@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UI.Desktop.Sparplan"
-        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                     xmlns:command="http://www.galasoft.ch/mvvmlight" 
                     mc:Ignorable="d" WindowStartupLocation="CenterScreen" Height="320" Width="300"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -12,12 +12,12 @@
                     ResizeMode="NoResize" ShowInTaskbar="False"
                     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
                     Background="{DynamicResource MaterialDesignPaper}"
-                    DataContext="{Binding SparplanAusfuehren ,Source={StaticResource Locator}}" >
+                    DataContext="{Binding SparplanAusfuehren ,Source={StaticResource Locator}}" Unloaded="Window_Unloaded" >
 
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closed">
-            <command:EventToCommand Command="{Binding CleanUpCommand}"/>
+            <i:InvokeCommandAction Command="{Binding CleanUpCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
 

@@ -11,7 +11,7 @@ using Data.DTO.SparplanDTOs;
 using Data.Model.AktieModels;
 using Data.Model.SparplanModels;
 using Data.Types.SparplanTypes;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -20,11 +20,11 @@ using System.Net;
 using System.Text;
 using System.Windows.Input;
 using Data.Model.ZinsenModels;
-using GalaSoft.MvvmLight.CommandWpf;
 using Logic.Messages.SteuernMessages;
 using Data.Model.SteuerModels;
 using Data.DTO.ZinsenDTOs;
 using Logic.Core.SteuernLogic;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Logic.UI.ZinsenViewModels
 {
@@ -46,8 +46,8 @@ namespace Logic.UI.ZinsenViewModels
 
             Data.Erhalten = Math.Round( Double.Parse(Data.Gesamt) - Double.Parse(Data.SteuernGesamt), 2, MidpointRounding.AwayFromZero).ToString();
 
-            RaisePropertyChanged(nameof(SteuernGesamt));
-            RaisePropertyChanged(nameof(Erhalten));
+            OnPropertyChanged(nameof(SteuernGesamt));
+            OnPropertyChanged(nameof(Erhalten));
         }
 
         protected async override void ExecuteSaveCommand()
@@ -55,7 +55,7 @@ namespace Logic.UI.ZinsenViewModels
             if (GlobalVariables.ServerIsOnline)
             {
                 RequestIsWorking = true;
-                HttpResponseMessage resp = null;
+                HttpResponseMessage resp;
                 if (state.Equals(State.Neu))
                 { 
                 resp = await Client.PostAsJsonAsync(GlobalVariables.BackendServer_URL + "/api/zinsen",
@@ -78,7 +78,7 @@ namespace Logic.UI.ZinsenViewModels
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
+                     WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp().ToString());
                 }
                 else if (resp.StatusCode.Equals(HttpStatusCode.Conflict))
                 {
@@ -113,13 +113,13 @@ namespace Logic.UI.ZinsenViewModels
                         if (!value.Equals("0"))
                         {
                             Data.Gesamt = "";
-                            RaisePropertyChanged();
+                            OnPropertyChanged();
                         }
                         return;
                     }
                     Data.Gesamt = value;
                     BerechneGesamtWerte();
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -137,12 +137,12 @@ namespace Logic.UI.ZinsenViewModels
                         if (!value.Equals("0"))
                         {
                             Data.DurchschnittlicherKontostand = "";
-                            RaisePropertyChanged();
+                            OnPropertyChanged();
                         }
                         return;
                     }
                     Data.DurchschnittlicherKontostand = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -160,12 +160,12 @@ namespace Logic.UI.ZinsenViewModels
                         if (!value.Equals("0"))
                         {
                             Data.Prozent = "";
-                            RaisePropertyChanged();
+                            OnPropertyChanged();
                         }
                         return;
                     }
                     Data.Prozent = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -180,7 +180,7 @@ namespace Logic.UI.ZinsenViewModels
                 {
                     ValidateDatum(value, nameof(ErhaltenAm));
                     Data.ErhaltenAm = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     (SaveCommand as DelegateCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -196,7 +196,7 @@ namespace Logic.UI.ZinsenViewModels
 
         private void ExecuteOpenSteuernCommand()
         {
-            Messenger.Default.Send(new OpenSteuernUebersichtMessage(OpenSteuernUebersichtMessageCallback, Data.Steuer.Steuern), "ZinsenEintragen");
+             WeakReferenceMessenger.Default.Send(new OpenSteuernUebersichtMessage(OpenSteuernUebersichtMessageCallback, Data.Steuer.Steuern), "ZinsenEintragen");
         }
 
         private void OpenSteuernUebersichtMessageCallback(bool confirmed, IList<SteuerModel> steuern)
@@ -213,7 +213,7 @@ namespace Logic.UI.ZinsenViewModels
         #region Validate
         private bool ValidateGesamt(string betrag)
         {
-            BaseValidierung Validierung = new BaseValidierung();
+            BaseValidierung Validierung = new();
 
             bool isValid = Validierung.ValidateZahl(betrag, out ICollection<string> validationErrors);
 
@@ -223,7 +223,7 @@ namespace Logic.UI.ZinsenViewModels
 
         private bool ValidateKontostand(string kontostand)
         {
-            BaseValidierung Validierung = new BaseValidierung();
+            BaseValidierung Validierung = new();
 
             bool isValid = Validierung.ValidateZahl(kontostand, out ICollection<string> validationErrors);
 
@@ -233,7 +233,7 @@ namespace Logic.UI.ZinsenViewModels
 
         private bool ValidateProzent(string prozent)
         {
-            BaseValidierung Validierung = new BaseValidierung();
+            BaseValidierung Validierung = new();
 
             bool isValid = Validierung.ValidateZahl(prozent, out ICollection<string> validationErrors);
 
@@ -243,7 +243,7 @@ namespace Logic.UI.ZinsenViewModels
 
         private bool ValidateDatum(DateTime? datun, string fieldname)
         {
-            var Validierung = new BaseValidierung();
+            BaseValidierung Validierung = new();
 
             bool isValid = Validierung.ValidateDatum(datun, out ICollection<string> validationErrors);
 
@@ -253,7 +253,7 @@ namespace Logic.UI.ZinsenViewModels
 
         #endregion
 
-        public override void Cleanup()
+        protected override void OnActivated()
         {
             state = State.Neu;
             Data = new ZinsenEintragenModel { };

@@ -7,8 +7,8 @@ using Base.Logic.Core;
 using Base.Logic.Messages;
 using Base.Logic.ViewModels;
 using Data.Model.ETFModels;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
+
+using CommunityToolkit.Mvvm.Messaging;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -47,7 +47,7 @@ namespace Aktien.Logic.UI.ETFViewModels
                 ((DelegateCommand)OpenNeueDividendeCommand).RaiseCanExecuteChanged();
                 if (SelectedItem != null)
                 {
-                    Messenger.Default.Send(new LoadWertpapierOrderMessage { WertpapierID = SelectedItem.ID, WertpapierTyp = SelectedItem.WertpapierTyp }, messageToken);
+                     WeakReferenceMessenger.Default.Send(new LoadWertpapierOrderMessage { WertpapierID = SelectedItem.ID, WertpapierTyp = SelectedItem.WertpapierTyp }, messageToken);
                 }
             }
         }
@@ -58,7 +58,7 @@ namespace Aktien.Logic.UI.ETFViewModels
         #region Commands
         private void ExecuteOpenNeueDividendeCommand()
         {
-            Messenger.Default.Send(new OpenDividendenUebersichtAuswahlMessage { WertpapierID = SelectedItem.ID }, messageToken);
+             WeakReferenceMessenger.Default.Send(new OpenDividendenUebersichtAuswahlMessage { WertpapierID = SelectedItem.ID }, messageToken);
         }
 
         protected async override void ExecuteEntfernenCommand()
@@ -86,7 +86,7 @@ namespace Aktien.Logic.UI.ETFViewModels
 
             }
             base.ExecuteEntfernenCommand();
-            Messenger.Default.Send(new LoadWertpapierOrderMessage { WertpapierID = 0, WertpapierTyp = SelectedItem.WertpapierTyp }, messageToken);
+             WeakReferenceMessenger.Default.Send(new LoadWertpapierOrderMessage { WertpapierID = 0, WertpapierTyp = SelectedItem.WertpapierTyp }, messageToken);
             SendInformationMessage("ETF gelöscht");
 
         }

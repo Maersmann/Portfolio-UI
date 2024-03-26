@@ -1,7 +1,7 @@
 ﻿using Aktien.Logic.Messages.AuswahlMessages;
 using Aktien.Logic.UI.AuswahlViewModels;
 using Aktien.UI.Desktop.Auswahl;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -25,12 +25,12 @@ namespace UI.Desktop.Auswertung
         public DividendeWertpapierEntwicklungView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenWertpapierAuswahlMessage>(this, "DividendeWertpapierEntwicklung", m => ReceiveOpenWertpapierAuswahlMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenWertpapierAuswahlMessage, string>(this, "DividendeWertpapierEntwicklung", (r,m) => ReceiveOpenWertpapierAuswahlMessage(m));
         }
 
-        private void ReceiveOpenWertpapierAuswahlMessage(OpenWertpapierAuswahlMessage m)
+        private static void ReceiveOpenWertpapierAuswahlMessage(OpenWertpapierAuswahlMessage m)
         {
-            WertpapierAuswahlView view = new WertpapierAuswahlView()
+            WertpapierAuswahlView view = new()
             {
                 Owner = Application.Current.MainWindow
             };
@@ -52,7 +52,7 @@ namespace UI.Desktop.Auswertung
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Unregister<OpenWertpapierAuswahlMessage>(this);
+            WeakReferenceMessenger.Default.Unregister<OpenWertpapierAuswahlMessage, string>(this, "DividendeWertpapierEntwicklung");
         }
     }
 }

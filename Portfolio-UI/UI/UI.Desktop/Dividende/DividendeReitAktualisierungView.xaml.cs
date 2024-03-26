@@ -1,6 +1,6 @@
 ﻿using Aktien.Data.Types;
 using UI.Desktop.Base;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.SteuernMessages;
 using Logic.UI.SteuerViewModels;
 using System;
@@ -27,7 +27,7 @@ namespace UI.Desktop.Dividende
         {
             InitializeComponent();
             RegisterStammdatenGespeichertMessage(StammdatenTypes.dividendeErhalten);
-            Messenger.Default.Register<OpenSteuernUebersichtMessage>(this, "DividendeErhaltenReit", m => ReceiveOpenSteuernUebersichtMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenSteuernUebersichtMessage, string>(this, "DividendeErhaltenReit", (r,m)=> ReceiveOpenSteuernUebersichtMessage(m));
         }
 
         private void ReceiveOpenSteuernUebersichtMessage(OpenSteuernUebersichtMessage m)
@@ -47,7 +47,7 @@ namespace UI.Desktop.Dividende
         public override void Window_Unloaded(object sender, RoutedEventArgs e)
         {
             base.Window_Unloaded(sender, e);
-            Messenger.Default.Unregister<OpenSteuernUebersichtMessage>(this);
+            WeakReferenceMessenger.Default.Unregister<OpenSteuernUebersichtMessage, string>(this, "DividendeErhaltenReit");
         }
     }
 }

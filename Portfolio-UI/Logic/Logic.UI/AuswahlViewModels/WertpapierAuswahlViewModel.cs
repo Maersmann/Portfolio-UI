@@ -31,7 +31,7 @@ namespace Aktien.Logic.UI.AuswahlViewModels
         public async void SetTyp(WertpapierTypes wertpapierTypes)
         {
             WertpapierTypes = wertpapierTypes;
-            RaisePropertyChanged(nameof(CanAddNewItem));
+            OnPropertyChanged(nameof(CanAddNewItem));
             await LoadData();
         }
 

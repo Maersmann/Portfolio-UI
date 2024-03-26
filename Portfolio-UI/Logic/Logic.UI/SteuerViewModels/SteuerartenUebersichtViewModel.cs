@@ -3,7 +3,7 @@ using Aktien.Logic.Core;
 using Base.Logic.Core;
 using Base.Logic.ViewModels;
 using Data.Model.SteuerModels;
-using GalaSoft.MvvmLight.Command;
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

@@ -10,8 +10,8 @@ using Base.Logic.Messages;
 using Base.Logic.ViewModels;
 using Base.Logic.Wrapper;
 using Data.Model.WertpapierModels;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
+
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.UtilMessages;
 using Prism.Commands;
 using System;
@@ -24,6 +24,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Logic.Messages.SparplanMessages;
 
 namespace Aktien.Logic.UI.WertpapierViewModels
 {
@@ -57,7 +58,7 @@ namespace Aktien.Logic.UI.WertpapierViewModels
         {
             set
             {
-                Messenger.Default.Register<LoadWertpapierOrderMessage>(this, value, m => ReceiveLoadAktieMessage(m));
+                WeakReferenceMessenger.Default.Register<LoadWertpapierOrderMessage, string>(this, value, (r, m) => ReceiveLoadAktieMessage(m));
                 messagtoken = value;
             }
         }
@@ -111,15 +112,15 @@ namespace Aktien.Logic.UI.WertpapierViewModels
         }
         private void ExecuteAktieGekauftCommand()
         {
-            Messenger.Default.Send(new OpenWertpapierGekauftViewMessage { WertpapierID = wertpapierID, BuySell = BuySell.Buy, WertpapierTypes = wertpapierTypes }, messagtoken);
+             WeakReferenceMessenger.Default.Send(new OpenWertpapierGekauftViewMessage { WertpapierID = wertpapierID, BuySell = BuySell.Buy, WertpapierTypes = wertpapierTypes }, messagtoken);
         }
         private void ExecuteAktieVerkauftCommand()
         {
-            Messenger.Default.Send(new OpenWertpapierGekauftViewMessage { WertpapierID = wertpapierID, BuySell = BuySell.Sell, WertpapierTypes = wertpapierTypes }, messagtoken);
+             WeakReferenceMessenger.Default.Send(new OpenWertpapierGekauftViewMessage { WertpapierID = wertpapierID, BuySell = BuySell.Sell, WertpapierTypes = wertpapierTypes }, messagtoken);
         }
         protected override void ExecuteEntfernenCommand()
         {
-            Messenger.Default.Send(new OpenBestaetigungViewMessage
+             WeakReferenceMessenger.Default.Send(new OpenBestaetigungViewMessage
             {
                 Beschreibung = "Soll der Eintrag gelöscht werden?",
                 Command = async () =>
@@ -158,6 +159,13 @@ namespace Aktien.Logic.UI.WertpapierViewModels
         }
 
         #endregion
+
+        protected override void OnDeactivated()
+        {
+            base.OnDeactivated();
+            WeakReferenceMessenger.Default.Unregister<LoadWertpapierOrderMessage, string>(this,messageToken);
+
+        }
 
     }
 }

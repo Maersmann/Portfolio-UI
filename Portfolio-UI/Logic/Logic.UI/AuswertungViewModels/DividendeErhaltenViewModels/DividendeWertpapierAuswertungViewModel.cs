@@ -52,16 +52,16 @@ namespace Logic.UI.AuswertungViewModels
                 int index = 0;
                 ItemList.ToList().ForEach(a =>
                 {
-                    series.SetValue(new PieSeries<double> { Values = new double[] { a.Betrag }, Name = a.Bezeichnung, TooltipLabelFormatter = (point) => string.Format("{0} {1:N2}€ ", a.Bezeichnung, point.PrimaryValue) }, index);
+                    series.SetValue(new PieSeries<double> { Values = [a.Betrag], Name = a.Bezeichnung }, index);
                     index++;
                 });
 
                 Series = series;
 
-                RaisePropertyChanged(nameof(Series));
+                OnPropertyChanged(nameof(Series));
             }
             RequestIsWorking = false;
-            RaisePropertyChanged("ItemList");
+            OnPropertyChanged("ItemList");
         }
 
         #region Bindings
@@ -72,7 +72,7 @@ namespace Logic.UI.AuswertungViewModels
             set
             {
                 ValidatZahl(value, nameof(JahrVon));
-                this.RaisePropertyChanged();
+                this.OnPropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahrvon = value.GetValueOrDefault(0);
             }
@@ -83,7 +83,7 @@ namespace Logic.UI.AuswertungViewModels
             set
             {
                 ValidatZahl(value, nameof(JahrBis));
-                this.RaisePropertyChanged();
+                this.OnPropertyChanged();
                 ((DelegateCommand)LoadDataCommand).RaiseCanExecuteChanged();
                 jahrbis = value.GetValueOrDefault(0);
             }

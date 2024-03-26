@@ -1,6 +1,4 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,8 +42,8 @@ namespace Aktien.Logic.UI.AktieViewModels
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
+                     WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp().ToString());
+                     WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else if((int)resp.StatusCode == 904)
                 {
@@ -77,7 +75,7 @@ namespace Aktien.Logic.UI.AktieViewModels
             ISIN = Data.ISIN;
             RequestIsWorking = false;
             state = State.Bearbeiten;
-            RaisePropertyChanged(nameof(ISIN_isEnabled));
+            OnPropertyChanged(nameof(ISIN_isEnabled));
             RequestIsWorking = false;
         }
 
@@ -93,7 +91,7 @@ namespace Aktien.Logic.UI.AktieViewModels
                 {
                     ValidateISIN(value);
                     Data.ISIN = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -106,7 +104,7 @@ namespace Aktien.Logic.UI.AktieViewModels
                 {
                     ValidateName(value);
                     Data.Name = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -120,7 +118,7 @@ namespace Aktien.Logic.UI.AktieViewModels
                 if (RequestIsWorking || !string.Equals(Data.WKN, value))
                 {
                     Data.WKN = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
         }
@@ -148,7 +146,7 @@ namespace Aktien.Logic.UI.AktieViewModels
         }
         #endregion
 
-        public override void Cleanup()
+        protected override void OnActivated()
         {
             state = State.Neu;
             Data = new AktienModel();

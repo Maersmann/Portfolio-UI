@@ -6,8 +6,8 @@ using Aktien.Logic.Messages.DividendeMessages;
 using Aktien.Logic.Messages.WertpapierMessages;
 using Base.Logic.ViewModels;
 using Data.Model.DepotModels;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
+
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.DepotMessages;
 using Logic.Messages.WertpapierMessages;
 using Prism.Commands;
@@ -19,6 +19,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Aktien.Logic.UI.DepotViewModels
 {
@@ -49,10 +50,10 @@ namespace Aktien.Logic.UI.DepotViewModels
             {
                 base.SelectedItem = value;
                 ((DelegateCommand)OpenDividendeCommand).RaiseCanExecuteChanged();
-                RaisePropertyChanged();
+                OnPropertyChanged();
                 if (SelectedItem != null)
                 {
-                    Messenger.Default.Send(new LoadWertpapierOrderMessage { WertpapierID = SelectedItem.WertpapierID, WertpapierTyp = SelectedItem.WertpapierTyp }, messageToken);
+                     WeakReferenceMessenger.Default.Send(new LoadWertpapierOrderMessage { WertpapierID = SelectedItem.WertpapierID, WertpapierTyp = SelectedItem.WertpapierTyp }, messageToken);
                 }
             }
         }
@@ -71,22 +72,22 @@ namespace Aktien.Logic.UI.DepotViewModels
 
         private void ExecuteOpenErhaltendeDividendeEintragenCommand()
         {
-            Messenger.Default.Send(new OpenErhalteneDividendeEintragenMessage { WertpapierID = SelectedItem.WertpapierID, WertpapierName = SelectedItem.Bezeichnung }, "DepotUebersicht");
+             WeakReferenceMessenger.Default.Send(new OpenErhalteneDividendeEintragenMessage { WertpapierID = SelectedItem.WertpapierID, WertpapierName = SelectedItem.Bezeichnung }, "DepotUebersicht");
         }
 
         private void ExecuteOpenDividendeCommandCommand()
         {
-            Messenger.Default.Send(new OpenDividendenUebersichtAuswahlMessage { WertpapierID = SelectedItem.WertpapierID }, "DepotUebersicht");
+             WeakReferenceMessenger.Default.Send(new OpenDividendenUebersichtAuswahlMessage { WertpapierID = SelectedItem.WertpapierID }, "DepotUebersicht");
         }
 
         private void ExecuteOpenReverseSplitCommand()
         {
-            Messenger.Default.Send(new OpenReverseSplitEintragenMessage { DepotWertpapierID = SelectedItem.WertpapierID}, "DepotUebersicht");
+             WeakReferenceMessenger.Default.Send(new OpenReverseSplitEintragenMessage { DepotWertpapierID = SelectedItem.WertpapierID}, "DepotUebersicht");
         }
 
         private void ExecuteOpenAktienSplitCommand()
         {
-            Messenger.Default.Send(new OpenSplitEintragenMessage { DepotWertpapierID = SelectedItem.WertpapierID }, "DepotUebersicht");
+             WeakReferenceMessenger.Default.Send(new OpenSplitEintragenMessage { DepotWertpapierID = SelectedItem.WertpapierID }, "DepotUebersicht");
         }
         #endregion
     }

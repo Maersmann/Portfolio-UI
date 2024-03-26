@@ -1,7 +1,7 @@
 ﻿using Aktien.Data.Types;
 using Aktien.Logic.Messages.Base;
 using Aktien.Logic.Messages.DividendeMessages;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.SteuernMessages;
 using Logic.UI.SteuerViewModels;
 using System;
@@ -27,8 +27,8 @@ namespace UI.Desktop.Depot
         public ErhalteneDividendeEintragenView()
         {
             InitializeComponent();
-            Messenger.Default.Register<CloseViewMessage>(this, "ErhalteneDividendeEintragen", m => ReceivCloseViewMessage());
-            Messenger.Default.Register<OpenSteuernUebersichtMessage>(this, "ErhalteneDividendeEintragen", m => ReceiveOpenSteuernUebersichtMessage(m));
+            WeakReferenceMessenger.Default.Register<CloseViewMessage, string>(this, "ErhalteneDividendeEintragen", (r,m) => ReceivCloseViewMessage());
+            WeakReferenceMessenger.Default.Register<OpenSteuernUebersichtMessage, string>(this, "ErhalteneDividendeEintragen", (r, m) => ReceiveOpenSteuernUebersichtMessage(m));
         }
         private void ReceiveOpenSteuernUebersichtMessage(OpenSteuernUebersichtMessage m)
         {
@@ -50,7 +50,9 @@ namespace UI.Desktop.Depot
 
         private void Window_Unloaded(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Unregister<OpenSteuernUebersichtMessage>(this);       
+            WeakReferenceMessenger.Default.Unregister<OpenSteuernUebersichtMessage, string>(this, "ErhalteneDividendeEintragen");
+            WeakReferenceMessenger.Default.Unregister<CloseViewMessage, string>(this, "ErhalteneDividendeEintragen");
+
         }
     }
 }

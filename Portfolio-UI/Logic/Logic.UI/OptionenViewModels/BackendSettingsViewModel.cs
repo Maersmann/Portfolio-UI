@@ -1,9 +1,10 @@
 ﻿using Aktien.Logic.Core;
 using Base.Logic.Core;
 using Base.Logic.ViewModels;
+using CommunityToolkit.Mvvm.Input;
 using Data.Model.OptionenModels;
 using Data.Types.OptionTypes;
-using GalaSoft.MvvmLight.Command;
+
 using Logic.Core.OptionenLogic;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,7 @@ namespace Aktien.Logic.UI.OptionenViewModels
 
         public void setModelData()
         {
-            BackendLogic backendLogic = new BackendLogic();
+            BackendLogic backendLogic = new();
             if(backendLogic.istINIVorhanden())
             { 
                 backendLogic.LoadData();
@@ -48,7 +49,7 @@ namespace Aktien.Logic.UI.OptionenViewModels
             set
             {
                 model.Backend_IP = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
         public string Backend_URL
@@ -57,7 +58,7 @@ namespace Aktien.Logic.UI.OptionenViewModels
             set
             {
                 model.Backend_URL = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
         public string Port
@@ -66,18 +67,18 @@ namespace Aktien.Logic.UI.OptionenViewModels
             set
             {
                 model.Port = value.Equals("") ? null : (int?)int.Parse(value);
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
-        public IEnumerable<BackendProtokollTypes> BackendProtokollTypes => Enum.GetValues(typeof(BackendProtokollTypes)).Cast<BackendProtokollTypes>();
+        public static IEnumerable<BackendProtokollTypes> BackendProtokollTypes => Enum.GetValues(typeof(BackendProtokollTypes)).Cast<BackendProtokollTypes>();
         public BackendProtokollTypes BackendProtokollTyp
         {
             get { return model.ProtokollTyp; }
             set
             {
                 this.model.ProtokollTyp = value;
-                this.RaisePropertyChanged();
+                this.OnPropertyChanged();
             }
         }
 
@@ -86,23 +87,20 @@ namespace Aktien.Logic.UI.OptionenViewModels
         #region Commands
         private void ExecuteSpeicherSettingsCommand()
         {
-            BackendLogic backendlogic = new BackendLogic();
+            BackendLogic backendlogic = new();
             backendlogic.SaveData(model.Backend_IP, model.ProtokollTyp, model.Port, model.Backend_URL);
             SendInformationMessage("Settings gespeichert");
             GlobalVariables.BackendServer_IP = backendlogic.getBackendIP();
             GlobalVariables.BackendServer_URL = backendlogic.getURL();
             GlobalVariables.BackendServer_Port = backendlogic.getBackendPort();
-            new BackendHelper().CheckServerIsOnline();
-            ViewModelLocator locator = new ViewModelLocator();
-            locator.Main.RaisePropertyChanged("MenuIsEnabled");
-
+            BackendHelper.CheckServerIsOnline();
         }
 
         private void ExecuteTestConnectionCommand()
         {
             bool isOnline = model.Port.HasValue
-                ? new BackendHelper().TestCheckServerIsOnline(model.Backend_IP, model.Port.Value)
-                : new BackendHelper().TestCheckServerIsOnline(model.Backend_IP);
+                ? BackendHelper.TestCheckServerIsOnline(model.Backend_IP, model.Port.Value)
+                : BackendHelper.TestCheckServerIsOnline(model.Backend_IP);
             if (isOnline)
             {
                 SendInformationMessage("Test Verbindung erfolgreich");

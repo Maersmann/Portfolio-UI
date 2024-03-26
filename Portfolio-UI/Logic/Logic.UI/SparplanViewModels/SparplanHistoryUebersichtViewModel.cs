@@ -1,11 +1,12 @@
 ﻿using Aktien.Data.Types;
 using Base.Logic.ViewModels;
 using Data.Model.SparplanModels;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.SparplanMessages;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Logic.Messages.SteuernMessages;
 
 namespace Logic.UI.SparplanViewModels
 {
@@ -16,7 +17,7 @@ namespace Logic.UI.SparplanViewModels
         {
             Title = "Übersicht ausgeführter Sparpläne";
             sparplanID = 0;
-            Messenger.Default.Register<LoadSparplanHistoryMessage>(this, "SparplanHistory", m => ReceiveLoadSparplanHistoryMessage(m));
+            WeakReferenceMessenger.Default.Register<LoadSparplanHistoryMessage, string>(this, "SparplanHistory", (r,m) => ReceiveLoadSparplanHistoryMessage(m));
         }
 
         protected override int GetID() => 0;
@@ -29,6 +30,12 @@ namespace Logic.UI.SparplanViewModels
         {
             sparplanID = m.SparplanID;
             await LoadData();
+        }
+
+        protected override void OnDeactivated()
+        {
+            base.OnDeactivated();
+            WeakReferenceMessenger.Default.Unregister<LoadSparplanHistoryMessage, string>(this, "SparplanHistory");
         }
     }
 }

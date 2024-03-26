@@ -7,7 +7,7 @@ using Aktien.Logic.Messages.Base;
 using Base.Logic.ViewModels;
 using Aktien.Logic.UI.InterfaceViewModels;
 using Data.Model.ETFModels;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -41,8 +41,8 @@ namespace Aktien.Logic.UI.ETFViewModels
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp());
-                    Messenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
+                     WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Gespeichert" }, GetStammdatenTyp().ToString());
+                     WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), GetStammdatenTyp().ToString());
                 }
                 else if ((int)resp.StatusCode == 904)
                 {
@@ -76,7 +76,7 @@ namespace Aktien.Logic.UI.ETFViewModels
 
             RequestIsWorking = false;
             state = State.Bearbeiten;
-            RaisePropertyChanged("ISIN_isEnabled");
+            OnPropertyChanged("ISIN_isEnabled");
         }
 
 
@@ -93,7 +93,7 @@ namespace Aktien.Logic.UI.ETFViewModels
                 {
                     ValidateISIN(value);
                     Data.ISIN = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     (SaveCommand as DelegateCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -107,7 +107,7 @@ namespace Aktien.Logic.UI.ETFViewModels
                 {
                     ValidateName(value);
                     Data.Name = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -121,7 +121,7 @@ namespace Aktien.Logic.UI.ETFViewModels
                 if (RequestIsWorking || !string.Equals(Data.WKN, value))
                 {
                     Data.WKN = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
         }
@@ -135,7 +135,7 @@ namespace Aktien.Logic.UI.ETFViewModels
                 if (RequestIsWorking || (Data.ProfitTyp != value))
                 {
                     Data.ProfitTyp = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
         }
@@ -149,7 +149,7 @@ namespace Aktien.Logic.UI.ETFViewModels
                 if (RequestIsWorking || (Data.Emittent != value))
                 {
                     Data.Emittent = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
         }
@@ -178,7 +178,7 @@ namespace Aktien.Logic.UI.ETFViewModels
         }
         #endregion
 
-        public override void Cleanup()
+        protected override void OnActivated()
         {
             state = State.Neu;
             Data = new ETFModel();

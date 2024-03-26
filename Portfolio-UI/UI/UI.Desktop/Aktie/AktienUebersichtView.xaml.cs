@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Aktien.Logic.Messages.Base;
 using Aktien.Logic.Messages.DepotMessages;
 using Aktien.Logic.Messages.DividendeMessages;
@@ -24,6 +24,8 @@ using Aktien.UI.Desktop.Depot;
 using Aktien.UI.Desktop.Dividende;
 using Aktien.Logic.Messages.AktieMessages;
 using UI.Desktop.Base;
+using System.Security.Principal;
+using Logic.Messages.UtilMessages;
 
 namespace UI.Desktop.Aktie
 {
@@ -32,6 +34,7 @@ namespace UI.Desktop.Aktie
     /// </summary>
     public partial class AktienUebersichtView : BaseUsercontrol
     {
+        private string token;
         public AktienUebersichtView()
         {
             InitializeComponent();
@@ -44,15 +47,16 @@ namespace UI.Desktop.Aktie
             {
                 if (DataContext is AktienUebersichtViewModel modelUebersicht)
                 {
-                    Messenger.Default.Register<OpenDividendenUebersichtAuswahlMessage>(this, value , m => ReceiveOpenDividendeUebersichtMessage(m));
+                    token = value;
+                    WeakReferenceMessenger.Default.Register<OpenDividendenUebersichtAuswahlMessage, string>(this, value , (r,m) => ReceiveOpenDividendeUebersichtMessage(m));
                     modelUebersicht.MessageToken = value;
                 }
             }
         }
 
-        private void ReceiveOpenDividendeUebersichtMessage(OpenDividendenUebersichtAuswahlMessage m)
+        private static void ReceiveOpenDividendeUebersichtMessage(OpenDividendenUebersichtAuswahlMessage m)
         {
-            DividendenUebersichtAuswahlView view = new DividendenUebersichtAuswahlView();
+            DividendenUebersichtAuswahlView view = new();
 
             if (view.DataContext is DividendenUebersichtAuswahlViewModel model)
             {
@@ -60,6 +64,12 @@ namespace UI.Desktop.Aktie
             }
 
             _ = view.ShowDialog();
+        }
+
+        protected override void Window_Unloaded(object sender, RoutedEventArgs e)
+        {
+            base.Window_Unloaded(sender, e);
+            WeakReferenceMessenger.Default.Unregister<OpenDividendenUebersichtAuswahlMessage, string>(this, token);
         }
     }
 }

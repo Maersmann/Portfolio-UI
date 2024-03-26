@@ -9,8 +9,8 @@ using Base.Logic.Messages;
 using Base.Logic.ViewModels;
 using Base.Logic.Wrapper;
 using Data.Model.DividendeModels;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
+
+using CommunityToolkit.Mvvm.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +19,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Aktien.Logic.UI.DividendeViewModels
 {
@@ -43,7 +44,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    Messenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Dividende aktualisiert." }, "DividendeProStueckAnpassen");
+                     WeakReferenceMessenger.Default.Send(new StammdatenGespeichertMessage { Erfolgreich = true, Message = "Dividende aktualisiert." }, "DividendeProStueckAnpassen");
                 }
                 else if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
                 {
@@ -72,13 +73,13 @@ namespace Aktien.Logic.UI.DividendeViewModels
                 RequestIsWorking = false;
             }
             Data.Umrechnungskurs = umrechungskurs;
-            RaisePropertyChanged("Datum");
-            RaisePropertyChanged("Betrag");
-            RaisePropertyChanged("Waehrung");
-            RaisePropertyChanged("Umrechnungskurs");
-            RaisePropertyChanged("ErmittelterBetrag");
-            RaisePropertyChanged("ErhaltenerBetrag");
-            RaisePropertyChanged("RundungTyp");
+            OnPropertyChanged("Datum");
+            OnPropertyChanged("Betrag");
+            OnPropertyChanged("Waehrung");
+            OnPropertyChanged("Umrechnungskurs");
+            OnPropertyChanged("ErmittelterBetrag");
+            OnPropertyChanged("ErhaltenerBetrag");
+            OnPropertyChanged("RundungTyp");
         }
 
         #region Bindings
@@ -102,8 +103,8 @@ namespace Aktien.Logic.UI.DividendeViewModels
                 if (Data.Rundungart != value)
                 {
                     Data.Rundungart = value;
-                    RaisePropertyChanged();
-                    RaisePropertyChanged("ErhaltenerBetrag");
+                    OnPropertyChanged();
+                    OnPropertyChanged("ErhaltenerBetrag");
                 }
             }
         }

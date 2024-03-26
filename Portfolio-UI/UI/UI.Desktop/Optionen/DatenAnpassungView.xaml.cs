@@ -1,7 +1,7 @@
 ﻿using Aktien.Logic.Messages.AuswahlMessages;
 using Aktien.Logic.UI.AuswahlViewModels;
 using Aktien.UI.Desktop.Auswahl;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +27,7 @@ namespace Aktien.UI.Desktop.Optionen
         public DatenAnpassungView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenWertpapierAuswahlMessage>(this, "DatenAnpassung", m => ReceiveOpenWertpapierAuswahlMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenWertpapierAuswahlMessage, string>(this, "DatenAnpassung", (r,m) => ReceiveOpenWertpapierAuswahlMessage(m));
         }
 
         private void ReceiveOpenWertpapierAuswahlMessage(OpenWertpapierAuswahlMessage m)
@@ -54,7 +54,7 @@ namespace Aktien.UI.Desktop.Optionen
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Unregister<OpenWertpapierAuswahlMessage>(this);
+            WeakReferenceMessenger.Default.Unregister<OpenWertpapierAuswahlMessage, string>(this, "DatenAnpassung");
         }
     }
 }

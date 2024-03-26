@@ -1,5 +1,5 @@
 ﻿using Aktien.Data.Types;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Aktien.Logic.Messages.DividendeMessages;
 using Aktien.Logic.UI.DividendeViewModels;
 using System;
@@ -30,7 +30,7 @@ namespace UI.Desktop.Dividende
         public DividendenUebersichtView()
         {
             InitializeComponent();
-            Messenger.Default.Register<OpenDividendeStammdatenMessage<StammdatenTypes>>(this, m => ReceiveOpenDividendeStammdatenMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenDividendeStammdatenMessage<StammdatenTypes>>(this, (r, m) => ReceiveOpenDividendeStammdatenMessage(m));
             RegisterMessages("DividendeUebersicht");
         }
 
@@ -55,7 +55,7 @@ namespace UI.Desktop.Dividende
 
         private void DataGrid_Unloaded(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Unregister<OpenDividendeStammdatenMessage<StammdatenTypes>>(this);
+            WeakReferenceMessenger.Default.Unregister<OpenDividendeStammdatenMessage<StammdatenTypes>>(this);
         }
     }
 }

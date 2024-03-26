@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using UI.Desktop.Base;
 using Data.Types.SteuerTypes;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Logic.Messages.SteuernMessages;
 using Logic.UI.SteuerViewModels;
 using UI.Desktop.Steuer;
@@ -30,7 +30,7 @@ namespace UI.Desktop.Depot
         {
             InitializeComponent();
             base.RegisterStammdatenGespeichertMessage(StammdatenTypes.buysell);
-            Messenger.Default.Register<OpenSteuernUebersichtMessage>(this, "BuyOrder", m => ReceiveOpenSteuernUebersichtMessage(m));
+            WeakReferenceMessenger.Default.Register<OpenSteuernUebersichtMessage, string>(this, "BuyOrder", (r,m) => ReceiveOpenSteuernUebersichtMessage(m));
         }
 
         private void ReceiveOpenSteuernUebersichtMessage(OpenSteuernUebersichtMessage m)
@@ -49,7 +49,7 @@ namespace UI.Desktop.Depot
         public override void Window_Unloaded(object sender, RoutedEventArgs e)
         {
             base.Window_Unloaded(sender, e);
-            Messenger.Default.Unregister<OpenSteuernUebersichtMessage>(this);
+            WeakReferenceMessenger.Default.Unregister<OpenSteuernUebersichtMessage, string>(this, "BuyOrder");
         }
     }
 }

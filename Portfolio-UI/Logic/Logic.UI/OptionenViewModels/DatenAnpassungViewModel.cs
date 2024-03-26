@@ -2,8 +2,8 @@
 using Aktien.Logic.Messages.AuswahlMessages;
 using Aktien.Logic.Messages.Base;
 using Base.Logic.ViewModels;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
+
+using CommunityToolkit.Mvvm.Messaging;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -20,6 +20,7 @@ using Data.Model.OptionenModels;
 using Base.Logic.Core;
 using Base.Logic.Messages;
 using Base.Logic.Wrapper;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Aktien.Logic.UI.OptionenViewModels
 {
@@ -32,7 +33,7 @@ namespace Aktien.Logic.UI.OptionenViewModels
             SpeicherBuyInCommand = new DelegateCommand( ExecuteSpeicherBuyInCommand, CanExecuteSpeicherBuyInCommand);
             AuswahlBuyInAktie = new RelayCommand(() => ExecuteAuswahlBuyInAktie());
             BuyInModel = new WertpapierBuyInModel { AlterBuyIn = 0, NeuerBuyIn = 0, DepotWertpapierID = 0, WertpapierName = "<<Nicht ausgewählt>>" };
-            RaisePropertyChanged("WertpapierBuyInModel");
+            OnPropertyChanged(nameof(WertpapierBuyInModel));
         }
 
         #region Bindings
@@ -60,9 +61,9 @@ namespace Aktien.Logic.UI.OptionenViewModels
                 if (resp.IsSuccessStatusCode)
                 {
                     SendInformationMessage("Erledigt");
-                    Messenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.buysell.ToString());
+                     WeakReferenceMessenger.Default.Send(new AktualisiereViewMessage(), StammdatenTypes.buysell.ToString());
                     BuyInModel = new WertpapierBuyInModel { AlterBuyIn = 0, NeuerBuyIn = 0, DepotWertpapierID = 0, WertpapierName = "<<Nicht ausgewählt>>" };
-                    RaisePropertyChanged("WertpapierBuyInModel");
+                    OnPropertyChanged("WertpapierBuyInModel");
                     ((DelegateCommand)SpeicherBuyInCommand).RaiseCanExecuteChanged();
                 }
                 else if (resp.StatusCode.Equals(HttpStatusCode.InternalServerError))
@@ -78,7 +79,7 @@ namespace Aktien.Logic.UI.OptionenViewModels
         }
         private void ExecuteAuswahlBuyInAktie()
         {
-            Messenger.Default.Send(new OpenWertpapierAuswahlMessage(OpenWertpapierAuswahlMessageCallback), "DatenAnpassung");
+             WeakReferenceMessenger.Default.Send(new OpenWertpapierAuswahlMessage(OpenWertpapierAuswahlMessageCallback), "DatenAnpassung");
         }
         #endregion
 
@@ -96,7 +97,7 @@ namespace Aktien.Logic.UI.OptionenViewModels
                     {
                         Response<WertpapierBuyInModel> BuyInModelResponse = await resp.Content.ReadAsAsync<Response<WertpapierBuyInModel>>();
                         BuyInModel = BuyInModelResponse.Data;
-                        RaisePropertyChanged("WertpapierBuyInModel");
+                        OnPropertyChanged("WertpapierBuyInModel");
                         ((DelegateCommand)SpeicherBuyInCommand).RaiseCanExecuteChanged();
                     }
                     RequestIsWorking = false;

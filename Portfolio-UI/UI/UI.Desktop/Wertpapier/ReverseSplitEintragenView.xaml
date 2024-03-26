@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Aktien.UI.Desktop.Wertpapier"
              x:Name="ReverseSplit"
-             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:command="http://www.galasoft.ch/mvvmlight"
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
@@ -13,11 +13,11 @@
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              Background="{DynamicResource MaterialDesignPaper}"
              mc:Ignorable="d"
-             DataContext="{Binding ReverseSplitEintragen ,Source={StaticResource Locator}}" Height="auto" Width="auto"  >
+             DataContext="{Binding ReverseSplitEintragen ,Source={StaticResource Locator}}" Height="auto" Width="auto" Unloaded="ReverseSplit_Unloaded"  >
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closed">
-            <command:EventToCommand Command="{Binding CleanUpCommand}"/>
+            <i:InvokeCommandAction Command="{Binding CleanUpCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
     

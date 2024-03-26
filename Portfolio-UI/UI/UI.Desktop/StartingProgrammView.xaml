@@ -4,17 +4,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Aktien.UI.Desktop"
-        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:command="http://www.galasoft.ch/mvvmlight"
         mc:Ignorable="d"
         Height="302.744" Width="442.378"
         WindowStartupLocation="CenterScreen" 
         Title="{Binding Title, Mode=OneWay}"  
-        DataContext="{Binding StartingProgramm ,Source={StaticResource Locator}}">
+        DataContext="{Binding StartingProgramm ,Source={StaticResource Locator}}" Unloaded="Window_Unloaded">
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="ContentRendered">
-            <command:EventToCommand Command="{Binding CheckServerIsOnlineCommand}"/>
+            <i:InvokeCommandAction Command="{Binding CheckServerIsOnlineCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
 

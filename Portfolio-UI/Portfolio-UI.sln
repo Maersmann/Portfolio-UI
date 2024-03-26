@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.Types", "Data\Data.Typ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Base.Logic", "..\Base.Logic\Base.Logic\Base.Logic.csproj", "{F3A0A1D8-CD88-4B55-AD6B-892C9E48BE89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DTO", "Data\Data.DTO\Data.DTO.csproj", "{AC416AAA-603B-4884-8965-E2303531AB42}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.DTO", "Data\Data.DTO\Data.DTO.csproj", "{AC416AAA-603B-4884-8965-E2303531AB42}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
