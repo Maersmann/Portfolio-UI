@@ -52,13 +52,6 @@ namespace Aktien.UI.Desktop
     /// </summary>
     public partial class MainView
     {
-
-        private static AktieUebersichtPage aktienUebersichtView;
-        private static DepotUebersichtPage depotUebersichtView;
-        private static ETFUebersichtPage etfGesamtUebersicht;
-        private static WertpapierGesamtUebersichtPage wertpapierGesamtUebersichtPage;
-        private static DerivateUebersichtPage derivateGesamtUebersichtPage;
-
         public MainView()
         {
             InitializeComponent();
@@ -95,27 +88,27 @@ namespace Aktien.UI.Desktop
             switch (inType)
             {
                 case ViewType.viewAktienUebersicht:
-                    aktienUebersichtView ??= new AktieUebersichtPage();
-                    Container.NavigationService.Navigate(aktienUebersichtView);
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(AktieUebersichtPage).Name))
+                        Container.NavigationService.Navigate(new AktieUebersichtPage());
                     break;
                 case ViewType.viewAktieGekauft:
                     new BuyOrderView().ShowDialog();
                     break;
                 case ViewType.viewDepotUebersicht:
-                    depotUebersichtView ??= new DepotUebersichtPage();
-                    Container.NavigationService.Navigate(depotUebersichtView);
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(DepotUebersichtPage).Name))
+                        Container.NavigationService.Navigate(new DepotUebersichtPage());
                     break;
                 case ViewType.viewETFUebersicht:
-                    etfGesamtUebersicht ??= new ETFUebersichtPage();
-                    Container.NavigationService.Navigate(etfGesamtUebersicht);
+                  if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(ETFUebersichtPage).Name))
+                        Container.NavigationService.Navigate(new ETFUebersichtPage());
                     break;
                 case ViewType.viewWertpapierUebersicht:
-                    wertpapierGesamtUebersichtPage ??= new WertpapierGesamtUebersichtPage();
-                    Container.NavigationService.Navigate(wertpapierGesamtUebersichtPage);
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(WertpapierGesamtUebersichtPage).Name))
+                        Container.NavigationService.Navigate(new WertpapierGesamtUebersichtPage());
                     break;
                 case ViewType.viewDerivateUebersicht:
-                    derivateGesamtUebersichtPage ??= new DerivateUebersichtPage();
-                    Container.NavigationService.Navigate(derivateGesamtUebersichtPage);
+                     if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(DerivateUebersichtPage).Name))
+                        Container.NavigationService.Navigate(new DerivateUebersichtPage());
                     break;
                 case ViewType.viewEinAusgabenUebersicht:
                     if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(EinnahmenAusgabenUebersichtPage).Name))
