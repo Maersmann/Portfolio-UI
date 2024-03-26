@@ -20,6 +20,7 @@ namespace Aktien.Logic.UI.DepotViewModels
         public EinnahmenUebersichtViewModel()
         {
             Title = "Übersicht aller Einnahmen";
+            RegisterAktualisereViewMessage(StammdatenTypes.einnahmen.ToString());
         }
 
         protected override int GetID() { return SelectedItem.ID; }

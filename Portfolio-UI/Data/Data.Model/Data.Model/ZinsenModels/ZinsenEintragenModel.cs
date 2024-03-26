@@ -22,7 +22,7 @@ namespace Data.Model.ZinsenModels
 
         public ZinsenEintragenModel() 
         {
-            Steuer = new SteuergruppeModel { SteuerHerkunftTyp = SteuerHerkunftTyp.shtZinsen,  Steuern = new List<SteuerModel>() };
+            Steuer = new SteuergruppeModel { SteuerHerkunftTyp = SteuerHerkunftTyp.shtZinsen,  Steuern = [] };
         }
     }
 }
