@@ -20,6 +20,8 @@ namespace Logic.UI.AuswertungViewModels.DividendeErhaltenViewModels
         private int jahrbis;
         private LineSeries<double> nettoSeries;
         private LineSeries<double> bruttoSeries;
+        private bool sonderdividendeEinbeziehen;
+
         public DividendeGesamtentwicklungJaehrlichSummiertViewModel()
         {
             Title = "Auswertung Gesamtdividende jährlich Summiert";
@@ -28,6 +30,7 @@ namespace Logic.UI.AuswertungViewModels.DividendeErhaltenViewModels
             LoadDataCommand = new DelegateCommand(ExcecuteLoadDataCommand, CanExcecuteLoadDataCommand);
             nettoSeries = new LineSeries<double>();
             bruttoSeries = new LineSeries<double>();
+            SonderdividendeEinbeziehen = false;
         }
 
         private bool CanExcecuteLoadDataCommand()
@@ -38,7 +41,7 @@ namespace Logic.UI.AuswertungViewModels.DividendeErhaltenViewModels
         private async void ExcecuteLoadDataCommand()
         {
             RequestIsWorking = true;
-            HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/auswertung/dividendenErhalten/Summiert/Jaehrlich?jahrVon={jahrvon}&jahrBis={jahrbis}");
+            HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/auswertung/dividendenErhalten/Summiert/Jaehrlich?jahrVon={jahrvon}&jahrBis={jahrbis}&sonderdividendeEinbeziehen={sonderdividendeEinbeziehen}");
             if (resp.IsSuccessStatusCode)
             {
                 ItemList = await resp.Content.ReadAsAsync<List<DividendeGesamtentwicklungJaehrlichSummiertModel>>();
@@ -124,6 +127,17 @@ namespace Logic.UI.AuswertungViewModels.DividendeErhaltenViewModels
                 OnPropertyChanged(nameof(Series));
             }
         }
+
+        public bool SonderdividendeEinbeziehen
+        {
+            get { return sonderdividendeEinbeziehen; }
+            set
+            {
+                sonderdividendeEinbeziehen = value;
+                OnPropertyChanged();
+            }
+        }
+
         #endregion
 
         #region Validate

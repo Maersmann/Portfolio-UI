@@ -84,6 +84,17 @@ namespace Aktien.Logic.UI.DividendeViewModels
             }
         }
 
+        public Boolean Sonderdividende
+        {
+            get => Data.Sonderdividende;
+            set
+            {
+                Data.Sonderdividende = value;
+                OnPropertyChanged();
+                (SaveCommand as DelegateCommand).RaiseCanExecuteChanged();
+            }
+        }     
+
         public string Betrag
         {
             get => betrag;
@@ -158,6 +169,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
                     Zahldatum = Data.Zahldatum;
                     Betrag = Data.Betrag.ToString();
                     Waehrung = Data.Waehrung;
+                    Sonderdividende = Data.Sonderdividende;
                     BetragUmgerechnet = Data.BetragUmgerechnet.HasValue ? Data.BetragUmgerechnet.Value.ToString() : "";
 
                     state = State.Bearbeiten;
@@ -197,6 +209,7 @@ namespace Aktien.Logic.UI.DividendeViewModels
             state = State.Neu;
             Betrag = null;
             Waehrung = Aktien.Data.Types.WertpapierTypes.Waehrungen.Euro;
+            Sonderdividende = false;
             OnPropertyChanged();
         }
 

@@ -64,6 +64,7 @@
                 <RowDefinition Height="40px" />
                 <RowDefinition Height="40px" />
                 <RowDefinition Height="40px" />
+                <RowDefinition Height="40px" />
             </Grid.RowDefinitions>
 
 
@@ -196,6 +197,7 @@
 
 
             </Grid>
+            <CheckBox IsChecked="{Binding Sonderdividende}" Content="Sonderdividende" Grid.Row="6"  HorizontalAlignment="Center" VerticalAlignment="Center" />
 
         </Grid>
 

@@ -192,6 +192,18 @@ namespace Logic.UI.DepotViewModels
 
         public ErhalteneDividendeEintragenWerteModel Werte { get; private set; }
 
+
+        public Boolean Sonderdividende
+        {
+            get => Data.Sonderdividende;
+            set
+            {
+                Data.Sonderdividende = value;
+                OnPropertyChanged();
+                (SaveCommand as DelegateCommand).RaiseCanExecuteChanged();
+            }
+        }
+
         #endregion
 
         #region Commands
@@ -217,7 +229,8 @@ namespace Logic.UI.DepotViewModels
                     ZahlDatum = Data.Zahldatum.Value,
                     Umrechnungskurs = double.TryParse(Data.Umrechnungskurs, out double Umrechnungskurs) ? (double?)Umrechnungskurs : null,
                     Waehrung = Data.Waehrung,
-                    Steuer = Data.Steuer
+                    Steuer = Data.Steuer,
+                    Sonderdividende = Data.Sonderdividende
                 });
 
                 RequestIsWorking = false;
@@ -249,7 +262,8 @@ namespace Logic.UI.DepotViewModels
                     ZahlDatum = Data.Zahldatum.Value,
                     Umrechnungskurs = double.TryParse(Data.Umrechnungskurs, out double Umrechnungskurs) ? (double?)Umrechnungskurs : null,
                     Waehrung = Data.Waehrung,
-                    Steuer = Data.Steuer
+                    Steuer = Data.Steuer,
+                    Sonderdividende = Data.Sonderdividende
                 });
 
                 if (resp.IsSuccessStatusCode)

@@ -20,6 +20,8 @@ namespace Logic.UI.AuswertungViewModels.DividendeErhaltenViewModels
         private int jahrvon;
         private int jahrbis;
         private DividendenBetragTyp typ;
+        private bool sonderdividendeEinbeziehen;
+
 
         public DividendeMonatlichJahresentwicklungViewModel()
         {
@@ -28,6 +30,7 @@ namespace Logic.UI.AuswertungViewModels.DividendeErhaltenViewModels
             jahrbis = DateTime.Now.Year;
             typ = DividendenBetragTyp.Netto;
             LoadDataCommand = new DelegateCommand(ExcecuteLoadDataCommand, CanExcecuteLoadDataCommand);
+            SonderdividendeEinbeziehen = false;
         }
 
         private bool CanExcecuteLoadDataCommand()
@@ -38,7 +41,7 @@ namespace Logic.UI.AuswertungViewModels.DividendeErhaltenViewModels
         private async void ExcecuteLoadDataCommand()
         {
             RequestIsWorking = true;
-            HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/auswertung/dividendenErhalten/Monatlich/Jahresentwicklung?jahrVon={jahrvon}&jahrBis={jahrbis}");
+            HttpResponseMessage resp = await Client.GetAsync(GlobalVariables.BackendServer_URL + $"/api/auswertung/dividendenErhalten/Monatlich/Jahresentwicklung?jahrVon={jahrvon}&jahrBis={jahrbis}&sonderdividendeEinbeziehen={sonderdividendeEinbeziehen}");
             if (resp.IsSuccessStatusCode)
             {
                 ItemList = await resp.Content.ReadAsAsync<List<DividendeMonatlichJahresentwicklungModel>>();
@@ -121,6 +124,16 @@ namespace Logic.UI.AuswertungViewModels.DividendeErhaltenViewModels
                 OnPropertyChanged();
                 typ = value;
                 SetDataIntoChart();
+            }
+        }
+
+        public bool SonderdividendeEinbeziehen
+        {
+            get { return sonderdividendeEinbeziehen; }
+            set
+            {
+                sonderdividendeEinbeziehen = value;
+                OnPropertyChanged();
             }
         }
         #endregion

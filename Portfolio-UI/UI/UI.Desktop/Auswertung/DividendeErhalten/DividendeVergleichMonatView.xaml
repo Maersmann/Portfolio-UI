@@ -68,6 +68,7 @@
                                     <ColumnDefinition Width="160"/>
                                     <ColumnDefinition Width="160"/>
                                     <ColumnDefinition Width="160"/>
+                                    <ColumnDefinition Width="200"/>
                                 </Grid.ColumnDefinitions>
 
 
@@ -135,6 +136,7 @@
                                     <Label Margin="3" Grid.Column="0" Content="Betrag:" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Width="80" HorizontalAlignment="Left"  ItemsSource="{Binding Types}" SelectedItem="{Binding Typ}"/>
                                 </Grid>
+                                <CheckBox Grid.Column="3" Content="Sonderdividende einbeziehen" IsChecked="{Binding SonderdividendeEinbeziehen}"/>
 
                             </Grid>
                         </Grid>

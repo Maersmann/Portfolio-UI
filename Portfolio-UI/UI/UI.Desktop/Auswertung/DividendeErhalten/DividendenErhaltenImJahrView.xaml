@@ -153,8 +153,12 @@
                     <DataGrid  Grid.Row="1"  Margin="5"  ItemsSource="{Binding ItemList}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" SelectionUnit="FullRow" >
                         <DataGrid.Columns >
                             <DataGridTextColumn Header="Jahr" Binding="{Binding Jahr}" Width="auto" />
-                            <DataGridTextColumn Header="Netto" Binding="{Binding Netto, StringFormat={}{0:N2}€, ConverterCulture='de-DE'}" Width="auto" ElementStyle="{StaticResource horizontalCenter}"/>
-                            <DataGridTextColumn Header="Brutto" Binding="{Binding Brutto, StringFormat={}{0:N2}€, ConverterCulture='de-DE'}" Width="auto" ElementStyle="{StaticResource horizontalCenter}"/>
+                            <DataGridTextColumn Header="Netto Gesamt" Binding="{Binding NettoGesamt, StringFormat={}{0:N2}€, ConverterCulture='de-DE'}" Width="auto" ElementStyle="{StaticResource horizontalCenter}" FontWeight="Bold"/>
+                            <DataGridTextColumn Header="Brutto Gesamt" Binding="{Binding BruttoGesamt, StringFormat={}{0:N2}€, ConverterCulture='de-DE'}" Width="auto" ElementStyle="{StaticResource horizontalCenter}" FontWeight="Bold"/>
+                            <DataGridTextColumn Header="Netto Dividende" Binding="{Binding Netto, StringFormat={}{0:N2}€, ConverterCulture='de-DE'}" Width="auto" ElementStyle="{StaticResource horizontalCenter}" FontWeight="Bold"/>
+                            <DataGridTextColumn Header="Brutto Dividende" Binding="{Binding Brutto, StringFormat={}{0:N2}€, ConverterCulture='de-DE'}" Width="auto" ElementStyle="{StaticResource horizontalCenter}" FontWeight="Bold"/>
+                            <DataGridTextColumn Header="Netto Sonderdividende" Binding="{Binding NettoSonderDividende, StringFormat={}{0:N2}€, ConverterCulture='de-DE'}" Width="auto" ElementStyle="{StaticResource horizontalCenter}" FontWeight="Bold"/>
+                            <DataGridTextColumn Header="Brutto Sonderdividende" Binding="{Binding BruttoSonderDividende, StringFormat={}{0:N2}€, ConverterCulture='de-DE'}" Width="auto" ElementStyle="{StaticResource horizontalCenter}" FontWeight="Bold"/>
                         </DataGrid.Columns>
                     </DataGrid>
 
@@ -177,6 +181,7 @@
                             <DataGridTextColumn Header="Wertpapier" Binding="{Binding Wertpapier}" Width="auto" />
                             <DataGridTextColumn Header="Netto" Binding="{Binding Netto, StringFormat={}{0:N2}€, ConverterCulture='de-DE'}" Width="auto" ElementStyle="{StaticResource horizontalCenter}"/>
                             <DataGridTextColumn Header="Brutto" Binding="{Binding Brutto, StringFormat={}{0:N2}€, ConverterCulture='de-DE'}" Width="auto" ElementStyle="{StaticResource horizontalCenter}"/>
+                            <DataGridCheckBoxColumn Header="Sonderdividende" Binding="{Binding Sonderdividende}" Width="auto"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>

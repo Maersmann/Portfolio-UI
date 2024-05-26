@@ -41,6 +41,7 @@
                 <DataGridTextColumn Header="Zahltag" Binding="{Binding Zahldatum, StringFormat=dd.MM.yyyy}" Width="auto"/>
                 <DataGridTextColumn Header="Betrag" Binding="{Binding Eurobetrag, StringFormat=N3, ConverterCulture='de-DE'}" Width="auto"/>
                 <DataGridTextColumn Header="Währung" Binding="{Binding EuroWaehrung}" Width="auto"/>
+                <DataGridCheckBoxColumn Header="Sonderdividende" Binding="{Binding Sonderdividende}" Width="auto"/>
             </DataGrid.Columns>
         </DataGrid>
 
