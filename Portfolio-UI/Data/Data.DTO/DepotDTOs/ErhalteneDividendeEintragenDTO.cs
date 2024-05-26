@@ -19,5 +19,6 @@ namespace Data.DTO.DepotDTOs
         public DividendenRundungTypes RundungErhalten { get; set; }
         public Waehrungen Waehrung { get; set; }
         public SteuergruppeModel Steuer { get; set; }
-    }
+        public Boolean Sonderdividende{ get; set; }
+}
 }

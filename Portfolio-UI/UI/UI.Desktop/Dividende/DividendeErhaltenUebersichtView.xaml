@@ -46,6 +46,8 @@
                 <DataGridTextColumn Header="Erhalten" Binding="{Binding Erhalten, StringFormat={}{0:N2}€, ConverterCulture='de-DE'}" Width="auto" ElementStyle="{StaticResource verticalHorizontalCenter}"/>
                 <DataGridTextColumn Header="Währung" Binding="{Binding Waehrung}" Width="auto" ElementStyle="{StaticResource verticalCenter}"/>
                 <DataGridTextColumn Header="Art" Binding="{Binding Art}" Width="auto" ElementStyle="{StaticResource verticalCenter}"/>
+                <DataGridCheckBoxColumn Header="Sonderdividende" Binding="{Binding Dividende.Sonderdividende}" Width="auto" />
+
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

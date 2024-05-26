@@ -62,7 +62,7 @@
                         </Style>
                     </RowDefinition.Style>
                 </RowDefinition>
-
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <Label Content="Ex-Tag" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="0" VerticalAlignment="Top"/>
@@ -120,6 +120,9 @@
                     <Behaviors:TextBoxInputBehavior InputMode="DecimalInput"/>
                 </i:Interaction.Behaviors>
             </TextBox>
+
+            <CheckBox IsChecked="{Binding Sonderdividende}" Content="Sonderdividende" Grid.Row="4" Grid.ColumnSpan="2"  Margin="10,10,0,10" />
+
         </Grid>
 
         <materialDesign:Card Grid.Row="2"  >

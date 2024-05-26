@@ -10,6 +10,10 @@ namespace Data.Model.AuswertungModels.DividendeModels
         public int Jahr { get; set; }
         public double Netto { get; set; }
         public double Brutto { get; set; }
+        public double BruttoSonderDividende { get; set; }
+        public double NettoSonderDividende { get; set; }
+        public double NettoGesamt { get; set; }
+        public double BruttoGesamt { get; set; }
         public IList<DividendenErhaltenImMonatDividendeModel> Dividenden { get; set; }
     }
 
@@ -19,5 +23,7 @@ namespace Data.Model.AuswertungModels.DividendeModels
         public double Brutto { get; set; }
         public DateTime Datum { get; set; }
         public string Wertpapier { get; set; }
+        public bool Sonderdividende { get; set; }
+
     }
 }

@@ -16,5 +16,6 @@ namespace Data.Model.DividendeModels
         public double Betrag { get; set; }
         public DateTime Zahldatum { get; set; }
         public DividendenRundungTypes RundungArt { get; set; }
+        public Boolean Sonderdividende { get; set; }
     }
 }

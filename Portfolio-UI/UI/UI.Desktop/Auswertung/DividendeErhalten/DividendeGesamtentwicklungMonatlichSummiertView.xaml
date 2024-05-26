@@ -68,6 +68,7 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="160"/>
                                     <ColumnDefinition Width="160"/>
+                                    <ColumnDefinition Width="200"/>
                                 </Grid.ColumnDefinitions>
 
 
@@ -125,6 +126,8 @@
                                         </Validation.ErrorTemplate>
                                     </TextBox>
                                 </Grid>
+                                <CheckBox Grid.Column="2" Content="Sonderdividende einbeziehen" IsChecked="{Binding SonderdividendeEinbeziehen}"/>
+
                             </Grid>
                         </Grid>
 
