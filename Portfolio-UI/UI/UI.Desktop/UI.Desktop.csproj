@@ -4,8 +4,8 @@
     <TargetFramework>net8.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>resource\bank.ico</ApplicationIcon>
-    <AssemblyVersion>5.1.0.0</AssemblyVersion>
-    <Version>5.1.0</Version>
+    <AssemblyVersion>5.2.0.0</AssemblyVersion>
+    <Version>5.2.0</Version>
     <RootNamespace>UI.Desktop</RootNamespace>
     <AssemblyName>Portfolio</AssemblyName>
     <Authors>Rene Märsmann</Authors>
@@ -29,6 +29,7 @@
     <None Remove="resource\chart-line.png" />
     <None Remove="resource\chart-pie.png" />
     <None Remove="resource\close-octagon-outline.png" />
+    <None Remove="resource\crypto.png" />
     <None Remove="resource\depot.png" />
     <None Remove="resource\derivate.png" />
     <None Remove="resource\entfernen.png" />
@@ -62,6 +63,7 @@
     <Resource Include="resource\chart-line.png" />
     <Resource Include="resource\chart-pie.png" />
     <Resource Include="resource\close-octagon-outline.png" />
+    <Resource Include="resource\crypto.png" />
     <Resource Include="resource\depot.png" />
     <Resource Include="resource\derivate.png" />
     <Resource Include="resource\entfernen.png" />

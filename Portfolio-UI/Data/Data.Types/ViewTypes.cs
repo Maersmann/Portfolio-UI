@@ -47,7 +47,8 @@
         viewZinsenMonatlichJahresentwicklung,
         viewZZinsenVergleichMonat,
         viewZinsenGesamtentwicklungJaehrlichSummiert,
-        viewZinsenGesamtentwicklungMonatlichSummiert
+        viewZinsenGesamtentwicklungMonatlichSummiert,
+        viewCryptoUebersicht
     }
 
 }

@@ -205,8 +205,8 @@ namespace Aktien.Logic.UI.DividendeViewModels
         public double? Bemessungsgrundlage => Data.Bemessungsgrundlage;
         public double? Erhalten => Data.Erhalten;
         public double? ErhaltenUmgerechnetUngerundet => Data.ErhaltenUmgerechnetErmittelt.GetValueOrDefault(0);
-        public double? SteuerVorZwischensumme => Data.SteuernVorZwischensumme.GetValueOrDefault(0);
-        public double? SteuerNachZwischensumme => Data.SteuernNachZwischensumme.GetValueOrDefault(0);
+        public Double? SteuerVorZwischensumme => Data.SteuernVorZwischensumme.GetValueOrDefault(0);
+        public Double? SteuerNachZwischensumme => Data.SteuernNachZwischensumme.GetValueOrDefault(0);
         public double? Zwischensumme => Data.Zwischensumme.GetValueOrDefault(0);
         public double? ZwischensummeUmgerechnet => Data.ZwischensummeUmgerechnet.GetValueOrDefault(0);
         public string ZwischensummeTxt 

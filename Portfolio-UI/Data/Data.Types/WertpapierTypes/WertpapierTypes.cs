@@ -17,6 +17,8 @@ namespace Aktien.Data.Types.WertpapierTypes
         [Description("ETF")]
         ETF = 1,
         [Description("Derivate")]
-        Derivate = 2
+        Derivate = 2,
+        [Description("Crypto")]
+        Crypto = 3
     }
 }

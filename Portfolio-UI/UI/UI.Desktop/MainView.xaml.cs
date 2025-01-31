@@ -44,6 +44,7 @@ using UI.Desktop.Derivate;
 using UI.Desktop.Sparplan;
 using UI.Desktop.Zinsen;
 using UI.Desktop.Auswertung.Zinsen;
+using UI.Desktop.Crypto;
 
 namespace Aktien.UI.Desktop
 {
@@ -230,6 +231,10 @@ namespace Aktien.UI.Desktop
                     if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(ZinsenVergleichMonatView).Name))
                         Container.NavigationService.Navigate(new ZinsenVergleichMonatView());
                     break;
+                case ViewType.viewCryptoUebersicht:
+                    if (Container.Content == null || !Container.Content.GetType().Name.Equals(typeof(CryptoUebersichtPage).Name))
+                        Container.NavigationService.Navigate(new CryptoUebersichtPage());
+                    break;
                 default:
                     break;
 
@@ -269,6 +274,9 @@ namespace Aktien.UI.Desktop
                     break;
                 case StammdatenTypes.zinsenErhalten:
                     view = new ZinsenEintragenView();
+                    break;
+                case StammdatenTypes.crypto:
+                    view = new CryptoStammdatenView();
                     break;
                 default:
                     break;
