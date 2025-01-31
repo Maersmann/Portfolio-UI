@@ -21,6 +21,7 @@ namespace Aktien.Data.Types
         steuergruppe,
         vorbelegung,
         sparplan,
-        zinsenErhalten
+        zinsenErhalten,
+        crypto
     }
 }

@@ -60,7 +60,8 @@ namespace Aktien.Logic.UI
             OpenZinsenGesamtentwicklungMonatlichSummiertCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewZinsenGesamtentwicklungMonatlichSummiert));
             OpenZinsenMonatlichJahresentwicklungCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewZinsenMonatlichJahresentwicklung));
             OpenZinsenVergleichMonatCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewZZinsenVergleichMonat));
-            
+            OpenCryptoUebersichtCommand = new RelayCommand(() => ExecuteOpenViewCommand(ViewType.viewCryptoUebersicht));
+
             OpenVorbelegungCommand = new RelayCommand(() => ExecuteStammdatenViewCommand(StammdatenTypes.vorbelegung));
         }
 
@@ -101,6 +102,7 @@ namespace Aktien.Logic.UI
         public ICommand OpenZinsenGesamtentwicklungMonatlichSummiertCommand { get; set; }
         public ICommand OpenZinsenMonatlichJahresentwicklungCommand { get; set; }
         public ICommand OpenZinsenVergleichMonatCommand { get; set; }
+        public ICommand OpenCryptoUebersichtCommand { get; set; }
         public bool MenuIsEnabled => GlobalVariables.ServerIsOnline;
 
         private static void ExecuteOpenViewCommand(ViewType viewType)

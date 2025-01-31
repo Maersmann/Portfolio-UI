@@ -41,6 +41,8 @@ using Logic.UI.WertpapierViewModels;
 using Logic.UI.SparplanViewModels;
 using Logic.UI.ZinsenViewModels;
 using Logic.UI.AuswertungViewModels.ZinsenViewModels;
+using Logic.UI.CryptoViewModels;
+using Logic.UI.CryptoViewModels.Page;
 
 namespace Aktien.Logic.UI
 {
@@ -133,6 +135,9 @@ namespace Aktien.Logic.UI
         public ZinsenVergleichMonatViewModel ZinsenVergleichMonat => new();
         public ZinsenGesamtentwicklungMonatlichSummiertViewModel ZinsenGesamtentwicklungMonatlichSummiert => new();
         public ZinsenGesamtentwicklungJaehrlichSummiertViewModel ZinsenGesamtentwicklungJaehrlichSummiert => new();
+        public CryptoStammdatenViewModel CryptoStammdaten => new();
+        public CryptoUebersichtViewModel CryptoUebersicht => new();
+        public CryptoUebersichtPageViewModel CryptoUebersichtPage => new();
         public static void Cleanup()
         {
 

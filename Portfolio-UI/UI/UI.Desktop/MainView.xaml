@@ -70,6 +70,8 @@
                     <Fluent:Button Header="Aktien" LargeIcon="/resource/aktien.png"  Command="{Binding OpenAktienUebersichtCommand}" Width="60" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                     <Fluent:Button Header="ETF's" LargeIcon="/resource/etf.png"  Command="{Binding OpenETFUebersichtCommand}" Width="60" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White" />
                     <Fluent:Button Header="Derivate" LargeIcon="/resource/derivate.png"  Command="{Binding OpenDerivateUebersichtCommand}" Width="60" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
+                    <Fluent:Button Header="Crypto" LargeIcon="/resource/crypto.png"  Command="{Binding OpenCryptoUebersichtCommand}" Width="60" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
+
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="Depot">
                     <Fluent:Button Header="Bestand" LargeIcon="/resource/depot.png" Command="{Binding OpenDepotUebersichtCommand}" Width="70" IsEnabled="{Binding MenuIsEnabled, Mode=OneWay}" Foreground="White"/>
