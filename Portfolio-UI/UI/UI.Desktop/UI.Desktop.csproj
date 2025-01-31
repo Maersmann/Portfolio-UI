@@ -4,8 +4,8 @@
     <TargetFramework>net8.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>resource\bank.ico</ApplicationIcon>
-    <AssemblyVersion>5.1.0.0</AssemblyVersion>
-    <Version>5.1.0</Version>
+    <AssemblyVersion>5.2.0.0</AssemblyVersion>
+    <Version>5.2.0</Version>
     <RootNamespace>UI.Desktop</RootNamespace>
     <AssemblyName>Portfolio</AssemblyName>
     <Authors>Rene Märsmann</Authors>
